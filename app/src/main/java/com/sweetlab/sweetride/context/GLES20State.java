@@ -1,7 +1,9 @@
 package com.sweetlab.sweetride.context;
 
 import android.opengl.GLES20;
+import android.util.Log;
 
+import com.sweetlab.sweetride.DebugOptions;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 
 /**
@@ -43,6 +45,11 @@ public class GLES20State {
      * @param program The program to use.
      */
     public void useProgram(ShaderProgram program) {
+        if (DebugOptions.DEBUG_STATE) {
+            if (!program.isLinked()) {
+                throw new RuntimeException("Trying to use not linked program");
+            }
+        }
         GLES20.glUseProgram(program.getId());
     }
 }

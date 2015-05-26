@@ -11,6 +11,8 @@ public class BackendContext {
     private UniformExtractor mUniformExtractor;
     private GLES20State mGLES20State;
     private ResourceRelease mResourceRelease;
+    private ArrayTarget mArrayTarget;
+    private BufferManager mBufferManager;
 
     /**
      * Create a instance of context.
@@ -34,6 +36,8 @@ public class BackendContext {
         mUniformExtractor = new UniformExtractor(this);
         mResourceRelease = new ResourceRelease(this);
         mGLES20State = new GLES20State(this);
+        mArrayTarget = new ArrayTarget(this);
+        mBufferManager = new BufferManager(this);
     }
 
     /**
@@ -103,5 +107,23 @@ public class BackendContext {
      */
     public GLES20State getState() {
         return mGLES20State;
+    }
+
+    /**
+     * Get the array target.
+     *
+     * @return The array target.
+     */
+    public ArrayTarget getArrayTarget() {
+        return mArrayTarget;
+    }
+
+    /**
+     * Get the buffer manager.
+     *
+     * @return The buffer manager.
+     */
+    public BufferManager getBufferManager() {
+        return mBufferManager;
     }
 }

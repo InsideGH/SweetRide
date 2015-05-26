@@ -40,11 +40,11 @@ public class Uniform {
      * @param location  Location of uniform in linked shader program.
      */
     public Uniform(String name, int arraySize, int type, int location) {
-        mArraySize = arraySize;
         mName = name;
+        mArraySize = arraySize;
         mType = type;
         mLocation = location;
-        mElementCount = GLES20Helper.getTypeCount(type);
+        mElementCount = GLES20Helper.getTypeElementCount(type);
     }
 
     /**

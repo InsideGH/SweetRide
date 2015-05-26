@@ -15,7 +15,7 @@ public class GLES20Helper {
     /**
      * Helper to get readable type.
      *
-     * @param type GLES20 type.
+     * @param type GLES20 type (GL_FLOAT, GL_FLOAT_VEC2, GL_FLOAT_VEC3, GL_FLOAT_VEC4, GL_FLOAT_MAT2, GL_FLOAT_MAT3, or GL_FLOAT_MAT4).
      * @return Readable type.
      */
     public static String getReadableType(int type) {
@@ -42,35 +42,46 @@ public class GLES20Helper {
     /**
      * Get the element count based on GLES20 type.
      *
-     * @param type GLES20 type.
+     * @param type GLES20 type (GL_FLOAT, GL_FLOAT_VEC2, GL_FLOAT_VEC3, GL_FLOAT_VEC4, GL_FLOAT_MAT2, GL_FLOAT_MAT3, or GL_FLOAT_MAT4).
      * @return Number of elements.
      */
-    public static int getTypeCount(int type) {
-        int size = -1;
+    public static int getTypeElementCount(int type) {
         switch (type) {
-            case GLES20.GL_FLOAT_VEC2:
-                size = 2;
-                break;
-            case GLES20.GL_FLOAT_VEC3:
-                size = 3;
-                break;
-            case GLES20.GL_FLOAT_VEC4:
-                size = 4;
-                break;
             case GLES20.GL_FLOAT:
-                size = 1;
-                break;
             case GLES20.GL_SAMPLER_2D:
-                break;
+                return 1;
+            case GLES20.GL_FLOAT_VEC2:
+                return 2;
+            case GLES20.GL_FLOAT_VEC3:
+                return 3;
+            case GLES20.GL_FLOAT_VEC4:
+                return 4;
             case GLES20.GL_FLOAT_MAT3:
-                size = 9;
-                break;
+                return 9;
             case GLES20.GL_FLOAT_MAT4:
-                size = 16;
-                break;
+                return 16;
             default:
-                throw new RuntimeException("Can't figure out size from type " + type);
+                throw new RuntimeException("Can't figure out element count from type " + type);
         }
-        return size;
     }
+
+    /**
+     * Get type family.
+     *
+     * @param type GL_FLOAT, GL_FLOAT_VEC2, GL_FLOAT_VEC3, GL_FLOAT_VEC4, GL_FLOAT_MAT2, GL_FLOAT_MAT3, or GL_FLOAT_MAT4.
+     * @return Type of family.
+     */
+    public static int getTypeFamily(int type) {
+        switch (type) {
+            case GLES20.GL_FLOAT:
+            case GLES20.GL_FLOAT_VEC2:
+            case GLES20.GL_FLOAT_VEC3:
+            case GLES20.GL_FLOAT_VEC4:
+            case GLES20.GL_FLOAT_MAT3:
+            case GLES20.GL_FLOAT_MAT4:
+                return GLES20.GL_FLOAT;
+        }
+        throw new RuntimeException("Can't figure out family type from type " + type);
+    }
+
 }
