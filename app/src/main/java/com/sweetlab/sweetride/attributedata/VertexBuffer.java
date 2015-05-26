@@ -8,7 +8,7 @@ import java.nio.Buffer;
 /**
  * A vertex buffer.
  */
-public class VertexBuffer implements AttributeData {
+public class VertexBuffer implements AttributeData, AttributePointer {
 
     /**
      * The mapping to the attribute in the shader program.
@@ -115,11 +115,7 @@ public class VertexBuffer implements AttributeData {
         mBufferId = INVALID_BUFFER_ID;
     }
 
-    /**
-     * Create this vertex buffer in backend.
-     *
-     * @param context Backend context.
-     */
+    @Override
     public void create(BackendContext context) {
         mBufferId = context.getBufferManager().generateBuffer();
     }

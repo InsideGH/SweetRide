@@ -4,6 +4,7 @@ import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.DebugOptions;
 import com.sweetlab.sweetride.attributedata.AttributeData;
+import com.sweetlab.sweetride.attributedata.AttributePointer;
 import com.sweetlab.sweetride.shader.Attribute;
 
 import java.nio.Buffer;
@@ -66,14 +67,15 @@ public class ArrayTarget {
     /**
      * Enable a shader program attribute to use provided attribute data.
      *
-     * @param attribute     The attribute in the shader program.
-     * @param attributeData The attribute data.
+     * @param data      The attribute data.
+     * @param attribute The attribute in the shader program.
+     * @param pointer   The attribute data pointer.
      */
-    public void enableAttribute(Attribute attribute, AttributeData attributeData) {
+    public void enableAttribute(Attribute attribute, AttributeData data, AttributePointer pointer) {
         /**
          * Check if buffer needs to be bound.
          */
-        final int bufferId = attributeData.getBufferId();
+        final int bufferId = data.getBufferId();
         if (!isBufferBound(bufferId)) {
             GLES20.glBindBuffer(TARGET, bufferId);
         }
@@ -90,9 +92,11 @@ public class ArrayTarget {
          * Check if attribute has correct buffer bound. If not, reconfigure attribute.
          */
         if (getBoundAttributeBuffer(attributeLocation) != bufferId) {
-            final int dataVertexSize = attributeData.getVertexSize();
+            final int dataVertexSize = pointer.getVertexSize();
             if (dataVertexSize > attribute.getVertexSize()) {
-                throw new RuntimeException("Element count in data is larger than specified in shader program, data element count = " + dataVertexSize + " while shader attribute specifies " + attribute.getVertexSize());
+                throw new RuntimeException("Element count in data is larger than specified in shader " +
+                        "program, data element count = " + dataVertexSize + " while shader attribute " +
+                        "specifies " + attribute.getVertexSize());
             }
 
             /**
@@ -100,9 +104,9 @@ public class ArrayTarget {
              * with the correct vertex size (element count). Typically vertex data contains 3 instead of 4 component because
              * only 'xyz' is specified but 'w' is ignored/skipped. That is the reason for using dataVertexSize.
              */
-            final int strideBytes = attributeData.getStrideBytes();
-            final boolean shouldNormalize = attributeData.getShouldNormalize();
-            final int offsetBytes = attributeData.getOffsetBytes();
+            final int strideBytes = pointer.getStrideBytes();
+            final boolean shouldNormalize = pointer.getShouldNormalize();
+            final int offsetBytes = pointer.getOffsetBytes();
             final int typeFamily = attribute.getTypeFamily();
             GLES20.glVertexAttribPointer(attributeLocation, dataVertexSize, typeFamily, shouldNormalize, strideBytes, offsetBytes);
         }

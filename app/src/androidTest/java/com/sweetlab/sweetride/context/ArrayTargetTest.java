@@ -2,7 +2,10 @@ package com.sweetlab.sweetride.context;
 
 import android.opengl.GLES20;
 
+import com.sweetlab.sweetride.attributedata.AttributeData;
+import com.sweetlab.sweetride.attributedata.AttributePointer;
 import com.sweetlab.sweetride.attributedata.ColorData;
+import com.sweetlab.sweetride.attributedata.InterleavedVertexBuffer;
 import com.sweetlab.sweetride.attributedata.VertexBuffer;
 import com.sweetlab.sweetride.attributedata.VerticesData;
 import com.sweetlab.sweetride.shader.Attribute;
@@ -89,6 +92,7 @@ public class ArrayTargetTest extends OpenGLTestCase {
     private VertexBuffer mBottomLeftTriangle;
     private VertexBuffer mBottomRightTriangle;
     private VertexBuffer mColorBuffer;
+    private InterleavedVertexBuffer mInterleavedLeftTriangle;
 
     @Override
     protected void setUp() throws Exception {
@@ -112,6 +116,11 @@ public class ArrayTargetTest extends OpenGLTestCase {
         mTopRightTriangle = new VertexBuffer("a_Pos", new VerticesData(createTriangleData(0.5f, 0.5f, 0.5f, 0.5f)), GLES20.GL_STATIC_DRAW);
         mBottomLeftTriangle = new VertexBuffer("a_Pos", new VerticesData(createTriangleData(0.5f, 0.5f, -0.5f, -0.5f)), GLES20.GL_STATIC_DRAW);
         mBottomRightTriangle = new VertexBuffer("a_Pos", new VerticesData(createTriangleData(0.5f, 0.5f, 0.5f, -0.5f)), GLES20.GL_STATIC_DRAW);
+
+        InterleavedVertexBuffer.Builder builder = new InterleavedVertexBuffer.Builder(GLES20.GL_STATIC_DRAW);
+        builder.add("a_Pos", new VerticesData(createTriangleData(0.5f, 0.5f, -0.5f, 0)));
+        builder.add("a_Color", new ColorData(createColors()));
+        mInterleavedLeftTriangle = builder.build();
 
         /**
          * Create a color vertex buffer. No need for GL thread.
@@ -143,6 +152,8 @@ public class ArrayTargetTest extends OpenGLTestCase {
                 mBottomLeftTriangle.create(mContext);
                 mBottomRightTriangle.create(mContext);
 
+                mInterleavedLeftTriangle.create(mContext);
+
                 /**
                  * Create the color buffer (object).
                  */
@@ -160,6 +171,8 @@ public class ArrayTargetTest extends OpenGLTestCase {
                 mContext.getArrayTarget().load(mTopRightTriangle);
                 mContext.getArrayTarget().load(mBottomLeftTriangle);
                 mContext.getArrayTarget().load(mBottomRightTriangle);
+
+                mContext.getArrayTarget().load(mInterleavedLeftTriangle.getAttributeData());
 
                 /**
                  * Load color data to gpu.
@@ -228,8 +241,60 @@ public class ArrayTargetTest extends OpenGLTestCase {
         sleepOnDrawFrame(2000);
     }
 
+    public void testDrawInterleavedTriangle() throws Exception {
+        runOnDrawFrame(new ResultRunnable() {
+            @Override
+            public Object run() {
+                /**
+                 * Clear screen.
+                 */
+                clearScreen();
+
+                /**
+                 * This triangle should be smooth colored.
+                 */
+                drawInterleaved(mContext, mColorShader, mInterleavedLeftTriangle);
+
+                return null;
+            }
+        });
+        sleepOnDrawFrame(2000);
+    }
+
     /**
-     * Draw with a shader program and vertex buffer.
+     * Draw with a shader program and a interleaved vertex buffer.
+     *
+     * @param context      Backend context.
+     * @param program      Shader program.
+     * @param vertexBuffer Interleaved vertex buffer.
+     */
+    private static void drawInterleaved(BackendContext context, ShaderProgram program, InterleavedVertexBuffer vertexBuffer) {
+        AttributeData attributeData = vertexBuffer.getAttributeData();
+        int pointerCount = vertexBuffer.getAttributePointerCount();
+
+        for (int i = 0; i < pointerCount; i++) {
+            AttributePointer pointer = vertexBuffer.getAttributePointer(i);
+            Attribute attribute = program.getAttribute(pointer.getName());
+            if (attribute != null) {
+                context.getArrayTarget().enableAttribute(attribute, attributeData, pointer);
+            }
+        }
+
+        context.getState().useProgram(program);
+        int vertexCount = vertexBuffer.getAttributePointer(0).getVertexCount();
+        context.getArrayTarget().draw(GLES20.GL_TRIANGLES, 0, vertexCount);
+
+        for (int i = 0; i < pointerCount; i++) {
+            AttributePointer pointer = vertexBuffer.getAttributePointer(i);
+            Attribute attribute = program.getAttribute(pointer.getName());
+            if (attribute != null) {
+                context.getArrayTarget().disableAttribute(attribute);
+            }
+        }
+    }
+
+    /**
+     * Draw with a shader program and vertex buffers in a non-interleaved way.
      *
      * @param context Backend context.
      * @param program Shader program.
@@ -244,7 +309,7 @@ public class ArrayTargetTest extends OpenGLTestCase {
             }
             Attribute attribute = program.getAttribute(buffer.getName());
             if (attribute != null) {
-                context.getArrayTarget().enableAttribute(attribute, buffer);
+                context.getArrayTarget().enableAttribute(attribute, buffer, buffer);
             }
         }
 
