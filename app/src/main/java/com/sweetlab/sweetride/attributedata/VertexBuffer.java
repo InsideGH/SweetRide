@@ -1,6 +1,7 @@
 package com.sweetlab.sweetride.attributedata;
 
 import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.resource.BufferResource;
 import com.sweetlab.sweetride.util.Util;
 
 import java.nio.Buffer;
@@ -8,7 +9,7 @@ import java.nio.Buffer;
 /**
  * A vertex buffer.
  */
-public class VertexBuffer implements AttributeData, AttributePointer {
+public class VertexBuffer implements BufferResource, AttributePointer {
 
     /**
      * The mapping to the attribute in the shader program.
@@ -111,12 +112,12 @@ public class VertexBuffer implements AttributeData, AttributePointer {
 
     @Override
     public void release(BackendContext context) {
-        context.getBufferManager().deleteBuffer(mBufferId);
+        context.getResourceManager().deleteBuffer(mBufferId);
         mBufferId = INVALID_BUFFER_ID;
     }
 
     @Override
     public void create(BackendContext context) {
-        mBufferId = context.getBufferManager().generateBuffer();
+        mBufferId = context.getResourceManager().generateBuffer();
     }
 }

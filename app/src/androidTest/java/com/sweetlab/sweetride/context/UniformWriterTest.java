@@ -33,7 +33,7 @@ public class UniformWriterTest extends OpenGLTestCase {
         });
     }
 
-    public void testWriteDefault() throws Exception {
+    public void testWriteDefaultFloat() throws Exception {
         if (DebugOptions.DEBUG_UNIFORM_WRITES) {
             boolean gotException = false;
             try {
@@ -45,6 +45,21 @@ public class UniformWriterTest extends OpenGLTestCase {
         } else {
             mContext.getState().useProgram(mProgram);
             mContext.getUniformWriter().writeDefault(mProgram, "u_AmountRed");
+        }
+    }
+
+    public void testWriteDefaultInt() throws Exception {
+        if (DebugOptions.DEBUG_UNIFORM_WRITES) {
+            boolean gotException = false;
+            try {
+                mContext.getUniformWriter().writeDefault(mProgram, "u_AmountRedInt");
+            } catch (Exception e) {
+                gotException = true;
+            }
+            assertTrue(gotException);
+        } else {
+            mContext.getState().useProgram(mProgram);
+            mContext.getUniformWriter().writeDefault(mProgram, "u_AmountRedInt");
         }
     }
 
@@ -61,6 +76,22 @@ public class UniformWriterTest extends OpenGLTestCase {
         } else {
             mContext.getState().useProgram(mProgram);
             mContext.getUniformWriter().writeFloat(mProgram, "u_AmountRed", data);
+        }
+    }
+
+    public void testWriteInt() throws Exception {
+        int[] data = new int[]{123};
+        if (DebugOptions.DEBUG_UNIFORM_WRITES) {
+            boolean gotException = false;
+            try {
+                mContext.getUniformWriter().writeInt(mProgram, "u_AmountRedInt", data);
+            } catch (Exception e) {
+                gotException = true;
+            }
+            assertTrue(gotException);
+        } else {
+            mContext.getState().useProgram(mProgram);
+            mContext.getUniformWriter().writeInt(mProgram, "u_AmountRedInt", data);
         }
     }
 }

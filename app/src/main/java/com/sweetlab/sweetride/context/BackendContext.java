@@ -1,7 +1,7 @@
 package com.sweetlab.sweetride.context;
 
 /**
- * Backend context.
+ * Backend context. Must be created on GL thread.
  */
 public class BackendContext {
     private ShaderCompiler mShaderCompiler;
@@ -10,9 +10,10 @@ public class BackendContext {
     private AttributeExtractor mAttributeExtractor;
     private UniformExtractor mUniformExtractor;
     private GLES20State mGLES20State;
-    private ResourceRelease mResourceRelease;
     private ArrayTarget mArrayTarget;
-    private BufferManager mBufferManager;
+    private ResourceManager mResourceManager;
+    private ElementTarget mElementTarget;
+    private TextureUnitManager mTextureUnitManager;
 
     /**
      * Create a instance of context.
@@ -29,15 +30,25 @@ public class BackendContext {
      * Initialize all sub modules.
      */
     private void init() {
+        /**
+         * Warning, do not use the backend context in any of the resource constructors below. This
+         * restriction is important because not all resources are initialized at that point.
+         *
+         * Keeping this only restriction makes it safe because the backend context is not exposed
+         * until the whole initialization is performed.
+         *
+         * Order below is arbitrary.
+         */
         mShaderCompiler = new ShaderCompiler(this);
         mProgramLinker = new ProgramLinker(this);
         mUniformWriter = new UniformWriter(this);
         mAttributeExtractor = new AttributeExtractor(this);
         mUniformExtractor = new UniformExtractor(this);
-        mResourceRelease = new ResourceRelease(this);
         mGLES20State = new GLES20State(this);
         mArrayTarget = new ArrayTarget(this);
-        mBufferManager = new BufferManager(this);
+        mResourceManager = new ResourceManager(this);
+        mElementTarget = new ElementTarget(this);
+        mTextureUnitManager = new TextureUnitManager(this);
     }
 
     /**
@@ -92,15 +103,6 @@ public class BackendContext {
     }
 
     /**
-     * Get the resource releaser.
-     *
-     * @return The resource releaser.
-     */
-    public ResourceRelease getResourceRelease() {
-        return mResourceRelease;
-    }
-
-    /**
      * Get the state.
      *
      * @return The state.
@@ -123,7 +125,25 @@ public class BackendContext {
      *
      * @return The buffer manager.
      */
-    public BufferManager getBufferManager() {
-        return mBufferManager;
+    public ResourceManager getResourceManager() {
+        return mResourceManager;
+    }
+
+    /**
+     * Get the element target.
+     *
+     * @return The element target.
+     */
+    public ElementTarget getElementTarget() {
+        return mElementTarget;
+    }
+
+    /**
+     * Get the texture unit manager.
+     *
+     * @return The texture unit manager.
+     */
+    public TextureUnitManager getTextureUnitManager() {
+        return mTextureUnitManager;
     }
 }

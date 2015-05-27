@@ -1,5 +1,6 @@
 package com.sweetlab.sweetride.util;
 
+import android.graphics.Bitmap;
 import android.opengl.GLES20;
 import android.util.Log;
 
@@ -56,5 +57,18 @@ public class Util {
         floatBuffer.put(data);
         floatBuffer.rewind();
         return floatBuffer;
+    }
+
+    /**
+     * Create buffer from bitmap.
+     *
+     * @param bitmap Bitmap to create buffer from.
+     * @return Buffer.
+     */
+    public static Buffer bitmapToBuffer(Bitmap bitmap) {
+        Buffer bb = Util.allocByteBuffer(bitmap.getByteCount());
+        bitmap.copyPixelsToBuffer(bb);
+        bb.rewind();
+        return bb;
     }
 }

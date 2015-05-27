@@ -20,12 +20,20 @@ public class GLES20Helper {
      */
     public static String getReadableType(int type) {
         switch (type) {
+            case GLES20.GL_INT_VEC2:
+                return "int_vec2";
+            case GLES20.GL_INT_VEC3:
+                return "int_vec3";
+            case GLES20.GL_INT_VEC4:
+                return "int_vec4";
+            case GLES20.GL_INT:
+                return "int";
             case GLES20.GL_FLOAT_VEC2:
-                return "vec2";
+                return "float_vec2";
             case GLES20.GL_FLOAT_VEC3:
-                return "vec3";
+                return "float_vec3";
             case GLES20.GL_FLOAT_VEC4:
-                return "vec4";
+                return "float_vec4";
             case GLES20.GL_FLOAT:
                 return "float";
             case GLES20.GL_SAMPLER_2D:
@@ -47,13 +55,17 @@ public class GLES20Helper {
      */
     public static int getTypeElementCount(int type) {
         switch (type) {
+            case GLES20.GL_INT:
             case GLES20.GL_FLOAT:
             case GLES20.GL_SAMPLER_2D:
                 return 1;
+            case GLES20.GL_INT_VEC2:
             case GLES20.GL_FLOAT_VEC2:
                 return 2;
+            case GLES20.GL_INT_VEC3:
             case GLES20.GL_FLOAT_VEC3:
                 return 3;
+            case GLES20.GL_INT_VEC4:
             case GLES20.GL_FLOAT_VEC4:
                 return 4;
             case GLES20.GL_FLOAT_MAT3:

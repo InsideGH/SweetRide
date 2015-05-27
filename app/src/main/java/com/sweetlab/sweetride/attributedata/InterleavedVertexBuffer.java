@@ -5,6 +5,7 @@ import android.util.Pair;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.resource.BufferResource;
 
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class InterleavedVertexBuffer implements BufferResource {
          *
          * @param name Shader attribute name.
          * @param data Vertex data.
-         * @return
+         * @return This builder.
          */
         public Builder add(String name, VertexData data) {
             mEntries.add(new Pair<>(name, data));
@@ -54,20 +55,35 @@ public class InterleavedVertexBuffer implements BufferResource {
          * @return The interleaved vertex buffer.
          */
         public InterleavedVertexBuffer build() {
-            List<AttributePointer> pointers = createPointers(mEntries, calcStride(mEntries));
+            checkConditions();
+            List<AttributePointer> pointers = createPointers(calcStride());
             InterleavedData data = new InterleavedData(mEntries, mBufferUsage);
             return new InterleavedVertexBuffer(data, pointers);
         }
 
         /**
+         * Check conditions. Throws if not fulfilled.
+         */
+        private void checkConditions() throws IllegalArgumentException {
+            if (mEntries.isEmpty()) {
+                throw new RuntimeException("Can't build interleaved vertex buffer without entries.");
+            }
+            int vertexCount = mEntries.get(0).second.getVertexCount();
+            for (Pair<String, VertexData> pair : mEntries) {
+                if (pair.second.getVertexCount() != vertexCount) {
+                    throw new RuntimeException("Can't build interleaved vertex buffer with non matching vertex counts");
+                }
+            }
+        }
+
+        /**
          * Calculate stride given all entries.
          *
-         * @param entries List of entries.
          * @return The stride value.
          */
-        private static int calcStride(List<Pair<String, VertexData>> entries) {
+        private int calcStride() {
             int stride = 0;
-            for (Pair<String, VertexData> pair : entries) {
+            for (Pair<String, VertexData> pair : mEntries) {
                 stride += pair.second.getVertexByteSize();
             }
             return stride;
@@ -76,14 +92,13 @@ public class InterleavedVertexBuffer implements BufferResource {
         /**
          * Create a list of attribute pointers based on entries and stride value.
          *
-         * @param entries List of entries.
-         * @param stride  Stride value.
+         * @param stride Stride value.
          * @return A list of attribute pointers.
          */
-        private static List<AttributePointer> createPointers(List<Pair<String, VertexData>> entries, int stride) {
+        private List<AttributePointer> createPointers(int stride) {
             List<AttributePointer> pointers = new ArrayList<>();
             int offset = 0;
-            for (Pair<String, VertexData> pair : entries) {
+            for (Pair<String, VertexData> pair : mEntries) {
                 String name = pair.first;
                 VertexData data = pair.second;
                 pointers.add(new InterleavedPointer(name, data, stride, offset));
@@ -101,7 +116,7 @@ public class InterleavedVertexBuffer implements BufferResource {
     /**
      * The attribute data.
      */
-    private final AttributeData mData;
+    private final BufferResource mData;
 
     /**
      * Constructor.
@@ -109,7 +124,7 @@ public class InterleavedVertexBuffer implements BufferResource {
      * @param data     The attribute data.
      * @param pointers A list of attribute pointers.
      */
-    public InterleavedVertexBuffer(AttributeData data, List<AttributePointer> pointers) {
+    public InterleavedVertexBuffer(BufferResource data, List<AttributePointer> pointers) {
         mData = data;
         mPointers = pointers;
     }
@@ -124,12 +139,37 @@ public class InterleavedVertexBuffer implements BufferResource {
         mData.create(context);
     }
 
+    @Override
+    public boolean isCreated() {
+        return mData.isCreated();
+    }
+
+    @Override
+    public int getBufferId() {
+        return mData.getBufferId();
+    }
+
+    @Override
+    public Buffer getData() {
+        return mData.getData();
+    }
+
+    @Override
+    public int getTotalByteCount() {
+        return mData.getTotalByteCount();
+    }
+
+    @Override
+    public int getBufferUsage() {
+        return mData.getBufferUsage();
+    }
+
     /**
      * Get the attribute data.
      *
      * @return The attribute data.
      */
-    public AttributeData getAttributeData() {
+    public BufferResource getAttributeData() {
         return mData;
     }
 

@@ -53,7 +53,7 @@ public class UniformExtractorTest extends OpenGLTestCase {
                 program.link(mContext);
                 Map<String, Uniform> map = mContext.getUniformExtractor().extract(program);
 
-                assertEquals(3, map.size());
+                assertEquals(4, map.size());
 
                 Uniform u_worldViewProjMat = map.get("u_WorldViewProjMat");
                 assertNotNull(u_worldViewProjMat);
@@ -66,6 +66,11 @@ public class UniformExtractorTest extends OpenGLTestCase {
                 Uniform u_amountRed = map.get("u_AmountRed");
                 assertNotNull(u_amountRed);
                 assertEquals(u_amountRed.getType(), GLES20.GL_FLOAT);
+
+                Uniform u_amountRedInt = map.get("u_AmountRedInt");
+                assertNotNull(u_amountRedInt);
+                assertEquals(u_amountRedInt.getType(), GLES20.GL_INT);
+
                 return null;
             }
         });

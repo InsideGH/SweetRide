@@ -3,8 +3,8 @@ package com.sweetlab.sweetride.context;
 import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.DebugOptions;
-import com.sweetlab.sweetride.attributedata.AttributeData;
 import com.sweetlab.sweetride.attributedata.AttributePointer;
+import com.sweetlab.sweetride.resource.BufferResource;
 import com.sweetlab.sweetride.shader.Attribute;
 
 import java.nio.Buffer;
@@ -21,7 +21,7 @@ public class ArrayTarget {
     /**
      * The array target buffer binding.
      */
-    private static final int TARGET_BUFFER_BINDING = GLES20.GL_ARRAY_BUFFER_BINDING;
+    private static final int BINDING = GLES20.GL_ARRAY_BUFFER_BINDING;
 
     /**
      * Buffer to read GL information.
@@ -47,7 +47,7 @@ public class ArrayTarget {
      *
      * @param attributeData Attribute data.
      */
-    public void load(AttributeData attributeData) {
+    public void load(BufferResource attributeData) {
         if (DebugOptions.DEBUG_ARRAY_TARGET) {
             if (!attributeData.isCreated()) {
                 throw new RuntimeException("Trying to load attribute data that has not been created");
@@ -67,11 +67,11 @@ public class ArrayTarget {
     /**
      * Enable a shader program attribute to use provided attribute data.
      *
-     * @param data      The attribute data.
      * @param attribute The attribute in the shader program.
+     * @param data      The attribute data.
      * @param pointer   The attribute data pointer.
      */
-    public void enableAttribute(Attribute attribute, AttributeData data, AttributePointer pointer) {
+    public void enableAttribute(Attribute attribute, BufferResource data, AttributePointer pointer) {
         /**
          * Check if buffer needs to be bound.
          */
@@ -147,7 +147,7 @@ public class ArrayTarget {
      * @return True if target has buffer bound.
      */
     public boolean isAnyBufferBound() {
-        GLES20.glGetIntegerv(TARGET_BUFFER_BINDING, mReadBuffer, 0);
+        GLES20.glGetIntegerv(BINDING, mReadBuffer, 0);
         return mReadBuffer[0] != 0;
     }
 
@@ -159,7 +159,7 @@ public class ArrayTarget {
      */
     private boolean isBufferBound(int id) {
         if (id > 0) {
-            GLES20.glGetIntegerv(TARGET_BUFFER_BINDING, mReadBuffer, 0);
+            GLES20.glGetIntegerv(BINDING, mReadBuffer, 0);
             return mReadBuffer[0] == id;
         }
         return false;

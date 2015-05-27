@@ -49,7 +49,7 @@ public class ShaderProgram implements Resource {
 
     @Override
     public void release(BackendContext context) {
-        context.getResourceRelease().releaseProgram(this);
+        context.getResourceManager().releaseProgram(this);
         mId = ProgramLinker.INVALID_ID;
     }
 

@@ -162,15 +162,17 @@ public class ShaderProgramTest extends OpenGLTestCase {
             public Object run() {
                 mValidProg.link(mContext);
                 int uniformCount = mValidProg.getUniformCount();
-                assertEquals(3, uniformCount);
+                assertEquals(4, uniformCount);
 
                 Uniform u_worldViewProjMat = mValidProg.getUniform("u_WorldViewProjMat");
                 Uniform s_texture0 = mValidProg.getUniform("s_Texture0");
                 Uniform u_amountRed = mValidProg.getUniform("u_AmountRed");
+                Uniform u_amountRedInt = mValidProg.getUniform("u_AmountRedInt");
 
                 assertTrue(u_worldViewProjMat.getLocation() != -1);
                 assertTrue(s_texture0.getLocation() != -1);
                 assertTrue(u_amountRed.getLocation() != -1);
+                assertTrue(u_amountRedInt.getLocation() != -1);
 
                 return null;
             }

@@ -24,7 +24,7 @@ public class VertexShader extends BaseShader {
 
     @Override
     public void release(BackendContext context) {
-        context.getResourceRelease().releaseShader(this);
+        context.getResourceManager().releaseShader(this);
         mId = ShaderCompiler.INVALID_ID;
     }
 

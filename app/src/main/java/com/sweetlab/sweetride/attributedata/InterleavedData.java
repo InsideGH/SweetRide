@@ -3,6 +3,7 @@ package com.sweetlab.sweetride.attributedata;
 import android.util.Pair;
 
 import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.resource.BufferResource;
 import com.sweetlab.sweetride.util.Util;
 
 import java.nio.Buffer;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * Interleaved vertex data used for shader program attributes.
  */
-public class InterleavedData implements AttributeData {
+public class InterleavedData implements BufferResource {
     /**
      * Buffer of interleaved data.
      */
@@ -107,7 +108,7 @@ public class InterleavedData implements AttributeData {
 
     @Override
     public void create(BackendContext context) {
-        mBufferId = context.getBufferManager().generateBuffer();
+        mBufferId = context.getResourceManager().generateBuffer();
     }
 
     @Override
@@ -117,7 +118,7 @@ public class InterleavedData implements AttributeData {
 
     @Override
     public void release(BackendContext context) {
-        context.getBufferManager().deleteBuffer(mBufferId);
+        context.getResourceManager().deleteBuffer(mBufferId);
         mBufferId = INVALID_BUFFER_ID;
     }
 }

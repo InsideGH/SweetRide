@@ -26,13 +26,14 @@ public class ShaderCompilerTest extends OpenGLTestCase {
             "precision mediump float;\n" +
                     "uniform sampler2D s_Texture0;\n" +
                     "uniform float u_AmountRed;\n" +
+                    "uniform int u_AmountRedInt;\n" +
                     "varying vec4 v_Color;\n" +
                     "varying vec2 v_TexCoord;\n" +
                     "\n" +
                     "void main() {\n" +
                     "\tgl_FragColor = v_Color + vec4(u_AmountRed, u_AmountRed, u_AmountRed, u_AmountRed);\n" +
                     "\tgl_FragColor += texture2D(s_Texture0, v_TexCoord);\n" +
-                    "\tgl_FragColor.a *= u_AmountRed;\n" +
+                    "\tgl_FragColor.a *= float(u_AmountRedInt);\n" +
                     "}";
 
     public static final String INVALID_VERTEX_SOURCE =

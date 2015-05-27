@@ -2,12 +2,12 @@ package com.sweetlab.sweetride.context;
 
 import android.opengl.GLES20;
 
-import com.sweetlab.sweetride.attributedata.AttributeData;
 import com.sweetlab.sweetride.attributedata.AttributePointer;
 import com.sweetlab.sweetride.attributedata.ColorData;
 import com.sweetlab.sweetride.attributedata.InterleavedVertexBuffer;
 import com.sweetlab.sweetride.attributedata.VertexBuffer;
 import com.sweetlab.sweetride.attributedata.VerticesData;
+import com.sweetlab.sweetride.resource.BufferResource;
 import com.sweetlab.sweetride.shader.Attribute;
 import com.sweetlab.sweetride.shader.FragmentShader;
 import com.sweetlab.sweetride.shader.ShaderProgram;
@@ -16,9 +16,12 @@ import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
 
 /**
- * Test array target.
+ * Test array target. This test draws with
+ * 1) single vertex buffer
+ * 2) multiple vertex buffers
+ * 3) interleaved vertex buffer.
  */
-public class ArrayTargetTest extends OpenGLTestCase {
+public class ArrayTargetTest3 extends OpenGLTestCase {
     /**
      * The simplest vertex source code.
      */
@@ -60,15 +63,6 @@ public class ArrayTargetTest extends OpenGLTestCase {
                     "}";
 
     /**
-     * Blue coloring fragment code.
-     */
-    private static final String BLUE_FRAGMENT_CODE =
-            "precision mediump float;\n" +
-                    "void main() {\n" +
-                    "\tgl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);\n" +
-                    "}";
-
-    /**
      * Backend context.
      */
     private BackendContext mContext;
@@ -77,22 +71,16 @@ public class ArrayTargetTest extends OpenGLTestCase {
      * Red, blue and color shader.
      */
     private ShaderProgram mRedShader;
-    private ShaderProgram mBlueShader;
     private ShaderProgram mColorShader;
 
     /**
      * Various positions of a triangle.
      */
-    private VertexBuffer mLeftTriangle;
-    private VertexBuffer mRightTriangle;
     private VertexBuffer mTopTriangle;
     private VertexBuffer mBottomTriangle;
-    private VertexBuffer mTopLeftTriangle;
-    private VertexBuffer mTopRightTriangle;
-    private VertexBuffer mBottomLeftTriangle;
-    private VertexBuffer mBottomRightTriangle;
     private VertexBuffer mColorBuffer;
     private InterleavedVertexBuffer mInterleavedLeftTriangle;
+    private InterleavedVertexBuffer mInterleavedRightTriangle;
 
     @Override
     protected void setUp() throws Exception {
@@ -101,26 +89,25 @@ public class ArrayTargetTest extends OpenGLTestCase {
          * Create shader programs. No need for GL thread.
          */
         mRedShader = new ShaderProgram(new VertexShader(NO_COLOR_VERTEX_CODE), new FragmentShader(RED_FRAGMENT_CODE));
-        mBlueShader = new ShaderProgram(new VertexShader(NO_COLOR_VERTEX_CODE), new FragmentShader(BLUE_FRAGMENT_CODE));
         mColorShader = new ShaderProgram(new VertexShader(COLOR_VERTEX_CODE), new FragmentShader(COLOR_FRAGMENT_CODE));
 
         /**
          * Create a triangle vertices buffers. No need for GL thread.
          */
-        mLeftTriangle = new VertexBuffer("a_Pos", new VerticesData(createTriangleData(0.5f, 0.5f, -0.5f, 0)), GLES20.GL_STATIC_DRAW);
-        mRightTriangle = new VertexBuffer("a_Pos", new VerticesData(createTriangleData(0.5f, 0.5f, 0.5f, 0)), GLES20.GL_STATIC_DRAW);
         mTopTriangle = new VertexBuffer("a_Pos", new VerticesData(createTriangleData(0.5f, 0.5f, 0, 0.5f)), GLES20.GL_STATIC_DRAW);
         mBottomTriangle = new VertexBuffer("a_Pos", new VerticesData(createTriangleData(0.5f, 0.5f, 0, -0.5f)), GLES20.GL_STATIC_DRAW);
 
-        mTopLeftTriangle = new VertexBuffer("a_Pos", new VerticesData(createTriangleData(0.5f, 0.5f, -0.5f, 0.5f)), GLES20.GL_STATIC_DRAW);
-        mTopRightTriangle = new VertexBuffer("a_Pos", new VerticesData(createTriangleData(0.5f, 0.5f, 0.5f, 0.5f)), GLES20.GL_STATIC_DRAW);
-        mBottomLeftTriangle = new VertexBuffer("a_Pos", new VerticesData(createTriangleData(0.5f, 0.5f, -0.5f, -0.5f)), GLES20.GL_STATIC_DRAW);
-        mBottomRightTriangle = new VertexBuffer("a_Pos", new VerticesData(createTriangleData(0.5f, 0.5f, 0.5f, -0.5f)), GLES20.GL_STATIC_DRAW);
+        InterleavedVertexBuffer.Builder left = new InterleavedVertexBuffer.Builder(GLES20.GL_STATIC_DRAW);
+        left.add("a_Pos", new VerticesData(createTriangleData(0.5f, 0.5f, -0.5f, 0)));
+        left.add("a_Color", new ColorData(createColors()));
+        mInterleavedLeftTriangle = left.build();
 
-        InterleavedVertexBuffer.Builder builder = new InterleavedVertexBuffer.Builder(GLES20.GL_STATIC_DRAW);
-        builder.add("a_Pos", new VerticesData(createTriangleData(0.5f, 0.5f, -0.5f, 0)));
-        builder.add("a_Color", new ColorData(createColors()));
-        mInterleavedLeftTriangle = builder.build();
+
+        InterleavedVertexBuffer.Builder right = new InterleavedVertexBuffer.Builder(GLES20.GL_STATIC_DRAW);
+        right.add("a_Pos", new VerticesData(createTriangleData(0.5f, 0.5f, 0.5f, 0)));
+        right.add("a_Color", new ColorData(createColors()));
+        mInterleavedRightTriangle = right.build();
+
 
         /**
          * Create a color vertex buffer. No need for GL thread.
@@ -136,23 +123,15 @@ public class ArrayTargetTest extends OpenGLTestCase {
                  * Link shader programs.
                  */
                 mRedShader.link(mContext);
-                mBlueShader.link(mContext);
                 mColorShader.link(mContext);
 
                 /**
                  * Create vertex buffers (object).
                  */
-                mLeftTriangle.create(mContext);
-                mRightTriangle.create(mContext);
                 mTopTriangle.create(mContext);
                 mBottomTriangle.create(mContext);
-
-                mTopLeftTriangle.create(mContext);
-                mTopRightTriangle.create(mContext);
-                mBottomLeftTriangle.create(mContext);
-                mBottomRightTriangle.create(mContext);
-
                 mInterleavedLeftTriangle.create(mContext);
+                mInterleavedRightTriangle.create(mContext);
 
                 /**
                  * Create the color buffer (object).
@@ -162,17 +141,10 @@ public class ArrayTargetTest extends OpenGLTestCase {
                 /**
                  * Load triangle vertices to gpu.
                  */
-                mContext.getArrayTarget().load(mLeftTriangle);
-                mContext.getArrayTarget().load(mRightTriangle);
                 mContext.getArrayTarget().load(mTopTriangle);
                 mContext.getArrayTarget().load(mBottomTriangle);
-
-                mContext.getArrayTarget().load(mTopLeftTriangle);
-                mContext.getArrayTarget().load(mTopRightTriangle);
-                mContext.getArrayTarget().load(mBottomLeftTriangle);
-                mContext.getArrayTarget().load(mBottomRightTriangle);
-
                 mContext.getArrayTarget().load(mInterleavedLeftTriangle.getAttributeData());
+                mContext.getArrayTarget().load(mInterleavedRightTriangle.getAttributeData());
 
                 /**
                  * Load color data to gpu.
@@ -184,63 +156,11 @@ public class ArrayTargetTest extends OpenGLTestCase {
         });
     }
 
-    public void testDrawTriangle() throws Exception {
-        runOnDrawFrame(new ResultRunnable() {
-            @Override
-            public Object run() {
-                /**
-                 * Clear screen.
-                 */
-                clearScreen();
-
-                drawNonInterleaved(mContext, mRedShader, mLeftTriangle);
-                drawNonInterleaved(mContext, mBlueShader, mTopTriangle);
-                drawNonInterleaved(mContext, mRedShader, mRightTriangle);
-                drawNonInterleaved(mContext, mBlueShader, mBottomTriangle);
-
-                return null;
-            }
-        });
-        sleepOnDrawFrame(2000);
-    }
-
-    public void testDrawTriangleWithColor() throws Exception {
-        runOnDrawFrame(new ResultRunnable() {
-            @Override
-            public Object run() {
-                /**
-                 * Clear screen.
-                 */
-                clearScreen();
-
-                /**
-                 * This triangle should be smooth colored.
-                 */
-                drawNonInterleaved(mContext, mColorShader, mLeftTriangle, mColorBuffer);
-
-                /**
-                 * This triangle should be black since we haven't specified any color buffer and
-                 * after a draw attributes are disabled.
-                 */
-                drawNonInterleaved(mContext, mColorShader, mTopTriangle);
-
-                /**
-                 * This shader doesn't know about colors, meaning that we wont find any
-                 * attribute. It should be red.
-                 */
-                drawNonInterleaved(mContext, mRedShader, mRightTriangle, mColorBuffer);
-
-                /**
-                 * This triangle should be smooth colored.
-                 */
-                drawNonInterleaved(mContext, mColorShader, mBottomTriangle, mColorBuffer);
-
-                return null;
-            }
-        });
-        sleepOnDrawFrame(2000);
-    }
-
+    /**
+     * Draw using both interleaved and non-interleaved vertex buffers.
+     *
+     * @throws Exception
+     */
     public void testDrawInterleavedTriangle() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
@@ -251,9 +171,24 @@ public class ArrayTargetTest extends OpenGLTestCase {
                 clearScreen();
 
                 /**
-                 * This triangle should be smooth colored.
+                 * This triangle should be smooth colored on left side.
                  */
                 drawInterleaved(mContext, mColorShader, mInterleavedLeftTriangle);
+
+                /**
+                 * This triangle should be smooth colored on right side.
+                 */
+                drawInterleaved(mContext, mColorShader, mInterleavedRightTriangle);
+
+                /**
+                 * This triangle should be red on top side.
+                 */
+                drawNonInterleaved(mContext, mRedShader, mTopTriangle);
+
+                /**
+                 * This triangle should be smooth colored on bottom side.
+                 */
+                drawNonInterleaved(mContext, mColorShader, mBottomTriangle, mColorBuffer);
 
                 return null;
             }
@@ -269,7 +204,7 @@ public class ArrayTargetTest extends OpenGLTestCase {
      * @param vertexBuffer Interleaved vertex buffer.
      */
     private static void drawInterleaved(BackendContext context, ShaderProgram program, InterleavedVertexBuffer vertexBuffer) {
-        AttributeData attributeData = vertexBuffer.getAttributeData();
+        BufferResource attributeData = vertexBuffer.getAttributeData();
         int pointerCount = vertexBuffer.getAttributePointerCount();
 
         for (int i = 0; i < pointerCount; i++) {
