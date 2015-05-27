@@ -156,9 +156,9 @@ public class TextureUnitManagerTest extends OpenGLTestCase {
      * @param context      Backend context.
      * @param program      Shader program.
      * @param vertexBuffer Interleaved vertex buffer.
-     * @param mTexture     Texture.
+     * @param texture     Texture.
      */
-    private static void drawArrayInterleaved(BackendContext context, ShaderProgram program, InterleavedVertexBuffer vertexBuffer, Texture2D mTexture) {
+    private static void drawArrayInterleaved(BackendContext context, ShaderProgram program, InterleavedVertexBuffer vertexBuffer, Texture2D texture) {
         BufferResource attributeData = vertexBuffer.getAttributeData();
         int pointerCount = vertexBuffer.getAttributePointerCount();
 
@@ -173,13 +173,14 @@ public class TextureUnitManagerTest extends OpenGLTestCase {
         context.getState().useProgram(program);
 
         TextureUnit textureUnit = context.getTextureUnitManager().takeTextureUnit();
-        textureUnit.getTexture2DTarget().enable(program, mTexture);
+        textureUnit.getTexture2DTarget().enable(program, texture);
 
         int vertexCount = vertexBuffer.getAttributePointer(0).getVertexCount();
         context.getArrayTarget().draw(GLES20.GL_TRIANGLE_STRIP, 0, vertexCount);
 
-        textureUnit.getTexture2DTarget().disable(program, mTexture);
+        textureUnit.getTexture2DTarget().disable(texture);
         context.getTextureUnitManager().returnTextureUnit(textureUnit);
+
 
         for (int i = 0; i < pointerCount; i++) {
             AttributePointer pointer = vertexBuffer.getAttributePointer(i);

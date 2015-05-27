@@ -44,7 +44,7 @@ public class SurfaceRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public synchronized void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        mBackendContext = BackendContext.createInstance();
+        mBackendContext = new BackendContext();
     }
 
     @Override

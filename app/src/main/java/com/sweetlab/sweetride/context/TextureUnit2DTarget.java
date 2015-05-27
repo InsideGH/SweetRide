@@ -95,7 +95,7 @@ public class TextureUnit2DTarget {
         }
 
         int textureId = texture.getTextureId();
-        if (!isTextureBoundToTarget(texture.getTextureId())) {
+        if (!isTextureBoundToTarget(textureId)) {
             GLES20.glBindTexture(TARGET, textureId);
         }
 
@@ -124,7 +124,7 @@ public class TextureUnit2DTarget {
             }
 
             int textureId = texture.getTextureId();
-            if (!isTextureBoundToTarget(texture.getTextureId())) {
+            if (!isTextureBoundToTarget(textureId)) {
                 GLES20.glBindTexture(TARGET, textureId);
             }
 
@@ -133,20 +133,15 @@ public class TextureUnit2DTarget {
     }
 
     /**
-     * Disable this texture in the shader program.
-     *
-     * @param program Shader program.
-     * @param texture Texture.
+     * Disable the texture from this target.
      */
-    public void disable(ShaderProgram program, Texture2D texture) {
-        if (mContext.getState().readActiveProgram() != program.getId()) {
-            throw new RuntimeException("Provided program during texture enable is not the currently active");
+    public void disable(Texture2D texture) {
+        if (!isUnitActive()) {
+            GLES20.glActiveTexture(mGLUnitNr);
         }
-
-        String name = texture.getName();
-        Uniform uniform = program.getUniform(name);
-        if (uniform != null) {
-            //TODO
+        int textureId = texture.getTextureId();
+        if (isTextureBoundToTarget(textureId)) {
+            GLES20.glBindTexture(TARGET, 0);
         }
     }
 

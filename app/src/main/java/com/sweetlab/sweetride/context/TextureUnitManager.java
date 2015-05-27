@@ -26,13 +26,11 @@ public class TextureUnitManager {
     /**
      * Constructor.
      *
-     * @param context Backend context.
+     * @param context           Backend context.
+     * @param maxNrTextureUnits Max number of texture units.
      */
-    public TextureUnitManager(BackendContext context) {
-        int[] buf = new int[1];
-        GLES20.glGetIntegerv(GLES20.GL_MAX_TEXTURE_IMAGE_UNITS, buf, 0);
-        mMaxNrTextureUnits = buf[0];
-
+    public TextureUnitManager(BackendContext context, int maxNrTextureUnits) {
+        mMaxNrTextureUnits = maxNrTextureUnits;
         for (int i = mMaxNrTextureUnits - 1; i > 0; i--) {
             int zeroBasedNr = 0 + i;
             int glBasedNr = GLES20.GL_TEXTURE0 + i;
@@ -66,7 +64,7 @@ public class TextureUnitManager {
     /**
      * Return a texture unit to the available texture units. Must have been taken before.
      *
-     * @param unit Texture unit to return.
+     * @param unit The texture unit to return.
      */
     public void returnTextureUnit(TextureUnit unit) {
         if (mStack.size() >= mMaxNrTextureUnits) {

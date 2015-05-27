@@ -1,5 +1,7 @@
 package com.sweetlab.sweetride.context;
 
+import android.opengl.GLES20;
+
 /**
  * Backend context. Must be created on GL thread.
  */
@@ -16,45 +18,17 @@ public class BackendContext {
     private TextureUnitManager mTextureUnitManager;
 
     /**
-     * Create a instance of context.
-     *
-     * @return The backend context.
+     * Max number of texture units.
      */
-    public static BackendContext createInstance() {
-        BackendContext context = new BackendContext();
-        context.init();
-        return context;
-    }
+    private int mMaxNumberTextureUnits;
 
     /**
-     * Initialize all sub modules.
+     * Constructor. Must be created on GL thread.
      */
-    private void init() {
-        /**
-         * Warning, do not use the backend context in any of the resource constructors below. This
-         * restriction is important because not all resources are initialized at that point.
-         *
-         * Keeping this only restriction makes it safe because the backend context is not exposed
-         * until the whole initialization is performed.
-         *
-         * Order below is arbitrary.
-         */
-        mShaderCompiler = new ShaderCompiler(this);
-        mProgramLinker = new ProgramLinker(this);
-        mUniformWriter = new UniformWriter(this);
-        mAttributeExtractor = new AttributeExtractor(this);
-        mUniformExtractor = new UniformExtractor(this);
-        mGLES20State = new GLES20State(this);
-        mArrayTarget = new ArrayTarget(this);
-        mResourceManager = new ResourceManager(this);
-        mElementTarget = new ElementTarget(this);
-        mTextureUnitManager = new TextureUnitManager(this);
-    }
-
-    /**
-     * Private constructor due to circular dependencies.
-     */
-    private BackendContext() {
+    public BackendContext() {
+        int[] buf = new int[1];
+        GLES20.glGetIntegerv(GLES20.GL_MAX_TEXTURE_IMAGE_UNITS, buf, 0);
+        mMaxNumberTextureUnits = buf[0];
     }
 
     /**
@@ -63,6 +37,9 @@ public class BackendContext {
      * @return The compiler.
      */
     public ShaderCompiler getCompiler() {
+        if (mShaderCompiler == null) {
+            mShaderCompiler = new ShaderCompiler(this);
+        }
         return mShaderCompiler;
     }
 
@@ -72,6 +49,9 @@ public class BackendContext {
      * @return The linker.
      */
     public ProgramLinker getLinker() {
+        if (mProgramLinker == null) {
+            mProgramLinker = new ProgramLinker(this);
+        }
         return mProgramLinker;
     }
 
@@ -81,6 +61,9 @@ public class BackendContext {
      * @return The extractor.
      */
     public AttributeExtractor getAttributeExtractor() {
+        if (mAttributeExtractor == null) {
+            mAttributeExtractor = new AttributeExtractor(this);
+        }
         return mAttributeExtractor;
     }
 
@@ -90,6 +73,9 @@ public class BackendContext {
      * @return The extractor.
      */
     public UniformExtractor getUniformExtractor() {
+        if (mUniformExtractor == null) {
+            mUniformExtractor = new UniformExtractor(this);
+        }
         return mUniformExtractor;
     }
 
@@ -99,6 +85,9 @@ public class BackendContext {
      * @return The uniform writer.
      */
     public UniformWriter getUniformWriter() {
+        if (mUniformWriter == null) {
+            mUniformWriter = new UniformWriter(this);
+        }
         return mUniformWriter;
     }
 
@@ -108,6 +97,9 @@ public class BackendContext {
      * @return The state.
      */
     public GLES20State getState() {
+        if (mGLES20State == null) {
+            mGLES20State = new GLES20State(this);
+        }
         return mGLES20State;
     }
 
@@ -117,6 +109,9 @@ public class BackendContext {
      * @return The array target.
      */
     public ArrayTarget getArrayTarget() {
+        if (mArrayTarget == null) {
+            mArrayTarget = new ArrayTarget(this);
+        }
         return mArrayTarget;
     }
 
@@ -126,6 +121,9 @@ public class BackendContext {
      * @return The buffer manager.
      */
     public ResourceManager getResourceManager() {
+        if (mResourceManager == null) {
+            mResourceManager = new ResourceManager(this);
+        }
         return mResourceManager;
     }
 
@@ -135,6 +133,9 @@ public class BackendContext {
      * @return The element target.
      */
     public ElementTarget getElementTarget() {
+        if (mElementTarget == null) {
+            mElementTarget = new ElementTarget(this);
+        }
         return mElementTarget;
     }
 
@@ -144,6 +145,9 @@ public class BackendContext {
      * @return The texture unit manager.
      */
     public TextureUnitManager getTextureUnitManager() {
+        if (mTextureUnitManager == null) {
+            mTextureUnitManager = new TextureUnitManager(this, mMaxNumberTextureUnits);
+        }
         return mTextureUnitManager;
     }
 }
