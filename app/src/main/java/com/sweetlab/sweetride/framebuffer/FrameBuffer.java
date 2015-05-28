@@ -2,12 +2,12 @@ package com.sweetlab.sweetride.framebuffer;
 
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.FrameBufferTarget;
-import com.sweetlab.sweetride.resource.FrameBufferResource;
+import com.sweetlab.sweetride.resource.Resource;
 
 /**
  * Represents a frame buffer resource.
  */
-public class FrameBuffer implements FrameBufferResource {
+public class FrameBuffer implements Resource {
     /**
      * The frame buffer name/id.
      */

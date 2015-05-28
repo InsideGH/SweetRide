@@ -7,6 +7,20 @@ import com.sweetlab.sweetride.context.BackendContext;
  */
 public interface Resource {
     /**
+     * Create this resource.
+     *
+     * @param context Backend context.
+     */
+    void create(BackendContext context);
+
+    /**
+     * True if been created.
+     *
+     * @return True if created.
+     */
+    boolean isCreated();
+
+    /**
      * Release the resource.
      */
     void release(BackendContext context);

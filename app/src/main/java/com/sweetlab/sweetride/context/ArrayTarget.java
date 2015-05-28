@@ -132,7 +132,7 @@ public class ArrayTarget {
      * @param count      Number of vertices.
      */
     public void draw(int mode, int startIndex, int count) {
-        if (mContext.getState().readActiveProgram() <= ProgramLinker.INVALID_ID) {
+        if (mContext.getState().readActiveProgram() <= ResourceManager.INVALID_PROGRAM_ID) {
             throw new RuntimeException("Invalid shader program while array draw is called");
         }
         if (!isAnyBufferBound()) {

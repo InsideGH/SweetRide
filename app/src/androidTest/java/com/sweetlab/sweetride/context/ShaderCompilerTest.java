@@ -83,7 +83,7 @@ public class ShaderCompilerTest extends OpenGLTestCase {
             @Override
             public Object run() {
                 int i = mContext.getCompiler().compileVertexShader(VALID_VERTEX_SOURCE);
-                assertTrue(i > ShaderCompiler.INVALID_ID);
+                assertTrue(i > ResourceManager.INVALID_SHADER_ID);
                 return null;
             }
         });
@@ -92,7 +92,7 @@ public class ShaderCompilerTest extends OpenGLTestCase {
             @Override
             public Object run() {
                 int i = mContext.getCompiler().compileFragmentShader(VALID_FRAGMENT_SOURCE);
-                assertTrue(i > ShaderCompiler.INVALID_ID);
+                assertTrue(i > ResourceManager.INVALID_SHADER_ID);
                 return null;
             }
         });
@@ -101,7 +101,7 @@ public class ShaderCompilerTest extends OpenGLTestCase {
             @Override
             public Object run() {
                 int i = mContext.getCompiler().compileVertexShader(VALID_VERTEX_SOURCE);
-                assertTrue(i > ShaderCompiler.INVALID_ID);
+                assertTrue(i > ResourceManager.INVALID_SHADER_ID);
                 return null;
             }
         });
@@ -110,7 +110,7 @@ public class ShaderCompilerTest extends OpenGLTestCase {
             @Override
             public Object run() {
                 int i = mContext.getCompiler().compileFragmentShader(VALID_FRAGMENT_SOURCE);
-                assertTrue(i > ShaderCompiler.INVALID_ID);
+                assertTrue(i > ResourceManager.INVALID_SHADER_ID);
                 return null;
             }
         });
@@ -119,7 +119,7 @@ public class ShaderCompilerTest extends OpenGLTestCase {
             @Override
             public Object run() {
                 int i = mContext.getCompiler().compileVertexShader(INVALID_VERTEX_SOURCE);
-                assertTrue(i == ShaderCompiler.INVALID_ID);
+                assertTrue(i == ResourceManager.INVALID_SHADER_ID);
                 return null;
             }
         });
@@ -128,7 +128,7 @@ public class ShaderCompilerTest extends OpenGLTestCase {
             @Override
             public Object run() {
                 int i = mContext.getCompiler().compileFragmentShader(INVALID_FRAGMENT_SOURCE);
-                assertTrue(i == ShaderCompiler.INVALID_ID);
+                assertTrue(i == ResourceManager.INVALID_SHADER_ID);
                 return null;
             }
         });

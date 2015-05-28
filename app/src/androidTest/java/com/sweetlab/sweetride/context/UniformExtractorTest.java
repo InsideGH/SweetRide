@@ -2,8 +2,6 @@ package com.sweetlab.sweetride.context;
 
 import android.opengl.GLES20;
 
-import com.sweetlab.sweetride.context.BackendContext;
-import com.sweetlab.sweetride.context.ShaderCompilerTest;
 import com.sweetlab.sweetride.shader.FragmentShader;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 import com.sweetlab.sweetride.shader.Uniform;
@@ -48,9 +46,9 @@ public class UniformExtractorTest extends OpenGLTestCase {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {
-                vertexShader.compile(mContext);
-                fragmentShader.compile(mContext);
-                program.link(mContext);
+                vertexShader.create(mContext);
+                fragmentShader.create(mContext);
+                program.create(mContext);
                 Map<String, Uniform> map = mContext.getUniformExtractor().extract(program);
 
                 assertEquals(4, map.size());

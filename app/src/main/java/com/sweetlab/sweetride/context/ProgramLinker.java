@@ -8,11 +8,6 @@ import com.sweetlab.sweetride.shader.VertexShader;
 import com.sweetlab.sweetride.util.Util;
 
 public class ProgramLinker {
-    /**
-     * Link fail id.
-     */
-    public static final int INVALID_ID = 0;
-
     private final int[] sReadParams = new int[1];
 
     /**
@@ -32,18 +27,18 @@ public class ProgramLinker {
      * @return Linked program id.
      */
     public int link(VertexShader vertexShader, FragmentShader fragmentShader) {
-        if (!vertexShader.isCompiled()) {
-            vertexShader.compile(mContext);
+        if (!vertexShader.isCreated()) {
+            vertexShader.create(mContext);
         }
 
-        if (!fragmentShader.isCompiled()) {
-            fragmentShader.compile(mContext);
+        if (!fragmentShader.isCreated()) {
+            fragmentShader.create(mContext);
         }
 
-        int id = GLES20.glCreateProgram();
+        int id = mContext.getResourceManager().createProgram();
         if (id == GLES20.GL_FALSE) {
             Log.d("Peter100", "Could not create program.\n " + vertexShader.getSource() + "\n" + fragmentShader.getSource());
-            return INVALID_ID;
+            return ResourceManager.INVALID_PROGRAM_ID;
         }
 
         Util.hasGlError();
@@ -51,7 +46,7 @@ public class ProgramLinker {
         GLES20.glAttachShader(id, vertexShader.getId());
         if (Util.hasGlError()) {
             Log.d("Peter100", "Could not attach vertex shader to program. \n" + vertexShader.getSource());
-            return INVALID_ID;
+            return ResourceManager.INVALID_PROGRAM_ID;
         }
         GLES20.glAttachShader(id, fragmentShader.getId());
         if (Util.hasGlError()) {
@@ -60,9 +55,9 @@ public class ProgramLinker {
 
         GLES20.glLinkProgram(id);
         if (!readIsLinked(id)) {
-            Log.d("Peter100", "Could not link program, log = " + GLES20.glGetProgramInfoLog(id) + "\n" + vertexShader.getSource() + "\n" + fragmentShader.getSource());
+            Log.d("Peter100", "Could not create program, log = " + GLES20.glGetProgramInfoLog(id) + "\n" + vertexShader.getSource() + "\n" + fragmentShader.getSource());
             GLES20.glDeleteProgram(id);
-            return INVALID_ID;
+            return ResourceManager.INVALID_PROGRAM_ID;
         }
         return id;
     }

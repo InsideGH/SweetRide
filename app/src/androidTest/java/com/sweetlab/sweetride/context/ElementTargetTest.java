@@ -93,8 +93,8 @@ public class ElementTargetTest extends OpenGLTestCase {
                 /**
                  * Link shader programs.
                  */
-                mRedShader.link(mContext);
-                mBlueShader.link(mContext);
+                mRedShader.create(mContext);
+                mBlueShader.create(mContext);
 
                 /**
                  * Create vertex buffers (object).

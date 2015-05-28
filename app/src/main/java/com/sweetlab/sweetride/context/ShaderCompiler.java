@@ -7,11 +7,6 @@ import android.util.Log;
  * Shader compiler.
  */
 public class ShaderCompiler {
-    /**
-     * Compile fail id.
-     */
-    public static final int INVALID_ID = 0;
-
     private final int[] sBuf = new int[1];
 
     /**
@@ -51,19 +46,19 @@ public class ShaderCompiler {
      * @return The compiled id.
      */
     private int compile(String source, int type) {
-        int id = GLES20.glCreateShader(type);
+        int id = mContext.getResourceManager().createShader(type);
         if (id == 0) {
             Log.d("Peter100", "Can't create shader for\n" + source);
-            return INVALID_ID;
+            return ResourceManager.INVALID_SHADER_ID;
         }
 
         GLES20.glShaderSource(id, source);
         GLES20.glCompileShader(id);
 
         if (!readIsCompiled(id)) {
-            Log.d("Peter100", "Can't compile shader\n" + GLES20.glGetShaderInfoLog(id));
+            Log.d("Peter100", "Can't create shader\n" + GLES20.glGetShaderInfoLog(id));
             GLES20.glDeleteShader(id);
-            return INVALID_ID;
+            return ResourceManager.INVALID_SHADER_ID;
         }
         return id;
     }

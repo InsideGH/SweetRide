@@ -1,6 +1,5 @@
 package com.sweetlab.sweetride.shader;
 
-import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.resource.Resource;
 
 /**
@@ -21,9 +20,6 @@ public abstract class BaseShader implements Resource {
         mSource = source;
     }
 
-    @Override
-    public abstract void release(BackendContext context);
-
     /**
      * Get the shader source code.
      *
@@ -32,25 +28,4 @@ public abstract class BaseShader implements Resource {
     public String getSource() {
         return mSource;
     }
-
-    /**
-     * Compile shader.
-     *
-     * @param context Context.
-     */
-    public abstract void compile(BackendContext context);
-
-    /**
-     * Check if compiled.
-     *
-     * @return True if compiled.
-     */
-    public abstract boolean isCompiled();
-
-    /**
-     * Get the compiled id.
-     *
-     * @return The compiled id.
-     */
-    public abstract int getId();
 }

@@ -3,7 +3,6 @@ package com.sweetlab.sweetride.resource;
 import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 
-import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.ColorAttachment;
 import com.sweetlab.sweetride.context.DepthAttachment;
 
@@ -13,30 +12,11 @@ import com.sweetlab.sweetride.context.DepthAttachment;
  */
 public interface TextureResource extends Resource, ColorAttachment, DepthAttachment {
     /**
-     * Invalid texture id.
-     */
-    int INVALID_TEXTURE_ID = -1;
-
-    /**
      * Get the shader uniform sampler name.
      *
      * @return The shader uniform sampler name.
      */
     String getName();
-
-    /**
-     * Create this texture resource.
-     *
-     * @param context Backend context.
-     */
-    void create(BackendContext context);
-
-    /**
-     * True if this texture has been created.
-     *
-     * @return True if created.
-     */
-    boolean isCreated();
 
     /**
      * Get the width of the texture.

@@ -138,8 +138,8 @@ public class FrameBufferTest extends OpenGLTestCase {
                 /**
                  * Link shader programs.
                  */
-                mTriangleProgram.link(mContext);
-                mQuadProgram.link(mContext);
+                mTriangleProgram.create(mContext);
+                mQuadProgram.create(mContext);
 
                 /**
                  * Create vertex buffers (object).

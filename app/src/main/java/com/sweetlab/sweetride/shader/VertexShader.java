@@ -1,7 +1,7 @@
 package com.sweetlab.sweetride.shader;
 
 import com.sweetlab.sweetride.context.BackendContext;
-import com.sweetlab.sweetride.context.ShaderCompiler;
+import com.sweetlab.sweetride.context.ResourceManager;
 
 /**
  * Vertex shader.
@@ -19,23 +19,23 @@ public class VertexShader extends BaseShader {
      */
     public VertexShader(String source) {
         super(source);
-        mId = ShaderCompiler.INVALID_ID;
+        mId = ResourceManager.INVALID_SHADER_ID;
     }
 
     @Override
     public void release(BackendContext context) {
-        context.getResourceManager().releaseShader(this);
-        mId = ShaderCompiler.INVALID_ID;
+        context.getResourceManager().deleteShader(mId);
+        mId = ResourceManager.INVALID_SHADER_ID;
     }
 
     @Override
-    public void compile(BackendContext context) {
+    public void create(BackendContext context) {
         mId = context.getCompiler().compileVertexShader(mSource);
     }
 
     @Override
-    public boolean isCompiled() {
-        return mId != ShaderCompiler.INVALID_ID;
+    public boolean isCreated() {
+        return mId != ResourceManager.INVALID_SHADER_ID;
     }
 
     @Override

@@ -2,15 +2,37 @@ package com.sweetlab.sweetride.context;
 
 import android.opengl.GLES20;
 
-import com.sweetlab.sweetride.shader.BaseShader;
-import com.sweetlab.sweetride.shader.FragmentShader;
-import com.sweetlab.sweetride.shader.ShaderProgram;
-import com.sweetlab.sweetride.shader.VertexShader;
+import com.sweetlab.sweetride.DebugOptions;
 
 /**
- * Managing buffers.
+ * Managing resources.
  */
 public class ResourceManager {
+    /**
+     * Considered an invalid render buffer id.
+     */
+    public static int INVALID_RENDER_BUFFER_ID = 0;
+
+    /**
+     * Invalid program id.
+     */
+    public static final int INVALID_PROGRAM_ID = 0;
+
+    /**
+     * Invalid texture id.
+     */
+    public static int INVALID_TEXTURE_ID = -1;
+
+    /**
+     * Invalid shader id.
+     */
+    public static final int INVALID_SHADER_ID = 0;
+
+    /**
+     * Invalid buffer id.
+     */
+    public static int INVALID_BUFFER_ID = -1;
+
     /**
      * The backend context.
      */
@@ -26,29 +48,40 @@ public class ResourceManager {
     }
 
     /**
-     * Release shader.
+     * Create a shader.
      *
-     * @param shader The shader to release.
+     * @param type Either GLES20.GL_VERTEX_SHADER or GLES20.GL_FRAGMENT_SHADER
+     * @return The created shader.
      */
-    public void releaseShader(BaseShader shader) {
-        GLES20.glDeleteShader(shader.getId());
+    public int createShader(int type) {
+        return GLES20.glCreateShader(type);
     }
 
     /**
-     * Release shader program. Also releases the underlying vertex and fragment shader.
+     * Delete shader.
      *
-     * @param shaderProgram The shader program.
+     * @param id The shader id to delete.
      */
-    public void releaseProgram(ShaderProgram shaderProgram) {
-        VertexShader vertexShader = shaderProgram.getVertexShader();
-        if (vertexShader != null) {
-            vertexShader.release(mContext);
-        }
-        FragmentShader fragmentShader = shaderProgram.getFragmentShader();
-        if (fragmentShader != null) {
-            fragmentShader.release(mContext);
-        }
-        GLES20.glDeleteProgram(shaderProgram.getId());
+    public void deleteShader(int id) {
+        GLES20.glDeleteShader(id);
+    }
+
+    /**
+     * Create a shader program.
+     *
+     * @return The shader program.
+     */
+    public int createProgram() {
+        return GLES20.glCreateProgram();
+    }
+
+    /**
+     * Delete shader program.
+     *
+     * @param id The shader program.
+     */
+    public void deleteProgram(int id) {
+        GLES20.glDeleteProgram(id);
     }
 
     /**
@@ -118,6 +151,11 @@ public class ResourceManager {
      */
     public int generateRenderBuffer() {
         GLES20.glGenRenderbuffers(1, mBuf, 0);
+        if (DebugOptions.DEBUG_RESOURCE_MANAGER) {
+            if (mBuf[0] == INVALID_RENDER_BUFFER_ID) {
+                throw new RuntimeException("Generated an invalid render buffer id " + mBuf[0]);
+            }
+        }
         return mBuf[0];
     }
 

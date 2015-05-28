@@ -45,9 +45,9 @@ public class AttributeExtractorTest extends OpenGLTestCase {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {
-                vertexShader.compile(mContext);
-                fragmentShader.compile(mContext);
-                program.link(mContext);
+                vertexShader.create(mContext);
+                fragmentShader.create(mContext);
+                program.create(mContext);
                 Map<String, Attribute> attributeMap = mContext.getAttributeExtractor().extract(program);
 
                 assertEquals(3, attributeMap.size());

@@ -1,32 +1,11 @@
 package com.sweetlab.sweetride.resource;
 
-import com.sweetlab.sweetride.context.BackendContext;
-
 import java.nio.Buffer;
 
 /**
  * A backend buffer resource.
  */
 public interface BufferResource extends Resource {
-    /**
-     * Invalid buffer id.
-     */
-    int INVALID_BUFFER_ID = -1;
-
-    /**
-     * Create this buffer resource.
-     *
-     * @param context Backend context.
-     */
-    void create(BackendContext context);
-
-    /**
-     * True if this data has been created.
-     *
-     * @return True if created.
-     */
-    boolean isCreated();
-
     /**
      * Get the data.
      *

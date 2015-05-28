@@ -1,6 +1,7 @@
 package com.sweetlab.sweetride.attributedata;
 
 import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.context.ResourceManager;
 import com.sweetlab.sweetride.resource.BufferResource;
 import com.sweetlab.sweetride.util.Util;
 
@@ -14,7 +15,7 @@ public class IndicesBuffer implements BufferResource {
     /**
      * The buffer 'name'/id.
      */
-    private int mBufferId = INVALID_BUFFER_ID;
+    private int mBufferId = ResourceManager.INVALID_BUFFER_ID;
 
     /**
      * Buffer holding the indices.
@@ -55,7 +56,7 @@ public class IndicesBuffer implements BufferResource {
 
     @Override
     public boolean isCreated() {
-        return mBufferId != INVALID_BUFFER_ID;
+        return mBufferId != ResourceManager.INVALID_BUFFER_ID;
     }
 
     @Override

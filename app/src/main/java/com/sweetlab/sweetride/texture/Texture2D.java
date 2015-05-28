@@ -5,6 +5,7 @@ import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.context.AndroidTextureHelper;
 import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.context.ResourceManager;
 import com.sweetlab.sweetride.resource.TextureResource;
 
 /**
@@ -50,7 +51,7 @@ public class Texture2D implements TextureResource {
 
     @Override
     public boolean isCreated() {
-        return mTextureId != INVALID_TEXTURE_ID;
+        return mTextureId != ResourceManager.INVALID_TEXTURE_ID;
     }
 
     @Override

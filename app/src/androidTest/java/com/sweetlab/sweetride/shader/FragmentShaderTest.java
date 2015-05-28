@@ -1,7 +1,7 @@
 package com.sweetlab.sweetride.shader;
 
 import com.sweetlab.sweetride.context.BackendContext;
-import com.sweetlab.sweetride.context.ShaderCompiler;
+import com.sweetlab.sweetride.context.ResourceManager;
 import com.sweetlab.sweetride.context.ShaderCompilerTest;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
@@ -50,22 +50,22 @@ public class FragmentShaderTest extends OpenGLTestCase {
         runOnGLThread(new ResultRunnable() {
             @Override
             public Object run() {
-                mValid1.compile(mContext);
+                mValid1.create(mContext);
                 mValid1.release(mContext);
-                assertFalse(mValid1.isCompiled());
-                assertEquals(ShaderCompiler.INVALID_ID, mValid1.getId());
+                assertFalse(mValid1.isCreated());
+                assertEquals(ResourceManager.INVALID_SHADER_ID, mValid1.getId());
                 return null;
             }
         });
 
-        assertFalse(mValid2.isCompiled());
+        assertFalse(mValid2.isCreated());
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {
-                mValid2.compile(mContext);
+                mValid2.create(mContext);
                 mValid2.release(mContext);
-                assertFalse(mValid2.isCompiled());
-                assertEquals(ShaderCompiler.INVALID_ID, mValid2.getId());
+                assertFalse(mValid2.isCreated());
+                assertEquals(ResourceManager.INVALID_SHADER_ID, mValid2.getId());
                 return null;
             }
         });
@@ -79,56 +79,56 @@ public class FragmentShaderTest extends OpenGLTestCase {
     }
 
     public void testIsCompiled() throws Exception {
-        assertFalse(mValid1.isCompiled());
+        assertFalse(mValid1.isCreated());
         runOnGLThread(new ResultRunnable() {
             @Override
             public Object run() {
-                mValid1.compile(mContext);
-                assertTrue(mValid1.isCompiled());
+                mValid1.create(mContext);
+                assertTrue(mValid1.isCreated());
                 return null;
             }
         });
 
-        assertFalse(mValid2.isCompiled());
+        assertFalse(mValid2.isCreated());
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {
-                mValid2.compile(mContext);
-                assertTrue(mValid2.isCompiled());
+                mValid2.create(mContext);
+                assertTrue(mValid2.isCreated());
                 return null;
             }
         });
 
-        assertFalse(mInvalid3.isCompiled());
+        assertFalse(mInvalid3.isCreated());
         runOnGLThread(new ResultRunnable() {
             @Override
             public Object run() {
-                mInvalid3.compile(mContext);
-                assertFalse(mInvalid3.isCompiled());
+                mInvalid3.create(mContext);
+                assertFalse(mInvalid3.isCreated());
                 return null;
             }
         });
     }
 
     public void testGetId() throws Exception {
-        assertEquals(ShaderCompiler.INVALID_ID, mValid1.getId());
+        assertEquals(ResourceManager.INVALID_SHADER_ID, mValid1.getId());
         int id1 = (int) runOnGLThread(new ResultRunnable() {
             @Override
             public Object run() {
-                mValid1.compile(mContext);
+                mValid1.create(mContext);
                 int id = mValid1.getId();
-                assertNotSame(ShaderCompiler.INVALID_ID, id);
+                assertNotSame(ResourceManager.INVALID_SHADER_ID, id);
                 return id;
             }
         });
 
-        assertFalse(mValid2.isCompiled());
+        assertFalse(mValid2.isCreated());
         int id2 = (int) runOnGLThread(new ResultRunnable() {
             @Override
             public Object run() {
-                mValid2.compile(mContext);
+                mValid2.create(mContext);
                 int id = mValid2.getId();
-                assertNotSame(ShaderCompiler.INVALID_ID, id);
+                assertNotSame(ResourceManager.INVALID_SHADER_ID, id);
                 return id;
             }
         });

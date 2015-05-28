@@ -89,7 +89,7 @@ public class TextureUnitManagerTest extends OpenGLTestCase {
                 /**
                  * Link the shader program.
                  */
-                mShaderProgram.link(mContext);
+                mShaderProgram.create(mContext);
 
                 /**
                  * Create indices buffer.

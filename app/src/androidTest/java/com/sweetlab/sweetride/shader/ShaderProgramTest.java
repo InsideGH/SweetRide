@@ -1,7 +1,7 @@
 package com.sweetlab.sweetride.shader;
 
 import com.sweetlab.sweetride.context.BackendContext;
-import com.sweetlab.sweetride.context.ProgramLinker;
+import com.sweetlab.sweetride.context.ResourceManager;
 import com.sweetlab.sweetride.context.ShaderCompilerTest;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
@@ -80,10 +80,10 @@ public class ShaderProgramTest extends OpenGLTestCase {
         runOnGLThread(new ResultRunnable() {
             @Override
             public Object run() {
-                mValidVert.compile(mContext);
-                mValidFrag.compile(mContext);
-                mInvalidVert.compile(mContext);
-                mInvalidFrag.compile(mContext);
+                mValidVert.create(mContext);
+                mValidFrag.create(mContext);
+                mInvalidVert.create(mContext);
+                mInvalidFrag.create(mContext);
                 return null;
             }
         });
@@ -93,36 +93,36 @@ public class ShaderProgramTest extends OpenGLTestCase {
         runOnGLThread(new ResultRunnable() {
             @Override
             public Object run() {
-                mValidProg.link(mContext);
-                assertTrue(mValidProg.isLinked());
-                assertTrue(mValidProg.getId() > ProgramLinker.INVALID_ID);
+                mValidProg.create(mContext);
+                assertTrue(mValidProg.isCreated());
+                assertTrue(mValidProg.getId() > ResourceManager.INVALID_PROGRAM_ID);
                 return null;
             }
         });
         runOnGLThread(new ResultRunnable() {
             @Override
             public Object run() {
-                mInvalidProg1.link(mContext);
-                assertFalse(mInvalidProg1.isLinked());
-                assertTrue(mInvalidProg1.getId() == ProgramLinker.INVALID_ID);
+                mInvalidProg1.create(mContext);
+                assertFalse(mInvalidProg1.isCreated());
+                assertTrue(mInvalidProg1.getId() == ResourceManager.INVALID_PROGRAM_ID);
                 return null;
             }
         });
         runOnGLThread(new ResultRunnable() {
             @Override
             public Object run() {
-                mInvalidProg2.link(mContext);
-                assertFalse(mInvalidProg2.isLinked());
-                assertTrue(mInvalidProg2.getId() == ProgramLinker.INVALID_ID);
+                mInvalidProg2.create(mContext);
+                assertFalse(mInvalidProg2.isCreated());
+                assertTrue(mInvalidProg2.getId() == ResourceManager.INVALID_PROGRAM_ID);
                 return null;
             }
         });
         runOnGLThread(new ResultRunnable() {
             @Override
             public Object run() {
-                mInvalidProg3.link(mContext);
-                assertFalse(mInvalidProg3.isLinked());
-                assertTrue(mInvalidProg3.getId() == ProgramLinker.INVALID_ID);
+                mInvalidProg3.create(mContext);
+                assertFalse(mInvalidProg3.isCreated());
+                assertTrue(mInvalidProg3.getId() == ResourceManager.INVALID_PROGRAM_ID);
                 return null;
             }
         });
@@ -139,7 +139,7 @@ public class ShaderProgramTest extends OpenGLTestCase {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {
-                mValidProg.link(mContext);
+                mValidProg.create(mContext);
                 int attributeCount = mValidProg.getAttributeCount();
                 assertEquals(3, attributeCount);
 
@@ -160,7 +160,7 @@ public class ShaderProgramTest extends OpenGLTestCase {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {
-                mValidProg.link(mContext);
+                mValidProg.create(mContext);
                 int uniformCount = mValidProg.getUniformCount();
                 assertEquals(4, uniformCount);
 
@@ -183,10 +183,10 @@ public class ShaderProgramTest extends OpenGLTestCase {
         runOnGLThread(new ResultRunnable() {
             @Override
             public Object run() {
-                mValidProg.link(mContext);
+                mValidProg.create(mContext);
                 mValidProg.release(mContext);
-                assertFalse(mValidProg.isLinked());
-                assertTrue(mValidProg.getId() == ProgramLinker.INVALID_ID);
+                assertFalse(mValidProg.isCreated());
+                assertTrue(mValidProg.getId() == ResourceManager.INVALID_PROGRAM_ID);
                 return null;
             }
         });

@@ -1,6 +1,7 @@
 package com.sweetlab.sweetride.attributedata;
 
 import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.context.ResourceManager;
 import com.sweetlab.sweetride.resource.BufferResource;
 import com.sweetlab.sweetride.util.Util;
 
@@ -34,7 +35,7 @@ public class VertexBuffer implements BufferResource, AttributePointer {
     /**
      * The buffer 'name'/id.
      */
-    private int mBufferId = INVALID_BUFFER_ID;
+    private int mBufferId = ResourceManager.INVALID_BUFFER_ID;
 
     /**
      * Constructor. Don't forget to create it to generate a buffer id.
@@ -107,13 +108,13 @@ public class VertexBuffer implements BufferResource, AttributePointer {
 
     @Override
     public boolean isCreated() {
-        return mBufferId != INVALID_BUFFER_ID;
+        return mBufferId != ResourceManager.INVALID_BUFFER_ID;
     }
 
     @Override
     public void release(BackendContext context) {
         context.getResourceManager().deleteBuffer(mBufferId);
-        mBufferId = INVALID_BUFFER_ID;
+        mBufferId = ResourceManager.INVALID_BUFFER_ID;
     }
 
     @Override

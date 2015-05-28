@@ -1,7 +1,7 @@
 package com.sweetlab.sweetride.shader;
 
 import com.sweetlab.sweetride.context.BackendContext;
-import com.sweetlab.sweetride.context.ProgramLinker;
+import com.sweetlab.sweetride.context.ResourceManager;
 import com.sweetlab.sweetride.resource.Resource;
 
 import java.util.Map;
@@ -33,7 +33,7 @@ public class ShaderProgram implements Resource {
     /**
      * The linked id.
      */
-    private int mId = ProgramLinker.INVALID_ID;
+    private int mId = ResourceManager.INVALID_PROGRAM_ID;
 
     /**
      * Constructor.
@@ -48,9 +48,34 @@ public class ShaderProgram implements Resource {
     }
 
     @Override
+    public void create(BackendContext context) {
+        mId = context.getLinker().link(mVertexShader, mFragmentShader);
+        if (mId != ResourceManager.INVALID_PROGRAM_ID) {
+            mAttributes = context.getAttributeExtractor().extract(this);
+            mUniforms = context.getUniformExtractor().extract(this);
+        }
+    }
+
+    @Override
     public void release(BackendContext context) {
-        context.getResourceManager().releaseProgram(this);
-        mId = ProgramLinker.INVALID_ID;
+        if (mVertexShader != null) {
+            mVertexShader.release(context);
+        }
+        if (mFragmentShader != null) {
+            mFragmentShader.release(context);
+        }
+        context.getResourceManager().deleteProgram(mId);
+        mId = ResourceManager.INVALID_PROGRAM_ID;
+    }
+
+    @Override
+    public boolean isCreated() {
+        return mId != ResourceManager.INVALID_PROGRAM_ID;
+    }
+
+    @Override
+    public int getId() {
+        return mId;
     }
 
     /**
@@ -71,36 +96,6 @@ public class ShaderProgram implements Resource {
         return mFragmentShader;
     }
 
-    /**
-     * Link this shader.
-     *
-     * @param context Backend context.
-     */
-    public void link(BackendContext context) {
-        mId = context.getLinker().link(mVertexShader, mFragmentShader);
-        if (mId != ProgramLinker.INVALID_ID) {
-            mAttributes = context.getAttributeExtractor().extract(this);
-            mUniforms = context.getUniformExtractor().extract(this);
-        }
-    }
-
-    /**
-     * Check if linked.
-     *
-     * @return True if linked.
-     */
-    public boolean isLinked() {
-        return mId != ProgramLinker.INVALID_ID;
-    }
-
-    /**
-     * Get the id of linked shader program.
-     *
-     * @return The linked id.
-     */
-    public int getId() {
-        return mId;
-    }
 
     /**
      * Get number of attributes.

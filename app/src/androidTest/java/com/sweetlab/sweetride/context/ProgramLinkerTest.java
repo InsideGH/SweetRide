@@ -47,10 +47,10 @@ public class ProgramLinkerTest extends OpenGLTestCase {
             @Override
             public Object run() {
                 mBackendContext = getBackendContext();
-                mValidVertex.compile(mBackendContext);
-                mValidFragment.compile(mBackendContext);
-                mInValidVertex.compile(mBackendContext);
-                mInValidFragment.compile(mBackendContext);
+                mValidVertex.create(mBackendContext);
+                mValidFragment.create(mBackendContext);
+                mInValidVertex.create(mBackendContext);
+                mInValidFragment.create(mBackendContext);
                 return null;
             }
         });
@@ -61,7 +61,7 @@ public class ProgramLinkerTest extends OpenGLTestCase {
             @Override
             public Object run() {
                 int link = mBackendContext.getLinker().link(mValidVertex, mValidFragment);
-                assertTrue(link > ProgramLinker.INVALID_ID);
+                assertTrue(link > ResourceManager.INVALID_PROGRAM_ID);
                 return null;
             }
         });
@@ -70,7 +70,7 @@ public class ProgramLinkerTest extends OpenGLTestCase {
             @Override
             public Object run() {
                 int link = mBackendContext.getLinker().link(mValidVertex, mValidFragment);
-                assertTrue(link > ProgramLinker.INVALID_ID);
+                assertTrue(link > ResourceManager.INVALID_PROGRAM_ID);
                 return null;
             }
         });
@@ -79,7 +79,7 @@ public class ProgramLinkerTest extends OpenGLTestCase {
             @Override
             public Object run() {
                 int link = mBackendContext.getLinker().link(mInValidVertex, mValidFragment);
-                assertTrue(link == ProgramLinker.INVALID_ID);
+                assertTrue(link == ResourceManager.INVALID_PROGRAM_ID);
                 return null;
             }
         });
@@ -88,7 +88,7 @@ public class ProgramLinkerTest extends OpenGLTestCase {
             @Override
             public Object run() {
                 int link = mBackendContext.getLinker().link(mInValidVertex, mValidFragment);
-                assertTrue(link == ProgramLinker.INVALID_ID);
+                assertTrue(link == ResourceManager.INVALID_PROGRAM_ID);
                 return null;
             }
         });
@@ -97,7 +97,7 @@ public class ProgramLinkerTest extends OpenGLTestCase {
             @Override
             public Object run() {
                 int link = mBackendContext.getLinker().link(mValidVertex, mInValidFragment);
-                assertTrue(link == ProgramLinker.INVALID_ID);
+                assertTrue(link == ResourceManager.INVALID_PROGRAM_ID);
                 return null;
             }
         });
@@ -106,7 +106,7 @@ public class ProgramLinkerTest extends OpenGLTestCase {
             @Override
             public Object run() {
                 int link = mBackendContext.getLinker().link(mValidVertex, mInValidFragment);
-                assertTrue(link == ProgramLinker.INVALID_ID);
+                assertTrue(link == ResourceManager.INVALID_PROGRAM_ID);
                 return null;
             }
         });
@@ -115,7 +115,7 @@ public class ProgramLinkerTest extends OpenGLTestCase {
             @Override
             public Object run() {
                 int link = mBackendContext.getLinker().link(mInValidVertex, mInValidFragment);
-                assertTrue(link == ProgramLinker.INVALID_ID);
+                assertTrue(link == ResourceManager.INVALID_PROGRAM_ID);
                 return null;
             }
         });
@@ -124,7 +124,7 @@ public class ProgramLinkerTest extends OpenGLTestCase {
             @Override
             public Object run() {
                 int link = mBackendContext.getLinker().link(mInValidVertex, mInValidFragment);
-                assertTrue(link == ProgramLinker.INVALID_ID);
+                assertTrue(link == ResourceManager.INVALID_PROGRAM_ID);
                 return null;
             }
         });

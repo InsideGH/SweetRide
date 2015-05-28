@@ -122,8 +122,8 @@ public class ArrayTargetTest3 extends OpenGLTestCase {
                 /**
                  * Link shader programs.
                  */
-                mRedShader.link(mContext);
-                mColorShader.link(mContext);
+                mRedShader.create(mContext);
+                mColorShader.create(mContext);
 
                 /**
                  * Create vertex buffers (object).

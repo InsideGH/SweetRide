@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.context.ResourceManager;
 import com.sweetlab.sweetride.resource.TextureResource;
 
 /**
@@ -57,7 +58,7 @@ public class Empty2DTexture implements TextureResource {
 
     @Override
     public boolean isCreated() {
-        return mBufferId != INVALID_TEXTURE_ID;
+        return mBufferId != ResourceManager.INVALID_TEXTURE_ID;
     }
 
     @Override

@@ -26,8 +26,8 @@ public class UniformWriterTest extends OpenGLTestCase {
                 VertexShader vertexShader = new VertexShader(ShaderCompilerTest.VALID_VERTEX_SOURCE);
                 FragmentShader fragmentShader = new FragmentShader(ShaderCompilerTest.VALID_FRAGMENT_SOURCE);
                 mProgram = new ShaderProgram(vertexShader, fragmentShader);
-                mProgram.link(mContext);
-                assertTrue(mProgram.isLinked());
+                mProgram.create(mContext);
+                assertTrue(mProgram.isCreated());
                 return null;
             }
         });
