@@ -10,6 +10,7 @@ import com.sweetlab.sweetride.attributedata.InterleavedVertexBuffer;
 import com.sweetlab.sweetride.attributedata.TextureCoordData;
 import com.sweetlab.sweetride.attributedata.VerticesData;
 import com.sweetlab.sweetride.resource.BufferResource;
+import com.sweetlab.sweetride.resource.TextureResource;
 import com.sweetlab.sweetride.shader.Attribute;
 import com.sweetlab.sweetride.shader.FragmentShader;
 import com.sweetlab.sweetride.shader.ShaderProgram;
@@ -60,7 +61,7 @@ public class TextureUnitManagerTest extends OpenGLTestCase {
     /**
      * A texture with 4 colors/pixels.
      */
-    private Texture2D mTexture;
+    private TextureResource mTexture;
 
     /**
      * The backend context.
@@ -156,9 +157,9 @@ public class TextureUnitManagerTest extends OpenGLTestCase {
      * @param context      Backend context.
      * @param program      Shader program.
      * @param vertexBuffer Interleaved vertex buffer.
-     * @param texture     Texture.
+     * @param texture      Texture.
      */
-    private static void drawArrayInterleaved(BackendContext context, ShaderProgram program, InterleavedVertexBuffer vertexBuffer, Texture2D texture) {
+    private static void drawArrayInterleaved(BackendContext context, ShaderProgram program, InterleavedVertexBuffer vertexBuffer, TextureResource texture) {
         BufferResource attributeData = vertexBuffer.getAttributeData();
         int pointerCount = vertexBuffer.getAttributePointerCount();
 

@@ -145,8 +145,8 @@ public class InterleavedVertexBuffer implements BufferResource {
     }
 
     @Override
-    public int getBufferId() {
-        return mData.getBufferId();
+    public int getId() {
+        return mData.getId();
     }
 
     @Override

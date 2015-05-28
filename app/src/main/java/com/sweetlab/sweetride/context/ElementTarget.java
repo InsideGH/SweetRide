@@ -52,7 +52,7 @@ public class ElementTarget {
                 throw new RuntimeException("Trying to load indices data that has not been created");
             }
         }
-        final int bufferId = indicesBuffer.getBufferId();
+        final int bufferId = indicesBuffer.getId();
         if (!isBufferBound(bufferId)) {
             GLES20.glBindBuffer(TARGET, bufferId);
         }
@@ -73,7 +73,7 @@ public class ElementTarget {
         /**
          * Check if buffer needs to be bound.
          */
-        final int bufferId = indicesBuffer.getBufferId();
+        final int bufferId = indicesBuffer.getId();
         if (!isBufferBound(bufferId)) {
             GLES20.glBindBuffer(TARGET, bufferId);
         }

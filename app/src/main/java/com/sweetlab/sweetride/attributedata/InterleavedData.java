@@ -87,7 +87,7 @@ public class InterleavedData implements BufferResource {
     }
 
     @Override
-    public int getBufferId() {
+    public int getId() {
         return mBufferId;
     }
 

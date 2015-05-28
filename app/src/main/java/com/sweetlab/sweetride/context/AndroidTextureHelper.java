@@ -4,17 +4,16 @@ import android.graphics.Bitmap;
 import android.opengl.GLES20;
 
 /**
- * Helper class to bridge between Android bitmap and GL.
+ * Helper class to bridge between Android bitmap and GL format and type.
  */
 public class AndroidTextureHelper {
-
     /**
-     * Get the GL texture format from bitmap config.
+     * Get the GL texture texel format from bitmap config.
      *
      * @param bitmap Bitmap to check.
      * @return GL texture format.
      */
-    public static int getFormat(Bitmap bitmap) {
+    public static int getTexelFormat(Bitmap bitmap) {
         /**
          * GLES20 formats.
          * GLES20.GL_RGBA;
@@ -31,19 +30,19 @@ public class AndroidTextureHelper {
                 return GLES20.GL_RGB;
             case ALPHA_8:
             case ARGB_4444:
-                throw new RuntimeException("Unsupported bitmap config type in getFormat" + config);
+                throw new RuntimeException("Unsupported bitmap config type in getTexelFormat" + config);
             default:
-                throw new RuntimeException("Unknown bitmap config type getFormat " + config);
+                throw new RuntimeException("Unknown bitmap config type getTexelFormat " + config);
         }
     }
 
     /**
-     * Get the GL texture type from bitmap config.
+     * Get the GL texture texel type from bitmap config.
      *
      * @param bitmap Bitmap to check.
      * @return
      */
-    public static int getType(Bitmap bitmap) {
+    public static int getGLTexelType(Bitmap bitmap) {
         /**
          * GLES20 types
          * GLES20.GL_UNSIGNED_BYTE;
@@ -59,9 +58,9 @@ public class AndroidTextureHelper {
                 return GLES20.GL_UNSIGNED_SHORT_5_6_5;
             case ALPHA_8:
             case ARGB_4444:
-                throw new RuntimeException("Unsupported bitmap config type getType" + config);
+                throw new RuntimeException("Unsupported bitmap config type getTexelType" + config);
             default:
-                throw new RuntimeException("Unknown bitmap config type getType" + config);
+                throw new RuntimeException("Unknown bitmap config type getTexelType" + config);
         }
     }
 }

@@ -1,12 +1,15 @@
 package com.sweetlab.sweetride.texture;
 
 import android.graphics.Bitmap;
+import android.opengl.GLES20;
 
+import com.sweetlab.sweetride.context.AndroidTextureHelper;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.resource.TextureResource;
 
 /**
- * A 2D texture.
+ * A 2D texture with bitmap as data source. The format,type, width and height is decided by the
+ * bitmap.
  */
 public class Texture2D implements TextureResource {
     /**
@@ -51,25 +54,42 @@ public class Texture2D implements TextureResource {
     }
 
     @Override
-    public int getTextureId() {
+    public int getId() {
         return mTextureId;
     }
 
-    /**
-     * Get the shader uniform sampler name.
-     *
-     * @return The shader uniform sampler name.
-     */
+    @Override
+    public int getWidth() {
+        return mBitmap.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return mBitmap.getHeight();
+    }
+
+    @Override
     public String getName() {
         return mName;
     }
 
-    /**
-     * Get the bitmap.
-     *
-     * @return The bitmap.
-     */
-    public Bitmap getBitmap() {
+    @Override
+    public Bitmap getData() {
         return mBitmap;
+    }
+
+    @Override
+    public int getTexelFormat() {
+        return AndroidTextureHelper.getTexelFormat(mBitmap);
+    }
+
+    @Override
+    public int getTexelType() {
+        return AndroidTextureHelper.getGLTexelType(mBitmap);
+    }
+
+    @Override
+    public int getType() {
+        return GLES20.GL_TEXTURE_2D;
     }
 }

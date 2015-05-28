@@ -28,13 +28,6 @@ public interface BufferResource extends Resource {
     boolean isCreated();
 
     /**
-     * Get the generated buffer name/id.
-     *
-     * @return The buffer name/id.
-     */
-    int getBufferId();
-
-    /**
      * Get the data.
      *
      * @return The data.

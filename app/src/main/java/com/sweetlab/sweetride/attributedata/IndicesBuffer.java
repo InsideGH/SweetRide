@@ -59,7 +59,7 @@ public class IndicesBuffer implements BufferResource {
     }
 
     @Override
-    public int getBufferId() {
+    public int getId() {
         return mBufferId;
     }
 

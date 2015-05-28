@@ -1,11 +1,11 @@
 package com.sweetlab.sweetride.context;
 
-import android.opengl.GLES20;
-
 /**
- * Backend context. Must be created on GL thread.
+ * Backend context. Must be created with GL context available.
  */
 public class BackendContext {
+    private final Capabilities mCapabilities;
+
     private ShaderCompiler mShaderCompiler;
     private ProgramLinker mProgramLinker;
     private UniformWriter mUniformWriter;
@@ -16,6 +16,8 @@ public class BackendContext {
     private ResourceManager mResourceManager;
     private ElementTarget mElementTarget;
     private TextureUnitManager mTextureUnitManager;
+    private RenderBufferTarget mRenderBufferTarget;
+    private FrameBufferTarget mFrameBufferTarget;
 
     /**
      * Max number of texture units.
@@ -23,12 +25,20 @@ public class BackendContext {
     private int mMaxNumberTextureUnits;
 
     /**
-     * Constructor. Must be created on GL thread.
+     * Constructor. Must be created with GL context available.
      */
     public BackendContext() {
-        int[] buf = new int[1];
-        GLES20.glGetIntegerv(GLES20.GL_MAX_TEXTURE_IMAGE_UNITS, buf, 0);
-        mMaxNumberTextureUnits = buf[0];
+        mCapabilities = new Capabilities();
+        mMaxNumberTextureUnits = mCapabilities.getMaxNumberTextureUnits();
+    }
+
+    /**
+     * Get GL capabilities.
+     *
+     * @return The capabilities.
+     */
+    public Capabilities getCapabilities() {
+        return mCapabilities;
     }
 
     /**
@@ -149,5 +159,29 @@ public class BackendContext {
             mTextureUnitManager = new TextureUnitManager(this, mMaxNumberTextureUnits);
         }
         return mTextureUnitManager;
+    }
+
+    /**
+     * Get the render buffer target.
+     *
+     * @return The render buffer target.
+     */
+    public RenderBufferTarget getRenderBufferTarget() {
+        if (mRenderBufferTarget == null) {
+            mRenderBufferTarget = new RenderBufferTarget(this);
+        }
+        return mRenderBufferTarget;
+    }
+
+    /**
+     * Get the render buffer target.
+     *
+     * @return The render buffer target.
+     */
+    public FrameBufferTarget getFrameBufferTarget() {
+        if (mFrameBufferTarget == null) {
+            mFrameBufferTarget = new FrameBufferTarget(this);
+        }
+        return mFrameBufferTarget;
     }
 }

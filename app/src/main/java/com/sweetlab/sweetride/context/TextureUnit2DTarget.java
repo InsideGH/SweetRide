@@ -3,9 +3,9 @@ package com.sweetlab.sweetride.context;
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
 
+import com.sweetlab.sweetride.resource.TextureResource;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 import com.sweetlab.sweetride.shader.Uniform;
-import com.sweetlab.sweetride.texture.Texture2D;
 import com.sweetlab.sweetride.util.Util;
 
 import java.nio.Buffer;
@@ -35,19 +35,15 @@ public class TextureUnit2DTarget {
     private final BackendContext mContext;
 
     /**
-     * The GL texture unit number of this target.
+     * The GL texture unit number of this target. This variable is used in various GL commands.
      */
     private final int mGLUnitNr;
 
     /**
-     * Zero based texture unit number of this target.
+     * Zero based texture unit number of this target. This variable is used to write the
+     * texture unit number into the shader program uniform sampler.
      */
     private int[] mZeroBasedNr = new int[1];
-
-    /**
-     * The default texture unit
-     */
-    private int[] mDefaultTextureUnit = new int[1];
 
     /**
      * Constructor.
@@ -63,21 +59,21 @@ public class TextureUnit2DTarget {
     }
 
     /**
-     * Load the texture to gpu.
+     * Load the texture resource to gpu.
      *
      * @param texture Texture to load.
      */
-    public void load(Texture2D texture) {
+    public void load(TextureResource texture) {
         if (!isUnitActive()) {
             GLES20.glActiveTexture(mGLUnitNr);
         }
 
-        int textureId = texture.getTextureId();
+        int textureId = texture.getId();
         if (!isTextureBoundToTarget(textureId)) {
             GLES20.glBindTexture(TARGET, textureId);
         }
 
-        texImage2D(TARGET, texture.getBitmap(), 0, 0);
+        texImage2D(TARGET, texture, 0);
 
         GLES20.glBindTexture(TARGET, 0);
     }
@@ -89,12 +85,12 @@ public class TextureUnit2DTarget {
      * @param min     Min filter parameter.
      * @param mag     Mag filter parameter.
      */
-    public void setFilter(Texture2D texture, int min, int mag) {
+    public void setFilter(TextureResource texture, int min, int mag) {
         if (!isUnitActive()) {
             GLES20.glActiveTexture(mGLUnitNr);
         }
 
-        int textureId = texture.getTextureId();
+        int textureId = texture.getId();
         if (!isTextureBoundToTarget(textureId)) {
             GLES20.glBindTexture(TARGET, textureId);
         }
@@ -111,7 +107,7 @@ public class TextureUnit2DTarget {
      * @param program Shader program.
      * @param texture Texture.
      */
-    public void enable(ShaderProgram program, Texture2D texture) {
+    public void enable(ShaderProgram program, TextureResource texture) {
         if (mContext.getState().readActiveProgram() != program.getId()) {
             throw new RuntimeException("Provided program during texture enable is not the currently active");
         }
@@ -123,7 +119,7 @@ public class TextureUnit2DTarget {
                 GLES20.glActiveTexture(mGLUnitNr);
             }
 
-            int textureId = texture.getTextureId();
+            int textureId = texture.getId();
             if (!isTextureBoundToTarget(textureId)) {
                 GLES20.glBindTexture(TARGET, textureId);
             }
@@ -135,18 +131,18 @@ public class TextureUnit2DTarget {
     /**
      * Disable the texture from this target.
      */
-    public void disable(Texture2D texture) {
+    public void disable(TextureResource texture) {
         if (!isUnitActive()) {
             GLES20.glActiveTexture(mGLUnitNr);
         }
-        int textureId = texture.getTextureId();
+        int textureId = texture.getId();
         if (isTextureBoundToTarget(textureId)) {
             GLES20.glBindTexture(TARGET, 0);
         }
     }
 
     /**
-     * Is the unit this target belongs to active?
+     * Check if unit this target belongs to is active.
      *
      * @return True if active.
      */
@@ -179,19 +175,24 @@ public class TextureUnit2DTarget {
     }
 
     /**
-     * Push bitmap data to gpu.
+     * Push bitmap data to gpu. Can be used if the texture data is empty as well.
      *
-     * @param target Target to use.
-     * @param bmp    Bitmap.
-     * @param level  Level.
-     * @param border Border.
+     * @param target  The target texture of the active unit.
+     * @param texture The texture resource.
+     * @param level   Mipmap level, level 0 is base.
      */
-    private void texImage2D(int target, Bitmap bmp, int level, int border) {
-        final int format = AndroidTextureHelper.getFormat(bmp);
-        final int type = AndroidTextureHelper.getType(bmp);
-        final Buffer rgbBuffer = Util.bitmapToBuffer(bmp);
-        final int width = bmp.getWidth();
-        final int height = bmp.getHeight();
-        GLES20.glTexImage2D(target, level, format, width, height, border, format, type, rgbBuffer);
+    private void texImage2D(int target, TextureResource texture, int level) {
+        final int texelFormat = texture.getTexelFormat();
+        final int texelType = texture.getTexelType();
+        final int width = texture.getWidth();
+        final int height = texture.getHeight();
+
+        Buffer rgbBuffer = null;
+        Bitmap data = texture.getData();
+        if (data != null) {
+            rgbBuffer = Util.bitmapToBuffer(data);
+        }
+
+        GLES20.glTexImage2D(target, level, texelFormat, width, height, 0, texelFormat, texelType, rgbBuffer);
     }
 }

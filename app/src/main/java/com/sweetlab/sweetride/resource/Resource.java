@@ -10,4 +10,11 @@ public interface Resource {
      * Release the resource.
      */
     void release(BackendContext context);
+
+    /**
+     * Get the generated name/id.
+     *
+     * @return The name/id.
+     */
+    int getId();
 }

@@ -11,7 +11,6 @@ import com.sweetlab.sweetride.shader.VertexShader;
  * Managing buffers.
  */
 public class ResourceManager {
-
     /**
      * The backend context.
      */
@@ -90,5 +89,45 @@ public class ResourceManager {
     public void deleteTexture(int id) {
         mBuf[0] = id;
         GLES20.glDeleteTextures(1, mBuf, 0);
+    }
+
+    /**
+     * Generate a frame buffer name/id.
+     *
+     * @return The generated frame buffer.
+     */
+    public int generateFrameBuffer() {
+        GLES20.glGenFramebuffers(1, mBuf, 0);
+        return mBuf[0];
+    }
+
+    /**
+     * Delete a previously generated frame buffer.
+     *
+     * @param id Frame buffer to delete.
+     */
+    public void deleteFrameBuffer(int id) {
+        mBuf[0] = id;
+        GLES20.glDeleteFramebuffers(1, mBuf, 0);
+    }
+
+    /**
+     * Generate a render buffer name/id.
+     *
+     * @return The generated render buffer.
+     */
+    public int generateRenderBuffer() {
+        GLES20.glGenRenderbuffers(1, mBuf, 0);
+        return mBuf[0];
+    }
+
+    /**
+     * Delete a previously generated render buffer.
+     *
+     * @param id Render buffer to delete.
+     */
+    public void deleteRenderBuffer(int id) {
+        mBuf[0] = id;
+        GLES20.glDeleteRenderbuffers(1, mBuf, 0);
     }
 }

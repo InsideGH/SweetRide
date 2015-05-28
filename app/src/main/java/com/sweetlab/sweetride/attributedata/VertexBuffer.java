@@ -56,7 +56,7 @@ public class VertexBuffer implements BufferResource, AttributePointer {
     }
 
     @Override
-    public int getBufferId() {
+    public int getId() {
         return mBufferId;
     }
 

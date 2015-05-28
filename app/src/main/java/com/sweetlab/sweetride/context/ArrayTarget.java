@@ -53,7 +53,7 @@ public class ArrayTarget {
                 throw new RuntimeException("Trying to load attribute data that has not been created");
             }
         }
-        final int bufferId = attributeData.getBufferId();
+        final int bufferId = attributeData.getId();
         if (!isBufferBound(bufferId)) {
             GLES20.glBindBuffer(TARGET, bufferId);
         }
@@ -75,7 +75,7 @@ public class ArrayTarget {
         /**
          * Check if buffer needs to be bound.
          */
-        final int bufferId = data.getBufferId();
+        final int bufferId = data.getId();
         if (!isBufferBound(bufferId)) {
             GLES20.glBindBuffer(TARGET, bufferId);
         }
