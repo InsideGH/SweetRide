@@ -2,7 +2,6 @@ package com.sweetlab.sweetride.testframework;
 
 import android.opengl.GLES20;
 import android.test.ActivityInstrumentationTestCase2;
-import android.util.Log;
 
 import com.sweetlab.sweetride.context.BackendContext;
 
@@ -95,13 +94,18 @@ public class OpenGLTestCase extends ActivityInstrumentationTestCase2<TestActivit
 
     /**
      * Clear and configure surface.
+     *
+     * @param red   Red color.
+     * @param green Green color.
+     * @param blue  Blue color.
+     * @param alpha Alpha component.
      */
-    protected void clearScreen() {
+    protected void clearScreen(float red, float green, float blue, float alpha) {
         int width = getSurfaceWidth();
         int height = getSurfaceHeight();
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         GLES20.glViewport(0, 0, width, height);
-        GLES20.glClearColor(0.8f, 0.8f, 0.8f, 1);
+        GLES20.glClearColor(red, green, blue, alpha);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
     }
 
