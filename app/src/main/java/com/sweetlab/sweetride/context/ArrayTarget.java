@@ -1,11 +1,14 @@
 package com.sweetlab.sweetride.context;
 
 import android.opengl.GLES20;
+import android.util.Log;
 
 import com.sweetlab.sweetride.DebugOptions;
 import com.sweetlab.sweetride.attributedata.AttributePointer;
 import com.sweetlab.sweetride.resource.BufferResource;
+import com.sweetlab.sweetride.resource.VertexBufferResource;
 import com.sweetlab.sweetride.shader.Attribute;
+import com.sweetlab.sweetride.shader.ShaderProgram;
 
 import java.nio.Buffer;
 
@@ -43,7 +46,7 @@ public class ArrayTarget {
     }
 
     /**
-     * Load attribute data to gpu.
+     * Load buffer resource to gpu.
      *
      * @param attributeData Attribute data.
      */
@@ -58,14 +61,91 @@ public class ArrayTarget {
             GLES20.glBindBuffer(TARGET, bufferId);
         }
 
-        final Buffer data = attributeData.getData();
+        final Buffer data = attributeData.getBuffer();
         final int totalByteCount = attributeData.getTotalByteCount();
         final int bufferUsage = attributeData.getBufferUsage();
         GLES20.glBufferData(TARGET, totalByteCount, data, bufferUsage);
     }
 
+
     /**
-     * Enable a shader program attribute to use provided attribute data.
+     * Enable specific shader program attributes provided the vertex buffer resource.
+     *
+     * @param program  The shader program.
+     * @param resource The vertex attribute resource.
+     */
+    public void enableAttribute(ShaderProgram program, VertexBufferResource resource) {
+        /**
+         * Check if buffer needs to be bound.
+         */
+        final int bufferId = resource.getId();
+        if (!isBufferBound(bufferId)) {
+            GLES20.glBindBuffer(TARGET, bufferId);
+        }
+
+        int count = resource.getAttributePointerCount();
+        for (int i = 0; i < count; i++) {
+            AttributePointer pointer = resource.getAttributePointer(i);
+            Attribute attribute = program.getAttribute(pointer.getName());
+            if (attribute != null) {
+                /**
+                 * Check if attribute need to be enabled.
+                 */
+                final int attributeLocation = attribute.getLocation();
+                if (!isAttributeEnabled(attributeLocation)) {
+                    GLES20.glEnableVertexAttribArray(attributeLocation);
+                }
+
+                /**
+                 * Check if attribute has correct buffer bound. If not, reconfigure attribute.
+                 */
+                if (getBoundAttributeBuffer(attributeLocation) != bufferId) {
+                    final int dataVertexSize = pointer.getVertexSize();
+                    if (dataVertexSize > attribute.getVertexSize()) {
+                        throw new RuntimeException("Element count in data is larger than specified in shader " +
+                                "program, data element count = " + dataVertexSize + " while shader attribute " +
+                                "specifies " + attribute.getVertexSize());
+                    }
+
+                    /**
+                     * In case we have data with element count less than specified in the shader attribute we want to configure
+                     * with the correct vertex size (element count). Typically vertex data contains 3 instead of 4 component because
+                     * only 'xyz' is specified but 'w' is ignored/skipped. That is the reason for using dataVertexSize.
+                     */
+                    final int strideBytes = pointer.getStrideBytes();
+                    final boolean shouldNormalize = pointer.getShouldNormalize();
+                    final int offsetBytes = pointer.getOffsetBytes();
+                    final int typeFamily = attribute.getTypeFamily();
+                    GLES20.glVertexAttribPointer(attributeLocation, dataVertexSize, typeFamily, shouldNormalize, strideBytes, offsetBytes);
+                }
+            }
+        }
+    }
+
+    /**
+     * Disable specific shader program attributes provided the vertex buffer resource.
+     *
+     * @param program  The shader program.
+     * @param resource The vertex buffer resource.
+     */
+    public void disableAttribute(ShaderProgram program, VertexBufferResource resource) {
+        if (!isAnyBufferBound()) {
+            throw new RuntimeException("Can't disable active attribute with not bound buffer object to target GL_ARRAY_BUFFER");
+        }
+
+        int count = resource.getAttributePointerCount();
+        for (int i = 0; i < count; i++) {
+            Attribute attribute = program.getAttribute(resource.getAttributePointer(i).getName());
+            if (attribute != null) {
+                GLES20.glDisableVertexAttribArray(attribute.getLocation());
+            }
+        }
+    }
+
+    /**
+     * Enable specific (shader program) attribute provided separate buffer resource and attribute
+     * pointer. In case of interleaved vertex buffers it's more efficient to use the method
+     * that takes the vertex buffer resource.
      *
      * @param attribute The attribute in the shader program.
      * @param data      The attribute data.
@@ -113,7 +193,7 @@ public class ArrayTarget {
     }
 
     /**
-     * Disable a shader program attribute.
+     * Disable a specific (shader program) attribute.
      *
      * @param attribute The shader program attribute.
      */

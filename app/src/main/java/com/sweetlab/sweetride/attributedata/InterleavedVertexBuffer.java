@@ -4,6 +4,7 @@ import android.util.Pair;
 
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.resource.BufferResource;
+import com.sweetlab.sweetride.resource.VertexBufferResource;
 
 import java.nio.Buffer;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
  * The buffer resource holds one attribute data and many attribute pointers, aka an
  * interleaved vertex buffer.
  */
-public class InterleavedVertexBuffer implements BufferResource {
+public class InterleavedVertexBuffer implements VertexBufferResource {
     /**
      * Builder to build an interleaved vertex buffer.
      */
@@ -101,7 +102,7 @@ public class InterleavedVertexBuffer implements BufferResource {
             for (Pair<String, VertexData> pair : mEntries) {
                 String name = pair.first;
                 VertexData data = pair.second;
-                pointers.add(new InterleavedPointer(name, data, stride, offset));
+                pointers.add(new BufferPointer(name, data, stride, offset));
                 offset += data.getVertexByteSize();
             }
             return pointers;
@@ -150,8 +151,8 @@ public class InterleavedVertexBuffer implements BufferResource {
     }
 
     @Override
-    public Buffer getData() {
-        return mData.getData();
+    public Buffer getBuffer() {
+        return mData.getBuffer();
     }
 
     @Override
@@ -164,30 +165,12 @@ public class InterleavedVertexBuffer implements BufferResource {
         return mData.getBufferUsage();
     }
 
-    /**
-     * Get the attribute data.
-     *
-     * @return The attribute data.
-     */
-    public BufferResource getAttributeData() {
-        return mData;
-    }
-
-    /**
-     * Get number of attribute pointers.
-     *
-     * @return Number of attribute pointers.
-     */
+    @Override
     public int getAttributePointerCount() {
         return mPointers.size();
     }
 
-    /**
-     * Get attribute pointer at index.
-     *
-     * @param index The index to get from.
-     * @return The attribute pointer.
-     */
+    @Override
     public AttributePointer getAttributePointer(int index) {
         return mPointers.get(index);
     }

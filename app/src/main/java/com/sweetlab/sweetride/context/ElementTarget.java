@@ -57,7 +57,7 @@ public class ElementTarget {
             GLES20.glBindBuffer(TARGET, bufferId);
         }
 
-        final Buffer data = indicesBuffer.getData();
+        final Buffer data = indicesBuffer.getBuffer();
         final int totalByteCount = indicesBuffer.getTotalByteCount();
         final int bufferUsage = indicesBuffer.getBufferUsage();
 

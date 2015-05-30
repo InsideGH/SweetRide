@@ -93,7 +93,7 @@ public class InterleavedData implements BufferResource {
     }
 
     @Override
-    public Buffer getData() {
+    public Buffer getBuffer() {
         return mBuffer;
     }
 

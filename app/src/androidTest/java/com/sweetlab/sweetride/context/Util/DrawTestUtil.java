@@ -1,6 +1,7 @@
 package com.sweetlab.sweetride.context.Util;
 
 import android.opengl.GLES20;
+import android.util.Log;
 
 import com.sweetlab.sweetride.attributedata.AttributePointer;
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
@@ -8,7 +9,6 @@ import com.sweetlab.sweetride.attributedata.InterleavedVertexBuffer;
 import com.sweetlab.sweetride.attributedata.VertexBuffer;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.TextureUnit;
-import com.sweetlab.sweetride.resource.BufferResource;
 import com.sweetlab.sweetride.resource.TextureResource;
 import com.sweetlab.sweetride.shader.Attribute;
 import com.sweetlab.sweetride.shader.ShaderProgram;
@@ -25,23 +25,20 @@ public class DrawTestUtil {
      * @param buffers Vertex buffers.
      */
     public static void drawArraySeparateBuffers(BackendContext context, ShaderProgram program, VertexBuffer... buffers) {
-        int vertexCount = buffers[0].getVertexCount();
+        int vertexCount = buffers[0].getAttributePointer(0).getVertexCount();
 
         for (VertexBuffer buffer : buffers) {
-            if (vertexCount != buffer.getVertexCount()) {
+            if (vertexCount != buffer.getAttributePointer(0).getVertexCount()) {
                 throw new RuntimeException("Trying to drawArraySeparateBuffers using vertex buffers of different sizes");
             }
-            Attribute attribute = program.getAttribute(buffer.getName());
-            if (attribute != null) {
-                context.getArrayTarget().enableAttribute(attribute, buffer, buffer);
-            }
+            context.getArrayTarget().enableAttribute(program, buffer);
         }
 
         context.getState().useProgram(program);
         context.getArrayTarget().draw(GLES20.GL_TRIANGLES, 0, vertexCount);
 
         for (VertexBuffer buffer : buffers) {
-            Attribute attribute = program.getAttribute(buffer.getName());
+            Attribute attribute = program.getAttribute(buffer.getAttributePointer(0).getName());
             if (attribute != null) {
                 context.getArrayTarget().disableAttribute(attribute);
             }
@@ -56,28 +53,13 @@ public class DrawTestUtil {
      * @param vertexBuffer Interleaved vertex buffer.
      */
     public static void drawArrayInterleavedBuffer(BackendContext context, ShaderProgram program, InterleavedVertexBuffer vertexBuffer) {
-        BufferResource attributeData = vertexBuffer.getAttributeData();
-        int pointerCount = vertexBuffer.getAttributePointerCount();
-
-        for (int i = 0; i < pointerCount; i++) {
-            AttributePointer pointer = vertexBuffer.getAttributePointer(i);
-            Attribute attribute = program.getAttribute(pointer.getName());
-            if (attribute != null) {
-                context.getArrayTarget().enableAttribute(attribute, attributeData, pointer);
-            }
-        }
+        context.getArrayTarget().enableAttribute(program, vertexBuffer);
 
         context.getState().useProgram(program);
         int vertexCount = vertexBuffer.getAttributePointer(0).getVertexCount();
         context.getArrayTarget().draw(GLES20.GL_TRIANGLES, 0, vertexCount);
 
-        for (int i = 0; i < pointerCount; i++) {
-            AttributePointer pointer = vertexBuffer.getAttributePointer(i);
-            Attribute attribute = program.getAttribute(pointer.getName());
-            if (attribute != null) {
-                context.getArrayTarget().disableAttribute(attribute);
-            }
-        }
+        context.getArrayTarget().disableAttribute(program, vertexBuffer);
     }
 
     /**
@@ -88,14 +70,14 @@ public class DrawTestUtil {
      * @param buffers Vertex buffers.
      */
     public static void drawElementsSeparateBuffers(BackendContext context, ShaderProgram program, IndicesBuffer indicesBuffer, VertexBuffer... buffers) {
-        int vertexCount = buffers[0].getVertexCount();
+        int vertexCount = buffers[0].getAttributePointer(0).getVertexCount();
         for (VertexBuffer buffer : buffers) {
-            if (vertexCount != buffer.getVertexCount()) {
+            if (vertexCount != buffer.getAttributePointer(0).getVertexCount()) {
                 throw new RuntimeException("Trying to drawElementsSeparateBuffers using vertex buffers of different sizes");
             }
-            Attribute attribute = program.getAttribute(buffer.getName());
+            Attribute attribute = program.getAttribute(buffer.getAttributePointer(0).getName());
             if (attribute != null) {
-                context.getArrayTarget().enableAttribute(attribute, buffer, buffer);
+                context.getArrayTarget().enableAttribute(attribute, buffer, buffer.getAttributePointer(0));
             }
         }
 
@@ -106,7 +88,7 @@ public class DrawTestUtil {
         context.getElementTarget().disableElements();
 
         for (VertexBuffer buffer : buffers) {
-            Attribute attribute = program.getAttribute(buffer.getName());
+            Attribute attribute = program.getAttribute(buffer.getAttributePointer(0).getName());
             if (attribute != null) {
                 context.getArrayTarget().disableAttribute(attribute);
             }
@@ -122,14 +104,13 @@ public class DrawTestUtil {
      * @param texture      Texture.
      */
     public static void drawArrayInterleavedBufferWithTexture(BackendContext context, ShaderProgram program, InterleavedVertexBuffer vertexBuffer, TextureResource texture) {
-        BufferResource attributeData = vertexBuffer.getAttributeData();
         int pointerCount = vertexBuffer.getAttributePointerCount();
 
         for (int i = 0; i < pointerCount; i++) {
             AttributePointer pointer = vertexBuffer.getAttributePointer(i);
             Attribute attribute = program.getAttribute(pointer.getName());
             if (attribute != null) {
-                context.getArrayTarget().enableAttribute(attribute, attributeData, pointer);
+                context.getArrayTarget().enableAttribute(attribute, vertexBuffer, pointer);
             }
         }
 
@@ -164,16 +145,7 @@ public class DrawTestUtil {
      * @param textureChess Chess texture.
      */
     public static void drawElementsInterleavedBufferWithDualTextures(BackendContext context, ShaderProgram program, IndicesBuffer ib, InterleavedVertexBuffer vertexBuffer, TextureResource texture, TextureResource textureChess) {
-        BufferResource attributeData = vertexBuffer.getAttributeData();
-        int pointerCount = vertexBuffer.getAttributePointerCount();
-
-        for (int i = 0; i < pointerCount; i++) {
-            AttributePointer pointer = vertexBuffer.getAttributePointer(i);
-            Attribute attribute = program.getAttribute(pointer.getName());
-            if (attribute != null) {
-                context.getArrayTarget().enableAttribute(attribute, attributeData, pointer);
-            }
-        }
+        context.getArrayTarget().enableAttribute(program, vertexBuffer);
 
         context.getState().useProgram(program);
 
@@ -193,12 +165,6 @@ public class DrawTestUtil {
         context.getTextureUnitManager().returnTextureUnit(textureUnit2);
         context.getTextureUnitManager().returnTextureUnit(textureUnit1);
 
-        for (int i = 0; i < pointerCount; i++) {
-            AttributePointer pointer = vertexBuffer.getAttributePointer(i);
-            Attribute attribute = program.getAttribute(pointer.getName());
-            if (attribute != null) {
-                context.getArrayTarget().disableAttribute(attribute);
-            }
-        }
+        context.getArrayTarget().disableAttribute(program, vertexBuffer);
     }
 }

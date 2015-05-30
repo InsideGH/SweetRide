@@ -2,7 +2,7 @@ package com.sweetlab.sweetride.attributedata;
 
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.ResourceManager;
-import com.sweetlab.sweetride.resource.BufferResource;
+import com.sweetlab.sweetride.resource.VertexBufferResource;
 import com.sweetlab.sweetride.util.Util;
 
 import java.nio.Buffer;
@@ -10,12 +10,7 @@ import java.nio.Buffer;
 /**
  * A vertex buffer.
  */
-public class VertexBuffer implements BufferResource, AttributePointer {
-
-    /**
-     * The mapping to the attribute in the shader program.
-     */
-    private final String mName;
+public class VertexBuffer implements VertexBufferResource {
 
     /**
      * The buffer of data.
@@ -33,6 +28,11 @@ public class VertexBuffer implements BufferResource, AttributePointer {
     private final VertexData mVertexData;
 
     /**
+     * The buffer pointer.
+     */
+    private final BufferPointer mBufferPointer;
+
+    /**
      * The buffer 'name'/id.
      */
     private int mBufferId = ResourceManager.INVALID_BUFFER_ID;
@@ -45,15 +45,10 @@ public class VertexBuffer implements BufferResource, AttributePointer {
      * @param bufferUsage Buffer usage hint.
      */
     public VertexBuffer(String name, VertexData vertexData, int bufferUsage) {
-        mName = name;
+        mBufferPointer = new BufferPointer(name, vertexData, 0, 0);
         mBufferUsage = bufferUsage;
         mVertexData = vertexData;
         mBuffer = Util.createBuffer(vertexData.getData(), vertexData.getTotalByteCount());
-    }
-
-    @Override
-    public String getName() {
-        return mName;
     }
 
     @Override
@@ -62,43 +57,13 @@ public class VertexBuffer implements BufferResource, AttributePointer {
     }
 
     @Override
-    public Buffer getData() {
+    public Buffer getBuffer() {
         return mBuffer;
-    }
-
-    @Override
-    public int getVertexCount() {
-        return mVertexData.getVertexCount();
     }
 
     @Override
     public int getTotalByteCount() {
         return mVertexData.getTotalByteCount();
-    }
-
-    @Override
-    public int getStrideBytes() {
-        return 0;
-    }
-
-    @Override
-    public int getOffsetBytes() {
-        return 0;
-    }
-
-    @Override
-    public int getVertexSize() {
-        return mVertexData.getVertexSize();
-    }
-
-    @Override
-    public int getVertexByteSize() {
-        return mVertexData.getVertexByteSize();
-    }
-
-    @Override
-    public boolean getShouldNormalize() {
-        return mVertexData.getShouldNormalize();
     }
 
     @Override
@@ -120,5 +85,15 @@ public class VertexBuffer implements BufferResource, AttributePointer {
     @Override
     public void create(BackendContext context) {
         mBufferId = context.getResourceManager().generateBuffer();
+    }
+
+    @Override
+    public int getAttributePointerCount() {
+        return 1;
+    }
+
+    @Override
+    public AttributePointer getAttributePointer(int index) {
+        return mBufferPointer;
     }
 }

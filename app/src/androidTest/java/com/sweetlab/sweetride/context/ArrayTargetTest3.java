@@ -87,8 +87,8 @@ public class ArrayTargetTest3 extends OpenGLTestCase {
                  */
                 mContext.getArrayTarget().load(mTopTriangle);
                 mContext.getArrayTarget().load(mBottomTriangle);
-                mContext.getArrayTarget().load(mInterleavedLeftTriangle.getAttributeData());
-                mContext.getArrayTarget().load(mInterleavedRightTriangle.getAttributeData());
+                mContext.getArrayTarget().load(mInterleavedLeftTriangle);
+                mContext.getArrayTarget().load(mInterleavedRightTriangle);
 
                 /**
                  * Load color data to gpu.

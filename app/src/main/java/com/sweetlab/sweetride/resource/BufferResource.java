@@ -7,11 +7,11 @@ import java.nio.Buffer;
  */
 public interface BufferResource extends Resource {
     /**
-     * Get the data.
+     * Get the buffer.
      *
-     * @return The data.
+     * @return The buffer.
      */
-    Buffer getData();
+    Buffer getBuffer();
 
     /**
      * Get the total byte count of data.

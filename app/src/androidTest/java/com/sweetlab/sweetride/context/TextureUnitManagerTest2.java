@@ -126,7 +126,7 @@ public class TextureUnitManagerTest2 extends OpenGLTestCase {
                 clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
 
                 /**
-                 * This quad should be drawn centered.
+                 * This quad should be drawn centered and contain 4 primary colors with additional chess color board added.
                  */
                 DrawTestUtil.drawElementsInterleavedBufferWithDualTextures(mContext, mShaderProgram, mIb, mVertexBuffer, mTexture, mTextureChess);
                 return null;

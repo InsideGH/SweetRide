@@ -4,7 +4,7 @@ package com.sweetlab.sweetride.attributedata;
  * This is a attribute pointer with a specific stride and offset. Used
  * for shader program attributes.
  */
-public class InterleavedPointer implements AttributePointer {
+public class BufferPointer implements AttributePointer {
     /**
      * The shader program attribute name.
      */
@@ -37,7 +37,7 @@ public class InterleavedPointer implements AttributePointer {
      * @param offset The offset value specifies number of bytes from the beginning of the
      *               data to the first vertex of this pointer.
      */
-    public InterleavedPointer(String name, VertexData data, int stride, int offset) {
+    public BufferPointer(String name, VertexData data, int stride, int offset) {
         mName = name;
         mData = data;
         mStride = stride;

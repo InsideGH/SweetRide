@@ -65,7 +65,7 @@ public class IndicesBuffer implements BufferResource {
     }
 
     @Override
-    public Buffer getData() {
+    public Buffer getBuffer() {
         return mBuffer;
     }
 
