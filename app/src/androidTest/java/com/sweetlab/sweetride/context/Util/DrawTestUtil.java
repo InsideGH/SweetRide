@@ -14,6 +14,9 @@ import com.sweetlab.sweetride.resource.TextureResource;
 import com.sweetlab.sweetride.shader.Attribute;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Collection of various ways of drawing.
  */
@@ -180,11 +183,21 @@ public class DrawTestUtil {
         final ShaderProgram program = material.getShaderProgram();
         final int vbCount = mesh.getVertexBufferCount();
         if (program != null && vbCount != 0) {
+
             for (int i = 0; i < vbCount; i++) {
                 context.getArrayTarget().enableAttribute(program, mesh.getVertexBuffer(i));
             }
 
             context.getState().useProgram(program);
+
+            List<TextureUnit> takenUnits = new ArrayList<>();
+            int textureCount = material.getTextureCount();
+            for (int i = 0; i < textureCount; i++) {
+                TextureUnit textureUnit = context.getTextureUnitManager().takeTextureUnit();
+                takenUnits.add(textureUnit);
+                textureUnit.getTexture2DTarget().enable(program, material.getTexture(i));
+            }
+
             final IndicesBuffer ib = mesh.getIndicesBuffer();
             if (ib == null) {
                 context.getArrayTarget().draw(mesh.getMode(), 0, mesh.getVertexCount());
@@ -192,6 +205,12 @@ public class DrawTestUtil {
                 context.getElementTarget().enableElements(ib);
                 context.getElementTarget().draw(mesh.getMode(), 0, ib.getIndicesCount());
                 context.getElementTarget().disableElements();
+            }
+
+            for (int i = (textureCount -1); i > -1; i--) {
+                TextureUnit textureUnit = takenUnits.get(i);
+                textureUnit.getTexture2DTarget().disable(material.getTexture(i));
+                context.getTextureUnitManager().returnTextureUnit(textureUnit);
             }
 
             for (int i = 0; i < vbCount; i++) {

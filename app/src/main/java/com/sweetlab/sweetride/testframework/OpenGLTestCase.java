@@ -52,6 +52,25 @@ public class OpenGLTestCase extends ActivityInstrumentationTestCase2<TestActivit
     }
 
     /**
+     * Set the test information.
+     *
+     * @param testInfo The test information.
+     */
+    protected void setTestInfo(final String testInfo) {
+        assertActivityNotNull();
+        try {
+            runTestOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mActivity.setTestInfo(testInfo);
+                }
+            });
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+    }
+
+    /**
      * Run a task on gl thread.
      *
      * @param task

@@ -48,6 +48,8 @@ public class ArrayTargetTest1 extends OpenGLTestCase {
         mTopTriangle = BufferTestUtil.createTopTriangle();
         mBottomTriangle = BufferTestUtil.createBottomTriangle();
 
+        setTestInfo("red, blue, red, blue");
+
         runOnGLThread(new ResultRunnable() {
             @Override
             public Object run() {

@@ -1,6 +1,7 @@
 package com.sweetlab.sweetride.resource;
 
 import android.graphics.Bitmap;
+import android.opengl.GLES20;
 import android.support.annotation.Nullable;
 
 import com.sweetlab.sweetride.context.ColorAttachment;
@@ -11,6 +12,16 @@ import com.sweetlab.sweetride.context.DepthAttachment;
  * attachment.
  */
 public interface TextureResource extends Resource, ColorAttachment, DepthAttachment {
+    /**
+     * The default min filter.
+     */
+    int DEFAULT_MIN_FILTER = GLES20.GL_NEAREST_MIPMAP_LINEAR;
+
+    /**
+     * The default mag filter.
+     */
+    int DEFAULT_MAG_FILTER = GLES20.GL_LINEAR;
+
     /**
      * Get the shader uniform sampler name.
      *
@@ -60,4 +71,26 @@ public interface TextureResource extends Resource, ColorAttachment, DepthAttachm
      * @return The texture type.
      */
     int getType();
+
+    /**
+     * Set the min and mag filters.
+     *
+     * @param minFilter The min filter, for example GLES20.GL_NEAREST.
+     * @param magFilter The mag filter, for example GLES20.GL_NEAREST.
+     */
+    void setFilter(int minFilter, int magFilter);
+
+    /**
+     * Get the min filter.
+     *
+     * @return The min filter.
+     */
+    int getMinFilter();
+
+    /**
+     * Get the mag filter.
+     *
+     * @return The mag filter.
+     */
+    int getMagFilter();
 }

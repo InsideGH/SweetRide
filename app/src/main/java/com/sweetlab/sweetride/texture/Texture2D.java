@@ -26,7 +26,17 @@ public class Texture2D implements TextureResource {
     /**
      * The texture id.
      */
-    private int mTextureId;
+    private int mTextureId = ResourceManager.INVALID_TEXTURE_ID;
+
+    /**
+     * The min filter.
+     */
+    private int mMinFilter = DEFAULT_MIN_FILTER;
+
+    /**
+     * The mag filter.
+     */
+    private int mMagFilter = DEFAULT_MAG_FILTER;
 
     /**
      * Constructor.
@@ -42,6 +52,7 @@ public class Texture2D implements TextureResource {
     @Override
     public void release(BackendContext context) {
         context.getResourceManager().deleteTexture(mTextureId);
+        mTextureId = ResourceManager.INVALID_TEXTURE_ID;
     }
 
     @Override
@@ -92,5 +103,21 @@ public class Texture2D implements TextureResource {
     @Override
     public int getType() {
         return GLES20.GL_TEXTURE_2D;
+    }
+
+    @Override
+    public void setFilter(int minFilter, int magFilter) {
+        mMinFilter = minFilter;
+        mMinFilter = magFilter;
+    }
+
+    @Override
+    public int getMinFilter() {
+        return mMinFilter;
+    }
+
+    @Override
+    public int getMagFilter() {
+        return mMagFilter;
     }
 }

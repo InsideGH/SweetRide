@@ -2,6 +2,7 @@ package com.sweetlab.sweetride.context;
 
 import android.opengl.GLES20;
 
+import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
@@ -11,9 +12,9 @@ import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
 
 /**
- * Test array target. This test draws with just one vertex buffer using Material and Mesh.
+ * Test to draw with indices.
  */
-public class ArrayTargetTest4 extends OpenGLTestCase {
+public class ElementTargetTest_a extends OpenGLTestCase {
     /**
      * Backend context.
      */
@@ -33,9 +34,19 @@ public class ArrayTargetTest4 extends OpenGLTestCase {
     private Mesh mTopMesh;
     private Mesh mBottomMesh;
 
+    /**
+     * The indices buffer.
+     */
+    private IndicesBuffer mIndicesBuffer;
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        /**
+         * Create indices buffer.
+         */
+        mIndicesBuffer = new IndicesBuffer(BufferTestUtil.createTriangleIndices(), GLES20.GL_STATIC_DRAW);
+
         /**
          * Create materials. No need for GL thread.
          */
@@ -47,29 +58,43 @@ public class ArrayTargetTest4 extends OpenGLTestCase {
 
         mLeftMesh = new Mesh(GLES20.GL_TRIANGLES);
         mLeftMesh.addVertexBuffer(BufferTestUtil.createLeftTriangle());
-
-        mRightMesh = new Mesh(GLES20.GL_TRIANGLES);
-        mRightMesh.addVertexBuffer(BufferTestUtil.createRightTriangle());
+        mLeftMesh.setIndicesBuffer(mIndicesBuffer);
 
         mTopMesh = new Mesh(GLES20.GL_TRIANGLES);
         mTopMesh.addVertexBuffer(BufferTestUtil.createTopTriangle());
 
+        mRightMesh = new Mesh(GLES20.GL_TRIANGLES);
+        mRightMesh.addVertexBuffer(BufferTestUtil.createRightTriangle());
+        mRightMesh.setIndicesBuffer(mIndicesBuffer);
+
         mBottomMesh = new Mesh(GLES20.GL_TRIANGLES);
         mBottomMesh.addVertexBuffer(BufferTestUtil.createBottomTriangle());
+
+        setTestInfo("red indices, blue, red indices, blue");
 
         runOnGLThread(new ResultRunnable() {
             @Override
             public Object run() {
                 mContext = getBackendContext();
 
+                /**
+                 * Create all materials.
+                 */
                 mRedMaterial.create(mContext);
                 mBlueMaterial.create(mContext);
 
+                /**
+                 * Create all meshes
+                 */
                 mLeftMesh.create(mContext);
                 mRightMesh.create(mContext);
                 mTopMesh.create(mContext);
                 mBottomMesh.create(mContext);
 
+                /**
+                 * Load all meshes. (materials doesn't need loading since there is no
+                 * textures added.
+                 */
                 mLeftMesh.load(mContext);
                 mRightMesh.load(mContext);
                 mTopMesh.load(mContext);

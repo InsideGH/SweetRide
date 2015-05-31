@@ -3,7 +3,9 @@ package com.sweetlab.sweetride.testframework;
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.widget.TextView;
 
+import com.sweetlab.sweetride.R;
 import com.sweetlab.sweetride.context.BackendContext;
 
 import java.util.concurrent.CountDownLatch;
@@ -24,17 +26,22 @@ public class TestActivity extends Activity {
      */
     private SurfaceRenderer mTestRenderer;
 
+    /**
+     * Info text view.
+     */
+    private TextView mInfoTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTestRenderer = new SurfaceRenderer();
+        setContentView(R.layout.main_test);
+        mInfoTextView = (TextView) findViewById(R.id.test_info);
+        mGLSurfaceView = (GLSurfaceView) findViewById(R.id.glsurfaceview);
 
-        mGLSurfaceView = new GLSurfaceView(getApplicationContext());
+        mTestRenderer = new SurfaceRenderer();
         mGLSurfaceView.setEGLContextClientVersion(VERSION);
         mGLSurfaceView.setRenderer(mTestRenderer);
         mGLSurfaceView.setRenderMode(RENDER_MODE);
-
-        setContentView(mGLSurfaceView);
     }
 
     @Override
@@ -74,6 +81,15 @@ public class TestActivity extends Activity {
      */
     public BackendContext getBackendContext() {
         return mTestRenderer.getBackendContext();
+    }
+
+    /**
+     * Set the test information in the TextView. Must be called from main thread.
+     *
+     * @param testInfo The test information.
+     */
+    public void setTestInfo(String testInfo) {
+        mInfoTextView.setText(testInfo);
     }
 
     /**

@@ -58,6 +58,8 @@ public class ArrayTargetTest3 extends OpenGLTestCase {
          */
         mColorBuffer = BufferTestUtil.createColorBuffer();
 
+        setTestInfo("smooth, red, smooth, smooth");
+
         runOnGLThread(new ResultRunnable() {
             @Override
             public Object run() {
@@ -120,14 +122,15 @@ public class ArrayTargetTest3 extends OpenGLTestCase {
                 DrawTestUtil.drawArrayInterleavedBuffer(mContext, mColorShader, mInterleavedLeftTriangle);
 
                 /**
+                 * This triangle should be red on top side.
+                 */
+                DrawTestUtil.drawArraySeparateBuffers(mContext, mRedShader, mTopTriangle);
+
+                /**
                  * This triangle should be smooth colored on right side.
                  */
                 DrawTestUtil.drawArrayInterleavedBuffer(mContext, mColorShader, mInterleavedRightTriangle);
 
-                /**
-                 * This triangle should be red on top side.
-                 */
-                DrawTestUtil.drawArraySeparateBuffers(mContext, mRedShader, mTopTriangle);
 
                 /**
                  * This triangle should be smooth colored on bottom side.

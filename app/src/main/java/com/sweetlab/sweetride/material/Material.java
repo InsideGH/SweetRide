@@ -1,6 +1,7 @@
 package com.sweetlab.sweetride.material;
 
 import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.context.TextureUnit2DTarget;
 import com.sweetlab.sweetride.resource.TextureResource;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 
@@ -75,6 +76,19 @@ public class Material {
             if (!resource.isCreated()) {
                 resource.create(context);
             }
+        }
+    }
+
+    /**
+     * Load material to gpu. Filters will be set as well.
+     *
+     * @param context Backend context.
+     */
+    public void load(BackendContext context) {
+        TextureUnit2DTarget target = context.getTextureUnitManager().getDefaultTextureUnit().getTexture2DTarget();
+        for (TextureResource texture : mTextures) {
+            target.load(texture);
+            target.setFilter(texture, texture.getMinFilter(), texture.getMagFilter());
         }
     }
 }

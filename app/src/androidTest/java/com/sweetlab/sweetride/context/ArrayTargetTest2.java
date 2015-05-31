@@ -1,10 +1,6 @@
 package com.sweetlab.sweetride.context;
 
-import android.opengl.GLES20;
-
-import com.sweetlab.sweetride.attributedata.ColorData;
 import com.sweetlab.sweetride.attributedata.VertexBuffer;
-import com.sweetlab.sweetride.attributedata.VerticesData;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
@@ -59,6 +55,8 @@ public class ArrayTargetTest2 extends OpenGLTestCase {
          * Create a color vertex buffer. No need for GL thread.
          */
         mColorBuffer = BufferTestUtil.createColorBuffer();
+
+        setTestInfo("smooth, black, red, smooth");
 
         runOnGLThread(new ResultRunnable() {
             @Override

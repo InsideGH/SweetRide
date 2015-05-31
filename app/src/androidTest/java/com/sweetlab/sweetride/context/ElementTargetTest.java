@@ -4,7 +4,6 @@ import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.attributedata.VertexBuffer;
-import com.sweetlab.sweetride.attributedata.VerticesData;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
@@ -34,6 +33,10 @@ public class ElementTargetTest extends OpenGLTestCase {
     private VertexBuffer mRightTriangle;
     private VertexBuffer mTopTriangle;
     private VertexBuffer mBottomTriangle;
+
+    /**
+     * The indices buffer.
+     */
     private IndicesBuffer mIndicesBuffer;
 
     @Override

@@ -31,7 +31,17 @@ public class Empty2DTexture implements TextureResource {
     /**
      * The generated texture name/id.
      */
-    private int mBufferId;
+    private int mTextureId = ResourceManager.INVALID_TEXTURE_ID;
+
+    /**
+     * The min filter.
+     */
+    private int mMinFilter = DEFAULT_MIN_FILTER;
+
+    /**
+     * The mag filter.
+     */
+    private int mMagFilter = DEFAULT_MAG_FILTER;
 
     /**
      * Constructor.
@@ -53,17 +63,17 @@ public class Empty2DTexture implements TextureResource {
 
     @Override
     public void create(BackendContext context) {
-        mBufferId = context.getResourceManager().generateTexture();
+        mTextureId = context.getResourceManager().generateTexture();
     }
 
     @Override
     public boolean isCreated() {
-        return mBufferId != ResourceManager.INVALID_TEXTURE_ID;
+        return mTextureId != ResourceManager.INVALID_TEXTURE_ID;
     }
 
     @Override
     public int getId() {
-        return mBufferId;
+        return mTextureId;
     }
 
     @Override
@@ -97,7 +107,24 @@ public class Empty2DTexture implements TextureResource {
     }
 
     @Override
+    public void setFilter(int minFilter, int magFilter) {
+        mMinFilter = minFilter;
+        mMinFilter = magFilter;
+    }
+
+    @Override
+    public int getMinFilter() {
+        return mMinFilter;
+    }
+
+    @Override
+    public int getMagFilter() {
+        return mMagFilter;
+    }
+
+    @Override
     public void release(BackendContext context) {
-        context.getResourceManager().deleteTexture(mBufferId);
+        context.getResourceManager().deleteTexture(mTextureId);
+        mTextureId = ResourceManager.INVALID_TEXTURE_ID;
     }
 }
