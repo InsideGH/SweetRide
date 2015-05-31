@@ -1,7 +1,6 @@
 package com.sweetlab.sweetride.context;
 
 import android.opengl.GLES20;
-import android.util.Log;
 
 import com.sweetlab.sweetride.DebugOptions;
 import com.sweetlab.sweetride.attributedata.AttributePointer;
