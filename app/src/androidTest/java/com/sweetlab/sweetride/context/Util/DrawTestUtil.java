@@ -1,7 +1,6 @@
 package com.sweetlab.sweetride.context.Util;
 
 import android.opengl.GLES20;
-import android.util.Log;
 
 import com.sweetlab.sweetride.attributedata.AttributePointer;
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
@@ -9,6 +8,8 @@ import com.sweetlab.sweetride.attributedata.InterleavedVertexBuffer;
 import com.sweetlab.sweetride.attributedata.VertexBuffer;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.TextureUnit;
+import com.sweetlab.sweetride.material.Material;
+import com.sweetlab.sweetride.mesh.Mesh;
 import com.sweetlab.sweetride.resource.TextureResource;
 import com.sweetlab.sweetride.shader.Attribute;
 import com.sweetlab.sweetride.shader.ShaderProgram;
@@ -166,5 +167,36 @@ public class DrawTestUtil {
         context.getTextureUnitManager().returnTextureUnit(textureUnit1);
 
         context.getArrayTarget().disableAttribute(program, vertexBuffer);
+    }
+
+    /**
+     * Draw using material and mesh. Assumes that material and mesh is created and loaded.
+     *
+     * @param context  Backend context.
+     * @param material Material.
+     * @param mesh     Mesh.
+     */
+    public static void drawUsingMaterialAndMesh(BackendContext context, Material material, Mesh mesh) {
+        final ShaderProgram program = material.getShaderProgram();
+        final int vbCount = mesh.getVertexBufferCount();
+        if (program != null && vbCount != 0) {
+            for (int i = 0; i < vbCount; i++) {
+                context.getArrayTarget().enableAttribute(program, mesh.getVertexBuffer(i));
+            }
+
+            context.getState().useProgram(program);
+            final IndicesBuffer ib = mesh.getIndicesBuffer();
+            if (ib == null) {
+                context.getArrayTarget().draw(mesh.getMode(), 0, mesh.getVertexCount());
+            } else {
+                context.getElementTarget().enableElements(ib);
+                context.getElementTarget().draw(mesh.getMode(), 0, ib.getIndicesCount());
+                context.getElementTarget().disableElements();
+            }
+
+            for (int i = 0; i < vbCount; i++) {
+                context.getArrayTarget().disableAttribute(program, mesh.getVertexBuffer(i));
+            }
+        }
     }
 }
