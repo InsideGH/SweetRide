@@ -5,8 +5,6 @@ import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.attributedata.InterleavedVertexBuffer;
-import com.sweetlab.sweetride.attributedata.TextureCoordData;
-import com.sweetlab.sweetride.attributedata.VerticesData;
 import com.sweetlab.sweetride.context.Util.BitmapTestUtil;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;

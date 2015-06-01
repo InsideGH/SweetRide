@@ -109,7 +109,7 @@ public class Empty2DTexture implements TextureResource {
     @Override
     public void setFilter(int minFilter, int magFilter) {
         mMinFilter = minFilter;
-        mMinFilter = magFilter;
+        mMagFilter = magFilter;
     }
 
     @Override
