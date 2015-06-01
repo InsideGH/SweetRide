@@ -3,32 +3,32 @@ package com.sweetlab.sweetride.context;
 import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
-import com.sweetlab.sweetride.context.Util.DrawTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
 import com.sweetlab.sweetride.framebuffer.FrameBuffer;
+import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.mesh.Mesh;
 import com.sweetlab.sweetride.resource.TextureResource;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
 import com.sweetlab.sweetride.texture.Empty2DTexture;
-import com.sweetlab.sweetride.util.Util;
 
 /**
  * Test rendering to a texture and then use the texture when rendering it to a quad on screen.
  * Using material and mesh.
  */
-public class FrameBufferTest_a extends OpenGLTestCase {
+public class FrameBufferTest_b extends OpenGLTestCase {
+
     /**
      * Backend context.
      */
     private BackendContext mContext;
 
-    private Material mTriangleMaterial;
-    private Mesh mTriangleMesh;
-
-    private Material mQuadMaterial;
-    private Mesh mQuadMesh;
+    /**
+     * The geometries.
+     */
+    private Geometry mTriangle = new Geometry();
+    private Geometry mQuad = new Geometry();
 
     /**
      * Frame buffer.
@@ -38,28 +38,34 @@ public class FrameBufferTest_a extends OpenGLTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        Material material;
+        Mesh mesh;
 
         /**
          * Create the triangle material and mesh. Simple plain red triangle.
          */
-        mTriangleMaterial = new Material();
-        mTriangleMaterial.setShaderProgram(ProgramTestUtil.createNdcRed());
-
-        mTriangleMesh = new Mesh(GLES20.GL_TRIANGLES);
-        mTriangleMesh.addVertexBuffer(BufferTestUtil.createCenteredTriangle());
+        material = new Material();
+        material.setShaderProgram(ProgramTestUtil.createNdcRed());
+        mTriangle.setMaterial(material);
+        mesh = new Mesh(GLES20.GL_TRIANGLES);
+        mesh.addVertexBuffer(BufferTestUtil.createCenteredTriangle());
+        mTriangle.setMesh(mesh);
 
         /**
          * Create the quad material and mesh. It's a quad triangle strip with a texture.
          */
-        mQuadMaterial = new Material();
-        mQuadMaterial.setShaderProgram(ProgramTestUtil.createNdcOneTexCoordOneTexture());
+        material = new Material();
+        material.setShaderProgram(ProgramTestUtil.createNdcOneTexCoordOneTexture());
 
-        TextureResource mDestinationTexture = new Empty2DTexture("s_texture", getSurfaceWidth(), getSurfaceHeight());
-        mDestinationTexture.setFilter(GLES20.GL_NEAREST, GLES20.GL_NEAREST);
-        mQuadMaterial.addTexture(mDestinationTexture);
+        TextureResource texture = new Empty2DTexture("s_texture", getSurfaceWidth(), getSurfaceHeight());
+        texture.setFilter(GLES20.GL_NEAREST, GLES20.GL_NEAREST);
 
-        mQuadMesh = new Mesh(GLES20.GL_TRIANGLE_STRIP);
-        mQuadMesh.addVertexBuffer(BufferTestUtil.createInterleavedQuadWithTextureCoords());
+        material.addTexture(texture);
+        mQuad.setMaterial(material);
+
+        mesh = new Mesh(GLES20.GL_TRIANGLE_STRIP);
+        mesh.addVertexBuffer(BufferTestUtil.createInterleavedQuadWithTextureCoords());
+        mQuad.setMesh(mesh);
 
         /**
          * Create a frame buffer.
@@ -72,28 +78,16 @@ public class FrameBufferTest_a extends OpenGLTestCase {
                 mContext = getBackendContext();
 
                 /**
-                 * Create materials.
+                 * Create geometries.
                  */
-                mTriangleMaterial.create(mContext);
-                mQuadMaterial.create(mContext);
+                mTriangle.create(mContext);
+                mQuad.create(mContext);
 
                 /**
-                 * Create meshes.
+                 * Load geometries to gpu.
                  */
-                mTriangleMesh.create(mContext);
-                mQuadMesh.create(mContext);
-
-                /**
-                 * Load meshes.
-                 */
-                mTriangleMesh.load(mContext);
-                mQuadMesh.load(mContext);
-
-                /**
-                 * Load materials
-                 */
-                mTriangleMaterial.load(mContext);
-                mQuadMaterial.load(mContext);
+                mTriangle.load(mContext);
+                mQuad.load(mContext);
 
                 /**
                  * Create the frame buffer in the backend.
@@ -113,8 +107,7 @@ public class FrameBufferTest_a extends OpenGLTestCase {
                  * Setup to render color to texture and depth to render buffer.
                  */
                 mContext.getFrameBufferTarget().useFrameBuffer(mFrameBuffer);
-
-                mContext.getFrameBufferTarget().setColorAttachment(mQuadMaterial.getTexture(0));
+                mContext.getFrameBufferTarget().setColorAttachment(mQuad.getMaterial().getTexture(0));
                 boolean isComplete = mContext.getFrameBufferTarget().checkIfComplete();
                 assertTrue(isComplete);
 
@@ -126,7 +119,7 @@ public class FrameBufferTest_a extends OpenGLTestCase {
                 /**
                  * Draw triangle to screen.
                  */
-                DrawTestUtil.drawUsingMaterialAndMesh(mContext, mTriangleMaterial, mTriangleMesh);
+                mTriangle.draw(mContext);
 
                 /**
                  * Switch back to system window rendering.
@@ -142,7 +135,7 @@ public class FrameBufferTest_a extends OpenGLTestCase {
                  * This quad should be drawn centered with the texture that was previously drawn
                  * into a frame buffer texture. So the triangle should be smaller.
                  */
-                DrawTestUtil.drawUsingMaterialAndMesh(mContext, mQuadMaterial, mQuadMesh);
+                mQuad.draw(mContext);
 
                 return null;
             }
