@@ -1,11 +1,15 @@
 package com.sweetlab.sweetride.resource;
 
 import android.graphics.Bitmap;
-import android.opengl.GLES20;
 import android.support.annotation.Nullable;
 
 import com.sweetlab.sweetride.context.ColorAttachment;
 import com.sweetlab.sweetride.context.DepthAttachment;
+import com.sweetlab.sweetride.context.TexelFormat;
+import com.sweetlab.sweetride.context.TexelType;
+import com.sweetlab.sweetride.context.TextureMagFilterParam;
+import com.sweetlab.sweetride.context.TextureMinFilterParam;
+import com.sweetlab.sweetride.context.TextureType;
 
 /**
  * A backend texture resource. Can also be used as an frame buffer color OR depth frame buffer
@@ -15,12 +19,12 @@ public interface TextureResource extends Resource, ColorAttachment, DepthAttachm
     /**
      * The default min filter.
      */
-    int DEFAULT_MIN_FILTER = GLES20.GL_NEAREST_MIPMAP_LINEAR;
+    TextureMinFilterParam DEFAULT_MIN_FILTER = TextureMinFilterParam.NEAREST_MIPMAP_LINEAR;
 
     /**
      * The default mag filter.
      */
-    int DEFAULT_MAG_FILTER = GLES20.GL_LINEAR;
+    TextureMagFilterParam DEFAULT_MAG_FILTER = TextureMagFilterParam.LINEAR;
 
     /**
      * Get the shader uniform sampler name.
@@ -56,41 +60,41 @@ public interface TextureResource extends Resource, ColorAttachment, DepthAttachm
      *
      * @return The GL format.
      */
-    int getTexelFormat();
+    TexelFormat getTexelFormat();
 
     /**
      * Get the GL texel type.
      *
      * @return The type.
      */
-    int getTexelType();
+    TexelType getTexelType();
 
     /**
      * Get the texture type.
      *
      * @return The texture type.
      */
-    int getType();
+    TextureType getTextureType();
 
     /**
      * Set the min and mag filters.
      *
-     * @param minFilter The min filter, for example GLES20.GL_NEAREST.
-     * @param magFilter The mag filter, for example GLES20.GL_NEAREST.
+     * @param minFilter The min filter
+     * @param magFilter The mag filter
      */
-    void setFilter(int minFilter, int magFilter);
+    void setFilter(TextureMinFilterParam minFilter, TextureMagFilterParam magFilter);
 
     /**
      * Get the min filter.
      *
      * @return The min filter.
      */
-    int getMinFilter();
+    TextureMinFilterParam getMinFilter();
 
     /**
      * Get the mag filter.
      *
      * @return The mag filter.
      */
-    int getMagFilter();
+    TextureMagFilterParam getMagFilter();
 }

@@ -56,18 +56,18 @@ public class ElementTargetTest_a extends OpenGLTestCase {
         mBlueMaterial = new Material();
         mBlueMaterial.setShaderProgram(ProgramTestUtil.createNdcBlue());
 
-        mLeftMesh = new Mesh(GLES20.GL_TRIANGLES);
+        mLeftMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mLeftMesh.addVertexBuffer(BufferTestUtil.createLeftTriangle());
         mLeftMesh.setIndicesBuffer(mIndicesBuffer);
 
-        mTopMesh = new Mesh(GLES20.GL_TRIANGLES);
+        mTopMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mTopMesh.addVertexBuffer(BufferTestUtil.createTopTriangle());
 
-        mRightMesh = new Mesh(GLES20.GL_TRIANGLES);
+        mRightMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mRightMesh.addVertexBuffer(BufferTestUtil.createRightTriangle());
         mRightMesh.setIndicesBuffer(mIndicesBuffer);
 
-        mBottomMesh = new Mesh(GLES20.GL_TRIANGLES);
+        mBottomMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mBottomMesh.addVertexBuffer(BufferTestUtil.createBottomTriangle());
 
         setTestInfo("red indices, blue, red indices, blue");

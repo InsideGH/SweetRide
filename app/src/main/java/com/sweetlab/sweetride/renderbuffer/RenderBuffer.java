@@ -1,8 +1,7 @@
 package com.sweetlab.sweetride.renderbuffer;
 
-import android.opengl.GLES20;
-
 import com.sweetlab.sweetride.DebugOptions;
+import com.sweetlab.sweetride.context.AttachmentType;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.DepthAttachment;
 import com.sweetlab.sweetride.context.ResourceManager;
@@ -102,7 +101,7 @@ public class RenderBuffer implements Resource, DepthAttachment, StencilAttachmen
     }
 
     @Override
-    public int getType() {
-        return GLES20.GL_RENDERBUFFER;
+    public AttachmentType getAttachmentType() {
+        return AttachmentType.RENDERBUFFER;
     }
 }

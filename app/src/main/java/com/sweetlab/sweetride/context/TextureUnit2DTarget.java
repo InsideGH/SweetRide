@@ -182,8 +182,8 @@ public class TextureUnit2DTarget {
      * @param level   Mipmap level, level 0 is base.
      */
     private void texImage2D(int target, TextureResource texture, int level) {
-        final int texelFormat = texture.getTexelFormat();
-        final int texelType = texture.getTexelType();
+        final int texelFormat = texture.getTexelFormat().getGlFormat();
+        final int texelType = texture.getTexelType().getGlType();
         final int width = texture.getWidth();
         final int height = texture.getHeight();
 

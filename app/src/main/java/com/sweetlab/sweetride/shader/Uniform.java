@@ -17,12 +17,12 @@ public class Uniform {
     private final int mArraySize;
 
     /**
-     * The element count of the uniform (for example, GLES20.GL_FLOAT_VEC2 would be 2)
+     * The element count of the uniform (for example, GL_FLOAT_VEC2 would be 2)
      */
     private int mElementCount;
 
     /**
-     * The type of uniform (for example GLES20.GL_FLOAT)
+     * The type of uniform (for example GL_FLOAT)
      */
     private int mType;
 
@@ -36,7 +36,7 @@ public class Uniform {
      *
      * @param name      Name of uniform.
      * @param arraySize The array size.
-     * @param type      Type (for example GLES20.GL_FLOAT)
+     * @param type      Type (for example GL_FLOAT)
      * @param location  Location of uniform in linked shader program.
      */
     public Uniform(String name, int arraySize, int type, int location) {
@@ -48,7 +48,7 @@ public class Uniform {
     }
 
     /**
-     * Get the number of elements in uniform. For example GLES20.GL_FLOAT_VEC2 would return 2.
+     * Get the number of elements in uniform. For example GL_FLOAT_VEC2 would return 2.
      *
      * @return Number of elements.
      */

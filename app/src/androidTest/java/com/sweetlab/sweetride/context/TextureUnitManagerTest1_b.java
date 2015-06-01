@@ -35,10 +35,10 @@ public class TextureUnitManagerTest1_b extends OpenGLTestCase {
         Material material = new Material();
         material.setShaderProgram(ProgramTestUtil.createNdcOneTexCoordOneTexture());
         Texture2D texture = new Texture2D("s_texture", BitmapTestUtil.createQuadColorBitmap(Bitmap.Config.ARGB_8888));
-        texture.setFilter(GLES20.GL_NEAREST, GLES20.GL_NEAREST);
+        texture.setFilter(TextureMinFilterParam.NEAREST, TextureMagFilterParam.NEAREST);
         material.addTexture(texture);
 
-        Mesh mesh = new Mesh(GLES20.GL_TRIANGLE_STRIP);
+        Mesh mesh = new Mesh(MeshDrawingMode.TRIANGLE_STRIP);
         mesh.setIndicesBuffer(new IndicesBuffer(new short[]{0, 1, 2, 3}, GLES20.GL_STATIC_DRAW));
         mesh.addVertexBuffer(BufferTestUtil.createInterleavedQuadWithTextureCoords());
 

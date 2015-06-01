@@ -1,7 +1,5 @@
 package com.sweetlab.sweetride.context;
 
-import android.opengl.GLES20;
-
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
 import com.sweetlab.sweetride.geometry.Geometry;
@@ -40,7 +38,7 @@ public class ArrayTargetTest2_b extends OpenGLTestCase {
         material = new Material();
         material.setShaderProgram(ProgramTestUtil.createNdcColor());
         mLeftGeometry.setMaterial(material);
-        mesh = new Mesh(GLES20.GL_TRIANGLES);
+        mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createLeftTriangle());
         mesh.addVertexBuffer(BufferTestUtil.createColorBuffer());
         mLeftGeometry.setMesh(mesh);
@@ -52,7 +50,7 @@ public class ArrayTargetTest2_b extends OpenGLTestCase {
         material = new Material();
         material.setShaderProgram(ProgramTestUtil.createNdcColor());
         mTopGeometry.setMaterial(material);
-        mesh = new Mesh(GLES20.GL_TRIANGLES);
+        mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createTopTriangle());
         mTopGeometry.setMesh(mesh);
 
@@ -64,7 +62,7 @@ public class ArrayTargetTest2_b extends OpenGLTestCase {
         material = new Material();
         material.setShaderProgram(ProgramTestUtil.createNdcRed());
         mRightGeometry.setMaterial(material);
-        mesh = new Mesh(GLES20.GL_TRIANGLES);
+        mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createRightTriangle());
         mesh.addVertexBuffer(BufferTestUtil.createColorBuffer());
         mRightGeometry.setMesh(mesh);
@@ -76,7 +74,7 @@ public class ArrayTargetTest2_b extends OpenGLTestCase {
         material = new Material();
         material.setShaderProgram(ProgramTestUtil.createNdcColor());
         mBottomGeometry.setMaterial(material);
-        mesh = new Mesh(GLES20.GL_TRIANGLES);
+        mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createBottomTriangle());
         mesh.addVertexBuffer(BufferTestUtil.createColorBuffer());
         mBottomGeometry.setMesh(mesh);

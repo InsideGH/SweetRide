@@ -4,7 +4,6 @@ import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
-import com.sweetlab.sweetride.context.Util.DrawTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
@@ -46,24 +45,24 @@ public class ElementTargetTest_b extends OpenGLTestCase {
         /**
          * Create materials. No need for GL thread.
          */
-        mesh = new Mesh(GLES20.GL_TRIANGLES);
+        mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createLeftTriangle());
         mesh.setIndicesBuffer(indicesBuffer);
         mLeftGeometry.setMaterial(redMaterial);
         mLeftGeometry.setMesh(mesh);
 
-        mesh = new Mesh(GLES20.GL_TRIANGLES);
+        mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createTopTriangle());
         mTopGeometry.setMaterial(blueMaterial);
         mTopGeometry.setMesh(mesh);
 
-        mesh = new Mesh(GLES20.GL_TRIANGLES);
+        mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createRightTriangle());
         mesh.setIndicesBuffer(indicesBuffer);
         mRightGeometry.setMaterial(redMaterial);
         mRightGeometry.setMesh(mesh);
 
-        mesh = new Mesh(GLES20.GL_TRIANGLES);
+        mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createBottomTriangle());
         mBottomGeometry.setMaterial(blueMaterial);
         mBottomGeometry.setMesh(mesh);

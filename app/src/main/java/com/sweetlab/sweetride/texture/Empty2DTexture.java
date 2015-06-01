@@ -1,10 +1,15 @@
 package com.sweetlab.sweetride.texture;
 
 import android.graphics.Bitmap;
-import android.opengl.GLES20;
 
+import com.sweetlab.sweetride.context.AttachmentType;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.ResourceManager;
+import com.sweetlab.sweetride.context.TexelFormat;
+import com.sweetlab.sweetride.context.TexelType;
+import com.sweetlab.sweetride.context.TextureMagFilterParam;
+import com.sweetlab.sweetride.context.TextureMinFilterParam;
+import com.sweetlab.sweetride.context.TextureType;
 import com.sweetlab.sweetride.resource.TextureResource;
 
 /**
@@ -36,12 +41,12 @@ public class Empty2DTexture implements TextureResource {
     /**
      * The min filter.
      */
-    private int mMinFilter = DEFAULT_MIN_FILTER;
+    private TextureMinFilterParam mMinFilter = DEFAULT_MIN_FILTER;
 
     /**
      * The mag filter.
      */
-    private int mMagFilter = DEFAULT_MAG_FILTER;
+    private TextureMagFilterParam mMagFilter = DEFAULT_MAG_FILTER;
 
     /**
      * Constructor.
@@ -92,33 +97,38 @@ public class Empty2DTexture implements TextureResource {
     }
 
     @Override
-    public int getTexelFormat() {
-        return GLES20.GL_RGB;
+    public TexelFormat getTexelFormat() {
+        return TexelFormat.RGB;
     }
 
     @Override
-    public int getTexelType() {
-        return GLES20.GL_UNSIGNED_SHORT_5_6_5;
+    public TexelType getTexelType() {
+        return TexelType.UNSIGNED_SHORT_5_6_5;
     }
 
     @Override
-    public int getType() {
-        return GLES20.GL_TEXTURE_2D;
+    public TextureType getTextureType() {
+        return TextureType.TEXTURE_2D;
     }
 
     @Override
-    public void setFilter(int minFilter, int magFilter) {
+    public AttachmentType getAttachmentType() {
+        return AttachmentType.TEXTURE_2D;
+    }
+
+    @Override
+    public void setFilter(TextureMinFilterParam minFilter, TextureMagFilterParam magFilter) {
         mMinFilter = minFilter;
         mMagFilter = magFilter;
     }
 
     @Override
-    public int getMinFilter() {
+    public TextureMinFilterParam getMinFilter() {
         return mMinFilter;
     }
 
     @Override
-    public int getMagFilter() {
+    public TextureMagFilterParam getMagFilter() {
         return mMagFilter;
     }
 

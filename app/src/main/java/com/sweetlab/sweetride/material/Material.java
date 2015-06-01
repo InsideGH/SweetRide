@@ -88,7 +88,7 @@ public class Material {
         TextureUnit2DTarget target = context.getTextureUnitManager().getDefaultTextureUnit().getTexture2DTarget();
         for (TextureResource texture : mTextures) {
             target.load(texture);
-            target.setFilter(texture, texture.getMinFilter(), texture.getMagFilter());
+            target.setFilter(texture, texture.getMinFilter().getGlParam(), texture.getMagFilter().getGlParam());
         }
     }
 }

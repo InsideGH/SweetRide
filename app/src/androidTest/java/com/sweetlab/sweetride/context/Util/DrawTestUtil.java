@@ -200,14 +200,14 @@ public class DrawTestUtil {
 
             final IndicesBuffer ib = mesh.getIndicesBuffer();
             if (ib == null) {
-                context.getArrayTarget().draw(mesh.getMode(), 0, mesh.getVertexCount());
+                context.getArrayTarget().draw(mesh.getMode().getGlMode(), 0, mesh.getVertexCount());
             } else {
                 context.getElementTarget().enableElements(ib);
-                context.getElementTarget().draw(mesh.getMode(), 0, ib.getIndicesCount());
+                context.getElementTarget().draw(mesh.getMode().getGlMode(), 0, ib.getIndicesCount());
                 context.getElementTarget().disableElements();
             }
 
-            for (int i = (textureCount -1); i > -1; i--) {
+            for (int i = (textureCount - 1); i > -1; i--) {
                 TextureUnit textureUnit = takenUnits.get(i);
                 textureUnit.getTexture2DTarget().disable(material.getTexture(i));
                 context.getTextureUnitManager().returnTextureUnit(textureUnit);

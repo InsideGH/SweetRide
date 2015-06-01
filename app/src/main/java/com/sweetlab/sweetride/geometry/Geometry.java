@@ -216,11 +216,11 @@ public class Geometry {
     private void drawGeometry(BackendContext context) {
         final IndicesBuffer ib = mMesh.getIndicesBuffer();
         if (ib == null) {
-            context.getArrayTarget().draw(mMesh.getMode(), 0, mMesh.getVertexCount());
+            context.getArrayTarget().draw(mMesh.getMode().getGlMode(), 0, mMesh.getVertexCount());
         } else {
             ElementTarget elementTarget = context.getElementTarget();
             elementTarget.enableElements(ib);
-            elementTarget.draw(mMesh.getMode(), 0, ib.getIndicesCount());
+            elementTarget.draw(mMesh.getMode().getGlMode(), 0, ib.getIndicesCount());
             elementTarget.disableElements();
         }
     }

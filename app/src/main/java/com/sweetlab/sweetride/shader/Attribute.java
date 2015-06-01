@@ -27,7 +27,7 @@ public class Attribute {
     private final int mTypeFamily;
 
     /**
-     * The element count of the uniform (for example, GLES20.GL_FLOAT_VEC2 would be 2)
+     * The element count of the uniform (for example, GL_FLOAT_VEC2 would be 2)
      */
     private int mVertexSize;
 
@@ -72,7 +72,7 @@ public class Attribute {
     }
 
     /**
-     * Get the number of elements in attribute. For example GLES20.GL_FLOAT_VEC2 would return 2.
+     * Get the number of elements in attribute. For example GL_FLOAT_VEC2 would return 2.
      *
      * @return Number of elements.
      */

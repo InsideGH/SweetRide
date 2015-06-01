@@ -1,7 +1,5 @@
 package com.sweetlab.sweetride.context;
 
-import android.opengl.GLES20;
-
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
@@ -12,7 +10,6 @@ import com.sweetlab.sweetride.resource.TextureResource;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
 import com.sweetlab.sweetride.texture.Empty2DTexture;
-import com.sweetlab.sweetride.util.Util;
 
 /**
  * Test rendering to a texture and then use the texture when rendering it to a quad on screen.
@@ -45,7 +42,7 @@ public class FrameBufferTest_a extends OpenGLTestCase {
         mTriangleMaterial = new Material();
         mTriangleMaterial.setShaderProgram(ProgramTestUtil.createNdcRed());
 
-        mTriangleMesh = new Mesh(GLES20.GL_TRIANGLES);
+        mTriangleMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mTriangleMesh.addVertexBuffer(BufferTestUtil.createCenteredTriangle());
 
         /**
@@ -55,10 +52,10 @@ public class FrameBufferTest_a extends OpenGLTestCase {
         mQuadMaterial.setShaderProgram(ProgramTestUtil.createNdcOneTexCoordOneTexture());
 
         TextureResource mDestinationTexture = new Empty2DTexture("s_texture", getSurfaceWidth(), getSurfaceHeight());
-        mDestinationTexture.setFilter(GLES20.GL_NEAREST, GLES20.GL_NEAREST);
+        mDestinationTexture.setFilter(TextureMinFilterParam.NEAREST, TextureMagFilterParam.NEAREST);
         mQuadMaterial.addTexture(mDestinationTexture);
 
-        mQuadMesh = new Mesh(GLES20.GL_TRIANGLE_STRIP);
+        mQuadMesh = new Mesh(MeshDrawingMode.TRIANGLE_STRIP);
         mQuadMesh.addVertexBuffer(BufferTestUtil.createInterleavedQuadWithTextureCoords());
 
         /**

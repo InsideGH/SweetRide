@@ -1,7 +1,5 @@
 package com.sweetlab.sweetride.context;
 
-import android.opengl.GLES20;
-
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
 import com.sweetlab.sweetride.framebuffer.FrameBuffer;
@@ -47,7 +45,7 @@ public class FrameBufferTest_b extends OpenGLTestCase {
         material = new Material();
         material.setShaderProgram(ProgramTestUtil.createNdcRed());
         mTriangle.setMaterial(material);
-        mesh = new Mesh(GLES20.GL_TRIANGLES);
+        mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createCenteredTriangle());
         mTriangle.setMesh(mesh);
 
@@ -58,12 +56,12 @@ public class FrameBufferTest_b extends OpenGLTestCase {
         material.setShaderProgram(ProgramTestUtil.createNdcOneTexCoordOneTexture());
 
         TextureResource texture = new Empty2DTexture("s_texture", getSurfaceWidth(), getSurfaceHeight());
-        texture.setFilter(GLES20.GL_NEAREST, GLES20.GL_NEAREST);
+        texture.setFilter(TextureMinFilterParam.NEAREST, TextureMagFilterParam.NEAREST);
 
         material.addTexture(texture);
         mQuad.setMaterial(material);
 
-        mesh = new Mesh(GLES20.GL_TRIANGLE_STRIP);
+        mesh = new Mesh(MeshDrawingMode.TRIANGLE_STRIP);
         mesh.addVertexBuffer(BufferTestUtil.createInterleavedQuadWithTextureCoords());
         mQuad.setMesh(mesh);
 

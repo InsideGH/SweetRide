@@ -9,7 +9,7 @@ public interface ColorAttachment {
      *
      * @return The texture type.
      */
-    int getType();
+    AttachmentType getAttachmentType();
 
     /**
      * Get the generated name/id.

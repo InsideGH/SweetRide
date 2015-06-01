@@ -1,7 +1,5 @@
 package com.sweetlab.sweetride.context;
 
-import android.opengl.GLES20;
-
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
@@ -45,16 +43,16 @@ public class ArrayTargetTest1_a extends OpenGLTestCase {
         mBlueMaterial = new Material();
         mBlueMaterial.setShaderProgram(ProgramTestUtil.createNdcBlue());
 
-        mLeftMesh = new Mesh(GLES20.GL_TRIANGLES);
+        mLeftMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mLeftMesh.addVertexBuffer(BufferTestUtil.createLeftTriangle());
 
-        mRightMesh = new Mesh(GLES20.GL_TRIANGLES);
+        mRightMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mRightMesh.addVertexBuffer(BufferTestUtil.createRightTriangle());
 
-        mTopMesh = new Mesh(GLES20.GL_TRIANGLES);
+        mTopMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mTopMesh.addVertexBuffer(BufferTestUtil.createTopTriangle());
 
-        mBottomMesh = new Mesh(GLES20.GL_TRIANGLES);
+        mBottomMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mBottomMesh.addVertexBuffer(BufferTestUtil.createBottomTriangle());
 
         setTestInfo("red, blue, red, blue");

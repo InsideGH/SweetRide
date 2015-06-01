@@ -1,7 +1,6 @@
 package com.sweetlab.sweetride.context;
 
 import android.graphics.Bitmap;
-import android.opengl.GLES20;
 
 /**
  * Helper class to bridge between Android bitmap and GL format and type.
@@ -13,7 +12,7 @@ public class AndroidTextureHelper {
      * @param bitmap Bitmap to check.
      * @return GL texture format.
      */
-    public static int getTexelFormat(Bitmap bitmap) {
+    public static TexelFormat getTexelFormat(Bitmap bitmap) {
         /**
          * GLES20 formats.
          * GLES20.GL_RGBA;
@@ -25,9 +24,9 @@ public class AndroidTextureHelper {
         Bitmap.Config config = bitmap.getConfig();
         switch (config) {
             case ARGB_8888:
-                return GLES20.GL_RGBA;
+                return TexelFormat.RGBA;
             case RGB_565:
-                return GLES20.GL_RGB;
+                return TexelFormat.RGB;
             case ALPHA_8:
             case ARGB_4444:
                 throw new RuntimeException("Unsupported bitmap config type in getTexelFormat" + config);
@@ -40,9 +39,9 @@ public class AndroidTextureHelper {
      * Get the GL texture texel type from bitmap config.
      *
      * @param bitmap Bitmap to check.
-     * @return
+     * @return The texel type.
      */
-    public static int getGLTexelType(Bitmap bitmap) {
+    public static TexelType getGLTexelType(Bitmap bitmap) {
         /**
          * GLES20 types
          * GLES20.GL_UNSIGNED_BYTE;
@@ -53,9 +52,9 @@ public class AndroidTextureHelper {
         Bitmap.Config config = bitmap.getConfig();
         switch (config) {
             case ARGB_8888:
-                return GLES20.GL_UNSIGNED_BYTE;
+                return TexelType.UNSIGNED_BYTE;
             case RGB_565:
-                return GLES20.GL_UNSIGNED_SHORT_5_6_5;
+                return TexelType.UNSIGNED_SHORT_5_6_5;
             case ALPHA_8:
             case ARGB_4444:
                 throw new RuntimeException("Unsupported bitmap config type getTexelType" + config);

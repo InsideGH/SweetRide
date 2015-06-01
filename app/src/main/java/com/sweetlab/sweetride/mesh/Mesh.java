@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.context.MeshDrawingMode;
 import com.sweetlab.sweetride.resource.VertexBufferResource;
 
 import java.util.ArrayList;
@@ -32,14 +33,14 @@ public class Mesh {
     /**
      * The drawing mode.
      */
-    private final int mMode;
+    private final MeshDrawingMode mMode;
 
     /**
      * Constructor.
      *
-     * @param mode Mode is the drawing mode, for example GL_TRIANGLES.
+     * @param mode Mode is the drawing mode.
      */
-    public Mesh(int mode) {
+    public Mesh(MeshDrawingMode mode) {
         mMode = mode;
     }
 
@@ -76,7 +77,7 @@ public class Mesh {
      *
      * @return The drawing mode.
      */
-    public int getMode() {
+    public MeshDrawingMode getMode() {
         return mMode;
     }
 

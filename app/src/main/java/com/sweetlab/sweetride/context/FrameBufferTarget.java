@@ -67,7 +67,7 @@ public class FrameBufferTarget {
      * @param attachment The color attachment.
      */
     public void setColorAttachment(ColorAttachment attachment) {
-        GLES20.glFramebufferTexture2D(TARGET, GLES20.GL_COLOR_ATTACHMENT0, attachment.getType(), attachment.getId(), 0);
+        GLES20.glFramebufferTexture2D(TARGET, GLES20.GL_COLOR_ATTACHMENT0, attachment.getAttachmentType().getGlType(), attachment.getId(), 0);
     }
 
     /**
@@ -76,7 +76,7 @@ public class FrameBufferTarget {
      * @param attachment The depth attachment.
      */
     public void setDepthAttachment(DepthAttachment attachment) {
-        GLES20.glFramebufferRenderbuffer(TARGET, GLES20.GL_DEPTH_ATTACHMENT, attachment.getType(), attachment.getId());
+        GLES20.glFramebufferRenderbuffer(TARGET, GLES20.GL_DEPTH_ATTACHMENT, attachment.getAttachmentType().getGlType(), attachment.getId());
     }
 
     /**

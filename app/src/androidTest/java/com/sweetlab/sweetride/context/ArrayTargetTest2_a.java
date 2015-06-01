@@ -1,7 +1,5 @@
 package com.sweetlab.sweetride.context;
 
-import android.opengl.GLES20;
-
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
@@ -45,7 +43,7 @@ public class ArrayTargetTest2_a extends OpenGLTestCase {
         mLeftMaterial = new Material();
         mLeftMaterial.setShaderProgram(ProgramTestUtil.createNdcColor());
 
-        mLeftMesh = new Mesh(GLES20.GL_TRIANGLES);
+        mLeftMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mLeftMesh.addVertexBuffer(BufferTestUtil.createLeftTriangle());
         mLeftMesh.addVertexBuffer(BufferTestUtil.createColorBuffer());
 
@@ -57,7 +55,7 @@ public class ArrayTargetTest2_a extends OpenGLTestCase {
         mTopMaterial = new Material();
         mTopMaterial.setShaderProgram(ProgramTestUtil.createNdcColor());
 
-        mTopMesh = new Mesh(GLES20.GL_TRIANGLES);
+        mTopMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mTopMesh.addVertexBuffer(BufferTestUtil.createTopTriangle());
 
 
@@ -70,7 +68,7 @@ public class ArrayTargetTest2_a extends OpenGLTestCase {
         mRightMaterial = new Material();
         mRightMaterial.setShaderProgram(ProgramTestUtil.createNdcRed());
 
-        mRightMesh = new Mesh(GLES20.GL_TRIANGLES);
+        mRightMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mRightMesh.addVertexBuffer(BufferTestUtil.createRightTriangle());
         mRightMesh.addVertexBuffer(BufferTestUtil.createColorBuffer());
 
@@ -82,7 +80,7 @@ public class ArrayTargetTest2_a extends OpenGLTestCase {
         mBottomMaterial = new Material();
         mBottomMaterial.setShaderProgram(ProgramTestUtil.createNdcColor());
 
-        mBottomMesh = new Mesh(GLES20.GL_TRIANGLES);
+        mBottomMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mBottomMesh.addVertexBuffer(BufferTestUtil.createBottomTriangle());
         mBottomMesh.addVertexBuffer(BufferTestUtil.createColorBuffer());
 
