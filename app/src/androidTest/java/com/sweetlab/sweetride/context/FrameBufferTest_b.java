@@ -1,11 +1,14 @@
 package com.sweetlab.sweetride.context;
 
+import android.opengl.GLES20;
+
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
 import com.sweetlab.sweetride.framebuffer.FrameBuffer;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.mesh.Mesh;
+import com.sweetlab.sweetride.renderbuffer.RenderBuffer;
 import com.sweetlab.sweetride.resource.TextureResource;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
@@ -32,6 +35,11 @@ public class FrameBufferTest_b extends OpenGLTestCase {
      * Frame buffer.
      */
     private FrameBuffer mFrameBuffer;
+
+    /**
+     * Render buffer.
+     */
+    private RenderBuffer mRenderBuffer;
 
     @Override
     protected void setUp() throws Exception {
@@ -69,6 +77,7 @@ public class FrameBufferTest_b extends OpenGLTestCase {
          * Create a frame buffer.
          */
         mFrameBuffer = new FrameBuffer();
+        mRenderBuffer = new RenderBuffer(GLES20.GL_DEPTH_COMPONENT16, texture.getWidth(), texture.getHeight());
 
         runOnGLThread(new ResultRunnable() {
             @Override
@@ -91,6 +100,8 @@ public class FrameBufferTest_b extends OpenGLTestCase {
                  * Create the frame buffer in the backend.
                  */
                 mFrameBuffer.create(mContext);
+                mRenderBuffer.create(mContext);
+
                 return null;
             }
         });
@@ -104,8 +115,10 @@ public class FrameBufferTest_b extends OpenGLTestCase {
                 /**
                  * Setup to render color to texture and depth to render buffer.
                  */
+                mContext.getRenderBufferTarget().enable(mRenderBuffer);
                 mContext.getFrameBufferTarget().useFrameBuffer(mFrameBuffer);
                 mContext.getFrameBufferTarget().setColorAttachment(mQuad.getMaterial().getTexture(0));
+                mContext.getFrameBufferTarget().setDepthAttachment(mRenderBuffer);
                 boolean isComplete = mContext.getFrameBufferTarget().checkIfComplete();
                 assertTrue(isComplete);
 
