@@ -21,9 +21,9 @@ public interface Resource {
     boolean isCreated();
 
     /**
-     * Release the resource.
+     * Delete the resource.
      */
-    void release(BackendContext context);
+    void delete(BackendContext context);
 
     /**
      * Get the generated name/id.

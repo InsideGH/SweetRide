@@ -23,7 +23,7 @@ public class FragmentShader extends BaseShader {
     }
 
     @Override
-    public void release(BackendContext context) {
+    public void delete(BackendContext context) {
         context.getResourceManager().deleteShader(mId);
         mId = ResourceManager.INVALID_SHADER_ID;
     }

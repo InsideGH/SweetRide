@@ -57,12 +57,12 @@ public class ShaderProgram implements Resource {
     }
 
     @Override
-    public void release(BackendContext context) {
+    public void delete(BackendContext context) {
         if (mVertexShader != null) {
-            mVertexShader.release(context);
+            mVertexShader.delete(context);
         }
         if (mFragmentShader != null) {
-            mFragmentShader.release(context);
+            mFragmentShader.delete(context);
         }
         context.getResourceManager().deleteProgram(mId);
         mId = ResourceManager.INVALID_PROGRAM_ID;

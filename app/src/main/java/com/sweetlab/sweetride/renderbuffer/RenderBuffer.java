@@ -64,7 +64,7 @@ public class RenderBuffer implements Resource, DepthAttachment, StencilAttachmen
     }
 
     @Override
-    public void release(BackendContext context) {
+    public void delete(BackendContext context) {
         context.getResourceManager().deleteRenderBuffer(mBufferId);
     }
 

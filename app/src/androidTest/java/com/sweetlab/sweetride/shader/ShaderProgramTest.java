@@ -184,7 +184,7 @@ public class ShaderProgramTest extends OpenGLTestCase {
             @Override
             public Object run() {
                 mValidProg.create(mContext);
-                mValidProg.release(mContext);
+                mValidProg.delete(mContext);
                 assertFalse(mValidProg.isCreated());
                 assertTrue(mValidProg.getId() == ResourceManager.INVALID_PROGRAM_ID);
                 return null;

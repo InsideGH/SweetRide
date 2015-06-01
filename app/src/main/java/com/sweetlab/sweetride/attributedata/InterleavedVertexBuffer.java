@@ -131,8 +131,8 @@ public class InterleavedVertexBuffer implements VertexBufferResource {
     }
 
     @Override
-    public void release(BackendContext context) {
-        mData.release(context);
+    public void delete(BackendContext context) {
+        mData.delete(context);
     }
 
     @Override

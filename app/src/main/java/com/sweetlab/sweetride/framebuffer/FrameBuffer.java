@@ -29,7 +29,7 @@ public class FrameBuffer implements Resource {
     }
 
     @Override
-    public void release(BackendContext context) {
+    public void delete(BackendContext context) {
         context.getResourceManager().deleteFrameBuffer(mBufferId);
     }
 }

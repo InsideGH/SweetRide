@@ -51,7 +51,7 @@ public class FragmentShaderTest extends OpenGLTestCase {
             @Override
             public Object run() {
                 mValid1.create(mContext);
-                mValid1.release(mContext);
+                mValid1.delete(mContext);
                 assertFalse(mValid1.isCreated());
                 assertEquals(ResourceManager.INVALID_SHADER_ID, mValid1.getId());
                 return null;
@@ -63,7 +63,7 @@ public class FragmentShaderTest extends OpenGLTestCase {
             @Override
             public Object run() {
                 mValid2.create(mContext);
-                mValid2.release(mContext);
+                mValid2.delete(mContext);
                 assertFalse(mValid2.isCreated());
                 assertEquals(ResourceManager.INVALID_SHADER_ID, mValid2.getId());
                 return null;

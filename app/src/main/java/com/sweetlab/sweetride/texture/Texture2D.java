@@ -55,7 +55,7 @@ public class Texture2D implements TextureResource {
     }
 
     @Override
-    public void release(BackendContext context) {
+    public void delete(BackendContext context) {
         context.getResourceManager().deleteTexture(mTextureId);
         mTextureId = ResourceManager.INVALID_TEXTURE_ID;
     }

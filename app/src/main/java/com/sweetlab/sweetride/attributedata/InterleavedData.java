@@ -118,7 +118,7 @@ public class InterleavedData implements BufferResource {
     }
 
     @Override
-    public void release(BackendContext context) {
+    public void delete(BackendContext context) {
         context.getResourceManager().deleteBuffer(mBufferId);
         mBufferId = ResourceManager.INVALID_BUFFER_ID;
     }
