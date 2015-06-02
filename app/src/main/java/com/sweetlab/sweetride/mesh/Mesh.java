@@ -141,10 +141,10 @@ public class Mesh {
      */
     public void load(BackendContext context) {
         if (mIndicesBuffer != null) {
-            context.getElementTarget().load(mIndicesBuffer);
+            mIndicesBuffer.load(context);
         }
         for (VertexBufferResource resource : mVertexBuffers) {
-            context.getArrayTarget().load(resource);
+            resource.load(context);
         }
     }
 }

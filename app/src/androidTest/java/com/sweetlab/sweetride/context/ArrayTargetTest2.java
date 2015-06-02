@@ -86,16 +86,15 @@ public class ArrayTargetTest2 extends OpenGLTestCase {
                 /**
                  * Load triangle vertices to gpu.
                  */
-                mContext.getArrayTarget().load(mLeftTriangle);
-                mContext.getArrayTarget().load(mRightTriangle);
-                mContext.getArrayTarget().load(mTopTriangle);
-                mContext.getArrayTarget().load(mBottomTriangle);
+                mLeftTriangle.load(mContext);
+                mRightTriangle.load(mContext);
+                mTopTriangle.load(mContext);
+                mBottomTriangle.load(mContext);
 
                 /**
                  * Load color data to gpu.
                  */
-                mContext.getArrayTarget().load(mColorBuffer);
-
+                mColorBuffer.load(mContext);
                 return null;
             }
         });

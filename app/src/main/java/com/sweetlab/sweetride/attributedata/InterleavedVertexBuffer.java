@@ -120,7 +120,8 @@ public class InterleavedVertexBuffer implements VertexBufferResource {
     private final BufferResource mData;
 
     /**
-     * Constructor.
+     * Constructor. This is a composition of one buffer resource and multiple attribute
+     * pointers.
      *
      * @param data     The attribute data.
      * @param pointers A list of attribute pointers.
@@ -163,6 +164,11 @@ public class InterleavedVertexBuffer implements VertexBufferResource {
     @Override
     public int getBufferUsage() {
         return mData.getBufferUsage();
+    }
+
+    @Override
+    public void load(BackendContext context) {
+        mData.load(context);
     }
 
     @Override

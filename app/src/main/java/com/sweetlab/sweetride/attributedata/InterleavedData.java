@@ -108,6 +108,11 @@ public class InterleavedData implements BufferResource {
     }
 
     @Override
+    public void load(BackendContext context) {
+        context.getArrayTarget().load(this);
+    }
+
+    @Override
     public void create(BackendContext context) {
         mBufferId = context.getResourceManager().generateBuffer();
     }

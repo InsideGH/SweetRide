@@ -72,6 +72,11 @@ public class VertexBuffer implements VertexBufferResource {
     }
 
     @Override
+    public void load(BackendContext context) {
+        context.getArrayTarget().load(this);
+    }
+
+    @Override
     public boolean isCreated() {
         return mBufferId != ResourceManager.INVALID_BUFFER_ID;
     }

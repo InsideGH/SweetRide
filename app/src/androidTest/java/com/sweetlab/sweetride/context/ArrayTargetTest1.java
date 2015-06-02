@@ -72,10 +72,10 @@ public class ArrayTargetTest1 extends OpenGLTestCase {
                 /**
                  * Load triangle vertices to gpu.
                  */
-                mContext.getArrayTarget().load(mLeftTriangle);
-                mContext.getArrayTarget().load(mRightTriangle);
-                mContext.getArrayTarget().load(mTopTriangle);
-                mContext.getArrayTarget().load(mBottomTriangle);
+                mLeftTriangle.load(mContext);
+                mRightTriangle.load(mContext);
+                mTopTriangle.load(mContext);
+                mBottomTriangle.load(mContext);
                 return null;
             }
         });

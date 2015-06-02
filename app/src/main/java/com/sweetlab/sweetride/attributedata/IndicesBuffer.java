@@ -80,6 +80,11 @@ public class IndicesBuffer implements BufferResource {
     }
 
     @Override
+    public void load(BackendContext context) {
+        context.getElementTarget().load(this);
+    }
+
+    @Override
     public void delete(BackendContext context) {
         context.getResourceManager().deleteBuffer(mBufferId);
     }

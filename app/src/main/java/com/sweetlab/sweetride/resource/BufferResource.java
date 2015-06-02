@@ -1,5 +1,7 @@
 package com.sweetlab.sweetride.resource;
 
+import com.sweetlab.sweetride.context.BackendContext;
+
 import java.nio.Buffer;
 
 /**
@@ -26,4 +28,9 @@ public interface BufferResource extends Resource {
      * @return The buffer usage hint.
      */
     int getBufferUsage();
+
+    /**
+     * Load the buffer to gpu.
+     */
+    void load(BackendContext context);
 }

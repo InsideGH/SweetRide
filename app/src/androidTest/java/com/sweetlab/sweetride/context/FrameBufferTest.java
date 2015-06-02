@@ -105,8 +105,8 @@ public class FrameBufferTest extends OpenGLTestCase {
                 /**
                  * Load triangle vertices to gpu.
                  */
-                mContext.getArrayTarget().load(mTriangleVertexBuffer);
-                mContext.getArrayTarget().load(mQuadVertexBuffer);
+                mTriangleVertexBuffer.load(mContext);
+                mQuadVertexBuffer.load(mContext);
 
                 /**
                  * Create the empty texture to draw into.

@@ -82,12 +82,12 @@ public class TextureUnitManagerTest1 extends OpenGLTestCase {
                 /**
                  * Load indices to gpu.
                  */
-                mContext.getElementTarget().load(mIb);
+                mIb.load(mContext);
 
                 /**
                  * Load interleaved vertex buffer to gpu.
                  */
-                mContext.getArrayTarget().load(mVertexBuffer);
+                mVertexBuffer.load(mContext);
 
                 /**
                  * Load texture and set filter.
