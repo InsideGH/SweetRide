@@ -81,6 +81,7 @@ public class FrameBufferTest extends OpenGLTestCase {
          * Create off-screen resources.
          */
         mDestinationTexture = new Empty2DTexture("s_texture", getSurfaceWidth(), getSurfaceHeight());
+        mDestinationTexture.setFilter(TextureMinFilterParam.NEAREST, TextureMagFilterParam.NEAREST);
 
         mRenderBuffer = new RenderBuffer(GLES20.GL_DEPTH_COMPONENT16, mDestinationTexture.getWidth(), mDestinationTexture.getHeight());
         mFrameBuffer = new FrameBuffer();
@@ -116,8 +117,7 @@ public class FrameBufferTest extends OpenGLTestCase {
                 /**
                  * Load texture and set filter.
                  */
-                mContext.getTextureUnitManager().getDefaultTextureUnit().getTexture2DTarget().load(mDestinationTexture);
-                mContext.getTextureUnitManager().getDefaultTextureUnit().getTexture2DTarget().setFilter(mDestinationTexture, GLES20.GL_NEAREST, GLES20.GL_NEAREST);
+                mDestinationTexture.load(mContext);
 
                 /**
                  * Create the render buffer in backend.

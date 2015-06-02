@@ -11,6 +11,7 @@ import com.sweetlab.sweetride.context.TexelType;
 import com.sweetlab.sweetride.context.TextureMagFilterParam;
 import com.sweetlab.sweetride.context.TextureMinFilterParam;
 import com.sweetlab.sweetride.context.TextureType;
+import com.sweetlab.sweetride.context.TextureUnit2DTarget;
 import com.sweetlab.sweetride.resource.TextureResource;
 
 /**
@@ -83,6 +84,13 @@ public class Texture2D implements TextureResource {
     @Override
     public int getHeight() {
         return mBitmap.getHeight();
+    }
+
+    @Override
+    public void load(BackendContext context) {
+        TextureUnit2DTarget texture2DTarget = context.getTextureUnitManager().getDefaultTextureUnit().getTexture2DTarget();
+        texture2DTarget.load(this);
+        texture2DTarget.setFilter(this, mMinFilter.getGlParam(), mMagFilter.getGlParam());
     }
 
     @Override

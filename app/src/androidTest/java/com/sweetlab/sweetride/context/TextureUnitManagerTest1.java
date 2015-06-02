@@ -53,7 +53,8 @@ public class TextureUnitManagerTest1 extends OpenGLTestCase {
         mShaderProgram = ProgramTestUtil.createNdcOneTexCoordOneTexture();
         mVertexBuffer = BufferTestUtil.createInterleavedQuadWithTextureCoords();
         mTexture = new Texture2D("s_texture", BitmapTestUtil.createQuadColorBitmap(Bitmap.Config.ARGB_8888));
-
+        mTexture.setFilter(TextureMinFilterParam.NEAREST, TextureMagFilterParam.NEAREST);
+        
         runOnGLThread(new ResultRunnable() {
             @Override
             public Object run() {
@@ -92,8 +93,7 @@ public class TextureUnitManagerTest1 extends OpenGLTestCase {
                 /**
                  * Load texture and set filter.
                  */
-                mContext.getTextureUnitManager().getDefaultTextureUnit().getTexture2DTarget().load(mTexture);
-                mContext.getTextureUnitManager().getDefaultTextureUnit().getTexture2DTarget().setFilter(mTexture, GLES20.GL_NEAREST, GLES20.GL_NEAREST);
+                mTexture.load(mContext);
                 return null;
             }
         });

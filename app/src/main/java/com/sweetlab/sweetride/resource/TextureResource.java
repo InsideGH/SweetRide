@@ -3,6 +3,7 @@ package com.sweetlab.sweetride.resource;
 import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 
+import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.ColorAttachment;
 import com.sweetlab.sweetride.context.DepthAttachment;
 import com.sweetlab.sweetride.context.TexelFormat;
@@ -25,6 +26,13 @@ public interface TextureResource extends Resource, ColorAttachment, DepthAttachm
      * The default mag filter.
      */
     TextureMagFilterParam DEFAULT_MAG_FILTER = TextureMagFilterParam.LINEAR;
+
+    /**
+     * Load the texture to gpu.
+     *
+     * @param context Backend context.
+     */
+    void load(BackendContext context);
 
     /**
      * Get the shader uniform sampler name.

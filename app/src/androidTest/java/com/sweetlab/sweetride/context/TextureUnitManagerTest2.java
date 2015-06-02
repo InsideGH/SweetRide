@@ -57,7 +57,10 @@ public class TextureUnitManagerTest2 extends OpenGLTestCase {
         mVertexBuffer = BufferTestUtil.createInterleavedQuadWithTextureCoords();
 
         mTexture = new Texture2D("s_texture", BitmapTestUtil.createQuadColorBitmap(Bitmap.Config.ARGB_8888));
+        mTexture.setFilter(TextureMinFilterParam.NEAREST, TextureMagFilterParam.NEAREST);
+
         mTextureChess = new Texture2D("s_textureChess", BitmapTestUtil.createChessColorBitmap(Bitmap.Config.ARGB_8888));
+        mTextureChess.setFilter(TextureMinFilterParam.NEAREST, TextureMagFilterParam.NEAREST);
 
         runOnGLThread(new ResultRunnable() {
             @Override
@@ -98,11 +101,8 @@ public class TextureUnitManagerTest2 extends OpenGLTestCase {
                 /**
                  * Load texture and set filter.
                  */
-                mContext.getTextureUnitManager().getDefaultTextureUnit().getTexture2DTarget().load(mTexture);
-                mContext.getTextureUnitManager().getDefaultTextureUnit().getTexture2DTarget().setFilter(mTexture, GLES20.GL_NEAREST, GLES20.GL_NEAREST);
-
-                mContext.getTextureUnitManager().getDefaultTextureUnit().getTexture2DTarget().load(mTextureChess);
-                mContext.getTextureUnitManager().getDefaultTextureUnit().getTexture2DTarget().setFilter(mTextureChess, GLES20.GL_NEAREST, GLES20.GL_NEAREST);
+                mTexture.load(mContext);
+                mTextureChess.load(mContext);
                 return null;
             }
         });
