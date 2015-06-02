@@ -11,6 +11,8 @@ import com.sweetlab.sweetride.context.TextureUnit;
 import com.sweetlab.sweetride.context.TextureUnitManager;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.mesh.Mesh;
+import com.sweetlab.sweetride.node.Node;
+import com.sweetlab.sweetride.node.NodeVisitor;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 
 import java.util.ArrayList;
@@ -21,7 +23,7 @@ import java.util.List;
  * contained object in the sense that it has all information necessary to be able to perform
  * drawing.
  */
-public class Geometry {
+public class Geometry extends Node {
     /**
      * The mesh.
      */
@@ -36,6 +38,11 @@ public class Geometry {
      * This is a temporary list of taken texture units used during drawing.
      */
     private List<TextureUnit> mTextureUnits = new ArrayList<>();
+
+    @Override
+    public void accept(NodeVisitor visitor) {
+        visitor.visit(this);
+    }
 
     /**
      * Set mesh. Null allowed.
