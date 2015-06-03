@@ -3,7 +3,6 @@ package com.sweetlab.sweetride.geometry;
 import android.support.annotation.Nullable;
 
 import com.sweetlab.sweetride.DebugOptions;
-import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.context.ArrayTarget;
 import com.sweetlab.sweetride.context.BackendContext;
@@ -51,11 +50,7 @@ public class Geometry extends Node {
      * @param mesh The mesh.
      */
     public void setMesh(@Nullable Mesh mesh) {
-        if (mMesh != null) {
-            disconnectNotifier(mMesh);
-        }
         mMesh = mesh;
-        connectNotifier(mMesh);
     }
 
     /**
@@ -64,11 +59,7 @@ public class Geometry extends Node {
      * @param material The material.
      */
     public void setMaterial(@Nullable Material material) {
-        if (mMaterial != null) {
-            disconnectNotifier(mMaterial);
-        }
         mMaterial = material;
-        connectNotifier(mMaterial);
     }
 
     /**

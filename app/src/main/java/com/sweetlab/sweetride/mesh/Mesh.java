@@ -2,8 +2,6 @@ package com.sweetlab.sweetride.mesh;
 
 import android.support.annotation.Nullable;
 
-import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.ActionNotifier;
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.MeshDrawingMode;
@@ -16,7 +14,7 @@ import java.util.List;
  * Mesh is an abstraction that contains multiple vertex buffer resources and optional
  * indices buffer resource.
  */
-public class Mesh extends ActionNotifier {
+public class Mesh {
     /**
      * List of vertex buffers.
      */
@@ -46,22 +44,13 @@ public class Mesh extends ActionNotifier {
         mMode = mode;
     }
 
-    @Override
-    public void handleAction(BackendContext context, Action action) {
-        throw new RuntimeException("wtf");
-    }
-
     /**
      * Set the indices buffer to use. Null allowed to not use indices.
      *
      * @param indicesBuffer The indices buffer.
      */
     public void setIndicesBuffer(@Nullable IndicesBuffer indicesBuffer) {
-        if (mIndicesBuffer != null) {
-            disconnectNotifier(mIndicesBuffer);
-        }
         mIndicesBuffer = indicesBuffer;
-        connectNotifier(mIndicesBuffer);
     }
 
     /**
@@ -81,7 +70,6 @@ public class Mesh extends ActionNotifier {
             }
         }
         mVertexBuffers.add(vertexBuffer);
-        connectNotifier(vertexBuffer);
     }
 
     /**

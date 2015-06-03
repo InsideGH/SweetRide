@@ -2,8 +2,6 @@ package com.sweetlab.sweetride.texture;
 
 import android.graphics.Bitmap;
 
-import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.ActionType;
 import com.sweetlab.sweetride.context.AttachmentType;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.ResourceManager;
@@ -19,7 +17,7 @@ import com.sweetlab.sweetride.resource.TextureResource;
  * An empty texture resource. It has format and type but no data.
  * This texture can be used as a destination to draw into using frame buffer.
  */
-public class Empty2DTexture extends TextureResource {
+public class Empty2DTexture implements TextureResource {
 
     /**
      * The uniform sampler name in the shader program.
@@ -62,8 +60,6 @@ public class Empty2DTexture extends TextureResource {
         mName = name;
         mWidth = width;
         mHeight = height;
-        addAction(new Action(this, ActionType.CREATE));
-        addAction(new Action(this, ActionType.LOAD));
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.sweetlab.sweetride.attributedata;
 
 import android.util.Pair;
 
-import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.resource.BufferResource;
 import com.sweetlab.sweetride.resource.VertexBufferResource;
@@ -15,7 +14,7 @@ import java.util.List;
  * The buffer resource holds one attribute data and many attribute pointers, aka an
  * interleaved vertex buffer.
  */
-public class InterleavedVertexBuffer extends VertexBufferResource {
+public class InterleavedVertexBuffer implements VertexBufferResource {
     /**
      * Builder to build an interleaved vertex buffer.
      */
@@ -127,10 +126,9 @@ public class InterleavedVertexBuffer extends VertexBufferResource {
      * @param data     The attribute data.
      * @param pointers A list of attribute pointers.
      */
-    public InterleavedVertexBuffer(InterleavedData data, List<AttributePointer> pointers) {
+    public InterleavedVertexBuffer(BufferResource data, List<AttributePointer> pointers) {
         mData = data;
         mPointers = pointers;
-        connectNotifier(data);
     }
 
     @Override
@@ -181,10 +179,5 @@ public class InterleavedVertexBuffer extends VertexBufferResource {
     @Override
     public AttributePointer getAttributePointer(int index) {
         return mPointers.get(index);
-    }
-
-    @Override
-    public void handleAction(BackendContext context, Action action) {
-        throw new RuntimeException("wtf");
     }
 }

@@ -2,8 +2,6 @@ package com.sweetlab.sweetride.texture;
 
 import android.graphics.Bitmap;
 
-import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.ActionType;
 import com.sweetlab.sweetride.context.AndroidTextureHelper;
 import com.sweetlab.sweetride.context.AttachmentType;
 import com.sweetlab.sweetride.context.BackendContext;
@@ -20,7 +18,7 @@ import com.sweetlab.sweetride.resource.TextureResource;
  * A 2D texture with bitmap as data source. The format,type, width and height is decided by the
  * bitmap.
  */
-public class Texture2D extends TextureResource {
+public class Texture2D implements TextureResource {
     /**
      * The name if the shader uniform sampler.
      */
@@ -55,8 +53,6 @@ public class Texture2D extends TextureResource {
     public Texture2D(String name, Bitmap bitmap) {
         mName = name;
         mBitmap = bitmap;
-        addAction(new Action(this, ActionType.CREATE));
-        addAction(new Action(this, ActionType.LOAD));
     }
 
     @Override

@@ -1,20 +1,17 @@
 package com.sweetlab.sweetride.resource;
 
-import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.ActionNotifier;
 import com.sweetlab.sweetride.attributedata.AttributePointer;
-import com.sweetlab.sweetride.context.BackendContext;
 
 /**
  * A vertex buffer resource which is a buffer resource.
  */
-public abstract class VertexBufferResource extends ActionNotifier implements BufferResource {
+public interface VertexBufferResource extends BufferResource {
     /**
      * Get number of attribute pointers.
      *
      * @return Number of attribute pointers.
      */
-    public abstract int getAttributePointerCount();
+    int getAttributePointerCount();
 
     /**
      * Get attribute pointer at index.
@@ -22,5 +19,5 @@ public abstract class VertexBufferResource extends ActionNotifier implements Buf
      * @param index The index to get from.
      * @return The attribute pointer.
      */
-    public abstract AttributePointer getAttributePointer(int index);
+    AttributePointer getAttributePointer(int index);
 }

@@ -1,7 +1,5 @@
 package com.sweetlab.sweetride.action;
 
-import com.sweetlab.sweetride.context.BackendContext;
-
 /**
  * An action consists of two parts.
  * 1. The source the action originates from.
@@ -52,14 +50,5 @@ public class Action {
      */
     public void remove() {
         mSource.removeAction(this);
-    }
-
-    /**
-     * Handle the action.
-     *
-     * @param context The backend context.
-     */
-    public void handleAction(BackendContext context) {
-        mSource.handleAction(context, this);
     }
 }

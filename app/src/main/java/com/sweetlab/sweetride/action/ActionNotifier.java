@@ -1,7 +1,5 @@
 package com.sweetlab.sweetride.action;
 
-import com.sweetlab.sweetride.context.BackendContext;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +9,7 @@ import java.util.List;
  * During connect and disconnect, any pending actions are handled (added or removed).
  * Actions can be added or removed which is then reflected to the top of the graph.
  */
-public abstract class ActionNotifier {
+public class ActionNotifier {
     /**
      * List of pending actions.
      */
@@ -95,15 +93,6 @@ public abstract class ActionNotifier {
     }
 
     /**
-     * Get the first/oldest action.
-     *
-     * @return The first/oldest action.
-     */
-    public Action getFirstAction() {
-        return mActions.get(0);
-    }
-
-    /**
      * Check if there are any pending actions.
      *
      * @return True if there are pending actions.
@@ -111,14 +100,6 @@ public abstract class ActionNotifier {
     public boolean hasActions() {
         return !mActions.isEmpty();
     }
-
-    /**
-     * Handle the action.
-     *
-     * @param context Backend context.
-     * @param action  The  action.
-     */
-    public abstract void handleAction(BackendContext context, Action action);
 
     /**
      * Report action add to all parents.
