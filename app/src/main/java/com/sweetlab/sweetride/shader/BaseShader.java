@@ -3,6 +3,7 @@ package com.sweetlab.sweetride.shader;
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionNotifier;
 import com.sweetlab.sweetride.action.ActionType;
+import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.resource.Resource;
 
 /**
@@ -22,6 +23,15 @@ public abstract class BaseShader extends ActionNotifier implements Resource {
     public BaseShader(String source) {
         mSource = source;
         addAction(new Action(this, ActionType.CREATE));
+    }
+
+    @Override
+    public void handleAction(BackendContext context, Action action) {
+        if (action.getType().equals(ActionType.CREATE)) {
+            create(context);
+            return;
+        }
+        throw new RuntimeException("wtf");
     }
 
     /**

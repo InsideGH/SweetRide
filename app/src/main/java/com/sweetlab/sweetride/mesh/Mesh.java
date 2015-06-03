@@ -2,6 +2,7 @@ package com.sweetlab.sweetride.mesh;
 
 import android.support.annotation.Nullable;
 
+import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionNotifier;
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.context.BackendContext;
@@ -43,6 +44,11 @@ public class Mesh extends ActionNotifier {
      */
     public Mesh(MeshDrawingMode mode) {
         mMode = mode;
+    }
+
+    @Override
+    public void handleAction(BackendContext context, Action action) {
+        throw new RuntimeException("wtf");
     }
 
     /**

@@ -1,7 +1,9 @@
 package com.sweetlab.sweetride.resource;
 
+import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionNotifier;
 import com.sweetlab.sweetride.attributedata.AttributePointer;
+import com.sweetlab.sweetride.context.BackendContext;
 
 /**
  * A vertex buffer resource which is a buffer resource.

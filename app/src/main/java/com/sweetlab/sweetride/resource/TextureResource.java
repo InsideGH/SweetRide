@@ -3,6 +3,7 @@ package com.sweetlab.sweetride.resource;
 import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 
+import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.ColorAttachment;
@@ -106,4 +107,18 @@ public abstract class TextureResource extends ActionNotifier implements Resource
      * @return The mag filter.
      */
     public abstract TextureMagFilterParam getMagFilter();
+
+    @Override
+    public void handleAction(BackendContext context, Action action) {
+        switch (action.getType()) {
+            case CREATE:
+                create(context);
+                break;
+            case LOAD:
+                load(context);
+                break;
+            default:
+                throw new RuntimeException("wtf");
+        }
+    }
 }

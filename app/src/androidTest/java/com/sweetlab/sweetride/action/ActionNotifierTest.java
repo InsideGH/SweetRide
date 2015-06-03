@@ -2,6 +2,8 @@ package com.sweetlab.sweetride.action;
 
 import android.test.AndroidTestCase;
 
+import com.sweetlab.sweetride.context.BackendContext;
+
 /**
  * Test of the action notifier.
  */
@@ -256,15 +258,29 @@ public class ActionNotifierTest extends AndroidTestCase {
     private class NotifierA extends ActionNotifier {
         public Action mCreateAction = new Action(this, ActionType.CREATE);
         public Action mLoadAction = new Action(this, ActionType.LOAD);
+
+        @Override
+        public void handleAction(BackendContext context, Action action) {
+            throw new RuntimeException("wtf");
+        }
     }
 
     private class NotifierB extends ActionNotifier {
         public Action mCreateAction = new Action(this, ActionType.CREATE);
 
+        @Override
+        public void handleAction(BackendContext context, Action action) {
+            throw new RuntimeException("wtf");
+        }
     }
 
     private class NotifierC extends ActionNotifier {
         public Action mCreateAction = new Action(this, ActionType.CREATE);
         public Action mLoadAction = new Action(this, ActionType.LOAD);
+
+        @Override
+        public void handleAction(BackendContext context, Action action) {
+            throw new RuntimeException("wtf");
+        }
     }
 }

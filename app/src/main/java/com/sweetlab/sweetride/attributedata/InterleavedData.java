@@ -132,4 +132,18 @@ public class InterleavedData extends ActionNotifier implements BufferResource {
         context.getResourceManager().deleteBuffer(mBufferId);
         mBufferId = ResourceManager.INVALID_BUFFER_ID;
     }
+
+    @Override
+    public void handleAction(BackendContext context, Action action) {
+        switch (action.getType()) {
+            case CREATE:
+                create(context);
+                break;
+            case LOAD:
+                load(context);
+                break;
+            default:
+                throw new RuntimeException("wtf");
+        }
+    }
 }

@@ -3,6 +3,7 @@ package com.sweetlab.sweetride.geometry;
 import android.support.annotation.Nullable;
 
 import com.sweetlab.sweetride.DebugOptions;
+import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.context.ArrayTarget;
 import com.sweetlab.sweetride.context.BackendContext;

@@ -84,6 +84,15 @@ public class ShaderProgram extends ActionNotifier implements Resource {
         return mId;
     }
 
+    @Override
+    public void handleAction(BackendContext context, Action action) {
+        if (action.getType().equals(ActionType.CREATE)) {
+            create(context);
+            return;
+        }
+        throw new RuntimeException("wtf");
+    }
+
     /**
      * Get vertex shader.
      *

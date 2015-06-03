@@ -94,6 +94,20 @@ public class IndicesBuffer extends ActionNotifier implements BufferResource {
         context.getResourceManager().deleteBuffer(mBufferId);
     }
 
+    @Override
+    public void handleAction(BackendContext context, Action action) {
+        switch (action.getType()) {
+            case CREATE:
+                create(context);
+                break;
+            case LOAD:
+                load(context);
+                break;
+            default:
+                throw new RuntimeException("wtf");
+        }
+    }
+
     /**
      * Get indices count.
      *

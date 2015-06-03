@@ -1,5 +1,6 @@
 package com.sweetlab.sweetride.material;
 
+import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.TextureUnit2DTarget;
@@ -22,6 +23,11 @@ public class Material extends ActionNotifier {
      * The shader program.
      */
     private ShaderProgram mShaderProgram;
+
+    @Override
+    public void handleAction(BackendContext context, Action action) {
+        throw new RuntimeException("wtf");
+    }
 
     public void setShaderProgram(ShaderProgram program) {
         if (mShaderProgram != null) {

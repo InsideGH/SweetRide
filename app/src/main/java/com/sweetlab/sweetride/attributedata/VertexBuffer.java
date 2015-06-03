@@ -105,4 +105,18 @@ public class VertexBuffer extends VertexBufferResource {
     public AttributePointer getAttributePointer(int index) {
         return mBufferPointer;
     }
+
+    @Override
+    public void handleAction(BackendContext context, Action action) {
+        switch (action.getType()) {
+            case CREATE:
+                create(context);
+                break;
+            case LOAD:
+                load(context);
+                break;
+            default:
+                throw new RuntimeException("wtf");
+        }
+    }
 }
