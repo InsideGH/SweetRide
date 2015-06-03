@@ -3,6 +3,7 @@ package com.sweetlab.sweetride.resource;
 import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 
+import com.sweetlab.sweetride.action.ActionNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.ColorAttachment;
 import com.sweetlab.sweetride.context.DepthAttachment;
@@ -16,44 +17,44 @@ import com.sweetlab.sweetride.context.TextureType;
  * A backend texture resource. Can also be used as an frame buffer color OR depth frame buffer
  * attachment.
  */
-public interface TextureResource extends Resource, ColorAttachment, DepthAttachment {
+public abstract class TextureResource extends ActionNotifier implements Resource, ColorAttachment, DepthAttachment {
     /**
      * The default min filter.
      */
-    TextureMinFilterParam DEFAULT_MIN_FILTER = TextureMinFilterParam.NEAREST_MIPMAP_LINEAR;
+    protected TextureMinFilterParam DEFAULT_MIN_FILTER = TextureMinFilterParam.NEAREST_MIPMAP_LINEAR;
 
     /**
      * The default mag filter.
      */
-    TextureMagFilterParam DEFAULT_MAG_FILTER = TextureMagFilterParam.LINEAR;
+    protected TextureMagFilterParam DEFAULT_MAG_FILTER = TextureMagFilterParam.LINEAR;
 
     /**
      * Load the texture to gpu.
      *
      * @param context Backend context.
      */
-    void load(BackendContext context);
+    public abstract void load(BackendContext context);
 
     /**
      * Get the shader uniform sampler name.
      *
      * @return The shader uniform sampler name.
      */
-    String getName();
+    public abstract String getName();
 
     /**
      * Get the width of the texture.
      *
      * @return The width in pixels.
      */
-    int getWidth();
+    public abstract int getWidth();
 
     /**
      * Get the height of the texture.
      *
      * @return The height in pixels.
      */
-    int getHeight();
+    public abstract int getHeight();
 
     /**
      * Get the data. Null is permitted.
@@ -61,28 +62,28 @@ public interface TextureResource extends Resource, ColorAttachment, DepthAttachm
      * @return The data, or null.
      */
     @Nullable
-    Bitmap getData();
+    public abstract Bitmap getData();
 
     /**
      * Get the GL format.
      *
      * @return The GL format.
      */
-    TexelFormat getTexelFormat();
+    public abstract TexelFormat getTexelFormat();
 
     /**
      * Get the GL texel type.
      *
      * @return The type.
      */
-    TexelType getTexelType();
+    public abstract TexelType getTexelType();
 
     /**
      * Get the texture type.
      *
      * @return The texture type.
      */
-    TextureType getTextureType();
+    public abstract TextureType getTextureType();
 
     /**
      * Set the min and mag filters.
@@ -90,19 +91,19 @@ public interface TextureResource extends Resource, ColorAttachment, DepthAttachm
      * @param minFilter The min filter
      * @param magFilter The mag filter
      */
-    void setFilter(TextureMinFilterParam minFilter, TextureMagFilterParam magFilter);
+    public abstract void setFilter(TextureMinFilterParam minFilter, TextureMagFilterParam magFilter);
 
     /**
      * Get the min filter.
      *
      * @return The min filter.
      */
-    TextureMinFilterParam getMinFilter();
+    public abstract TextureMinFilterParam getMinFilter();
 
     /**
      * Get the mag filter.
      *
      * @return The mag filter.
      */
-    TextureMagFilterParam getMagFilter();
+    public abstract TextureMagFilterParam getMagFilter();
 }

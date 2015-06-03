@@ -1,5 +1,7 @@
 package com.sweetlab.sweetride.attributedata;
 
+import com.sweetlab.sweetride.action.Action;
+import com.sweetlab.sweetride.action.ActionType;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.ResourceManager;
 import com.sweetlab.sweetride.resource.VertexBufferResource;
@@ -10,7 +12,7 @@ import java.nio.Buffer;
 /**
  * A vertex buffer.
  */
-public class VertexBuffer implements VertexBufferResource {
+public class VertexBuffer extends VertexBufferResource {
 
     /**
      * The buffer of data.
@@ -49,6 +51,8 @@ public class VertexBuffer implements VertexBufferResource {
         mBufferUsage = bufferUsage;
         mVertexData = vertexData;
         mBuffer = Util.createBuffer(vertexData.getData(), vertexData.getTotalByteCount());
+        addAction(new Action(this, ActionType.CREATE));
+        addAction(new Action(this, ActionType.LOAD));
     }
 
     @Override

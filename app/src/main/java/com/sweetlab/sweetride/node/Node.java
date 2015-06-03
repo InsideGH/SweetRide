@@ -1,12 +1,14 @@
 package com.sweetlab.sweetride.node;
 
+import com.sweetlab.sweetride.action.ActionNotifier;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A general node.
  */
-public class Node {
+public class Node extends ActionNotifier {
 
     /**
      * List of children.

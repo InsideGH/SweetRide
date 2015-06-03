@@ -1,5 +1,8 @@
 package com.sweetlab.sweetride.attributedata;
 
+import com.sweetlab.sweetride.action.Action;
+import com.sweetlab.sweetride.action.ActionNotifier;
+import com.sweetlab.sweetride.action.ActionType;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.ResourceManager;
 import com.sweetlab.sweetride.resource.BufferResource;
@@ -11,7 +14,7 @@ import java.nio.ShortBuffer;
 /**
  * Indices buffer holding indices, used while drawing with indices.
  */
-public class IndicesBuffer implements BufferResource {
+public class IndicesBuffer extends ActionNotifier implements BufferResource {
     /**
      * The buffer 'name'/id.
      */
@@ -47,6 +50,8 @@ public class IndicesBuffer implements BufferResource {
         mIndicesCount = data.length;
         mByteCount = data.length * Util.BYTES_PER_SHORT;
         mBuffer = createShortBuffer(data);
+        addAction(new Action(this, ActionType.CREATE));
+        addAction(new Action(this, ActionType.LOAD));
     }
 
     @Override

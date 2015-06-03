@@ -14,7 +14,7 @@ import java.util.List;
  * The buffer resource holds one attribute data and many attribute pointers, aka an
  * interleaved vertex buffer.
  */
-public class InterleavedVertexBuffer implements VertexBufferResource {
+public class InterleavedVertexBuffer extends VertexBufferResource {
     /**
      * Builder to build an interleaved vertex buffer.
      */
@@ -126,9 +126,10 @@ public class InterleavedVertexBuffer implements VertexBufferResource {
      * @param data     The attribute data.
      * @param pointers A list of attribute pointers.
      */
-    public InterleavedVertexBuffer(BufferResource data, List<AttributePointer> pointers) {
+    public InterleavedVertexBuffer(InterleavedData data, List<AttributePointer> pointers) {
         mData = data;
         mPointers = pointers;
+        connectNotifier(data);
     }
 
     @Override
