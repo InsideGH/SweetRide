@@ -1,6 +1,7 @@
 package com.sweetlab.sweetride.engine;
 
 import com.sweetlab.sweetride.geometry.Geometry;
+import com.sweetlab.sweetride.math.Camera;
 import com.sweetlab.sweetride.node.Node;
 import com.sweetlab.sweetride.node.NodeVisitor;
 import com.sweetlab.sweetride.node.ReusableVisitor;
@@ -34,6 +35,19 @@ public class RenderNode extends Node {
      */
     public void setRenderer(Renderer renderer) {
         mRenderer = renderer;
+    }
+
+    /**
+     * Set the camera.
+     *
+     * @param camera The camera.
+     */
+    public void setCamera(Camera camera) {
+        if (mCamera != null) {
+            disconnectNotifier(mCamera);
+        }
+        mCamera = camera;
+        connectNotifier(mCamera);
     }
 
     /**
