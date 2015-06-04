@@ -17,7 +17,7 @@ import com.sweetlab.sweetride.resource.TextureResource;
  * An empty texture resource. It has format and type but no data.
  * This texture can be used as a destination to draw into using frame buffer.
  */
-public class Empty2DTexture implements TextureResource {
+public class Empty2DTexture extends TextureResource {
     /**
      * The uniform sampler name in the shader program.
      */

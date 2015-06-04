@@ -18,7 +18,7 @@ import com.sweetlab.sweetride.resource.TextureResource;
  * A 2D texture with bitmap as data source. The format,type, width and height is decided by the
  * bitmap.
  */
-public class Texture2D implements TextureResource {
+public class Texture2D extends TextureResource {
     /**
      * The name if the shader uniform sampler.
      */

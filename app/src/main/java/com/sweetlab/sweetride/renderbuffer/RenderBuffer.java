@@ -1,6 +1,10 @@
 package com.sweetlab.sweetride.renderbuffer;
 
 import com.sweetlab.sweetride.DebugOptions;
+import com.sweetlab.sweetride.action.Action;
+import com.sweetlab.sweetride.action.ActionId;
+import com.sweetlab.sweetride.action.ActionNotifier;
+import com.sweetlab.sweetride.action.HandleThread;
 import com.sweetlab.sweetride.context.AttachmentType;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.DepthAttachment;
@@ -13,7 +17,7 @@ import com.sweetlab.sweetride.resource.Resource;
  * as a render destination or source of reading. Possible attachment points to a frame buffer are
  * depth and stencil.
  */
-public class RenderBuffer implements Resource, DepthAttachment, StencilAttachment {
+public class RenderBuffer extends ActionNotifier implements Resource, DepthAttachment, StencilAttachment {
     /**
      * The render buffer id.
      */
@@ -45,6 +49,7 @@ public class RenderBuffer implements Resource, DepthAttachment, StencilAttachmen
         mFormat = format;
         mWidth = width;
         mHeight = height;
+        addAction(new Action(this, ActionId.RENDER_BUFFER_CREATE, HandleThread.GL));
     }
 
     @Override
@@ -103,5 +108,19 @@ public class RenderBuffer implements Resource, DepthAttachment, StencilAttachmen
     @Override
     public AttachmentType getAttachmentType() {
         return AttachmentType.RENDERBUFFER;
+    }
+
+    @Override
+    public void handleAction(Action action) {
+        throw new RuntimeException("wtf");
+    }
+
+    @Override
+    public void handleAction(BackendContext context, Action action) {
+        switch (action.getType()) {
+            case RENDER_BUFFER_CREATE:
+                create(context);
+                break;
+        }
     }
 }

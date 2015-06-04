@@ -94,7 +94,11 @@ public class Mesh extends ActionNotifier {
      * @param indicesBuffer The indices buffer.
      */
     public void setIndicesBuffer(@Nullable IndicesBuffer indicesBuffer) {
+        if (mIndicesBuffer != null) {
+            disconnectNotifier(mIndicesBuffer);
+        }
         mIndicesBuffer = indicesBuffer;
+        connectNotifier(mIndicesBuffer);
         addAction(mIndicesChanged);
     }
 
@@ -115,6 +119,7 @@ public class Mesh extends ActionNotifier {
             }
         }
         mVertexBuffers.add(vertexBuffer);
+        connectNotifier(vertexBuffer);
         addAction(mVertexBuffersChanged);
     }
 

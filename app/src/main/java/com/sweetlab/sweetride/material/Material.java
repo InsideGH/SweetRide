@@ -67,7 +67,11 @@ public class Material extends ActionNotifier {
     }
 
     public void setShaderProgram(ShaderProgram program) {
+        if (mShaderProgram != null) {
+            disconnectNotifier(mShaderProgram);
+        }
         mShaderProgram = program;
+        connectNotifier(mShaderProgram);
         addAction(mProgramChange);
     }
 
@@ -78,6 +82,7 @@ public class Material extends ActionNotifier {
      */
     public void addTexture(TextureResource texture) {
         mTextures.add(texture);
+        connectNotifier(texture);
         addAction(mTextureChange);
     }
 

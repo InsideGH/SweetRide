@@ -1,5 +1,8 @@
 package com.sweetlab.sweetride.attributedata;
 
+import com.sweetlab.sweetride.action.Action;
+import com.sweetlab.sweetride.action.ActionId;
+import com.sweetlab.sweetride.action.HandleThread;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.ResourceManager;
 import com.sweetlab.sweetride.resource.VertexBufferResource;
@@ -10,8 +13,7 @@ import java.nio.Buffer;
 /**
  * A vertex buffer.
  */
-public class VertexBuffer implements VertexBufferResource {
-
+public class VertexBuffer extends VertexBufferResource {
     /**
      * The buffer of data.
      */
@@ -49,6 +51,8 @@ public class VertexBuffer implements VertexBufferResource {
         mBufferUsage = bufferUsage;
         mVertexData = vertexData;
         mBuffer = Util.createBuffer(vertexData.getData(), vertexData.getTotalByteCount());
+        addAction(new Action(this, ActionId.VERTEX_BUFFER_CREATE, HandleThread.GL));
+        addAction(new Action(this, ActionId.VERTEX_BUFFER_LOAD, HandleThread.GL));
     }
 
     @Override
@@ -100,5 +104,24 @@ public class VertexBuffer implements VertexBufferResource {
     @Override
     public AttributePointer getAttributePointer(int index) {
         return mBufferPointer;
+    }
+
+    @Override
+    public void handleAction(Action action) {
+        throw new RuntimeException("wtf");
+    }
+
+    @Override
+    public void handleAction(BackendContext context, Action action) {
+        switch (action.getType()) {
+            case VERTEX_BUFFER_CREATE:
+                create(context);
+                break;
+            case VERTEX_BUFFER_LOAD:
+                load(context);
+                break;
+            default:
+                throw new RuntimeException("wtf");
+        }
     }
 }

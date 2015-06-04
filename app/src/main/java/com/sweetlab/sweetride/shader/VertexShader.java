@@ -1,5 +1,6 @@
 package com.sweetlab.sweetride.shader;
 
+import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.ResourceManager;
 
@@ -42,6 +43,4 @@ public class VertexShader extends BaseShader {
     public int getId() {
         return mId;
     }
-
-
 }
