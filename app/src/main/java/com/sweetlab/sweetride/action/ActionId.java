@@ -93,4 +93,19 @@ public enum ActionId {
      * Create frame buffer backend resource.
      */
     FRAME_BUFFER_CREATE,
+
+    /**
+     * Camera has been updated.
+     */
+    CAMERA_UPDATED,
+
+    /**
+     * Frustrum has been updated.
+     */
+    FRUSTRUM_UPDATED,
+
+    /**
+     * Transform has been updated.
+     */
+    TRANSFORM_UPDATED,
 }

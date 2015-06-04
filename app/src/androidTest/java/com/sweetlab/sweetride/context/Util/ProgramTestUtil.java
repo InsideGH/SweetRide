@@ -41,7 +41,21 @@ public class ProgramTestUtil {
         return new ShaderProgram(new VertexShader(VertexCodeTestUtil.VERTEX_NDC_ONE_TEXCOORD), new FragmentShader(FragCodeTestUtil.FRAGMENT_ONE_TEX));
     }
 
+    /**
+     * Create a NDC shader program that uses two textures.
+     *
+     * @return The shader program.
+     */
     public static ShaderProgram createNdcOneTexCoordTwoTextures() {
         return new ShaderProgram(new VertexShader(VertexCodeTestUtil.VERTEX_NDC_ONE_TEXCOORD), new FragmentShader(FragCodeTestUtil.FRAGMENT_TWO_TEX));
+    }
+
+    /**
+     * Create a camera shader program that uses two textures.
+     *
+     * @return The shader program.
+     */
+    public static ShaderProgram createCameraOneTexCoordTwoTextures() {
+        return new ShaderProgram(new VertexShader(VertexCodeTestUtil.VERTEX_CAMERA_ONE_TEXCOORD), new FragmentShader(FragCodeTestUtil.FRAGMENT_TWO_TEX));
     }
 }
