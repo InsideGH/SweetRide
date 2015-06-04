@@ -6,6 +6,7 @@ import com.sweetlab.sweetride.context.BackendContext;
  * An action consists of two parts.
  * 1. The source the action originates from.
  * 2. The type of action.
+ * 3. Which thread the action should execute on.
  */
 public class Action {
     /**

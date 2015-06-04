@@ -78,6 +78,25 @@ public class RenderBuffer extends ActionNotifier implements Resource, DepthAttac
         return mBufferId;
     }
 
+    @Override
+    public AttachmentType getAttachmentType() {
+        return AttachmentType.RENDER_BUFFER;
+    }
+
+    @Override
+    public void handleAction(Action action) {
+        throw new RuntimeException("wtf");
+    }
+
+    @Override
+    public void handleAction(BackendContext context, Action action) {
+        switch (action.getType()) {
+            case RENDER_BUFFER_CREATE:
+                create(context);
+                break;
+        }
+    }
+
     /**
      * Get the internal format.
      *
@@ -103,24 +122,5 @@ public class RenderBuffer extends ActionNotifier implements Resource, DepthAttac
      */
     public int getHeight() {
         return mHeight;
-    }
-
-    @Override
-    public AttachmentType getAttachmentType() {
-        return AttachmentType.RENDERBUFFER;
-    }
-
-    @Override
-    public void handleAction(Action action) {
-        throw new RuntimeException("wtf");
-    }
-
-    @Override
-    public void handleAction(BackendContext context, Action action) {
-        switch (action.getType()) {
-            case RENDER_BUFFER_CREATE:
-                create(context);
-                break;
-        }
     }
 }

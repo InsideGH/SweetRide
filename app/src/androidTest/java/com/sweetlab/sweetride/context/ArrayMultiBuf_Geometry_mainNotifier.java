@@ -109,7 +109,7 @@ public class ArrayMultiBuf_Geometry_mainNotifier extends OpenGLTestCase {
         });
     }
 
-    public void testDrawTriangleWithColor() throws Exception {
+    public void testArrayMultiBuf_Geometry_mainNotifier() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

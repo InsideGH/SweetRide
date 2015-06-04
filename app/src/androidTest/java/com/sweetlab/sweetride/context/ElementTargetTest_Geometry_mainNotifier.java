@@ -97,7 +97,7 @@ public class ElementTargetTest_Geometry_mainNotifier extends OpenGLTestCase {
         });
     }
 
-    public void testDrawTriangle() throws Exception {
+    public void testElementTargetTest_Geometry_mainNotifier() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

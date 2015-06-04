@@ -6,7 +6,7 @@ import android.opengl.GLES20;
  * The attachment type.
  */
 public enum AttachmentType {
-    RENDERBUFFER(GLES20.GL_RENDERBUFFER),
+    RENDER_BUFFER(GLES20.GL_RENDERBUFFER),
     TEXTURE_2D(GLES20.GL_TEXTURE_2D);
 
     /**

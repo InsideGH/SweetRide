@@ -9,7 +9,7 @@ import com.sweetlab.sweetride.renderer.Renderer;
 import java.util.List;
 
 /**
- * A render node. Provides way of rendering geometry.
+ * A render node. Provides way of rendering geometry. Nodes can be added to this render node.
  */
 public class RenderNode extends Node {
     /**

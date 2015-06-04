@@ -7,6 +7,9 @@ import android.util.Log;
  * Shader compiler.
  */
 public class ShaderCompiler {
+    /**
+     * GL read buffer.
+     */
     private final int[] sBuf = new int[1];
 
     /**
@@ -14,6 +17,11 @@ public class ShaderCompiler {
      */
     private final BackendContext mContext;
 
+    /**
+     * Constructor.
+     *
+     * @param backendContext Backend context.
+     */
     public ShaderCompiler(BackendContext backendContext) {
         mContext = backendContext;
     }
@@ -64,7 +72,7 @@ public class ShaderCompiler {
     }
 
     /**
-     * Read if id is a compiled shader.
+     * Read if shader is compiled.
      *
      * @param id Id to check.
      * @return True if compiled.

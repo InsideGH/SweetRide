@@ -102,7 +102,7 @@ public class ArrayInterleavedMultiBuf_Geometry_notifier extends OpenGLTestCase {
      *
      * @throws Exception
      */
-    public void testDrawInterleavedTriangle() throws Exception {
+    public void testArrayInterleavedMultiBuf_Geometry_notifier() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

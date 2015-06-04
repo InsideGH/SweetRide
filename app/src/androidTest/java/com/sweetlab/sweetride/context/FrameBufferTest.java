@@ -135,7 +135,7 @@ public class FrameBufferTest extends OpenGLTestCase {
         });
     }
 
-    public void testRenderToFrameBuffer() {
+    public void testFrameBufferTest() {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

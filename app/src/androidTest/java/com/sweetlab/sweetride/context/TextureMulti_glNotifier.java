@@ -86,7 +86,7 @@ public class TextureMulti_glNotifier extends OpenGLTestCase {
      *
      * @throws Exception
      */
-    public void testMultiTexture() throws Exception {
+    public void testTextureMulti_glNotifier() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

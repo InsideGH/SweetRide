@@ -84,7 +84,7 @@ public class ArrayInterleavedMultiBuf_glNotifier extends OpenGLTestCase {
      *
      * @throws Exception
      */
-    public void testDrawInterleavedTriangle() throws Exception {
+    public void testArrayInterleavedMultiBuf_glNotifier() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

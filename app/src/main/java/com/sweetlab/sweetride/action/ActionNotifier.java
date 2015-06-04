@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * Action notification handling in a graph of connected action notifiers.
  * Notifiers can be connected or disconnected from the parent (which is a notifier as well).
- * During connect and disconnect, any pending actions are handled (added or removed).
- * Actions can be added or removed which is then reflected to the top of the graph.
+ * During connect and disconnect, any pending actions are added/removed.
+ * Actions that are added/removed are reflected to the top of the graph.
  */
 public abstract class ActionNotifier {
     /**
@@ -23,8 +23,8 @@ public abstract class ActionNotifier {
     final List<ActionNotifier> mParents = new ArrayList<>();
 
     /**
-     * Connect the provided notifier to notifier. Any pending actions in the notifier that is
-     * connected will be reported to be added.
+     * Connect the provided notifier. Any pending actions in the notifier that is
+     * connected will be reported/added to parents.
      *
      * @param notifier The notifier to connect.
      */
@@ -40,7 +40,7 @@ public abstract class ActionNotifier {
 
     /**
      * Disconnect the provided notifier. Any pending actions in the notifiers that is disconnected
-     * will be reported to be removed.
+     * will be reported/removed from parents.
      *
      * @param notifier The notifier to disconnect.
      */
@@ -55,9 +55,9 @@ public abstract class ActionNotifier {
     }
 
     /**
-     * Add action to pending actions. If action already exists it is moved to last.
+     * Add action to pending actions. If action already exists it is moved to last position.
      *
-     * @param action The action.
+     * @param action The action to add.
      */
     public void addAction(Action action) {
         mActions.remove(action);
@@ -104,7 +104,24 @@ public abstract class ActionNotifier {
     }
 
     /**
-     * Report action add to all parents.
+     * Handle action on the main thread. The action handle thread method tells if this
+     * or the other handleAction method should be called.
+     *
+     * @param action Action to handle.
+     */
+    public abstract void handleAction(Action action);
+
+    /**
+     * Handle the action on the GL thread. The action handle thread method tells if this
+     * or the other handleAction method should be called.
+     *
+     * @param context Backend context.
+     * @param action  Action to handle.
+     */
+    public abstract void handleAction(BackendContext context, Action action);
+
+    /**
+     * Report action add to all parents all the way to top.
      *
      * @param action The action to add.
      */
@@ -115,22 +132,7 @@ public abstract class ActionNotifier {
     }
 
     /**
-     * Handle action on the main thread.
-     *
-     * @param action Action to handle.
-     */
-    public abstract void handleAction(Action action);
-
-    /**
-     * Handle the action on the GL thread.
-     *
-     * @param context Backend context.
-     * @param action  Action to handle.
-     */
-    public abstract void handleAction(BackendContext context, Action action);
-
-    /**
-     * Report action remove to all parents.
+     * Report action remove to all parents all the way to top.
      *
      * @param action Action to remove.
      */
@@ -139,5 +141,4 @@ public abstract class ActionNotifier {
             parent.removeAction(action);
         }
     }
-
 }

@@ -107,7 +107,7 @@ public class FrameBufferTest_Geometry_mainNotifier extends OpenGLTestCase {
         });
     }
 
-    public void testRenderToFrameBuffer() {
+    public void testFrameBufferTest_Geometry_mainNotifier() {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

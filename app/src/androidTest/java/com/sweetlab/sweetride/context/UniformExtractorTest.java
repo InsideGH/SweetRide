@@ -35,7 +35,7 @@ public class UniformExtractorTest extends OpenGLTestCase {
      *
      * @throws Exception
      */
-    public void testExtract() throws Exception {
+    public void testUniformExtractorTest() throws Exception {
         final VertexShader vertexShader = new VertexShader(ShaderCompilerTest.VALID_VERTEX_SOURCE);
         final FragmentShader fragmentShader = new FragmentShader(ShaderCompilerTest.VALID_FRAGMENT_SOURCE);
         final ShaderProgram program = new ShaderProgram(vertexShader, fragmentShader);

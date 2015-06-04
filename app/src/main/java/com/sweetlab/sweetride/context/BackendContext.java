@@ -4,19 +4,69 @@ package com.sweetlab.sweetride.context;
  * Backend context. Must be created with GL context available.
  */
 public class BackendContext {
+    /**
+     * GL HW capabilities
+     */
     private final Capabilities mCapabilities;
 
+    /**
+     * Shader compiler.
+     */
     private ShaderCompiler mShaderCompiler;
+
+    /**
+     * Program linker
+     */
     private ProgramLinker mProgramLinker;
+
+    /**
+     * Uniform writer.
+     */
     private UniformWriter mUniformWriter;
+
+    /**
+     * Attribute extractor.
+     */
     private AttributeExtractor mAttributeExtractor;
+
+    /**
+     * Uniform extractor.
+     */
     private UniformExtractor mUniformExtractor;
+
+    /**
+     * GL program state.
+     */
     private GLES20State mGLES20State;
+
+    /**
+     * Array target.
+     */
     private ArrayTarget mArrayTarget;
+
+    /**
+     * Resource manager.
+     */
     private ResourceManager mResourceManager;
+
+    /**
+     * Element target.
+     */
     private ElementTarget mElementTarget;
+
+    /**
+     * Texture unit manager.
+     */
     private TextureUnitManager mTextureUnitManager;
+
+    /**
+     * Render buffer target.
+     */
     private RenderBufferTarget mRenderBufferTarget;
+
+    /**
+     * Frame buffer target.
+     */
     private FrameBufferTarget mFrameBufferTarget;
 
     /**
@@ -102,7 +152,7 @@ public class BackendContext {
     }
 
     /**
-     * Get the state.
+     * Get the program state.
      *
      * @return The state.
      */

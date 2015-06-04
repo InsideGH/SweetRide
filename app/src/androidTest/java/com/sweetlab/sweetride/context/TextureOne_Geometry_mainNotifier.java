@@ -66,7 +66,7 @@ public class TextureOne_Geometry_mainNotifier extends OpenGLTestCase {
      *
      * @throws Exception
      */
-    public void testSomething() throws Exception {
+    public void testTextureOne_Geometry_mainNotifier() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

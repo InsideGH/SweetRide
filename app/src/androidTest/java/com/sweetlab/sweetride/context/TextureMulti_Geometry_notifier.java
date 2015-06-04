@@ -70,7 +70,7 @@ public class TextureMulti_Geometry_notifier extends OpenGLTestCase {
      *
      * @throws Exception
      */
-    public void testMultiTexture() throws Exception {
+    public void testTextureMulti_Geometry_notifier() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

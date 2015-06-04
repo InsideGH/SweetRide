@@ -82,7 +82,7 @@ public class ArrayMultiBuf_glNotifier extends OpenGLTestCase {
         });
     }
 
-    public void testDrawTriangleWithColor() throws Exception {
+    public void testArrayMultiBuf_glNotifier() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

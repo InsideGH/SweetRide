@@ -3,7 +3,7 @@ package com.sweetlab.sweetride.context;
 import android.opengl.GLES20;
 
 /**
- * Helper to collect GLES20 specifics in one place.
+ * Helper to collect GL specifics in one place.
  */
 public class GLES20Helper {
     /**
@@ -15,7 +15,7 @@ public class GLES20Helper {
     /**
      * Helper to get readable type.
      *
-     * @param type GLES20 type (GL_FLOAT, GL_FLOAT_VEC2, GL_FLOAT_VEC3, GL_FLOAT_VEC4, GL_FLOAT_MAT2, GL_FLOAT_MAT3, or GL_FLOAT_MAT4).
+     * @param type GL type (GL_FLOAT, GL_FLOAT_VEC2, GL_FLOAT_VEC3, GL_FLOAT_VEC4, GL_FLOAT_MAT2, GL_FLOAT_MAT3, or GL_FLOAT_MAT4).
      * @return Readable type.
      */
     public static String getReadableType(int type) {
@@ -48,9 +48,9 @@ public class GLES20Helper {
     }
 
     /**
-     * Get the element count based on GLES20 type.
+     * Get the element count based on GL type.
      *
-     * @param type GLES20 type (GL_FLOAT, GL_FLOAT_VEC2, GL_FLOAT_VEC3, GL_FLOAT_VEC4, GL_FLOAT_MAT2, GL_FLOAT_MAT3, or GL_FLOAT_MAT4).
+     * @param type GL type (GL_FLOAT, GL_FLOAT_VEC2, GL_FLOAT_VEC3, GL_FLOAT_VEC4, GL_FLOAT_MAT2, GL_FLOAT_MAT3, or GL_FLOAT_MAT4).
      * @return Number of elements.
      */
     public static int getTypeElementCount(int type) {

@@ -98,7 +98,7 @@ public class ElementTargetTest_MatMesh_notifier extends OpenGLTestCase {
         });
     }
 
-    public void testDrawTriangle() throws Exception {
+    public void testElementTargetTest_MatMesh_notifier() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

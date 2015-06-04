@@ -7,7 +7,13 @@ import com.sweetlab.sweetride.shader.FragmentShader;
 import com.sweetlab.sweetride.shader.VertexShader;
 import com.sweetlab.sweetride.util.Util;
 
+/**
+ * Shader program linker.
+ */
 public class ProgramLinker {
+    /**
+     * GL read buffer
+     */
     private final int[] sReadParams = new int[1];
 
     /**
@@ -15,6 +21,11 @@ public class ProgramLinker {
      */
     private final BackendContext mContext;
 
+    /**
+     * Constructor.
+     *
+     * @param backendContext Backend context.
+     */
     public ProgramLinker(BackendContext backendContext) {
         mContext = backendContext;
     }
@@ -41,8 +52,6 @@ public class ProgramLinker {
             return ResourceManager.INVALID_PROGRAM_ID;
         }
 
-        Util.hasGlError();
-
         GLES20.glAttachShader(id, vertexShader.getId());
         if (Util.hasGlError()) {
             Log.d("Peter100", "Could not attach vertex shader to program. \n" + vertexShader.getSource());
@@ -63,9 +72,9 @@ public class ProgramLinker {
     }
 
     /**
-     * Read if id is a linked program.
+     * Read if program is a linked program.
      *
-     * @param program Id to check.
+     * @param program program to check.
      * @return True if linked.
      */
     private boolean readIsLinked(int program) {

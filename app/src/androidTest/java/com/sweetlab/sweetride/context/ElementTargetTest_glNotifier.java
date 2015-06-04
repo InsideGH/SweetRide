@@ -86,7 +86,7 @@ public class ElementTargetTest_glNotifier extends OpenGLTestCase {
         });
     }
 
-    public void testDrawTriangle() throws Exception {
+    public void testElementTargetTest_glNotifier() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

@@ -79,7 +79,7 @@ public class ArrayOneBuf_glNotifier extends OpenGLTestCase {
         });
     }
 
-    public void testDrawTriangle() throws Exception {
+    public void testArrayOneBuf_glNotifier() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

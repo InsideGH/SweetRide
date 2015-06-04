@@ -100,7 +100,7 @@ public class ArrayInterleavedMultiBuf extends OpenGLTestCase {
      *
      * @throws Exception
      */
-    public void testDrawInterleavedTriangle() throws Exception {
+    public void testArrayInterleavedMultiBuf() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

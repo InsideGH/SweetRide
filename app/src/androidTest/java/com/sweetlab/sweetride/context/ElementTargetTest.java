@@ -101,7 +101,7 @@ public class ElementTargetTest extends OpenGLTestCase {
         });
     }
 
-    public void testDrawTriangle() throws Exception {
+    public void testElementTargetTest() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

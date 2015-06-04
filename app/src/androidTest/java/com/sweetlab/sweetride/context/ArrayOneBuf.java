@@ -77,7 +77,7 @@ public class ArrayOneBuf extends OpenGLTestCase {
         });
     }
 
-    public void testDrawTriangle() throws Exception {
+    public void testArrayOneBuf() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

@@ -123,7 +123,7 @@ public class ArrayInterleavedMultiBuf_MatMesh_mainNotifier extends OpenGLTestCas
      *
      * @throws Exception
      */
-    public void testDrawInterleavedTriangle() throws Exception {
+    public void testArrayInterleavedMultiBuf_MatMesh_mainNotifier() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

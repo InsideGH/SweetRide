@@ -89,7 +89,7 @@ public class ElementTargetTest_Geometry_notifier extends OpenGLTestCase {
         });
     }
 
-    public void testDrawTriangle() throws Exception {
+    public void testElementTargetTest_Geometry_notifier() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

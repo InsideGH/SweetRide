@@ -6,17 +6,18 @@ import com.sweetlab.sweetride.DebugOptions;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 
 /**
- * GLES20State information.
+ * GL program state information.
  */
 public class GLES20State {
     /**
-     * Buffer for reading GLES20 information.
+     * Buffer for reading GL information.
      */
     private int[] buf = new int[1];
 
     /**
      * Backend context.
      */
+    @SuppressWarnings("unused")
     private final BackendContext mContext;
 
     /**

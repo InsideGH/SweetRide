@@ -3,7 +3,7 @@ package com.sweetlab.sweetride.context;
 import android.opengl.GLES20;
 
 /**
- * The texture min filter parameter.
+ * The texture mag filter parameter.
  */
 public enum MagFilter {
     NEAREST(GLES20.GL_NEAREST),

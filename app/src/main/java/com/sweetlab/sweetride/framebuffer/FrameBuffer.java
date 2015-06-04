@@ -17,6 +17,9 @@ public class FrameBuffer extends ActionNotifier implements Resource {
      */
     private int mBufferId;
 
+    /**
+     * Constructor.
+     */
     public FrameBuffer() {
         addAction(new Action(this, ActionId.FRAME_BUFFER_CREATE, HandleThread.GL));
     }

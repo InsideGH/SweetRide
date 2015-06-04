@@ -80,7 +80,7 @@ public class TextureOne_glNotifier extends OpenGLTestCase {
      *
      * @throws Exception
      */
-    public void testSomething() throws Exception {
+    public void testTextureOne_glNotifier() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

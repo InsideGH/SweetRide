@@ -97,7 +97,7 @@ public class ArrayMultiBuf extends OpenGLTestCase {
         });
     }
 
-    public void testDrawTriangleWithColor() throws Exception {
+    public void ArrayMultiBuf() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

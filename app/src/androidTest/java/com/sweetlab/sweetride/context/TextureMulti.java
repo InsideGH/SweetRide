@@ -111,7 +111,7 @@ public class TextureMulti extends OpenGLTestCase {
      *
      * @throws Exception
      */
-    public void testMultiTexture() throws Exception {
+    public void testTextureMulti() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

@@ -1,15 +1,19 @@
 package com.sweetlab.sweetride.attributedata;
 
+/**
+ * Associated with attribute data, the pointer has additional information needed when using an
+ * attribute in the shader program.
+ */
 public interface AttributePointer {
     /**
-     * Get the name of the attribute.
+     * Get the name of the attribute in the shader.
      *
      * @return The name of the attribute.
      */
     String getName();
     
     /**
-     * Get number of vertices.
+     * Get number of vertices in the data.
      *
      * @return Number of vertices.
      */
@@ -20,6 +24,7 @@ public interface AttributePointer {
      *
      * @return Byte size of a vertex.
      */
+    @SuppressWarnings("unused")
     int getVertexByteSize();
 
     /**

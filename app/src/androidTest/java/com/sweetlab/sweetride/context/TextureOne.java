@@ -101,7 +101,7 @@ public class TextureOne extends OpenGLTestCase {
      *
      * @throws Exception
      */
-    public void testSomething() throws Exception {
+    public void testTextureOne() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

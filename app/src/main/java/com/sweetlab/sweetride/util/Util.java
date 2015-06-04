@@ -15,7 +15,6 @@ import java.nio.FloatBuffer;
 public class Util {
     public static final int BYTES_PER_FLOAT = Float.SIZE / 8;
     public static final int BYTES_PER_SHORT = Short.SIZE / 8;
-    public static final int BYTES_PER_INT = Integer.SIZE / 8;
 
     /**
      * Check for any GL errors.

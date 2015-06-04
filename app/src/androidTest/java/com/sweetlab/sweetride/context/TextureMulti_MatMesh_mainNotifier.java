@@ -71,7 +71,7 @@ public class TextureMulti_MatMesh_mainNotifier extends OpenGLTestCase {
      *
      * @throws Exception
      */
-    public void testMultiTexture() throws Exception {
+    public void testTextureMulti_MatMesh_mainNotifier() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

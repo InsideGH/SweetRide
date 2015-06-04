@@ -110,7 +110,7 @@ public class FrameBufferTest_glNotifier extends OpenGLTestCase {
         });
     }
 
-    public void testRenderToFrameBuffer() {
+    public void testFrameBufferTest_glNotifier() {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

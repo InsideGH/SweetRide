@@ -5,62 +5,62 @@ package com.sweetlab.sweetride.action;
  */
 public enum ActionId {
     /**
-     * Geometry mesh reference has changed.
+     * Geometry mesh reference changed.
      */
     GEOMETRY_MESH,
 
     /**
-     * Geometry material reference has changed.
+     * Geometry material reference changed.
      */
     GEOMETRY_MATERIAL,
 
     /**
-     * Mesh vertex buffer collection has changed.
+     * Mesh vertex buffer collection changed.
      */
     MESH_BUFFER,
 
     /**
-     * Mesh indices buffer reference has changed.
+     * Mesh indices buffer reference changed.
      */
     MESH_INDICES,
 
     /**
-     * Material shader program reference has changed.
+     * Material shader program reference changed.
      */
     MATERIAL_PROGRAM,
 
     /**
-     * Material textures collection has changed.
+     * Material textures collection changed.
      */
     MATERIAL_TEXTURES,
 
     /**
-     * Create the shader backend resource.
+     * Create shader backend resource.
      */
     SHADER_CREATE,
 
     /**
-     * Create the shader program backend resource.
+     * Create program backend resource.
      */
     PROGRAM_CREATE,
 
     /**
-     * Create the texture backend resource.
+     * Create texture backend resource.
      */
     TEXTURE_CREATE,
 
     /**
-     * Load the texture in the backend.
+     * Load texture in backend.
      */
     TEXTURE_LOAD,
 
     /**
-     * Create the indices backend resource.
+     * Create indices backend resource.
      */
     INDICES_CREATE,
 
     /**
-     * Load the indices in the backend.
+     * Load indices in backend.
      */
     INDICES_LOAD,
 
@@ -70,7 +70,7 @@ public enum ActionId {
     INTERLEAVED_BUFFER_CREATE,
 
     /**
-     * Load the buffer in the backend.
+     * Load buffer in backend.
      */
     INTERLEAVED_BUFFER_LOAD,
 
@@ -80,7 +80,7 @@ public enum ActionId {
     VERTEX_BUFFER_CREATE,
 
     /**
-     * Load vertex buffer in the backend.
+     * Load vertex buffer in backend.
      */
     VERTEX_BUFFER_LOAD,
 

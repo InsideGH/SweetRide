@@ -1,7 +1,7 @@
 package com.sweetlab.sweetride.action;
 
 /**
- * The handle thread.
+ * The handle thread. Decides which thread an action should be executed on.
  */
 public enum HandleThread {
     /**

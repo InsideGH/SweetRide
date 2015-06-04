@@ -67,7 +67,7 @@ public class TextureOne_MatMesh_notifier extends OpenGLTestCase {
      *
      * @throws Exception
      */
-    public void testSomething() throws Exception {
+    public void testTextureOne_MatMesh_notifier() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

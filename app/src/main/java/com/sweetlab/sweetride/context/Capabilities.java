@@ -6,7 +6,6 @@ import android.opengl.GLES20;
  * Knows about the GL capabilities.
  */
 public class Capabilities {
-
     /**
      * Holds max number of texture units.
      */

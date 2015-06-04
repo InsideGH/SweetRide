@@ -9,7 +9,7 @@ import com.sweetlab.sweetride.DebugOptions;
  */
 public class ResourceManager {
     /**
-     * Considered an invalid render buffer id.
+     * Invalid render buffer id.
      */
     public static int INVALID_RENDER_BUFFER_ID = 0;
 
@@ -43,12 +43,17 @@ public class ResourceManager {
      */
     private int[] mBuf = new int[1];
 
+    /**
+     * Constructor.
+     *
+     * @param backendContext Backend context.
+     */
     public ResourceManager(BackendContext backendContext) {
         mContext = backendContext;
     }
 
     /**
-     * Create a shader.
+     * Create shader.
      *
      * @param type Either GLES20.GL_VERTEX_SHADER or GLES20.GL_FRAGMENT_SHADER
      * @return The created shader.
@@ -67,7 +72,7 @@ public class ResourceManager {
     }
 
     /**
-     * Create a shader program.
+     * Create shader program.
      *
      * @return The shader program.
      */
@@ -85,7 +90,7 @@ public class ResourceManager {
     }
 
     /**
-     * Generate a buffer name/id.
+     * Generate buffer name/id.
      *
      * @return The generated buffer.
      */
@@ -95,7 +100,7 @@ public class ResourceManager {
     }
 
     /**
-     * Delete a previously generated buffer.
+     * Delete previously generated buffer.
      *
      * @param id Buffer id to delete.
      */
@@ -105,7 +110,7 @@ public class ResourceManager {
     }
 
     /**
-     * Generate a texture name/id.
+     * Generate texture name/id.
      *
      * @return The generated texture.
      */
@@ -115,7 +120,7 @@ public class ResourceManager {
     }
 
     /**
-     * Delete a previously generated texture.
+     * Delete previously generated texture.
      *
      * @param id Texture to delete.
      */
@@ -125,7 +130,7 @@ public class ResourceManager {
     }
 
     /**
-     * Generate a frame buffer name/id.
+     * Generate frame buffer name/id.
      *
      * @return The generated frame buffer.
      */
@@ -135,7 +140,7 @@ public class ResourceManager {
     }
 
     /**
-     * Delete a previously generated frame buffer.
+     * Delete previously generated frame buffer.
      *
      * @param id Frame buffer to delete.
      */
@@ -145,7 +150,7 @@ public class ResourceManager {
     }
 
     /**
-     * Generate a render buffer name/id.
+     * Generate render buffer name/id.
      *
      * @return The generated render buffer.
      */
@@ -160,7 +165,7 @@ public class ResourceManager {
     }
 
     /**
-     * Delete a previously generated render buffer.
+     * Delete previously generated render buffer.
      *
      * @param id Render buffer to delete.
      */

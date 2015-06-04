@@ -86,7 +86,7 @@ public class FrameBufferTest_MatMesh_notifier extends OpenGLTestCase {
         });
     }
 
-    public void testRenderToFrameBuffer() {
+    public void testFrameBufferTest_MatMesh_notifier() {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

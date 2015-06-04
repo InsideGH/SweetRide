@@ -12,7 +12,8 @@ import java.util.List;
 
 /**
  * The buffer resource holds one attribute data and many attribute pointers, aka an
- * interleaved vertex buffer.
+ * interleaved vertex buffer. This is a composition of one buffer resource and multiple
+ * attribute pointers.
  */
 public class InterleavedVertexBuffer extends VertexBufferResource {
     /**
@@ -27,7 +28,7 @@ public class InterleavedVertexBuffer extends VertexBufferResource {
         /**
          * Keep track of added entries.
          */
-        List<Pair<String, VertexData>> mEntries = new ArrayList<>();
+        final List<Pair<String, VertexData>> mEntries = new ArrayList<>();
 
         /**
          * Constructor.

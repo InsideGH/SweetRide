@@ -127,7 +127,7 @@ public class ArrayMultiBuf_MatMesh_mainNotifier extends OpenGLTestCase {
         });
     }
 
-    public void testDrawTriangleWithColor() throws Exception {
+    public void testArrayMultiBuf_MatMesh_mainNotifier() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {

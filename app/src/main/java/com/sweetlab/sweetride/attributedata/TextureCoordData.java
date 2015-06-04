@@ -1,7 +1,8 @@
 package com.sweetlab.sweetride.attributedata;
 
 /**
- * Data to be used as texture coordinates storage. Uses 2 components (st) and normalization set to false.
+ * Data to be used as texture coordinates storage. Uses 2 components (st) and normalization set to
+ * false.
  */
 public class TextureCoordData extends VertexData {
     /**
