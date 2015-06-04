@@ -1,5 +1,6 @@
 package com.sweetlab.sweetride.context;
 
+import com.sweetlab.sweetride.context.Util.ActionHelper;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
 import com.sweetlab.sweetride.engine.DefaultRenderNode;
@@ -70,7 +71,12 @@ public class ArrayTargetTest1_c extends OpenGLTestCase {
         geometry4.setMaterial(blueMaterial);
         geometry2.addChild(geometry4);
 
-        setTestInfo("red, blue, red, blue");
+        List<Geometry> geometries = mRenderNode.collectGeometries();
+        for (Geometry geometry : geometries) {
+            ActionHelper.handleMainThreadActions(geometry);
+        }
+
+        setTestInfo("red, blue, red, blue geometry render node");
 
         runOnGLThread(new ResultRunnable() {
             @Override

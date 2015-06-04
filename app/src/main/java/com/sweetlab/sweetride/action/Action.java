@@ -1,5 +1,7 @@
 package com.sweetlab.sweetride.action;
 
+import com.sweetlab.sweetride.context.BackendContext;
+
 /**
  * An action consists of two parts.
  * 1. The source the action originates from.
@@ -9,22 +11,29 @@ public class Action {
     /**
      * The source this action originates from.
      */
-    private ActionNotifier mSource;
+    private final ActionNotifier mSource;
 
     /**
-     * The type of action.
+     * The action id.
      */
-    private ActionType mType;
+    private final ActionId mId;
+
+    /**
+     * Which thread to handle the action on.
+     */
+    private final HandleThread mHandleThread;
 
     /**
      * Constructor.
      *
-     * @param source The source this action originates from.
-     * @param type   The type of action.
+     * @param source     The source this action originates from.
+     * @param id         The action id.
+     * @param handleType The thread to handle the action on.
      */
-    public Action(ActionNotifier source, ActionType type) {
+    public Action(ActionNotifier source, ActionId id, HandleThread handleType) {
         mSource = source;
-        mType = type;
+        mId = id;
+        mHandleThread = handleType;
     }
 
     /**
@@ -41,8 +50,8 @@ public class Action {
      *
      * @return The type.
      */
-    public ActionType getType() {
-        return mType;
+    public ActionId getType() {
+        return mId;
     }
 
     /**
@@ -50,5 +59,30 @@ public class Action {
      */
     public void remove() {
         mSource.removeAction(this);
+    }
+
+    /**
+     * Get the action handle thread.
+     *
+     * @return The handle thread.
+     */
+    public HandleThread getHandleThread() {
+        return mHandleThread;
+    }
+
+    /**
+     * Handle the action on the main thread.
+     */
+    public void handleAction() {
+        mSource.handleAction(this);
+    }
+
+    /**
+     * Handle the action on the GL thread.
+     *
+     * @param context
+     */
+    public void handleAction(BackendContext context) {
+        mSource.handleAction(context, this);
     }
 }

@@ -5,16 +5,20 @@ import android.opengl.GLES20;
 /**
  * The texture min filter parameter.
  */
-public enum TextureMagFilterParam {
+public enum MinFilter {
     NEAREST(GLES20.GL_NEAREST),
-    LINEAR(GLES20.GL_LINEAR);
+    LINEAR(GLES20.GL_LINEAR),
+    NEAREST_MIPMAP_NEAREST(GLES20.GL_NEAREST_MIPMAP_NEAREST),
+    LINEAR_MIPMAP_NEAREST(GLES20.GL_LINEAR_MIPMAP_NEAREST),
+    NEAREST_MIPMAP_LINEAR(GLES20.GL_NEAREST_MIPMAP_LINEAR),
+    LINEAR_MIPMAP_LINEAR(GLES20.GL_LINEAR_MIPMAP_LINEAR);
 
     /**
-     * The GL mag filter parameter.
+     * The GL min filter parameter.
      */
     private final int mGlParam;
 
-    TextureMagFilterParam(int glParam) {
+    MinFilter(int glParam) {
         mGlParam = glParam;
     }
 

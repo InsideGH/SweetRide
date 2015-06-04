@@ -6,10 +6,10 @@ import android.support.annotation.Nullable;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.ColorAttachment;
 import com.sweetlab.sweetride.context.DepthAttachment;
+import com.sweetlab.sweetride.context.MagFilter;
+import com.sweetlab.sweetride.context.MinFilter;
 import com.sweetlab.sweetride.context.TexelFormat;
 import com.sweetlab.sweetride.context.TexelType;
-import com.sweetlab.sweetride.context.TextureMagFilterParam;
-import com.sweetlab.sweetride.context.TextureMinFilterParam;
 import com.sweetlab.sweetride.context.TextureType;
 
 /**
@@ -17,16 +17,6 @@ import com.sweetlab.sweetride.context.TextureType;
  * attachment.
  */
 public interface TextureResource extends Resource, ColorAttachment, DepthAttachment {
-    /**
-     * The default min filter.
-     */
-    TextureMinFilterParam DEFAULT_MIN_FILTER = TextureMinFilterParam.NEAREST_MIPMAP_LINEAR;
-
-    /**
-     * The default mag filter.
-     */
-    TextureMagFilterParam DEFAULT_MAG_FILTER = TextureMagFilterParam.LINEAR;
-
     /**
      * Load the texture to gpu.
      *
@@ -85,24 +75,16 @@ public interface TextureResource extends Resource, ColorAttachment, DepthAttachm
     TextureType getTextureType();
 
     /**
-     * Set the min and mag filters.
-     *
-     * @param minFilter The min filter
-     * @param magFilter The mag filter
-     */
-    void setFilter(TextureMinFilterParam minFilter, TextureMagFilterParam magFilter);
-
-    /**
      * Get the min filter.
      *
      * @return The min filter.
      */
-    TextureMinFilterParam getMinFilter();
+    MinFilter getMinFilter();
 
     /**
      * Get the mag filter.
      *
      * @return The mag filter.
      */
-    TextureMagFilterParam getMagFilter();
+    MagFilter getMagFilter();
 }

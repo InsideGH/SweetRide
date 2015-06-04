@@ -1,5 +1,6 @@
 package com.sweetlab.sweetride.context;
 
+import com.sweetlab.sweetride.context.Util.ActionHelper;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
 import com.sweetlab.sweetride.geometry.Geometry;
@@ -42,6 +43,7 @@ public class ArrayTargetTest2_b extends OpenGLTestCase {
         mesh.addVertexBuffer(BufferTestUtil.createLeftTriangle());
         mesh.addVertexBuffer(BufferTestUtil.createColorBuffer());
         mLeftGeometry.setMesh(mesh);
+        ActionHelper.handleMainThreadActions(mLeftGeometry);
 
         /**
          * Create top resources. Not complete setup, the actual color buffer is missing which
@@ -53,6 +55,7 @@ public class ArrayTargetTest2_b extends OpenGLTestCase {
         mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createTopTriangle());
         mTopGeometry.setMesh(mesh);
+        ActionHelper.handleMainThreadActions(mTopGeometry);
 
         /**
          * Create right resources. Misconstrued setup. Using a shader that just paints red but
@@ -66,6 +69,7 @@ public class ArrayTargetTest2_b extends OpenGLTestCase {
         mesh.addVertexBuffer(BufferTestUtil.createRightTriangle());
         mesh.addVertexBuffer(BufferTestUtil.createColorBuffer());
         mRightGeometry.setMesh(mesh);
+        ActionHelper.handleMainThreadActions(mRightGeometry);
 
         /**
          * Create bottom resources. Complete setup with shader that takes color attribute data
@@ -78,8 +82,9 @@ public class ArrayTargetTest2_b extends OpenGLTestCase {
         mesh.addVertexBuffer(BufferTestUtil.createBottomTriangle());
         mesh.addVertexBuffer(BufferTestUtil.createColorBuffer());
         mBottomGeometry.setMesh(mesh);
+        ActionHelper.handleMainThreadActions(mBottomGeometry);
 
-        setTestInfo("smooth, black, red, smooth");
+        setTestInfo("smooth, black, red, smooth geometry");
 
         runOnGLThread(new ResultRunnable() {
             @Override

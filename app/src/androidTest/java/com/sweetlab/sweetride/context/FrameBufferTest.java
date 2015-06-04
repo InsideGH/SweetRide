@@ -80,11 +80,12 @@ public class FrameBufferTest extends OpenGLTestCase {
         /**
          * Create off-screen resources.
          */
-        mDestinationTexture = new Empty2DTexture("s_texture", getSurfaceWidth(), getSurfaceHeight());
-        mDestinationTexture.setFilter(TextureMinFilterParam.NEAREST, TextureMagFilterParam.NEAREST);
+        mDestinationTexture = new Empty2DTexture("s_texture", getSurfaceWidth(), getSurfaceHeight(), MinFilter.NEAREST, MagFilter.NEAREST);
 
         mRenderBuffer = new RenderBuffer(GLES20.GL_DEPTH_COMPONENT16, mDestinationTexture.getWidth(), mDestinationTexture.getHeight());
         mFrameBuffer = new FrameBuffer();
+
+        setTestInfo("Frame buffer with backend");
 
         runOnGLThread(new ResultRunnable() {
             @Override

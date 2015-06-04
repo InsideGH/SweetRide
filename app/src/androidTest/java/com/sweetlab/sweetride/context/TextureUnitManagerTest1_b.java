@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
+import com.sweetlab.sweetride.context.Util.ActionHelper;
 import com.sweetlab.sweetride.context.Util.BitmapTestUtil;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
@@ -34,8 +35,7 @@ public class TextureUnitManagerTest1_b extends OpenGLTestCase {
         super.setUp();
         Material material = new Material();
         material.setShaderProgram(ProgramTestUtil.createNdcOneTexCoordOneTexture());
-        Texture2D texture = new Texture2D("s_texture", BitmapTestUtil.createQuadColorBitmap(Bitmap.Config.ARGB_8888));
-        texture.setFilter(TextureMinFilterParam.NEAREST, TextureMagFilterParam.NEAREST);
+        Texture2D texture = new Texture2D("s_texture", BitmapTestUtil.createQuadColorBitmap(Bitmap.Config.ARGB_8888), MinFilter.NEAREST, MagFilter.NEAREST);
         material.addTexture(texture);
 
         Mesh mesh = new Mesh(MeshDrawingMode.TRIANGLE_STRIP);
@@ -44,6 +44,9 @@ public class TextureUnitManagerTest1_b extends OpenGLTestCase {
 
         mGeometry.setMaterial(material);
         mGeometry.setMesh(mesh);
+        ActionHelper.handleMainThreadActions(mGeometry);
+
+        setTestInfo("Single texture with geometry");
 
         runOnGLThread(new ResultRunnable() {
             @Override

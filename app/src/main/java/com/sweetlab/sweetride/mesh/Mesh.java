@@ -2,6 +2,10 @@ package com.sweetlab.sweetride.mesh;
 
 import android.support.annotation.Nullable;
 
+import com.sweetlab.sweetride.action.Action;
+import com.sweetlab.sweetride.action.ActionId;
+import com.sweetlab.sweetride.action.ActionNotifier;
+import com.sweetlab.sweetride.action.HandleThread;
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.MeshDrawingMode;
@@ -14,11 +18,26 @@ import java.util.List;
  * Mesh is an abstraction that contains multiple vertex buffer resources and optional
  * indices buffer resource.
  */
-public class Mesh {
+public class Mesh extends ActionNotifier {
+    /**
+     * Indices reference has changed.
+     */
+    private final Action mIndicesChanged = new Action(this, ActionId.MESH_INDICES, HandleThread.MAIN);
+
+    /**
+     * Vertex buffers collection has changed.
+     */
+    private final Action mVertexBuffersChanged = new Action(this, ActionId.MESH_BUFFER, HandleThread.MAIN);
+
     /**
      * List of vertex buffers.
      */
-    private List<VertexBufferResource> mVertexBuffers = new ArrayList<>();
+    private final List<VertexBufferResource> mVertexBuffers = new ArrayList<>();
+
+    /**
+     * The drawing mode.
+     */
+    private final MeshDrawingMode mMode;
 
     /**
      * An optional indices buffer.
@@ -31,9 +50,14 @@ public class Mesh {
     private int mVertexCount;
 
     /**
-     * The drawing mode.
+     * The indices buffer reference used by GL thread.
      */
-    private final MeshDrawingMode mMode;
+    private IndicesBuffer mIndicesBufferGL;
+
+    /**
+     * The vertex buffer collection reference used by GL thread.
+     */
+    private List<VertexBufferResource> mVertexBuffersGL = new ArrayList<>();
 
     /**
      * Constructor.
@@ -44,6 +68,26 @@ public class Mesh {
         mMode = mode;
     }
 
+    @Override
+    public void handleAction(Action action) {
+        switch (action.getType()) {
+            case MESH_BUFFER:
+                mVertexBuffersGL.clear();
+                mVertexBuffersGL.addAll(mVertexBuffers);
+                break;
+            case MESH_INDICES:
+                mIndicesBufferGL = mIndicesBuffer;
+                break;
+            default:
+                throw new RuntimeException("wtf");
+        }
+    }
+
+    @Override
+    public void handleAction(BackendContext context, Action action) {
+        throw new RuntimeException("wtf");
+    }
+
     /**
      * Set the indices buffer to use. Null allowed to not use indices.
      *
@@ -51,6 +95,7 @@ public class Mesh {
      */
     public void setIndicesBuffer(@Nullable IndicesBuffer indicesBuffer) {
         mIndicesBuffer = indicesBuffer;
+        addAction(mIndicesChanged);
     }
 
     /**
@@ -70,6 +115,7 @@ public class Mesh {
             }
         }
         mVertexBuffers.add(vertexBuffer);
+        addAction(mVertexBuffersChanged);
     }
 
     /**
@@ -124,10 +170,10 @@ public class Mesh {
      * @param context Backend context.
      */
     public void create(BackendContext context) {
-        if (mIndicesBuffer != null && !mIndicesBuffer.isCreated()) {
-            mIndicesBuffer.create(context);
+        if (mIndicesBufferGL != null && !mIndicesBufferGL.isCreated()) {
+            mIndicesBufferGL.create(context);
         }
-        for (VertexBufferResource resource : mVertexBuffers) {
+        for (VertexBufferResource resource : mVertexBuffersGL) {
             if (!resource.isCreated()) {
                 resource.create(context);
             }
@@ -140,10 +186,10 @@ public class Mesh {
      * @param context The backend context.
      */
     public void load(BackendContext context) {
-        if (mIndicesBuffer != null) {
-            mIndicesBuffer.load(context);
+        if (mIndicesBufferGL != null) {
+            mIndicesBufferGL.load(context);
         }
-        for (VertexBufferResource resource : mVertexBuffers) {
+        for (VertexBufferResource resource : mVertexBuffersGL) {
             resource.load(context);
         }
     }

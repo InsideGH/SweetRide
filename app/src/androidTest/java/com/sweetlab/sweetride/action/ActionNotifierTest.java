@@ -2,6 +2,8 @@ package com.sweetlab.sweetride.action;
 
 import android.test.AndroidTestCase;
 
+import com.sweetlab.sweetride.context.BackendContext;
+
 /**
  * Test of the action notifier.
  */
@@ -49,8 +51,8 @@ public class ActionNotifierTest extends AndroidTestCase {
          */
         Action createAction = notifierA.getAction(0);
         ActionNotifier source = createAction.getSource();
-        ActionType type = createAction.getType();
-        assertEquals(ActionType.CREATE, type);
+        ActionId type = createAction.getType();
+        assertEquals(ActionId.GEOMETRY_MESH, type);
         assertEquals(source, notifierC);
 
         /**
@@ -254,17 +256,41 @@ public class ActionNotifierTest extends AndroidTestCase {
     }
 
     private class NotifierA extends ActionNotifier {
-        public Action mCreateAction = new Action(this, ActionType.CREATE);
-        public Action mLoadAction = new Action(this, ActionType.LOAD);
+        public Action mCreateAction = new Action(this, ActionId.GEOMETRY_MESH, HandleThread.MAIN);
+        public Action mLoadAction = new Action(this, ActionId.GEOMETRY_MATERIAL, HandleThread.MAIN);
+
+        @Override
+        public void handleAction(Action action) {
+
+        }
+
+        @Override
+        public void handleAction(BackendContext context, Action action) {
+        }
     }
 
     private class NotifierB extends ActionNotifier {
-        public Action mCreateAction = new Action(this, ActionType.CREATE);
+        public Action mCreateAction = new Action(this, ActionId.GEOMETRY_MESH, HandleThread.MAIN);
 
+        @Override
+        public void handleAction(Action action) {
+        }
+
+        @Override
+        public void handleAction(BackendContext context, Action action) {
+        }
     }
 
     private class NotifierC extends ActionNotifier {
-        public Action mCreateAction = new Action(this, ActionType.CREATE);
-        public Action mLoadAction = new Action(this, ActionType.LOAD);
+        public Action mCreateAction = new Action(this, ActionId.GEOMETRY_MESH, HandleThread.MAIN);
+        public Action mLoadAction = new Action(this, ActionId.GEOMETRY_MATERIAL, HandleThread.MAIN);
+
+        @Override
+        public void handleAction(Action action) {
+        }
+
+        @Override
+        public void handleAction(BackendContext context, Action action) {
+        }
     }
 }

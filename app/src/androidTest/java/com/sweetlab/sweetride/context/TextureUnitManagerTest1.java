@@ -5,8 +5,6 @@ import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.attributedata.InterleavedVertexBuffer;
-import com.sweetlab.sweetride.attributedata.TextureCoordData;
-import com.sweetlab.sweetride.attributedata.VerticesData;
 import com.sweetlab.sweetride.context.Util.BitmapTestUtil;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;
@@ -52,9 +50,10 @@ public class TextureUnitManagerTest1 extends OpenGLTestCase {
         mIb = new IndicesBuffer(new short[]{0, 1, 2, 3}, GLES20.GL_STATIC_DRAW);
         mShaderProgram = ProgramTestUtil.createNdcOneTexCoordOneTexture();
         mVertexBuffer = BufferTestUtil.createInterleavedQuadWithTextureCoords();
-        mTexture = new Texture2D("s_texture", BitmapTestUtil.createQuadColorBitmap(Bitmap.Config.ARGB_8888));
-        mTexture.setFilter(TextureMinFilterParam.NEAREST, TextureMagFilterParam.NEAREST);
-        
+        mTexture = new Texture2D("s_texture", BitmapTestUtil.createQuadColorBitmap(Bitmap.Config.ARGB_8888), MinFilter.NEAREST, MagFilter.NEAREST);
+
+        setTestInfo("Single texture with backend");
+
         runOnGLThread(new ResultRunnable() {
             @Override
             public Object run() {

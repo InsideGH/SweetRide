@@ -58,7 +58,7 @@ public class ArrayTargetTest3 extends OpenGLTestCase {
          */
         mColorBuffer = BufferTestUtil.createColorBuffer();
 
-        setTestInfo("smooth, red, smooth, smooth");
+        setTestInfo("smooth, red, smooth, smooth backend");
 
         runOnGLThread(new ResultRunnable() {
             @Override

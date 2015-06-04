@@ -3,6 +3,9 @@ package com.sweetlab.sweetride.geometry;
 import android.support.annotation.Nullable;
 
 import com.sweetlab.sweetride.DebugOptions;
+import com.sweetlab.sweetride.action.Action;
+import com.sweetlab.sweetride.action.ActionId;
+import com.sweetlab.sweetride.action.HandleThread;
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.context.ArrayTarget;
 import com.sweetlab.sweetride.context.BackendContext;
@@ -25,6 +28,21 @@ import java.util.List;
  */
 public class Geometry extends Node {
     /**
+     * Mesh reference has changed.
+     */
+    private final Action mMeshChange = new Action(this, ActionId.GEOMETRY_MESH, HandleThread.MAIN);
+
+    /**
+     * Material reference has changed.
+     */
+    private final Action mMaterialChange = new Action(this, ActionId.GEOMETRY_MATERIAL, HandleThread.MAIN);
+
+    /**
+     * This is a temporary list of taken texture units used during drawing.
+     */
+    private final List<TextureUnit> mTextureUnits = new ArrayList<>();
+
+    /**
      * The mesh.
      */
     private Mesh mMesh;
@@ -35,13 +53,37 @@ public class Geometry extends Node {
     private Material mMaterial;
 
     /**
-     * This is a temporary list of taken texture units used during drawing.
+     * The mesh reference used by GL thread.
      */
-    private List<TextureUnit> mTextureUnits = new ArrayList<>();
+    private Mesh mMeshGL;
+
+    /**
+     * The material reference used by GL thread.
+     */
+    private Material mMaterialGL;
 
     @Override
     public void accept(NodeVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public void handleAction(Action action) {
+        switch (action.getType()) {
+            case GEOMETRY_MESH:
+                mMeshGL = mMesh;
+                break;
+            case GEOMETRY_MATERIAL:
+                mMaterialGL = mMaterial;
+                break;
+            default:
+                throw new RuntimeException("wtf");
+        }
+    }
+
+    @Override
+    public void handleAction(BackendContext context, Action action) {
+        throw new RuntimeException("wtf");
     }
 
     /**
@@ -50,7 +92,12 @@ public class Geometry extends Node {
      * @param mesh The mesh.
      */
     public void setMesh(@Nullable Mesh mesh) {
+        if (mMesh != null) {
+            disconnectNotifier(mMesh);
+        }
         mMesh = mesh;
+        connectNotifier(mMesh);
+        addAction(mMeshChange);
     }
 
     /**
@@ -59,7 +106,12 @@ public class Geometry extends Node {
      * @param material The material.
      */
     public void setMaterial(@Nullable Material material) {
+        if (mMaterial != null) {
+            disconnectNotifier(mMaterial);
+        }
         mMaterial = material;
+        connectNotifier(mMaterial);
+        addAction(mMaterialChange);
     }
 
     /**
@@ -88,11 +140,11 @@ public class Geometry extends Node {
      * @param context The backend context.
      */
     public void create(BackendContext context) {
-        if (mMaterial != null) {
-            mMaterial.create(context);
+        if (mMaterialGL != null) {
+            mMaterialGL.create(context);
         }
-        if (mMesh != null) {
-            mMesh.create(context);
+        if (mMeshGL != null) {
+            mMeshGL.create(context);
         }
     }
 
@@ -102,11 +154,11 @@ public class Geometry extends Node {
      * @param context The backend context.
      */
     public void load(BackendContext context) {
-        if (mMaterial != null) {
-            mMaterial.load(context);
+        if (mMaterialGL != null) {
+            mMaterialGL.load(context);
         }
-        if (mMesh != null) {
-            mMesh.load(context);
+        if (mMeshGL != null) {
+            mMeshGL.load(context);
         }
     }
 
@@ -126,7 +178,7 @@ public class Geometry extends Node {
             /**
              * Use shader program.
              */
-            context.getState().useProgram(mMaterial.getShaderProgram());
+            context.getState().useProgram(mMaterialGL.getShaderProgram());
 
             /**
              * Enable textures.
@@ -156,11 +208,11 @@ public class Geometry extends Node {
      * @param context Backend context.
      */
     private void enableAttributes(BackendContext context) {
-        final int vbCount = mMesh.getVertexBufferCount();
+        final int vbCount = mMeshGL.getVertexBufferCount();
         final ArrayTarget arrayTarget = context.getArrayTarget();
-        final ShaderProgram shaderProgram = mMaterial.getShaderProgram();
+        final ShaderProgram shaderProgram = mMaterialGL.getShaderProgram();
         for (int i = 0; i < vbCount; i++) {
-            arrayTarget.enableAttribute(shaderProgram, mMesh.getVertexBuffer(i));
+            arrayTarget.enableAttribute(shaderProgram, mMeshGL.getVertexBuffer(i));
         }
     }
 
@@ -170,11 +222,11 @@ public class Geometry extends Node {
      * @param context Backend context.
      */
     private void disableAttributes(BackendContext context) {
-        final int vbCount = mMesh.getVertexBufferCount();
+        final int vbCount = mMeshGL.getVertexBufferCount();
         final ArrayTarget arrayTarget = context.getArrayTarget();
-        final ShaderProgram shaderProgram = mMaterial.getShaderProgram();
+        final ShaderProgram shaderProgram = mMaterialGL.getShaderProgram();
         for (int i = 0; i < vbCount; i++) {
-            arrayTarget.disableAttribute(shaderProgram, mMesh.getVertexBuffer(i));
+            arrayTarget.disableAttribute(shaderProgram, mMeshGL.getVertexBuffer(i));
         }
     }
 
@@ -184,13 +236,13 @@ public class Geometry extends Node {
      * @param context Backend context.
      */
     private void enableTextures(BackendContext context) {
-        final ShaderProgram program = mMaterial.getShaderProgram();
+        final ShaderProgram program = mMaterialGL.getShaderProgram();
         final TextureUnitManager textureUnitManager = context.getTextureUnitManager();
-        final int textureCount = mMaterial.getTextureCount();
+        final int textureCount = mMaterialGL.getTextureCount();
         for (int i = 0; i < textureCount; i++) {
             TextureUnit textureUnit = textureUnitManager.takeTextureUnit();
             mTextureUnits.add(textureUnit);
-            textureUnit.getTexture2DTarget().enable(program, mMaterial.getTexture(i));
+            textureUnit.getTexture2DTarget().enable(program, mMaterialGL.getTexture(i));
         }
     }
 
@@ -200,11 +252,11 @@ public class Geometry extends Node {
      * @param context Backend context.
      */
     private void disableTextures(BackendContext context) {
-        final int textureCount = mMaterial.getTextureCount();
+        final int textureCount = mMaterialGL.getTextureCount();
         final TextureUnitManager textureUnitManager = context.getTextureUnitManager();
         for (int i = (textureCount - 1); i > -1; i--) {
             TextureUnit textureUnit = mTextureUnits.get(i);
-            textureUnit.getTexture2DTarget().disable(mMaterial.getTexture(i));
+            textureUnit.getTexture2DTarget().disable(mMaterialGL.getTexture(i));
             textureUnitManager.returnTextureUnit(textureUnit);
         }
         if (DebugOptions.DEBUG_GEOMETRY) {
@@ -221,13 +273,13 @@ public class Geometry extends Node {
      * @param context Backend context.
      */
     private void drawGeometry(BackendContext context) {
-        final IndicesBuffer ib = mMesh.getIndicesBuffer();
+        final IndicesBuffer ib = mMeshGL.getIndicesBuffer();
         if (ib == null) {
-            context.getArrayTarget().draw(mMesh.getMode().getGlMode(), 0, mMesh.getVertexCount());
+            context.getArrayTarget().draw(mMeshGL.getMode().getGlMode(), 0, mMeshGL.getVertexCount());
         } else {
             ElementTarget elementTarget = context.getElementTarget();
             elementTarget.enableElements(ib);
-            elementTarget.draw(mMesh.getMode().getGlMode(), 0, ib.getIndicesCount());
+            elementTarget.draw(mMeshGL.getMode().getGlMode(), 0, ib.getIndicesCount());
             elementTarget.disableElements();
         }
     }
@@ -238,29 +290,29 @@ public class Geometry extends Node {
      * @return True if drawable.
      */
     private boolean isDrawable() {
-        if (mMaterial != null && mMesh != null) {
-            if (mMaterial.getShaderProgram() != null && mMesh.getVertexBufferCount() > 0) {
+        if (mMaterialGL != null && mMeshGL != null) {
+            if (mMaterialGL.getShaderProgram() != null && mMeshGL.getVertexBufferCount() > 0) {
                 if (DebugOptions.DEBUG_GEOMETRY) {
-                    if (!mMaterial.getShaderProgram().isCreated()) {
+                    if (!mMaterialGL.getShaderProgram().isCreated()) {
                         throw new RuntimeException("Trying to draw with a program that is not created");
                     }
                     int count;
 
-                    count = mMaterial.getTextureCount();
+                    count = mMaterialGL.getTextureCount();
                     for (int i = 0; i < count; i++) {
-                        if (!mMaterial.getTexture(i).isCreated()) {
+                        if (!mMaterialGL.getTexture(i).isCreated()) {
                             throw new RuntimeException("Trying to draw with a texture that is not created");
                         }
                     }
 
-                    count = mMesh.getVertexBufferCount();
+                    count = mMeshGL.getVertexBufferCount();
                     for (int i = 0; i < count; i++) {
-                        if (!mMesh.getVertexBuffer(i).isCreated()) {
+                        if (!mMeshGL.getVertexBuffer(i).isCreated()) {
                             throw new RuntimeException("Trying to draw with a vertex buffer that is not created");
                         }
                     }
 
-                    IndicesBuffer indicesBuffer = mMesh.getIndicesBuffer();
+                    IndicesBuffer indicesBuffer = mMeshGL.getIndicesBuffer();
                     if (indicesBuffer != null && !indicesBuffer.isCreated()) {
                         throw new RuntimeException("Trying to draw with a indices buffer that is not created");
                     }

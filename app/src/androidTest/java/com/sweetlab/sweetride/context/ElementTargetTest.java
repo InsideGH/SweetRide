@@ -61,6 +61,8 @@ public class ElementTargetTest extends OpenGLTestCase {
          */
         mIndicesBuffer = new IndicesBuffer(BufferTestUtil.createTriangleIndices(), GLES20.GL_STATIC_DRAW);
 
+        setTestInfo("indices red, blue, red, blue backend");
+
         runOnGLThread(new ResultRunnable() {
             @Override
             public Object run() {

@@ -56,11 +56,11 @@ public class TextureUnitManagerTest2 extends OpenGLTestCase {
         mShaderProgram = ProgramTestUtil.createNdcOneTexCoordTwoTextures();
         mVertexBuffer = BufferTestUtil.createInterleavedQuadWithTextureCoords();
 
-        mTexture = new Texture2D("s_texture", BitmapTestUtil.createQuadColorBitmap(Bitmap.Config.ARGB_8888));
-        mTexture.setFilter(TextureMinFilterParam.NEAREST, TextureMagFilterParam.NEAREST);
+        mTexture = new Texture2D("s_texture", BitmapTestUtil.createQuadColorBitmap(Bitmap.Config.ARGB_8888), MinFilter.NEAREST, MagFilter.NEAREST);
 
-        mTextureChess = new Texture2D("s_textureChess", BitmapTestUtil.createChessColorBitmap(Bitmap.Config.ARGB_8888));
-        mTextureChess.setFilter(TextureMinFilterParam.NEAREST, TextureMagFilterParam.NEAREST);
+        mTextureChess = new Texture2D("s_textureChess", BitmapTestUtil.createChessColorBitmap(Bitmap.Config.ARGB_8888), MinFilter.NEAREST, MagFilter.NEAREST);
+
+        setTestInfo("Multi texture with backend");
 
         runOnGLThread(new ResultRunnable() {
             @Override

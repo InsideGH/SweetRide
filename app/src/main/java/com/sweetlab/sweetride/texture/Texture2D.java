@@ -5,11 +5,11 @@ import android.graphics.Bitmap;
 import com.sweetlab.sweetride.context.AndroidTextureHelper;
 import com.sweetlab.sweetride.context.AttachmentType;
 import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.context.MagFilter;
+import com.sweetlab.sweetride.context.MinFilter;
 import com.sweetlab.sweetride.context.ResourceManager;
 import com.sweetlab.sweetride.context.TexelFormat;
 import com.sweetlab.sweetride.context.TexelType;
-import com.sweetlab.sweetride.context.TextureMagFilterParam;
-import com.sweetlab.sweetride.context.TextureMinFilterParam;
 import com.sweetlab.sweetride.context.TextureType;
 import com.sweetlab.sweetride.context.TextureUnit2DTarget;
 import com.sweetlab.sweetride.resource.TextureResource;
@@ -30,27 +30,31 @@ public class Texture2D implements TextureResource {
     private final Bitmap mBitmap;
 
     /**
+     * The min filter.
+     */
+    private final MinFilter mMinFilter;
+
+    /**
+     * The mag filter.
+     */
+    private final MagFilter mMagFilter;
+
+    /**
      * The texture id.
      */
     private int mTextureId = ResourceManager.INVALID_TEXTURE_ID;
 
     /**
-     * The min filter.
-     */
-    private TextureMinFilterParam mMinFilter = DEFAULT_MIN_FILTER;
-
-    /**
-     * The mag filter.
-     */
-    private TextureMagFilterParam mMagFilter = DEFAULT_MAG_FILTER;
-
-    /**
      * Constructor.
      *
-     * @param name   Shader uniform (sampler) name.
-     * @param bitmap Bitmap.
+     * @param name      Shader uniform (sampler) name.
+     * @param bitmap    Bitmap
+     * @param minFilter The min filter.
+     * @param magFilter The mag filter.
      */
-    public Texture2D(String name, Bitmap bitmap) {
+    public Texture2D(String name, Bitmap bitmap, MinFilter minFilter, MagFilter magFilter) {
+        mMinFilter = minFilter;
+        mMagFilter = magFilter;
         mName = name;
         mBitmap = bitmap;
     }
@@ -124,18 +128,12 @@ public class Texture2D implements TextureResource {
     }
 
     @Override
-    public void setFilter(TextureMinFilterParam minFilter, TextureMagFilterParam magFilter) {
-        mMinFilter = minFilter;
-        mMagFilter = magFilter;
-    }
-
-    @Override
-    public TextureMinFilterParam getMinFilter() {
+    public MinFilter getMinFilter() {
         return mMinFilter;
     }
 
     @Override
-    public TextureMagFilterParam getMagFilter() {
+    public MagFilter getMagFilter() {
         return mMagFilter;
     }
 }

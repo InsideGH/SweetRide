@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
+import com.sweetlab.sweetride.context.Util.ActionHelper;
 import com.sweetlab.sweetride.context.Util.BitmapTestUtil;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
@@ -36,12 +37,10 @@ public class TextureUnitManagerTest2_b extends OpenGLTestCase {
         Material material = new Material();
         material.setShaderProgram(ProgramTestUtil.createNdcOneTexCoordTwoTextures());
 
-        Texture2D texture1 = new Texture2D("s_texture", BitmapTestUtil.createQuadColorBitmap(Bitmap.Config.ARGB_8888));
-        texture1.setFilter(TextureMinFilterParam.NEAREST, TextureMagFilterParam.NEAREST);
+        Texture2D texture1 = new Texture2D("s_texture", BitmapTestUtil.createQuadColorBitmap(Bitmap.Config.ARGB_8888), MinFilter.NEAREST, MagFilter.NEAREST);
         material.addTexture(texture1);
 
-        Texture2D texture2 = new Texture2D("s_textureChess", BitmapTestUtil.createChessColorBitmap(Bitmap.Config.ARGB_8888));
-        texture2.setFilter(TextureMinFilterParam.NEAREST, TextureMagFilterParam.NEAREST);
+        Texture2D texture2 = new Texture2D("s_textureChess", BitmapTestUtil.createChessColorBitmap(Bitmap.Config.ARGB_8888), MinFilter.NEAREST, MagFilter.NEAREST);
         material.addTexture(texture2);
 
         mGeometry.setMaterial(material);
@@ -51,6 +50,10 @@ public class TextureUnitManagerTest2_b extends OpenGLTestCase {
         mesh.addVertexBuffer(BufferTestUtil.createInterleavedQuadWithTextureCoords());
 
         mGeometry.setMesh(mesh);
+        ActionHelper.handleMainThreadActions(mGeometry);
+
+        setTestInfo("Multi texture with geometry");
+
         runOnGLThread(new ResultRunnable() {
             @Override
             public Object run() {

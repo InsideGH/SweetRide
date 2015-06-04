@@ -1,5 +1,6 @@
 package com.sweetlab.sweetride.context;
 
+import com.sweetlab.sweetride.context.Util.ActionHelper;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
@@ -41,27 +42,31 @@ public class FrameBufferTest_a extends OpenGLTestCase {
          */
         mTriangleMaterial = new Material();
         mTriangleMaterial.setShaderProgram(ProgramTestUtil.createNdcRed());
+        ActionHelper.handleMainThreadActions(mTriangleMaterial);
 
         mTriangleMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mTriangleMesh.addVertexBuffer(BufferTestUtil.createCenteredTriangle());
+        ActionHelper.handleMainThreadActions(mTriangleMesh);
 
         /**
          * Create the quad material and mesh. It's a quad triangle strip with a texture.
          */
         mQuadMaterial = new Material();
         mQuadMaterial.setShaderProgram(ProgramTestUtil.createNdcOneTexCoordOneTexture());
-
-        TextureResource mDestinationTexture = new Empty2DTexture("s_texture", getSurfaceWidth(), getSurfaceHeight());
-        mDestinationTexture.setFilter(TextureMinFilterParam.NEAREST, TextureMagFilterParam.NEAREST);
+        TextureResource mDestinationTexture = new Empty2DTexture("s_texture", getSurfaceWidth(), getSurfaceHeight(), MinFilter.NEAREST, MagFilter.NEAREST);
         mQuadMaterial.addTexture(mDestinationTexture);
+        ActionHelper.handleMainThreadActions(mQuadMaterial);
 
         mQuadMesh = new Mesh(MeshDrawingMode.TRIANGLE_STRIP);
         mQuadMesh.addVertexBuffer(BufferTestUtil.createInterleavedQuadWithTextureCoords());
+        ActionHelper.handleMainThreadActions(mQuadMesh);
 
         /**
          * Create a frame buffer.
          */
         mFrameBuffer = new FrameBuffer();
+
+        setTestInfo("Frame buffer with mesh and material");
 
         runOnGLThread(new ResultRunnable() {
             @Override

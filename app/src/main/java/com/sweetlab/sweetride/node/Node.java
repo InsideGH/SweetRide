@@ -1,13 +1,16 @@
 package com.sweetlab.sweetride.node;
 
+import com.sweetlab.sweetride.action.Action;
+import com.sweetlab.sweetride.action.ActionNotifier;
+import com.sweetlab.sweetride.context.BackendContext;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A general node.
  */
-public class Node {
-
+public class Node extends ActionNotifier {
     /**
      * List of children.
      */
@@ -47,5 +50,15 @@ public class Node {
      */
     public void accept(NodeVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public void handleAction(Action action) {
+        throw new RuntimeException("wtf");
+    }
+
+    @Override
+    public void handleAction(BackendContext context, Action action) {
+        throw new RuntimeException("wtf");
     }
 }

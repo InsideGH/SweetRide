@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
+import com.sweetlab.sweetride.context.Util.ActionHelper;
 import com.sweetlab.sweetride.context.Util.BitmapTestUtil;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;
@@ -38,13 +39,16 @@ public class TextureUnitManagerTest1_a extends OpenGLTestCase {
         super.setUp();
         mMaterial = new Material();
         mMaterial.setShaderProgram(ProgramTestUtil.createNdcOneTexCoordOneTexture());
-        Texture2D texture = new Texture2D("s_texture", BitmapTestUtil.createQuadColorBitmap(Bitmap.Config.ARGB_8888));
-        texture.setFilter(TextureMinFilterParam.NEAREST, TextureMagFilterParam.NEAREST);
+        Texture2D texture = new Texture2D("s_texture", BitmapTestUtil.createQuadColorBitmap(Bitmap.Config.ARGB_8888), MinFilter.NEAREST, MagFilter.NEAREST);
         mMaterial.addTexture(texture);
+        ActionHelper.handleMainThreadActions(mMaterial);
 
         mMesh = new Mesh(MeshDrawingMode.TRIANGLE_STRIP);
         mMesh.setIndicesBuffer(new IndicesBuffer(new short[]{0, 1, 2, 3}, GLES20.GL_STATIC_DRAW));
         mMesh.addVertexBuffer(BufferTestUtil.createInterleavedQuadWithTextureCoords());
+        ActionHelper.handleMainThreadActions(mMesh);
+
+        setTestInfo("Single texture with mesh and material");
 
         runOnGLThread(new ResultRunnable() {
             @Override

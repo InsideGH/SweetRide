@@ -1,5 +1,6 @@
 package com.sweetlab.sweetride.context;
 
+import com.sweetlab.sweetride.context.Util.ActionHelper;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
@@ -42,10 +43,12 @@ public class ArrayTargetTest2_a extends OpenGLTestCase {
          */
         mLeftMaterial = new Material();
         mLeftMaterial.setShaderProgram(ProgramTestUtil.createNdcColor());
+        ActionHelper.handleMainThreadActions(mLeftMaterial);
 
         mLeftMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mLeftMesh.addVertexBuffer(BufferTestUtil.createLeftTriangle());
         mLeftMesh.addVertexBuffer(BufferTestUtil.createColorBuffer());
+        ActionHelper.handleMainThreadActions(mLeftMesh);
 
 
         /**
@@ -54,9 +57,11 @@ public class ArrayTargetTest2_a extends OpenGLTestCase {
          */
         mTopMaterial = new Material();
         mTopMaterial.setShaderProgram(ProgramTestUtil.createNdcColor());
+        ActionHelper.handleMainThreadActions(mTopMaterial);
 
         mTopMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mTopMesh.addVertexBuffer(BufferTestUtil.createTopTriangle());
+        ActionHelper.handleMainThreadActions(mTopMesh);
 
 
         /**
@@ -67,10 +72,12 @@ public class ArrayTargetTest2_a extends OpenGLTestCase {
 
         mRightMaterial = new Material();
         mRightMaterial.setShaderProgram(ProgramTestUtil.createNdcRed());
+        ActionHelper.handleMainThreadActions(mRightMaterial);
 
         mRightMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mRightMesh.addVertexBuffer(BufferTestUtil.createRightTriangle());
         mRightMesh.addVertexBuffer(BufferTestUtil.createColorBuffer());
+        ActionHelper.handleMainThreadActions(mRightMesh);
 
 
         /**
@@ -79,12 +86,14 @@ public class ArrayTargetTest2_a extends OpenGLTestCase {
          */
         mBottomMaterial = new Material();
         mBottomMaterial.setShaderProgram(ProgramTestUtil.createNdcColor());
+        ActionHelper.handleMainThreadActions(mBottomMaterial);
 
         mBottomMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mBottomMesh.addVertexBuffer(BufferTestUtil.createBottomTriangle());
         mBottomMesh.addVertexBuffer(BufferTestUtil.createColorBuffer());
+        ActionHelper.handleMainThreadActions(mBottomMesh);
 
-        setTestInfo("smooth, black, red, smooth");
+        setTestInfo("smooth, black, red, smooth material/mesh");
 
         runOnGLThread(new ResultRunnable() {
             @Override

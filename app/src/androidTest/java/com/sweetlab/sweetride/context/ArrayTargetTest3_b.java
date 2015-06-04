@@ -1,5 +1,6 @@
 package com.sweetlab.sweetride.context;
 
+import com.sweetlab.sweetride.context.Util.ActionHelper;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
 import com.sweetlab.sweetride.geometry.Geometry;
@@ -43,6 +44,7 @@ public class ArrayTargetTest3_b extends OpenGLTestCase {
         mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createInterleavedLeftTriangleWithColor());
         mLeftGeometry.setMesh(mesh);
+        ActionHelper.handleMainThreadActions(mLeftGeometry);
 
         /**
          * Create top resources. Complete setup, with red-shader and mesh with vertices.
@@ -53,6 +55,7 @@ public class ArrayTargetTest3_b extends OpenGLTestCase {
         mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createTopTriangle());
         mTopGeometry.setMesh(mesh);
+        ActionHelper.handleMainThreadActions(mTopGeometry);
 
         /**
          * Create right resources. Complete setup with color shader and mesh with interleaved
@@ -64,6 +67,7 @@ public class ArrayTargetTest3_b extends OpenGLTestCase {
         mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createInterleavedRightTriangleWithColor());
         mRightGeometry.setMesh(mesh);
+        ActionHelper.handleMainThreadActions(mRightGeometry);
 
         /**
          * Create bottom resources. Complete setup with color shader and mesh with separate
@@ -76,8 +80,9 @@ public class ArrayTargetTest3_b extends OpenGLTestCase {
         mesh.addVertexBuffer(BufferTestUtil.createBottomTriangle());
         mesh.addVertexBuffer(BufferTestUtil.createColorBuffer());
         mBottomGeometry.setMesh(mesh);
+        ActionHelper.handleMainThreadActions(mBottomGeometry);
 
-        setTestInfo("smooth, red, smooth, smooth");
+        setTestInfo("smooth, red, smooth, smooth geometry");
 
         runOnGLThread(new ResultRunnable() {
             @Override

@@ -3,6 +3,7 @@ package com.sweetlab.sweetride.context;
 import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
+import com.sweetlab.sweetride.context.Util.ActionHelper;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
@@ -52,25 +53,31 @@ public class ElementTargetTest_a extends OpenGLTestCase {
          */
         mRedMaterial = new Material();
         mRedMaterial.setShaderProgram(ProgramTestUtil.createNdcRed());
+        ActionHelper.handleMainThreadActions(mRedMaterial);
 
         mBlueMaterial = new Material();
         mBlueMaterial.setShaderProgram(ProgramTestUtil.createNdcBlue());
+        ActionHelper.handleMainThreadActions(mBlueMaterial);
 
         mLeftMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mLeftMesh.addVertexBuffer(BufferTestUtil.createLeftTriangle());
         mLeftMesh.setIndicesBuffer(mIndicesBuffer);
+        ActionHelper.handleMainThreadActions(mLeftMesh);
 
         mTopMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mTopMesh.addVertexBuffer(BufferTestUtil.createTopTriangle());
+        ActionHelper.handleMainThreadActions(mTopMesh);
 
         mRightMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mRightMesh.addVertexBuffer(BufferTestUtil.createRightTriangle());
         mRightMesh.setIndicesBuffer(mIndicesBuffer);
+        ActionHelper.handleMainThreadActions(mRightMesh);
 
         mBottomMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mBottomMesh.addVertexBuffer(BufferTestUtil.createBottomTriangle());
+        ActionHelper.handleMainThreadActions(mBottomMesh);
 
-        setTestInfo("red indices, blue, red indices, blue");
+        setTestInfo("indices red, blue, red, blue material/mesh");
 
         runOnGLThread(new ResultRunnable() {
             @Override

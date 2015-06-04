@@ -1,5 +1,6 @@
 package com.sweetlab.sweetride.context;
 
+import com.sweetlab.sweetride.context.Util.ActionHelper;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
@@ -39,23 +40,29 @@ public class ArrayTargetTest1_a extends OpenGLTestCase {
          */
         mRedMaterial = new Material();
         mRedMaterial.setShaderProgram(ProgramTestUtil.createNdcRed());
+        ActionHelper.handleMainThreadActions(mRedMaterial);
 
         mBlueMaterial = new Material();
         mBlueMaterial.setShaderProgram(ProgramTestUtil.createNdcBlue());
+        ActionHelper.handleMainThreadActions(mBlueMaterial);
 
         mLeftMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mLeftMesh.addVertexBuffer(BufferTestUtil.createLeftTriangle());
+        ActionHelper.handleMainThreadActions(mLeftMesh);
 
         mRightMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mRightMesh.addVertexBuffer(BufferTestUtil.createRightTriangle());
+        ActionHelper.handleMainThreadActions(mRightMesh);
 
         mTopMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mTopMesh.addVertexBuffer(BufferTestUtil.createTopTriangle());
+        ActionHelper.handleMainThreadActions(mTopMesh);
 
         mBottomMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mBottomMesh.addVertexBuffer(BufferTestUtil.createBottomTriangle());
+        ActionHelper.handleMainThreadActions(mBottomMesh);
 
-        setTestInfo("red, blue, red, blue");
+        setTestInfo("red, blue, red, blue material/mesh");
 
         runOnGLThread(new ResultRunnable() {
             @Override

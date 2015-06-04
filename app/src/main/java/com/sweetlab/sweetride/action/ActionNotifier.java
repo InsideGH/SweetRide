@@ -1,5 +1,7 @@
 package com.sweetlab.sweetride.action;
 
+import com.sweetlab.sweetride.context.BackendContext;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,16 +11,16 @@ import java.util.List;
  * During connect and disconnect, any pending actions are handled (added or removed).
  * Actions can be added or removed which is then reflected to the top of the graph.
  */
-public class ActionNotifier {
+public abstract class ActionNotifier {
     /**
      * List of pending actions.
      */
-    List<Action> mActions = new ArrayList<>();
+    final List<Action> mActions = new ArrayList<>();
 
     /**
      * List of parents.
      */
-    List<ActionNotifier> mParents = new ArrayList<>();
+    final List<ActionNotifier> mParents = new ArrayList<>();
 
     /**
      * Connect the provided notifier to notifier. Any pending actions in the notifier that is
@@ -113,6 +115,21 @@ public class ActionNotifier {
     }
 
     /**
+     * Handle action on the main thread.
+     *
+     * @param action Action to handle.
+     */
+    public abstract void handleAction(Action action);
+
+    /**
+     * Handle the action on the GL thread.
+     *
+     * @param context Backend context.
+     * @param action  Action to handle.
+     */
+    public abstract void handleAction(BackendContext context, Action action);
+
+    /**
      * Report action remove to all parents.
      *
      * @param action Action to remove.
@@ -122,4 +139,5 @@ public class ActionNotifier {
             parent.removeAction(action);
         }
     }
+
 }

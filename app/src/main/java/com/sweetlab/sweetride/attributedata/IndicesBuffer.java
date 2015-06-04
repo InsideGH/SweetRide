@@ -13,11 +13,6 @@ import java.nio.ShortBuffer;
  */
 public class IndicesBuffer implements BufferResource {
     /**
-     * The buffer 'name'/id.
-     */
-    private int mBufferId = ResourceManager.INVALID_BUFFER_ID;
-
-    /**
      * Buffer holding the indices.
      */
     private final Buffer mBuffer;
@@ -36,6 +31,11 @@ public class IndicesBuffer implements BufferResource {
      * The buffer usage hint.
      */
     private final int mBufferUsage;
+
+    /**
+     * The buffer 'name'/id.
+     */
+    private int mBufferId = ResourceManager.INVALID_BUFFER_ID;
 
     /**
      * Constructor.
