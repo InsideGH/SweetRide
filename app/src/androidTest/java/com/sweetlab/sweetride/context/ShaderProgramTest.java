@@ -3,7 +3,7 @@ package com.sweetlab.sweetride.context;
 import com.sweetlab.sweetride.shader.Attribute;
 import com.sweetlab.sweetride.shader.FragmentShader;
 import com.sweetlab.sweetride.shader.ShaderProgram;
-import com.sweetlab.sweetride.shader.Uniform;
+import com.sweetlab.sweetride.shader.ProgramUniform;
 import com.sweetlab.sweetride.shader.VertexShader;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
@@ -163,10 +163,10 @@ public class ShaderProgramTest extends OpenGLTestCase {
                 int uniformCount = mValidProg.getUniformCount();
                 assertEquals(4, uniformCount);
 
-                Uniform u_worldViewProjMat = mValidProg.getUniform("u_WorldViewProjMat");
-                Uniform s_texture0 = mValidProg.getUniform("s_Texture0");
-                Uniform u_amountRed = mValidProg.getUniform("u_AmountRed");
-                Uniform u_amountRedInt = mValidProg.getUniform("u_AmountRedInt");
+                ProgramUniform u_worldViewProjMat = mValidProg.getUniform("u_WorldViewProjMat");
+                ProgramUniform s_texture0 = mValidProg.getUniform("s_Texture0");
+                ProgramUniform u_amountRed = mValidProg.getUniform("u_AmountRed");
+                ProgramUniform u_amountRedInt = mValidProg.getUniform("u_AmountRedInt");
 
                 assertTrue(u_worldViewProjMat.getLocation() != -1);
                 assertTrue(s_texture0.getLocation() != -1);

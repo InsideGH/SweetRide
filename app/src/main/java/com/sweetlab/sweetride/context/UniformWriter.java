@@ -4,7 +4,7 @@ import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.DebugOptions;
 import com.sweetlab.sweetride.shader.ShaderProgram;
-import com.sweetlab.sweetride.shader.Uniform;
+import com.sweetlab.sweetride.shader.ProgramUniform;
 
 /**
  * Shader uniform writer.
@@ -41,11 +41,11 @@ public class UniformWriter {
      * @param name    Name of uniform in program.
      */
     public void writeDefault(ShaderProgram program, String name) {
-        Uniform uniform = program.getUniform(name);
-        if (uniform != null) {
-            if (isFloatType(uniform)) {
+        ProgramUniform programUniform = program.getUniform(name);
+        if (programUniform != null) {
+            if (isFloatType(programUniform)) {
                 writeFloat(program, name, sFloatDefault);
-            } else if (isIntType(uniform)) {
+            } else if (isIntType(programUniform)) {
                 writeInt(program, name, sIntDefault);
             }
         }
@@ -59,8 +59,8 @@ public class UniformWriter {
      * @param data    Data to write, the actual amount written is known by shader uniform.
      */
     public void writeFloat(ShaderProgram program, String name, float[] data) {
-        Uniform uniform = program.getUniform(name);
-        if (uniform != null) {
+        ProgramUniform programUniform = program.getUniform(name);
+        if (programUniform != null) {
             if (DebugOptions.DEBUG_UNIFORM_WRITES) {
                 int activeProgram = mContext.getState().readActiveProgram();
                 if (activeProgram != program.getId()) {
@@ -68,9 +68,9 @@ public class UniformWriter {
                 }
             }
 
-            if (isFloatType(uniform)) {
-                int location = uniform.getLocation();
-                switch (uniform.getElementCount()) {
+            if (isFloatType(programUniform)) {
+                int location = programUniform.getLocation();
+                switch (programUniform.getElementCount()) {
                     case 1:
                         GLES20.glUniform1fv(location, 1, data, 0);
                         break;
@@ -90,7 +90,7 @@ public class UniformWriter {
                         GLES20.glUniformMatrix4fv(location, 1, false, data, 0);
                         break;
                     default:
-                        throw new RuntimeException("Unsupported size in UniformWriter.writeFloat " + uniform.getElementCount());
+                        throw new RuntimeException("Unsupported size in UniformWriter.writeFloat " + programUniform.getElementCount());
                 }
             }
         }
@@ -104,8 +104,8 @@ public class UniformWriter {
      * @param data    Data to write, the actual amount written is known by shader uniform.
      */
     public void writeInt(ShaderProgram program, String name, int[] data) {
-        Uniform uniform = program.getUniform(name);
-        if (uniform != null) {
+        ProgramUniform programUniform = program.getUniform(name);
+        if (programUniform != null) {
             if (DebugOptions.DEBUG_UNIFORM_WRITES) {
                 int activeProgram = mContext.getState().readActiveProgram();
                 if (activeProgram != program.getId()) {
@@ -113,9 +113,9 @@ public class UniformWriter {
                 }
             }
 
-            if (isIntType(uniform)) {
-                int location = uniform.getLocation();
-                switch (uniform.getElementCount()) {
+            if (isIntType(programUniform)) {
+                int location = programUniform.getLocation();
+                switch (programUniform.getElementCount()) {
                     case 1:
                         GLES20.glUniform1iv(location, 1, data, 0);
                         break;
@@ -129,7 +129,7 @@ public class UniformWriter {
                         GLES20.glUniform4iv(location, 1, data, 0);
                         break;
                     default:
-                        throw new RuntimeException("Unsupported size in UniformWriter.writeInt " + uniform.getElementCount());
+                        throw new RuntimeException("Unsupported size in UniformWriter.writeInt " + programUniform.getElementCount());
                 }
             }
         }
@@ -138,11 +138,11 @@ public class UniformWriter {
     /**
      * Check if uniform is a float uniform.
      *
-     * @param uniform The uniform to check.
+     * @param programUniform The uniform to check.
      * @return True if float type.
      */
-    private static boolean isFloatType(Uniform uniform) {
-        switch (uniform.getType()) {
+    private static boolean isFloatType(ProgramUniform programUniform) {
+        switch (programUniform.getType()) {
             case GLES20.GL_FLOAT_VEC2:
             case GLES20.GL_FLOAT_VEC3:
             case GLES20.GL_FLOAT_VEC4:
@@ -157,11 +157,11 @@ public class UniformWriter {
     /**
      * Check if uniform is a int uniform.
      *
-     * @param uniform The uniform to check.
+     * @param programUniform The uniform to check.
      * @return True if int type.
      */
-    private static boolean isIntType(Uniform uniform) {
-        switch (uniform.getType()) {
+    private static boolean isIntType(ProgramUniform programUniform) {
+        switch (programUniform.getType()) {
             case GLES20.GL_SAMPLER_2D:
             case GLES20.GL_SAMPLER_CUBE:
             case GLES20.GL_INT_VEC2:

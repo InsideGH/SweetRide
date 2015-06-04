@@ -5,7 +5,7 @@ import com.sweetlab.sweetride.context.GLES20Helper;
 /**
  * This is a representation of a uniform in a shader program.
  */
-public class Uniform {
+public class ProgramUniform {
     /**
      * Name of the uniform.
      */
@@ -39,7 +39,7 @@ public class Uniform {
      * @param type      Type (for example GL_FLOAT)
      * @param location  Location of uniform in linked shader program.
      */
-    public Uniform(String name, int arraySize, int type, int location) {
+    public ProgramUniform(String name, int arraySize, int type, int location) {
         mName = name;
         mArraySize = arraySize;
         mType = type;

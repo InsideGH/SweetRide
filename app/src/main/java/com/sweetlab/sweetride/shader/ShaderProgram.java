@@ -32,7 +32,7 @@ public class ShaderProgram extends ActionNotifier implements Resource {
     /**
      * The uniforms.
      */
-    private Map<String, Uniform> mUniforms;
+    private Map<String, ProgramUniform> mUniforms;
 
     /**
      * The linked id.
@@ -142,7 +142,7 @@ public class ShaderProgram extends ActionNotifier implements Resource {
      * @param name Name of uniform.
      * @return The uniform.
      */
-    public Uniform getUniform(String name) {
+    public ProgramUniform getUniform(String name) {
         return mUniforms.get(name);
     }
 

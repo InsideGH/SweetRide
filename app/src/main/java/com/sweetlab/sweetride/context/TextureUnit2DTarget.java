@@ -5,7 +5,7 @@ import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.resource.TextureResource;
 import com.sweetlab.sweetride.shader.ShaderProgram;
-import com.sweetlab.sweetride.shader.Uniform;
+import com.sweetlab.sweetride.shader.ProgramUniform;
 import com.sweetlab.sweetride.util.Util;
 
 import java.nio.Buffer;
@@ -113,8 +113,8 @@ public class TextureUnit2DTarget {
         }
 
         String name = texture.getName();
-        Uniform uniform = program.getUniform(name);
-        if (uniform != null) {
+        ProgramUniform programUniform = program.getUniform(name);
+        if (programUniform != null) {
             if (!isUnitActive()) {
                 GLES20.glActiveTexture(mGLUnitNr);
             }

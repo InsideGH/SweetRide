@@ -7,7 +7,7 @@ import com.sweetlab.sweetride.shader.VertexShader;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
 
-public class UniformWriterTest extends OpenGLTestCase {
+public class ProgramUniformWriterTest extends OpenGLTestCase {
 
     private BackendContext mContext;
     private ShaderProgram mProgram;
