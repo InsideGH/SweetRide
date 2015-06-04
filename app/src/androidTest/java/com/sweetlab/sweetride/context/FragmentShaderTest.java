@@ -5,9 +5,6 @@ import com.sweetlab.sweetride.shader.FragmentShader;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
 
-/**
- * Test fragment shader.
- */
 public class FragmentShaderTest extends OpenGLTestCase {
     /**
      * Valid shader 1.

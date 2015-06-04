@@ -1,9 +1,7 @@
 package com.sweetlab.sweetride.context;
 
-import android.opengl.GLES20;
-
-import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.attributedata.VertexBuffer;
+import com.sweetlab.sweetride.context.Util.ActionHelper;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
@@ -11,14 +9,14 @@ import com.sweetlab.sweetride.shader.ShaderProgram;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
 
-public class ElementTargetTest extends OpenGLTestCase {
+public class ArrayOneBuf_glNotifier extends OpenGLTestCase {
     /**
      * Backend context.
      */
     private BackendContext mContext;
 
     /**
-     * Red, blue and color shader.
+     * Red, blue shader.
      */
     private ShaderProgram mRedShader;
     private ShaderProgram mBlueShader;
@@ -30,11 +28,6 @@ public class ElementTargetTest extends OpenGLTestCase {
     private VertexBuffer mRightTriangle;
     private VertexBuffer mTopTriangle;
     private VertexBuffer mBottomTriangle;
-
-    /**
-     * The indices buffer.
-     */
-    private IndicesBuffer mIndicesBuffer;
 
     @Override
     protected void setUp() throws Exception {
@@ -53,12 +46,7 @@ public class ElementTargetTest extends OpenGLTestCase {
         mTopTriangle = BufferTestUtil.createTopTriangle();
         mBottomTriangle = BufferTestUtil.createBottomTriangle();
 
-        /**
-         * Create indices buffer.
-         */
-        mIndicesBuffer = new IndicesBuffer(BufferTestUtil.createTriangleIndices(), GLES20.GL_STATIC_DRAW);
-
-        setTestInfo("indices red, blue, red, blue backend");
+        setTestInfo("red, blue, red, blue backend");
 
         runOnGLThread(new ResultRunnable() {
             @Override
@@ -66,36 +54,26 @@ public class ElementTargetTest extends OpenGLTestCase {
                 mContext = getBackendContext();
 
                 /**
-                 * Link shader programs.
+                 * Handle GL actions.
                  */
-                mRedShader.create(mContext);
-                mBlueShader.create(mContext);
+                ActionHelper.handleGLThreadActions(mRedShader, mContext);
+                ActionHelper.handleGLThreadActions(mBlueShader, mContext);
 
                 /**
-                 * Create vertex buffers (object).
+                 * Handle GL actions.
                  */
-                mLeftTriangle.create(mContext);
-                mRightTriangle.create(mContext);
-                mTopTriangle.create(mContext);
-                mBottomTriangle.create(mContext);
+                ActionHelper.handleGLThreadActions(mLeftTriangle, mContext);
+                ActionHelper.handleGLThreadActions(mRightTriangle, mContext);
+                ActionHelper.handleGLThreadActions(mTopTriangle, mContext);
+                ActionHelper.handleGLThreadActions(mBottomTriangle, mContext);
 
-                /**
-                 * Load triangle vertices to gpu.
-                 */
-                mLeftTriangle.load(mContext);
-                mRightTriangle.load(mContext);
-                mTopTriangle.load(mContext);
-                mBottomTriangle.load(mContext);
+                assertFalse(mRedShader.hasActions());
+                assertFalse(mBlueShader.hasActions());
+                assertFalse(mLeftTriangle.hasActions());
+                assertFalse(mRightTriangle.hasActions());
+                assertFalse(mTopTriangle.hasActions());
+                assertFalse(mBottomTriangle.hasActions());
 
-                /**
-                 * Create indices buffer (object).
-                 */
-                mIndicesBuffer.create(mContext);
-
-                /**
-                 * Load indices to gpu.
-                 */
-                mIndicesBuffer.load(mContext);
                 return null;
             }
         });
@@ -110,15 +88,17 @@ public class ElementTargetTest extends OpenGLTestCase {
                  */
                 clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
 
-                DrawTestUtil.drawElementsSeparateBuffers(mContext, mRedShader, mIndicesBuffer, mLeftTriangle);
-                DrawTestUtil.drawElementsSeparateBuffers(mContext, mBlueShader, mIndicesBuffer, mTopTriangle);
-                DrawTestUtil.drawElementsSeparateBuffers(mContext, mRedShader, mIndicesBuffer, mRightTriangle);
-                DrawTestUtil.drawElementsSeparateBuffers(mContext, mBlueShader, mIndicesBuffer, mBottomTriangle);
+                /**
+                 * Draw the triangles.
+                 */
+                DrawTestUtil.drawArraySeparateBuffers(mContext, mRedShader, mLeftTriangle);
+                DrawTestUtil.drawArraySeparateBuffers(mContext, mBlueShader, mTopTriangle);
+                DrawTestUtil.drawArraySeparateBuffers(mContext, mRedShader, mRightTriangle);
+                DrawTestUtil.drawArraySeparateBuffers(mContext, mBlueShader, mBottomTriangle);
 
                 return null;
             }
         });
         sleepOnDrawFrame(2000);
     }
-
 }

@@ -3,9 +3,6 @@ package com.sweetlab.sweetride.context;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
 
-/**
- * Test shader compiler with both valid and invalid code.
- */
 public class ShaderCompilerTest extends OpenGLTestCase {
 
     public static final String VALID_VERTEX_SOURCE =

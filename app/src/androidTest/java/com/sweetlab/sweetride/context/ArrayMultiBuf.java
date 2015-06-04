@@ -1,8 +1,5 @@
 package com.sweetlab.sweetride.context;
 
-import android.opengl.GLES20;
-
-import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.attributedata.VertexBuffer;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;
@@ -11,7 +8,7 @@ import com.sweetlab.sweetride.shader.ShaderProgram;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
 
-public class ElementTargetTest extends OpenGLTestCase {
+public class ArrayMultiBuf extends OpenGLTestCase {
     /**
      * Backend context.
      */
@@ -22,6 +19,7 @@ public class ElementTargetTest extends OpenGLTestCase {
      */
     private ShaderProgram mRedShader;
     private ShaderProgram mBlueShader;
+    private ShaderProgram mColorShader;
 
     /**
      * Various positions of a triangle.
@@ -30,11 +28,7 @@ public class ElementTargetTest extends OpenGLTestCase {
     private VertexBuffer mRightTriangle;
     private VertexBuffer mTopTriangle;
     private VertexBuffer mBottomTriangle;
-
-    /**
-     * The indices buffer.
-     */
-    private IndicesBuffer mIndicesBuffer;
+    private VertexBuffer mColorBuffer;
 
     @Override
     protected void setUp() throws Exception {
@@ -44,6 +38,7 @@ public class ElementTargetTest extends OpenGLTestCase {
          */
         mRedShader = ProgramTestUtil.createNdcRed();
         mBlueShader = ProgramTestUtil.createNdcBlue();
+        mColorShader = ProgramTestUtil.createNdcColor();
 
         /**
          * Create a triangle vertices buffers. No need for GL thread.
@@ -54,11 +49,11 @@ public class ElementTargetTest extends OpenGLTestCase {
         mBottomTriangle = BufferTestUtil.createBottomTriangle();
 
         /**
-         * Create indices buffer.
+         * Create a color vertex buffer. No need for GL thread.
          */
-        mIndicesBuffer = new IndicesBuffer(BufferTestUtil.createTriangleIndices(), GLES20.GL_STATIC_DRAW);
+        mColorBuffer = BufferTestUtil.createColorBuffer();
 
-        setTestInfo("indices red, blue, red, blue backend");
+        setTestInfo("smooth, black, red, smooth backend");
 
         runOnGLThread(new ResultRunnable() {
             @Override
@@ -70,6 +65,7 @@ public class ElementTargetTest extends OpenGLTestCase {
                  */
                 mRedShader.create(mContext);
                 mBlueShader.create(mContext);
+                mColorShader.create(mContext);
 
                 /**
                  * Create vertex buffers (object).
@@ -80,6 +76,11 @@ public class ElementTargetTest extends OpenGLTestCase {
                 mBottomTriangle.create(mContext);
 
                 /**
+                 * Create the color buffer (object).
+                 */
+                mColorBuffer.create(mContext);
+
+                /**
                  * Load triangle vertices to gpu.
                  */
                 mLeftTriangle.load(mContext);
@@ -88,20 +89,15 @@ public class ElementTargetTest extends OpenGLTestCase {
                 mBottomTriangle.load(mContext);
 
                 /**
-                 * Create indices buffer (object).
+                 * Load color data to gpu.
                  */
-                mIndicesBuffer.create(mContext);
-
-                /**
-                 * Load indices to gpu.
-                 */
-                mIndicesBuffer.load(mContext);
+                mColorBuffer.load(mContext);
                 return null;
             }
         });
     }
 
-    public void testDrawTriangle() throws Exception {
+    public void testDrawTriangleWithColor() throws Exception {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {
@@ -110,15 +106,31 @@ public class ElementTargetTest extends OpenGLTestCase {
                  */
                 clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
 
-                DrawTestUtil.drawElementsSeparateBuffers(mContext, mRedShader, mIndicesBuffer, mLeftTriangle);
-                DrawTestUtil.drawElementsSeparateBuffers(mContext, mBlueShader, mIndicesBuffer, mTopTriangle);
-                DrawTestUtil.drawElementsSeparateBuffers(mContext, mRedShader, mIndicesBuffer, mRightTriangle);
-                DrawTestUtil.drawElementsSeparateBuffers(mContext, mBlueShader, mIndicesBuffer, mBottomTriangle);
+                /**
+                 * This triangle should be smooth colored.
+                 */
+                DrawTestUtil.drawArraySeparateBuffers(mContext, mColorShader, mLeftTriangle, mColorBuffer);
+
+                /**
+                 * This triangle should be black since we haven't specified any color buffer and
+                 * after a draw attributes are disabled.
+                 */
+                DrawTestUtil.drawArraySeparateBuffers(mContext, mColorShader, mTopTriangle);
+
+                /**
+                 * This shader doesn't know about colors, meaning that we wont find any
+                 * attribute. It should be red.
+                 */
+                DrawTestUtil.drawArraySeparateBuffers(mContext, mRedShader, mRightTriangle, mColorBuffer);
+
+                /**
+                 * This triangle should be smooth colored.
+                 */
+                DrawTestUtil.drawArraySeparateBuffers(mContext, mColorShader, mBottomTriangle, mColorBuffer);
 
                 return null;
             }
         });
         sleepOnDrawFrame(2000);
     }
-
 }

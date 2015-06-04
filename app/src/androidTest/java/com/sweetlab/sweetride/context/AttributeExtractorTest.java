@@ -9,9 +9,6 @@ import com.sweetlab.sweetride.testframework.ResultRunnable;
 
 import java.util.Map;
 
-/**
- * Test extraction of attributes from shader program.
- */
 public class AttributeExtractorTest extends OpenGLTestCase {
 
     /**

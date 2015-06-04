@@ -1,8 +1,5 @@
 package com.sweetlab.sweetride.context;
 
-import com.sweetlab.sweetride.context.BackendContext;
-import com.sweetlab.sweetride.context.ResourceManager;
-import com.sweetlab.sweetride.context.ShaderCompilerTest;
 import com.sweetlab.sweetride.shader.BaseShader;
 import com.sweetlab.sweetride.shader.VertexShader;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;

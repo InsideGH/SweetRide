@@ -5,9 +5,6 @@ import com.sweetlab.sweetride.shader.VertexShader;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
 
-/**
- * Test shader program linking.
- */
 public class ProgramLinkerTest extends OpenGLTestCase {
 
     /**

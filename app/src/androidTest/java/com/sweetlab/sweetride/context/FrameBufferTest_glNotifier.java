@@ -4,6 +4,7 @@ import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.attributedata.InterleavedVertexBuffer;
 import com.sweetlab.sweetride.attributedata.VertexBuffer;
+import com.sweetlab.sweetride.context.Util.ActionHelper;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
@@ -14,9 +15,8 @@ import com.sweetlab.sweetride.shader.ShaderProgram;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
 import com.sweetlab.sweetride.texture.Empty2DTexture;
-import com.sweetlab.sweetride.util.Util;
 
-public class FrameBufferTest extends OpenGLTestCase {
+public class FrameBufferTest_glNotifier extends OpenGLTestCase {
 
     /**
      * Backend context.
@@ -89,46 +89,21 @@ public class FrameBufferTest extends OpenGLTestCase {
             public Object run() {
                 mContext = getBackendContext();
 
-                /**
-                 * Link shader programs.
-                 */
-                mTriangleProgram.create(mContext);
-                mQuadProgram.create(mContext);
+                ActionHelper.handleGLThreadActions(mTriangleProgram, mContext);
+                ActionHelper.handleGLThreadActions(mQuadProgram, mContext);
+                ActionHelper.handleGLThreadActions(mTriangleVertexBuffer, mContext);
+                ActionHelper.handleGLThreadActions(mQuadVertexBuffer, mContext);
+                ActionHelper.handleGLThreadActions(mDestinationTexture, mContext);
+                ActionHelper.handleGLThreadActions(mRenderBuffer, mContext);
+                ActionHelper.handleGLThreadActions(mFrameBuffer, mContext);
 
-                /**
-                 * Create vertex buffers (object).
-                 */
-                mTriangleVertexBuffer.create(mContext);
-                mQuadVertexBuffer.create(mContext);
-
-                /**
-                 * Load triangle vertices to gpu.
-                 */
-                mTriangleVertexBuffer.load(mContext);
-                mQuadVertexBuffer.load(mContext);
-
-                /**
-                 * Create the empty texture to draw into.
-                 */
-                mDestinationTexture.create(mContext);
-
-                /**
-                 * Load texture and set filter.
-                 */
-                mDestinationTexture.load(mContext);
-
-                /**
-                 * Create the render buffer in backend.
-                 */
-                mRenderBuffer.create(mContext);
-
-                /**
-                 * Create the frame buffer in the backend.
-                 */
-                mFrameBuffer.create(mContext);
-
-
-                assertFalse(Util.hasGlError());
+                assertFalse(mTriangleProgram.hasActions());
+                assertFalse(mQuadProgram.hasActions());
+                assertFalse(mTriangleVertexBuffer.hasActions());
+                assertFalse(mQuadVertexBuffer.hasActions());
+                assertFalse(mDestinationTexture.hasActions());
+                assertFalse(mRenderBuffer.hasActions());
+                assertFalse(mFrameBuffer.hasActions());
 
                 return null;
             }

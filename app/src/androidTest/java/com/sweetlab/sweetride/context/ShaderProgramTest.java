@@ -1,8 +1,5 @@
 package com.sweetlab.sweetride.context;
 
-import com.sweetlab.sweetride.context.BackendContext;
-import com.sweetlab.sweetride.context.ResourceManager;
-import com.sweetlab.sweetride.context.ShaderCompilerTest;
 import com.sweetlab.sweetride.shader.Attribute;
 import com.sweetlab.sweetride.shader.FragmentShader;
 import com.sweetlab.sweetride.shader.ShaderProgram;
@@ -11,9 +8,6 @@ import com.sweetlab.sweetride.shader.VertexShader;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
 
-/**
- * Test shader program.
- */
 public class ShaderProgramTest extends OpenGLTestCase {
     /**
      * Valid vertex shader.

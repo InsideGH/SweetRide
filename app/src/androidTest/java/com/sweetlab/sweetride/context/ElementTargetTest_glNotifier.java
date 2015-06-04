@@ -4,6 +4,7 @@ import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.attributedata.VertexBuffer;
+import com.sweetlab.sweetride.context.Util.ActionHelper;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
@@ -11,7 +12,7 @@ import com.sweetlab.sweetride.shader.ShaderProgram;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
 
-public class ElementTargetTest extends OpenGLTestCase {
+public class ElementTargetTest_glNotifier extends OpenGLTestCase {
     /**
      * Backend context.
      */
@@ -65,37 +66,21 @@ public class ElementTargetTest extends OpenGLTestCase {
             public Object run() {
                 mContext = getBackendContext();
 
-                /**
-                 * Link shader programs.
-                 */
-                mRedShader.create(mContext);
-                mBlueShader.create(mContext);
+                ActionHelper.handleGLThreadActions(mRedShader, mContext);
+                ActionHelper.handleGLThreadActions(mBlueShader, mContext);
+                ActionHelper.handleGLThreadActions(mLeftTriangle, mContext);
+                ActionHelper.handleGLThreadActions(mRightTriangle, mContext);
+                ActionHelper.handleGLThreadActions(mTopTriangle, mContext);
+                ActionHelper.handleGLThreadActions(mBottomTriangle, mContext);
+                ActionHelper.handleGLThreadActions(mIndicesBuffer, mContext);
 
-                /**
-                 * Create vertex buffers (object).
-                 */
-                mLeftTriangle.create(mContext);
-                mRightTriangle.create(mContext);
-                mTopTriangle.create(mContext);
-                mBottomTriangle.create(mContext);
-
-                /**
-                 * Load triangle vertices to gpu.
-                 */
-                mLeftTriangle.load(mContext);
-                mRightTriangle.load(mContext);
-                mTopTriangle.load(mContext);
-                mBottomTriangle.load(mContext);
-
-                /**
-                 * Create indices buffer (object).
-                 */
-                mIndicesBuffer.create(mContext);
-
-                /**
-                 * Load indices to gpu.
-                 */
-                mIndicesBuffer.load(mContext);
+                assertFalse(mRedShader.hasActions());
+                assertFalse(mBlueShader.hasActions());
+                assertFalse(mLeftTriangle.hasActions());
+                assertFalse(mRightTriangle.hasActions());
+                assertFalse(mTopTriangle.hasActions());
+                assertFalse(mBottomTriangle.hasActions());
+                assertFalse(mIndicesBuffer.hasActions());
                 return null;
             }
         });

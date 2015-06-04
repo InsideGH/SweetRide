@@ -1,8 +1,5 @@
 package com.sweetlab.sweetride.context;
 
-import android.opengl.GLES20;
-
-import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.attributedata.VertexBuffer;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;
@@ -11,14 +8,14 @@ import com.sweetlab.sweetride.shader.ShaderProgram;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
 
-public class ElementTargetTest extends OpenGLTestCase {
+public class ArrayOneBuf extends OpenGLTestCase {
     /**
      * Backend context.
      */
     private BackendContext mContext;
 
     /**
-     * Red, blue and color shader.
+     * Red, blue shader.
      */
     private ShaderProgram mRedShader;
     private ShaderProgram mBlueShader;
@@ -30,11 +27,6 @@ public class ElementTargetTest extends OpenGLTestCase {
     private VertexBuffer mRightTriangle;
     private VertexBuffer mTopTriangle;
     private VertexBuffer mBottomTriangle;
-
-    /**
-     * The indices buffer.
-     */
-    private IndicesBuffer mIndicesBuffer;
 
     @Override
     protected void setUp() throws Exception {
@@ -53,18 +45,12 @@ public class ElementTargetTest extends OpenGLTestCase {
         mTopTriangle = BufferTestUtil.createTopTriangle();
         mBottomTriangle = BufferTestUtil.createBottomTriangle();
 
-        /**
-         * Create indices buffer.
-         */
-        mIndicesBuffer = new IndicesBuffer(BufferTestUtil.createTriangleIndices(), GLES20.GL_STATIC_DRAW);
-
-        setTestInfo("indices red, blue, red, blue backend");
+        setTestInfo("red, blue, red, blue backend");
 
         runOnGLThread(new ResultRunnable() {
             @Override
             public Object run() {
                 mContext = getBackendContext();
-
                 /**
                  * Link shader programs.
                  */
@@ -86,16 +72,6 @@ public class ElementTargetTest extends OpenGLTestCase {
                 mRightTriangle.load(mContext);
                 mTopTriangle.load(mContext);
                 mBottomTriangle.load(mContext);
-
-                /**
-                 * Create indices buffer (object).
-                 */
-                mIndicesBuffer.create(mContext);
-
-                /**
-                 * Load indices to gpu.
-                 */
-                mIndicesBuffer.load(mContext);
                 return null;
             }
         });
@@ -110,15 +86,17 @@ public class ElementTargetTest extends OpenGLTestCase {
                  */
                 clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
 
-                DrawTestUtil.drawElementsSeparateBuffers(mContext, mRedShader, mIndicesBuffer, mLeftTriangle);
-                DrawTestUtil.drawElementsSeparateBuffers(mContext, mBlueShader, mIndicesBuffer, mTopTriangle);
-                DrawTestUtil.drawElementsSeparateBuffers(mContext, mRedShader, mIndicesBuffer, mRightTriangle);
-                DrawTestUtil.drawElementsSeparateBuffers(mContext, mBlueShader, mIndicesBuffer, mBottomTriangle);
+                /**
+                 * Draw the triangles.
+                 */
+                DrawTestUtil.drawArraySeparateBuffers(mContext, mRedShader, mLeftTriangle);
+                DrawTestUtil.drawArraySeparateBuffers(mContext, mBlueShader, mTopTriangle);
+                DrawTestUtil.drawArraySeparateBuffers(mContext, mRedShader, mRightTriangle);
+                DrawTestUtil.drawArraySeparateBuffers(mContext, mBlueShader, mBottomTriangle);
 
                 return null;
             }
         });
         sleepOnDrawFrame(2000);
     }
-
 }

@@ -11,9 +11,6 @@ import com.sweetlab.sweetride.testframework.ResultRunnable;
 
 import java.util.Map;
 
-/**
- * Test extracting uniforms from a shader program.
- */
 public class UniformExtractorTest extends OpenGLTestCase {
     /**
      * Backend context.
