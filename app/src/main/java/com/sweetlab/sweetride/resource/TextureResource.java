@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.ActionNotifier;
 import com.sweetlab.sweetride.action.HandleThread;
+import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.ColorAttachment;
 import com.sweetlab.sweetride.context.DepthAttachment;
@@ -20,28 +20,13 @@ import com.sweetlab.sweetride.context.TextureType;
  * A backend texture resource. Can also be used as an frame buffer color OR depth frame buffer
  * attachment.
  */
-public abstract class TextureResource extends ActionNotifier implements Resource, ColorAttachment, DepthAttachment {
-    /**
-     * Create the texture backend resource.
-     */
-    private Action mCreateAction = new Action(this, ActionId.TEXTURE_CREATE, HandleThread.GL);
-
-    /**
-     * Load the texture in backend.
-     */
-    private Action mLoadAction = new Action(this, ActionId.TEXTURE_LOAD, HandleThread.GL);
-
+public abstract class TextureResource extends NoHandleNotifier implements Resource, ColorAttachment, DepthAttachment {
     /**
      * Constructor.
      */
     public TextureResource() {
-        addAction(mCreateAction);
-        addAction(mLoadAction);
-    }
-
-    @Override
-    public void handleAction(Action action) {
-        throw new RuntimeException("wtf");
+        addAction(new Action(this, ActionId.TEXTURE_CREATE, HandleThread.GL));
+        addAction(new Action(this, ActionId.TEXTURE_LOAD, HandleThread.GL));
     }
 
     @Override

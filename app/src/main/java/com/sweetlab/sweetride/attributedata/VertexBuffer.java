@@ -107,11 +107,6 @@ public class VertexBuffer extends VertexBufferResource {
     }
 
     @Override
-    public void handleAction(Action action) {
-        throw new RuntimeException("wtf");
-    }
-
-    @Override
     public void handleAction(BackendContext context, Action action) {
         switch (action.getType()) {
             case VERTEX_BUFFER_CREATE:

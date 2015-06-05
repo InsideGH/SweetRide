@@ -57,11 +57,6 @@ public class FloatUniform extends CustomUniform {
     }
 
     @Override
-    public void handleAction(BackendContext context, Action action) {
-        throw new RuntimeException("wtf");
-    }
-
-    @Override
     public void writeProgramUniform(BackendContext context, ShaderProgram program) {
         context.getUniformWriter().writeFloat(program, mName, mDataGL);
     }

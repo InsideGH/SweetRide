@@ -2,8 +2,8 @@ package com.sweetlab.sweetride.material;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.ActionNotifier;
 import com.sweetlab.sweetride.action.HandleThread;
+import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.TextureUnit2DTarget;
 import com.sweetlab.sweetride.resource.TextureResource;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Material is an abstraction that contains a shader program and textures.
  */
-public class Material extends ActionNotifier {
+public class Material extends NoHandleNotifier {
     /**
      * Shader program reference has changed.
      */
@@ -59,11 +59,6 @@ public class Material extends ActionNotifier {
             default:
                 throw new RuntimeException("wtf");
         }
-    }
-
-    @Override
-    public void handleAction(BackendContext context, Action action) {
-        throw new RuntimeException("wtf");
     }
 
     public void setShaderProgram(ShaderProgram program) {

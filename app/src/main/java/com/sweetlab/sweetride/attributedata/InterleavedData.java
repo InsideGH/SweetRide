@@ -4,8 +4,8 @@ import android.util.Pair;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.ActionNotifier;
 import com.sweetlab.sweetride.action.HandleThread;
+import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.ResourceManager;
 import com.sweetlab.sweetride.resource.BufferResource;
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Interleaved vertex data used for shader program attributes.
  */
-public class InterleavedData extends ActionNotifier implements BufferResource {
+public class InterleavedData extends NoHandleNotifier implements BufferResource {
     /**
      * Buffer of interleaved data.
      */
@@ -132,11 +132,6 @@ public class InterleavedData extends ActionNotifier implements BufferResource {
     public void delete(BackendContext context) {
         context.getResourceManager().deleteBuffer(mBufferId);
         mBufferId = ResourceManager.INVALID_BUFFER_ID;
-    }
-
-    @Override
-    public void handleAction(Action action) {
-        throw new RuntimeException("wtf");
     }
 
     @Override

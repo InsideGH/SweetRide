@@ -2,16 +2,15 @@ package com.sweetlab.sweetride.math;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.ActionNotifier;
 import com.sweetlab.sweetride.action.HandleThread;
-import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.action.NoHandleNotifier;
 
 /**
  * Camera. Three axis camera with a frustrum.
  * <p/>
  * Old class that I have had around for a while. Should be cleaned up though.
  */
-public class Camera extends ActionNotifier {
+public class Camera extends NoHandleNotifier {
     /**
      * Camera has been updated.
      */
@@ -77,16 +76,6 @@ public class Camera extends ActionNotifier {
      */
     public Camera() {
         connectNotifier(mFrustrum);
-    }
-
-    @Override
-    public void handleAction(Action action) {
-        throw new RuntimeException("wtf");
-    }
-
-    @Override
-    public void handleAction(BackendContext context, Action action) {
-        throw new RuntimeException("wrf");
     }
 
     /**

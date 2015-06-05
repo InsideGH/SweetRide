@@ -2,8 +2,8 @@ package com.sweetlab.sweetride.attributedata;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.ActionNotifier;
 import com.sweetlab.sweetride.action.HandleThread;
+import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.ResourceManager;
 import com.sweetlab.sweetride.resource.BufferResource;
@@ -15,7 +15,7 @@ import java.nio.ShortBuffer;
 /**
  * Indices buffer holding indices, used while drawing with indices.
  */
-public class IndicesBuffer extends ActionNotifier implements BufferResource {
+public class IndicesBuffer extends NoHandleNotifier implements BufferResource {
     /**
      * Buffer holding the indices.
      */
@@ -93,11 +93,6 @@ public class IndicesBuffer extends ActionNotifier implements BufferResource {
     @Override
     public void delete(BackendContext context) {
         context.getResourceManager().deleteBuffer(mBufferId);
-    }
-
-    @Override
-    public void handleAction(Action action) {
-        throw new RuntimeException("wtf");
     }
 
     @Override

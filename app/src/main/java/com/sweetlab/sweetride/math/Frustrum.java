@@ -2,27 +2,15 @@ package com.sweetlab.sweetride.math;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.ActionNotifier;
 import com.sweetlab.sweetride.action.HandleThread;
-import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.action.NoHandleNotifier;
 
 /**
  * Supports perspective and orthogonal projection.
  * <p/>
  * Old class that I have had around for a while. Should be cleaned up though.
  */
-public class Frustrum extends ActionNotifier {
-
-    @Override
-    public void handleAction(Action action) {
-        throw new RuntimeException("wtf");
-    }
-
-    @Override
-    public void handleAction(BackendContext context, Action action) {
-        throw new RuntimeException("wtf");
-    }
-
+public class Frustrum extends NoHandleNotifier {
     /**
      * Field of view can be either horizontal, vertical or auto fit.
      */

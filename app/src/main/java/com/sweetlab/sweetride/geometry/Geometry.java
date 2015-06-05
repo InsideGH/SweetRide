@@ -101,11 +101,6 @@ public class Geometry extends Node {
         }
     }
 
-    @Override
-    public void handleAction(BackendContext context, Action action) {
-        throw new RuntimeException("wtf");
-    }
-
     /**
      * Set mesh. Null allowed.
      *

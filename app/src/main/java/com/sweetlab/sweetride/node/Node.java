@@ -1,8 +1,6 @@
 package com.sweetlab.sweetride.node;
 
-import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.ActionNotifier;
-import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.math.Camera;
 
 import java.util.ArrayList;
@@ -11,7 +9,7 @@ import java.util.List;
 /**
  * A general node.
  */
-public class Node extends ActionNotifier {
+public class Node extends NoHandleNotifier {
     /**
      * The camera.
      */
@@ -79,15 +77,5 @@ public class Node extends ActionNotifier {
      */
     public void accept(NodeVisitor visitor) {
         visitor.visit(this);
-    }
-
-    @Override
-    public void handleAction(Action action) {
-        throw new RuntimeException("wtf");
-    }
-
-    @Override
-    public void handleAction(BackendContext context, Action action) {
-        throw new RuntimeException("wtf");
     }
 }
