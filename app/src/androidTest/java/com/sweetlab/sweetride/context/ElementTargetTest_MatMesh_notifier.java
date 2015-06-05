@@ -7,6 +7,7 @@ import com.sweetlab.sweetride.context.Util.ActionHelper;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.context.Util.Verify;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.mesh.Mesh;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
@@ -118,6 +119,6 @@ public class ElementTargetTest_MatMesh_notifier extends OpenGLTestCase {
                 return null;
             }
         });
-        sleepOnDrawFrame(2000);
+        sleepOnDrawFrame(Verify.TERMINATE_TIME);
     }
 }

@@ -15,6 +15,11 @@ public enum ActionId {
     GEOMETRY_MATERIAL,
 
     /**
+     * Geometry custom uniform collection changed.
+     */
+    GEOMETRY_CUSTOM_UNIFORM,
+
+    /**
      * Mesh vertex buffer collection changed.
      */
     MESH_BUFFER,
@@ -108,4 +113,9 @@ public enum ActionId {
      * Transform has been updated.
      */
     TRANSFORM_UPDATED,
+
+    /**
+     * Uniform has been updated.
+     */
+    CUSTOM_UNIFORM_UPDATE,
 }

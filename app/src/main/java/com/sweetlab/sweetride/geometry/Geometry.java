@@ -17,6 +17,7 @@ import com.sweetlab.sweetride.mesh.Mesh;
 import com.sweetlab.sweetride.node.Node;
 import com.sweetlab.sweetride.node.NodeVisitor;
 import com.sweetlab.sweetride.shader.ShaderProgram;
+import com.sweetlab.sweetride.uniform.CustomUniform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,11 @@ public class Geometry extends Node {
     private final Action mMaterialChange = new Action(this, ActionId.GEOMETRY_MATERIAL, HandleThread.MAIN);
 
     /**
+     * Custom uniform collection has changed.
+     */
+    private final Action mUniformCollectionChange = new Action(this, ActionId.GEOMETRY_CUSTOM_UNIFORM, HandleThread.MAIN);
+
+    /**
      * This is a temporary list of taken texture units used during drawing.
      */
     private final List<TextureUnit> mTextureUnits = new ArrayList<>();
@@ -53,6 +59,11 @@ public class Geometry extends Node {
     private Material mMaterial;
 
     /**
+     * List of custom uniforms.
+     */
+    private List<CustomUniform> mCustomUniforms = new ArrayList<>();
+
+    /**
      * The mesh reference used by GL thread.
      */
     private Mesh mMeshGL;
@@ -61,6 +72,11 @@ public class Geometry extends Node {
      * The material reference used by GL thread.
      */
     private Material mMaterialGL;
+
+    /**
+     * List of custom uniforms used by GL thread.
+     */
+    private List<CustomUniform> mCustomUniformsGL = new ArrayList<>();
 
     @Override
     public void accept(NodeVisitor visitor) {
@@ -75,6 +91,10 @@ public class Geometry extends Node {
                 break;
             case GEOMETRY_MATERIAL:
                 mMaterialGL = mMaterial;
+                break;
+            case GEOMETRY_CUSTOM_UNIFORM:
+                mCustomUniformsGL.clear();
+                mCustomUniformsGL.addAll(mCustomUniforms);
                 break;
             default:
                 throw new RuntimeException("wtf");
@@ -112,6 +132,17 @@ public class Geometry extends Node {
         mMaterial = material;
         connectNotifier(mMaterial);
         addAction(mMaterialChange);
+    }
+
+    /**
+     * Add custom uniform.
+     *
+     * @param uniform Uniform to add.
+     */
+    public void addUniform(CustomUniform uniform) {
+        mCustomUniforms.add(uniform);
+        connectNotifier(uniform);
+        addAction(mUniformCollectionChange);
     }
 
     /**
@@ -186,6 +217,11 @@ public class Geometry extends Node {
             enableTextures(context);
 
             /**
+             * Write custom uniforms.
+             */
+            writeCustomUniforms(context);
+
+            /**
              * Draw.
              */
             drawGeometry(context);
@@ -199,6 +235,18 @@ public class Geometry extends Node {
              * Disable attributes.
              */
             disableAttributes(context);
+        }
+    }
+
+    /**
+     * Write custom uniforms.
+     *
+     * @param context Backend context.
+     */
+    private void writeCustomUniforms(BackendContext context) {
+        ShaderProgram program = mMaterialGL.getShaderProgram();
+        for (CustomUniform uniform : mCustomUniformsGL) {
+            uniform.writeProgramUniform(context, program);
         }
     }
 

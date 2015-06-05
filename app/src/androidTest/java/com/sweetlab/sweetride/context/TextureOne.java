@@ -9,6 +9,7 @@ import com.sweetlab.sweetride.context.Util.BitmapTestUtil;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.DrawTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.context.Util.Verify;
 import com.sweetlab.sweetride.resource.TextureResource;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
@@ -117,6 +118,6 @@ public class TextureOne extends OpenGLTestCase {
                 return null;
             }
         });
-        sleepOnDrawFrame(2000);
+        sleepOnDrawFrame(Verify.TERMINATE_TIME);
     }
 }

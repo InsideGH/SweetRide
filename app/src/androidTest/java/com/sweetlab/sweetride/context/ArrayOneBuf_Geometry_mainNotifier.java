@@ -3,6 +3,7 @@ package com.sweetlab.sweetride.context;
 import com.sweetlab.sweetride.context.Util.ActionHelper;
 import com.sweetlab.sweetride.context.Util.BufferTestUtil;
 import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.context.Util.Verify;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.mesh.Mesh;
@@ -110,6 +111,6 @@ public class ArrayOneBuf_Geometry_mainNotifier extends OpenGLTestCase {
                 return null;
             }
         });
-        sleepOnDrawFrame(2000);
+        sleepOnDrawFrame(Verify.TERMINATE_TIME);
     }
 }
