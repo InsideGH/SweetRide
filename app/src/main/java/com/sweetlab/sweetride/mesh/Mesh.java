@@ -40,6 +40,11 @@ public class Mesh extends NoHandleNotifier {
     private final MeshDrawingMode mMode;
 
     /**
+     * The mesh GL domain.
+     */
+    private final BackendMesh mBackendMesh;
+
+    /**
      * An optional indices buffer.
      */
     private IndicesBuffer mIndicesBuffer;
@@ -50,33 +55,23 @@ public class Mesh extends NoHandleNotifier {
     private int mVertexCount;
 
     /**
-     * The indices buffer reference used by GL thread.
-     */
-    private IndicesBuffer mIndicesBufferGL;
-
-    /**
-     * The vertex buffer collection reference used by GL thread.
-     */
-    private List<VertexBufferResource> mVertexBuffersGL = new ArrayList<>();
-
-    /**
      * Constructor.
      *
      * @param mode Mode is the drawing mode.
      */
     public Mesh(MeshDrawingMode mode) {
         mMode = mode;
+        mBackendMesh = new BackendMesh(mMode);
     }
 
     @Override
     public void handleAction(Action action) {
         switch (action.getType()) {
             case MESH_BUFFER:
-                mVertexBuffersGL.clear();
-                mVertexBuffersGL.addAll(mVertexBuffers);
+                mBackendMesh.setVertexBuffers(mVertexBuffers);
                 break;
             case MESH_INDICES:
-                mIndicesBufferGL = mIndicesBuffer;
+                mBackendMesh.setIndicesBuffer(mIndicesBuffer);
                 break;
             default:
                 throw new RuntimeException("wtf");
@@ -170,14 +165,7 @@ public class Mesh extends NoHandleNotifier {
      * @param context Backend context.
      */
     public void create(BackendContext context) {
-        if (mIndicesBufferGL != null && !mIndicesBufferGL.isCreated()) {
-            mIndicesBufferGL.create(context);
-        }
-        for (VertexBufferResource resource : mVertexBuffersGL) {
-            if (!resource.isCreated()) {
-                resource.create(context);
-            }
-        }
+        mBackendMesh.create(context);
     }
 
     /**
@@ -186,11 +174,15 @@ public class Mesh extends NoHandleNotifier {
      * @param context The backend context.
      */
     public void load(BackendContext context) {
-        if (mIndicesBufferGL != null) {
-            mIndicesBufferGL.load(context);
-        }
-        for (VertexBufferResource resource : mVertexBuffersGL) {
-            resource.load(context);
-        }
+        mBackendMesh.load(context);
+    }
+
+    /**
+     * Get the backend mesh.
+     *
+     * @return The backend mesh.
+     */
+    public BackendMesh getBackendMesh() {
+        return mBackendMesh;
     }
 }

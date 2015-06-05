@@ -5,7 +5,6 @@ import com.sweetlab.sweetride.action.ActionId;
 import com.sweetlab.sweetride.action.HandleThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
-import com.sweetlab.sweetride.context.TextureUnit2DTarget;
 import com.sweetlab.sweetride.resource.TextureResource;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 
@@ -32,35 +31,34 @@ public class Material extends NoHandleNotifier {
     private final List<TextureResource> mTextures = new ArrayList<>();
 
     /**
+     * The backend material.
+     */
+    private final BackendMaterial mBackendMaterial = new BackendMaterial();
+
+    /**
      * The shader program.
      */
     private ShaderProgram mShaderProgram;
-
-    /**
-     * The shader program reference used by GL thread.
-     */
-    private ShaderProgram mShaderProgramGL;
-
-    /**
-     * The texture collection reference used by GL thread.
-     */
-    private List<TextureResource> mTexturesGL = new ArrayList<>();
 
     @Override
     public void handleAction(Action action) {
         switch (action.getType()) {
             case MATERIAL_PROGRAM:
-                mShaderProgramGL = mShaderProgram;
+                mBackendMaterial.setShaderProgram(mShaderProgram);
                 break;
             case MATERIAL_TEXTURES:
-                mTexturesGL.clear();
-                mTexturesGL.addAll(mTextures);
+                mBackendMaterial.setTextures(mTextures);
                 break;
             default:
                 throw new RuntimeException("wtf");
         }
     }
 
+    /**
+     * Set shader program to use.
+     *
+     * @param program Shader program.
+     */
     public void setShaderProgram(ShaderProgram program) {
         if (mShaderProgram != null) {
             disconnectNotifier(mShaderProgram);
@@ -115,14 +113,7 @@ public class Material extends NoHandleNotifier {
      * @param context The backend context.
      */
     public void create(BackendContext context) {
-        if (!mShaderProgramGL.isCreated()) {
-            mShaderProgramGL.create(context);
-        }
-        for (TextureResource resource : mTexturesGL) {
-            if (!resource.isCreated()) {
-                resource.create(context);
-            }
-        }
+        mBackendMaterial.create(context);
     }
 
     /**
@@ -131,10 +122,15 @@ public class Material extends NoHandleNotifier {
      * @param context Backend context.
      */
     public void load(BackendContext context) {
-        TextureUnit2DTarget target = context.getTextureUnitManager().getDefaultTextureUnit().getTexture2DTarget();
-        for (TextureResource texture : mTexturesGL) {
-            target.load(texture);
-            target.setFilter(texture, texture.getMinFilter().getGlParam(), texture.getMagFilter().getGlParam());
-        }
+        mBackendMaterial.load(context);
+    }
+
+    /**
+     * Get the backend material.
+     *
+     * @return The backend material.
+     */
+    public BackendMaterial getBackendMaterial() {
+        return mBackendMaterial;
     }
 }
