@@ -2,8 +2,6 @@ package com.sweetlab.sweetride.action;
 
 import android.test.AndroidTestCase;
 
-import com.sweetlab.sweetride.context.BackendContext;
-
 /**
  * Test of the action notifier.
  */
@@ -255,42 +253,17 @@ public class ActionNotifierTest extends AndroidTestCase {
         assertFalse(notifierA.hasActions());
     }
 
-    private class NotifierA extends ActionNotifier {
+    private class NotifierA extends NoHandleNotifier {
         public Action mCreateAction = new Action(this, ActionId.GEOMETRY_MESH, HandleThread.MAIN);
         public Action mLoadAction = new Action(this, ActionId.GEOMETRY_MATERIAL, HandleThread.MAIN);
-
-        @Override
-        public void handleAction(Action action) {
-
-        }
-
-        @Override
-        public void handleAction(BackendContext context, Action action) {
-        }
     }
 
-    private class NotifierB extends ActionNotifier {
+    private class NotifierB extends NoHandleNotifier {
         public Action mCreateAction = new Action(this, ActionId.GEOMETRY_MESH, HandleThread.MAIN);
-
-        @Override
-        public void handleAction(Action action) {
-        }
-
-        @Override
-        public void handleAction(BackendContext context, Action action) {
-        }
     }
 
-    private class NotifierC extends ActionNotifier {
+    private class NotifierC extends NoHandleNotifier {
         public Action mCreateAction = new Action(this, ActionId.GEOMETRY_MESH, HandleThread.MAIN);
         public Action mLoadAction = new Action(this, ActionId.GEOMETRY_MATERIAL, HandleThread.MAIN);
-
-        @Override
-        public void handleAction(Action action) {
-        }
-
-        @Override
-        public void handleAction(BackendContext context, Action action) {
-        }
     }
 }

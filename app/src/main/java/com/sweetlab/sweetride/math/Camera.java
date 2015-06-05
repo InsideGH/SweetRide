@@ -78,6 +78,18 @@ public class Camera extends NoHandleNotifier {
         connectNotifier(mFrustrum);
     }
 
+    @Override
+    protected void onActionAdded(Action action) {
+        switch (action.getType()) {
+            case CAMERA_UPDATED:
+            case FRUSTRUM_UPDATED:
+                updateMatrices();
+                break;
+            default:
+                break;
+        }
+    }
+
     /**
      * Look at.
      *
@@ -149,9 +161,9 @@ public class Camera extends NoHandleNotifier {
         mViewMat.translate(-mPos.x, -mPos.y, -mPos.z);
 
         /**
-         * Update all matrices that we support.
+         * Add action that camera has been updated.
          */
-        updateMatrices();
+        addAction(mCameraUpdated);
     }
 
     /**
@@ -159,7 +171,7 @@ public class Camera extends NoHandleNotifier {
      */
     public void setIdentity() {
         mViewMat.setIdentity();
-        updateMatrices();
+        addAction(mCameraUpdated);
     }
 
     /**
@@ -181,22 +193,20 @@ public class Camera extends NoHandleNotifier {
     }
 
     /**
-     * Get the combined view and projection matrix.
+     * Get the combined view and projection matrix by reference.
      *
      * @return The combined view and project matrix.
      */
     public Matrix44 getViewProjectionMatrix() {
-        updateMatrices();
         return mViewProjectionMat;
     }
 
     /**
-     * Get the inverted combined view and projection matrix.
+     * Get the inverted combined view and projection matrix by reference.
      *
      * @return The combined view and projection matrix.
      */
     public Matrix44 getInvViewProjectionMatrix() {
-        updateMatrices();
         return mInvViewProjectionMat;
     }
 
@@ -212,14 +222,14 @@ public class Camera extends NoHandleNotifier {
     /**
      * Get camera position.
      *
-     * @return
+     * @return The position in world.
      */
     public Vec3 getPosition() {
         return mPos;
     }
 
     /**
-     * Updates all known matrices.
+     * Updates all supported matrices.
      */
     protected void updateMatrices() {
         mInvViewMat.set(mViewMat);
@@ -230,7 +240,5 @@ public class Camera extends NoHandleNotifier {
 
         Matrix44 invProjectionMatrix = mFrustrum.getInvProjectionMatrix();
         Matrix44.mult(mInvViewProjectionMat, mInvViewMat, invProjectionMatrix);
-
-        addAction(mCameraUpdated);
     }
 }

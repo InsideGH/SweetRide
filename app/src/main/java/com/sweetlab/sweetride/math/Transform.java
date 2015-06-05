@@ -2,15 +2,13 @@ package com.sweetlab.sweetride.math;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.ActionNotifier;
 import com.sweetlab.sweetride.action.HandleThread;
-import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.action.NoHandleNotifier;
 
 /**
  * Transform backed by {@link Matrix44} matrix.
  */
-public class Transform extends ActionNotifier {
-
+public class Transform extends NoHandleNotifier {
     /**
      * Transform has been updated.
      */
@@ -26,16 +24,6 @@ public class Transform extends ActionNotifier {
      */
     public Transform() {
         mMatrix = new Matrix44();
-    }
-
-    @Override
-    public void handleAction(Action action) {
-        throw new RuntimeException("wtf");
-    }
-
-    @Override
-    public void handleAction(BackendContext context, Action action) {
-        throw new RuntimeException("wtf");
     }
 
     /**
@@ -62,7 +50,7 @@ public class Transform extends ActionNotifier {
     /**
      * Set this transform to be a copy of the source matrix.
      *
-     * @param srcMatrix
+     * @param srcMatrix The source matrix.
      */
     public void set(Matrix44 srcMatrix) {
         mMatrix.set(srcMatrix);
@@ -72,9 +60,9 @@ public class Transform extends ActionNotifier {
     /**
      * Set translation to this transform.
      *
-     * @param x
-     * @param y
-     * @param z
+     * @param x translate x value.
+     * @param y translate y value.
+     * @param z translate z value.
      */
     public void setTranslate(float x, float y, float z) {
         mMatrix.setTranslate(x, y, z);
@@ -84,9 +72,9 @@ public class Transform extends ActionNotifier {
     /**
      * Apply translation.
      *
-     * @param x
-     * @param y
-     * @param z
+     * @param x translate x value.
+     * @param y translate y value.
+     * @param z translate z value.
      */
     public void translate(float x, float y, float z) {
         mMatrix.translate(x, y, z);
@@ -96,9 +84,9 @@ public class Transform extends ActionNotifier {
     /**
      * Set scale to this transform.
      *
-     * @param x
-     * @param y
-     * @param z
+     * @param x scale x value.
+     * @param y scale y value.
+     * @param z scale z value.
      */
     public void setScale(float x, float y, float z) {
         mMatrix.setScale(x, y, z);
@@ -108,9 +96,9 @@ public class Transform extends ActionNotifier {
     /**
      * Apply scale to this transform.
      *
-     * @param x
-     * @param y
-     * @param z
+     * @param x scale x value.
+     * @param y scale y value.
+     * @param z scale z value.
      */
     public void scale(float x, float y, float z) {
         mMatrix.scale(x, y, z);
@@ -120,9 +108,10 @@ public class Transform extends ActionNotifier {
     /**
      * Set rotation to this transform.
      *
-     * @param x
-     * @param y
-     * @param z
+     * @param angle Angle degrees.
+     * @param x     x axis.
+     * @param y     y axix.
+     * @param z     z axis.
      */
     public void setRotate(float angle, float x, float y, float z) {
         mMatrix.setRotate(angle, x, y, z);
@@ -132,9 +121,10 @@ public class Transform extends ActionNotifier {
     /**
      * Apply rotation to this transform.
      *
-     * @param x
-     * @param y
-     * @param z
+     * @param angle Angle degrees.
+     * @param x     x axis.
+     * @param y     y axix.
+     * @param z     z axis.
      */
     public void rotate(float angle, float x, float y, float z) {
         mMatrix.rotate(angle, x, y, z);
@@ -180,6 +170,8 @@ public class Transform extends ActionNotifier {
     /**
      * Write this transforms normal matrix into provided destination matrix.
      * This is the transpose of the inverse.
+     *
+     * @param dst Destination matrix.
      */
     public void getNormal(Matrix33 dst) {
         mMatrix.getNormal(dst);

@@ -62,6 +62,7 @@ public abstract class ActionNotifier {
     public void addAction(Action action) {
         mActions.remove(action);
         mActions.add(action);
+        onActionAdded(action);
         reportAddAction(action);
     }
 
@@ -119,6 +120,13 @@ public abstract class ActionNotifier {
      * @param action  Action to handle.
      */
     public abstract void handleAction(BackendContext context, Action action);
+
+    /**
+     * Called every time an action has been added.
+     *
+     * @param action The action that has been added.
+     */
+    protected abstract void onActionAdded(Action action);
 
     /**
      * Report action add to all parents all the way to top.

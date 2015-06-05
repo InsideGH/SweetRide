@@ -77,6 +77,17 @@ public class Frustrum extends NoHandleNotifier {
         mMode = Mode.UNINITIALIZED;
     }
 
+    @Override
+    protected void onActionAdded(Action action) {
+        switch (action.getType()) {
+            case FRUSTRUM_UPDATED:
+                updateMatrices();
+                break;
+            default:
+                break;
+        }
+    }
+
     /**
      * Get the view port values.
      *
@@ -288,7 +299,7 @@ public class Frustrum extends NoHandleNotifier {
         mFrustrumMat.m[11] = -1;
         mFrustrumMat.m[15] = 0;
 
-        updateMatrices();
+        addAction(mFrustrumUpdated);
 
         mMode = Mode.PERSPECTIVE;
     }
@@ -379,7 +390,7 @@ public class Frustrum extends NoHandleNotifier {
 
         mViewPort.set(0, 0, width, height);
 
-        updateMatrices();
+        addAction(mFrustrumUpdated);
 
         mMode = Mode.ORTHOGRAPHIC;
     }
@@ -430,7 +441,6 @@ public class Frustrum extends NoHandleNotifier {
     private void updateMatrices() {
         mInvFrustrumMat.set(mFrustrumMat);
         mInvFrustrumMat.invert();
-        addAction(mFrustrumUpdated);
     }
 
     @Override

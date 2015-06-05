@@ -16,4 +16,9 @@ public class NoHandleNotifier extends ActionNotifier {
     public void handleAction(BackendContext context, Action action) {
         throw new RuntimeException("wtf");
     }
+
+    @Override
+    protected void onActionAdded(Action action) {
+
+    }
 }
