@@ -1,10 +1,10 @@
 package com.sweetlab.sweetride.context;
 
-import com.sweetlab.sweetride.context.Util.ActionHelper;
-import com.sweetlab.sweetride.context.Util.BufferTestUtil;
-import com.sweetlab.sweetride.context.Util.DrawTestUtil;
-import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
-import com.sweetlab.sweetride.context.Util.Verify;
+import com.sweetlab.sweetride.Util.BufferTestUtil;
+import com.sweetlab.sweetride.Util.DrawTestUtil;
+import com.sweetlab.sweetride.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.Util.Verify;
+import com.sweetlab.sweetride.engine.FrontEndActionHandler;
 import com.sweetlab.sweetride.framebuffer.FrameBuffer;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.mesh.Mesh;
@@ -30,6 +30,11 @@ public class FrameBufferTest_MatMesh_mainNotifier extends OpenGLTestCase {
      */
     private FrameBuffer mFrameBuffer;
 
+    /**
+     * Front end action handler.
+     */
+    FrontEndActionHandler mActionHandler = new FrontEndActionHandler();
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -39,11 +44,11 @@ public class FrameBufferTest_MatMesh_mainNotifier extends OpenGLTestCase {
          */
         mTriangleMaterial = new Material();
         mTriangleMaterial.setShaderProgram(ProgramTestUtil.createNdcRed());
-        ActionHelper.handleMainThreadActions(mTriangleMaterial);
+        mActionHandler.handleActions(mTriangleMaterial);
 
         mTriangleMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mTriangleMesh.addVertexBuffer(BufferTestUtil.createCenteredTriangle());
-        ActionHelper.handleMainThreadActions(mTriangleMesh);
+        mActionHandler.handleActions(mTriangleMesh);
 
         /**
          * Create the quad material and mesh. It's a quad triangle strip with a texture.
@@ -52,11 +57,11 @@ public class FrameBufferTest_MatMesh_mainNotifier extends OpenGLTestCase {
         mQuadMaterial.setShaderProgram(ProgramTestUtil.createNdcOneTexCoordOneTexture());
         TextureResource mDestinationTexture = new Empty2DTexture("s_texture", getSurfaceWidth(), getSurfaceHeight(), MinFilter.NEAREST, MagFilter.NEAREST);
         mQuadMaterial.addTexture(mDestinationTexture);
-        ActionHelper.handleMainThreadActions(mQuadMaterial);
+        mActionHandler.handleActions(mQuadMaterial);
 
         mQuadMesh = new Mesh(MeshDrawingMode.TRIANGLE_STRIP);
         mQuadMesh.addVertexBuffer(BufferTestUtil.createInterleavedQuadWithTextureCoords());
-        ActionHelper.handleMainThreadActions(mQuadMesh);
+        mActionHandler.handleActions(mQuadMesh);
 
         /**
          * Create a frame buffer.

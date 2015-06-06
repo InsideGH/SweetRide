@@ -4,11 +4,11 @@ import android.graphics.Bitmap;
 import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
-import com.sweetlab.sweetride.context.Util.ActionHelper;
-import com.sweetlab.sweetride.context.Util.BitmapTestUtil;
-import com.sweetlab.sweetride.context.Util.BufferTestUtil;
-import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
-import com.sweetlab.sweetride.context.Util.Verify;
+import com.sweetlab.sweetride.Util.BitmapTestUtil;
+import com.sweetlab.sweetride.Util.BufferTestUtil;
+import com.sweetlab.sweetride.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.Util.Verify;
+import com.sweetlab.sweetride.engine.FrontEndActionHandler;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.mesh.Mesh;
@@ -28,6 +28,11 @@ public class TextureMulti_Geometry_mainNotifier extends OpenGLTestCase {
      */
     private BackendContext mContext;
 
+    /**
+     * Front end action handler.
+     */
+    FrontEndActionHandler mActionHandler = new FrontEndActionHandler();
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -44,11 +49,11 @@ public class TextureMulti_Geometry_mainNotifier extends OpenGLTestCase {
         mGeometry.setMaterial(material);
 
         Mesh mesh = new Mesh(MeshDrawingMode.TRIANGLE_STRIP);
-        mesh.setIndicesBuffer(new IndicesBuffer(new short[]{0, 1, 2, 3}, GLES20.GL_STATIC_DRAW));
+        mesh.setIndicesBuffer(new IndicesBuffer(new short[]{0, 1, 2, 3}, BufferUsage.STATIC));
         mesh.addVertexBuffer(BufferTestUtil.createInterleavedQuadWithTextureCoords());
 
         mGeometry.setMesh(mesh);
-        ActionHelper.handleMainThreadActions(mGeometry);
+        mActionHandler.handleActions(mGeometry);
 
         setTestInfo("Multi texture with geometry");
 

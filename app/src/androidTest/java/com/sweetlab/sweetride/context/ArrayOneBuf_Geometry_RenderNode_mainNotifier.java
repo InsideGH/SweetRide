@@ -1,10 +1,11 @@
 package com.sweetlab.sweetride.context;
 
-import com.sweetlab.sweetride.context.Util.ActionHelper;
-import com.sweetlab.sweetride.context.Util.BufferTestUtil;
-import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
-import com.sweetlab.sweetride.context.Util.Verify;
+import com.sweetlab.sweetride.Util.BufferTestUtil;
+import com.sweetlab.sweetride.Util.CollectorUtil;
+import com.sweetlab.sweetride.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.Util.Verify;
 import com.sweetlab.sweetride.engine.DefaultRenderNode;
+import com.sweetlab.sweetride.engine.FrontEndActionHandler;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.mesh.Mesh;
@@ -23,6 +24,11 @@ public class ArrayOneBuf_Geometry_RenderNode_mainNotifier extends OpenGLTestCase
      * The default render node. Renders to system window.
      */
     private DefaultRenderNode mRenderNode = new DefaultRenderNode();
+
+    /**
+     * Front end action handler.
+     */
+    FrontEndActionHandler mActionHandler = new FrontEndActionHandler();
 
     @Override
     protected void setUp() throws Exception {
@@ -69,9 +75,9 @@ public class ArrayOneBuf_Geometry_RenderNode_mainNotifier extends OpenGLTestCase
         geometry4.setMaterial(blueMaterial);
         geometry2.addChild(geometry4);
 
-        List<Geometry> geometries = mRenderNode.collectGeometries();
+        List<Geometry> geometries = CollectorUtil.collectGeometries(mRenderNode);
         for (Geometry geometry : geometries) {
-            ActionHelper.handleMainThreadActions(geometry);
+            mActionHandler.handleActions(geometry);
         }
 
         setTestInfo("red, blue, red, blue geometry render node");
@@ -80,7 +86,7 @@ public class ArrayOneBuf_Geometry_RenderNode_mainNotifier extends OpenGLTestCase
             @Override
             public Object run() {
                 mContext = getBackendContext();
-                List<Geometry> geometries = mRenderNode.collectGeometries();
+                List<Geometry> geometries = CollectorUtil.collectGeometries(mRenderNode);
                 for (Geometry geometry : geometries) {
                     geometry.create(mContext);
                     geometry.load(mContext);
@@ -102,7 +108,7 @@ public class ArrayOneBuf_Geometry_RenderNode_mainNotifier extends OpenGLTestCase
                 /**
                  * Render.
                  */
-                mRenderNode.getRenderer().render(mContext, mRenderNode.collectGeometries());
+                mRenderNode.getRenderer().render(mContext, CollectorUtil.collectGeometries(mRenderNode));
 
                 return null;
             }

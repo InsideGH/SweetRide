@@ -5,6 +5,7 @@ import com.sweetlab.sweetride.action.ActionId;
 import com.sweetlab.sweetride.action.HandleThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.context.BufferUsage;
 import com.sweetlab.sweetride.context.ResourceManager;
 import com.sweetlab.sweetride.resource.BufferResource;
 import com.sweetlab.sweetride.util.Util;
@@ -34,7 +35,7 @@ public class IndicesBuffer extends NoHandleNotifier implements BufferResource {
     /**
      * The buffer usage hint.
      */
-    private final int mBufferUsage;
+    private final BufferUsage mBufferUsage;
 
     /**
      * The buffer 'name'/id.
@@ -46,7 +47,7 @@ public class IndicesBuffer extends NoHandleNotifier implements BufferResource {
      *
      * @param data Array of indices.
      */
-    public IndicesBuffer(short[] data, int bufferUsage) {
+    public IndicesBuffer(short[] data, BufferUsage bufferUsage) {
         mBufferUsage = bufferUsage;
         mIndicesCount = data.length;
         mByteCount = data.length * Util.BYTES_PER_SHORT;
@@ -81,7 +82,7 @@ public class IndicesBuffer extends NoHandleNotifier implements BufferResource {
     }
 
     @Override
-    public int getBufferUsage() {
+    public BufferUsage getBufferUsage() {
         return mBufferUsage;
     }
 

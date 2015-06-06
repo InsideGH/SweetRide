@@ -12,6 +12,13 @@ public class Vec4 {
     public float w;
 
     /**
+     * Zero initialized vector.
+     */
+    public Vec4() {
+
+    }
+
+    /**
      * Create vector with x, y, z components
      */
     public Vec4(float x, float y, float z, float w) {

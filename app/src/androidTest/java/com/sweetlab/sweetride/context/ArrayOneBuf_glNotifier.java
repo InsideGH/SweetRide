@@ -1,11 +1,10 @@
 package com.sweetlab.sweetride.context;
 
 import com.sweetlab.sweetride.attributedata.VertexBuffer;
-import com.sweetlab.sweetride.context.Util.ActionHelper;
-import com.sweetlab.sweetride.context.Util.BufferTestUtil;
-import com.sweetlab.sweetride.context.Util.DrawTestUtil;
-import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
-import com.sweetlab.sweetride.context.Util.Verify;
+import com.sweetlab.sweetride.Util.BufferTestUtil;
+import com.sweetlab.sweetride.Util.DrawTestUtil;
+import com.sweetlab.sweetride.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.Util.Verify;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
@@ -57,16 +56,16 @@ public class ArrayOneBuf_glNotifier extends OpenGLTestCase {
                 /**
                  * Handle GL actions.
                  */
-                ActionHelper.handleGLThreadActions(mRedShader, mContext);
-                ActionHelper.handleGLThreadActions(mBlueShader, mContext);
+                mContext.getActionHandler().handleActions(mRedShader);
+                mContext.getActionHandler().handleActions(mBlueShader);
 
                 /**
                  * Handle GL actions.
                  */
-                ActionHelper.handleGLThreadActions(mLeftTriangle, mContext);
-                ActionHelper.handleGLThreadActions(mRightTriangle, mContext);
-                ActionHelper.handleGLThreadActions(mTopTriangle, mContext);
-                ActionHelper.handleGLThreadActions(mBottomTriangle, mContext);
+                mContext.getActionHandler().handleActions(mLeftTriangle);
+                mContext.getActionHandler().handleActions(mRightTriangle);
+                mContext.getActionHandler().handleActions(mTopTriangle);
+                mContext.getActionHandler().handleActions(mBottomTriangle);
 
                 assertFalse(mRedShader.hasActions());
                 assertFalse(mBlueShader.hasActions());

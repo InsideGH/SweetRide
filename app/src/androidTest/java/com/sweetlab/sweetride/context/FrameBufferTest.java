@@ -4,10 +4,10 @@ import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.attributedata.InterleavedVertexBuffer;
 import com.sweetlab.sweetride.attributedata.VertexBuffer;
-import com.sweetlab.sweetride.context.Util.BufferTestUtil;
-import com.sweetlab.sweetride.context.Util.DrawTestUtil;
-import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
-import com.sweetlab.sweetride.context.Util.Verify;
+import com.sweetlab.sweetride.Util.BufferTestUtil;
+import com.sweetlab.sweetride.Util.DrawTestUtil;
+import com.sweetlab.sweetride.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.Util.Verify;
 import com.sweetlab.sweetride.framebuffer.FrameBuffer;
 import com.sweetlab.sweetride.renderbuffer.RenderBuffer;
 import com.sweetlab.sweetride.resource.TextureResource;

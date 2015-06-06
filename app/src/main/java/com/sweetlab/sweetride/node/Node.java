@@ -8,6 +8,7 @@ import com.sweetlab.sweetride.math.Camera;
 import com.sweetlab.sweetride.math.Transform;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -33,6 +34,11 @@ public class Node extends NoHandleNotifier {
      * The world transform.
      */
     private final MarkTransform mWorldTransform = new MarkTransform();
+
+    /**
+     * List of node controllers.
+     */
+    private final List<NodeController> mNodeControllers = new ArrayList<>();
 
     /**
      * The camera.
@@ -88,6 +94,15 @@ public class Node extends NoHandleNotifier {
             child.mParent = this;
             child.setWorldDirty();
         }
+    }
+
+    /**
+     * Add node controller.
+     *
+     * @param nodeController The node controller.
+     */
+    public void addNodeController(NodeController nodeController) {
+        mNodeControllers.add(nodeController);
     }
 
     /**
@@ -166,5 +181,39 @@ public class Node extends NoHandleNotifier {
         for (Node child : mChildren) {
             child.setWorldDirty();
         }
+    }
+
+    /**
+     * Called by the engine, each frame. All controllers all updated prior to onUpdate is called. Using iterator
+     * because nodes can be added/removed during application update.
+     *
+     * @param dt Delta time between frames.
+     */
+    public void update(float dt) {
+        if (!mNodeControllers.isEmpty()) {
+            Iterator<NodeController> iterator = mNodeControllers.iterator();
+            while (iterator.hasNext()) {
+                if (!iterator.next().onUpdate(dt)) {
+                    iterator.remove();
+                }
+            }
+        }
+
+        if (onUpdate(dt)) {
+            Iterator<Node> iterator = mChildren.iterator();
+            while (iterator.hasNext()) {
+                iterator.next().update(dt);
+            }
+        }
+    }
+
+    /**
+     * Update is called each frame by the engine.
+     *
+     * @param dt Delta time between frames.
+     * @return Return false to stop updates to children.
+     */
+    public boolean onUpdate(float dt) {
+        return true;
     }
 }

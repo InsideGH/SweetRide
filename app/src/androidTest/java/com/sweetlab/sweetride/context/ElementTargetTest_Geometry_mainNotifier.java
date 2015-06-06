@@ -3,10 +3,10 @@ package com.sweetlab.sweetride.context;
 import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
-import com.sweetlab.sweetride.context.Util.ActionHelper;
-import com.sweetlab.sweetride.context.Util.BufferTestUtil;
-import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
-import com.sweetlab.sweetride.context.Util.Verify;
+import com.sweetlab.sweetride.Util.BufferTestUtil;
+import com.sweetlab.sweetride.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.Util.Verify;
+import com.sweetlab.sweetride.engine.FrontEndActionHandler;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.mesh.Mesh;
@@ -27,6 +27,11 @@ public class ElementTargetTest_Geometry_mainNotifier extends OpenGLTestCase {
     private Geometry mRightGeometry = new Geometry();
     private Geometry mBottomGeometry = new Geometry();
 
+    /**
+     * Front end action handler.
+     */
+    FrontEndActionHandler mActionHandler = new FrontEndActionHandler();
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -37,7 +42,7 @@ public class ElementTargetTest_Geometry_mainNotifier extends OpenGLTestCase {
         Material blueMaterial = new Material();
         blueMaterial.setShaderProgram(ProgramTestUtil.createNdcBlue());
 
-        IndicesBuffer indicesBuffer = new IndicesBuffer(BufferTestUtil.createTriangleIndices(), GLES20.GL_STATIC_DRAW);
+        IndicesBuffer indicesBuffer = new IndicesBuffer(BufferTestUtil.createTriangleIndices(), BufferUsage.STATIC);
 
         Mesh mesh;
 
@@ -49,26 +54,26 @@ public class ElementTargetTest_Geometry_mainNotifier extends OpenGLTestCase {
         mesh.setIndicesBuffer(indicesBuffer);
         mLeftGeometry.setMaterial(redMaterial);
         mLeftGeometry.setMesh(mesh);
-        ActionHelper.handleMainThreadActions(mLeftGeometry);
+        mActionHandler.handleActions(mLeftGeometry);
 
         mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createTopTriangle());
         mTopGeometry.setMaterial(blueMaterial);
         mTopGeometry.setMesh(mesh);
-        ActionHelper.handleMainThreadActions(mTopGeometry);
+        mActionHandler.handleActions(mTopGeometry);
 
         mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createRightTriangle());
         mesh.setIndicesBuffer(indicesBuffer);
         mRightGeometry.setMaterial(redMaterial);
         mRightGeometry.setMesh(mesh);
-        ActionHelper.handleMainThreadActions(mRightGeometry);
+        mActionHandler.handleActions(mRightGeometry);
 
         mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createBottomTriangle());
         mBottomGeometry.setMaterial(blueMaterial);
         mBottomGeometry.setMesh(mesh);
-        ActionHelper.handleMainThreadActions(mBottomGeometry);
+        mActionHandler.handleActions(mBottomGeometry);
 
         setTestInfo("indices red, blue, red, blue geometry");
 

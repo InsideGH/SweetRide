@@ -1,9 +1,9 @@
 package com.sweetlab.sweetride.context;
 
-import com.sweetlab.sweetride.context.Util.ActionHelper;
-import com.sweetlab.sweetride.context.Util.BufferTestUtil;
-import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
-import com.sweetlab.sweetride.context.Util.Verify;
+import com.sweetlab.sweetride.Util.BufferTestUtil;
+import com.sweetlab.sweetride.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.Util.Verify;
+import com.sweetlab.sweetride.engine.FrontEndActionHandler;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.mesh.Mesh;
@@ -23,6 +23,11 @@ public class ArrayOneBuf_Geometry_mainNotifier extends OpenGLTestCase {
     private Geometry mTopGeometry = new Geometry();
     private Geometry mRightGeometry = new Geometry();
     private Geometry mBottomGeometry = new Geometry();
+
+    /**
+     * Front end action handler.
+     */
+    FrontEndActionHandler mActionHandler = new FrontEndActionHandler();
 
     @Override
     protected void setUp() throws Exception {
@@ -44,25 +49,25 @@ public class ArrayOneBuf_Geometry_mainNotifier extends OpenGLTestCase {
         mesh.addVertexBuffer(BufferTestUtil.createLeftTriangle());
         mLeftGeometry.setMesh(mesh);
         mLeftGeometry.setMaterial(redMaterial);
-        ActionHelper.handleMainThreadActions(mLeftGeometry);
+        mActionHandler.handleActions(mLeftGeometry);
 
         mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createRightTriangle());
         mRightGeometry.setMesh(mesh);
         mRightGeometry.setMaterial(redMaterial);
-        ActionHelper.handleMainThreadActions(mRightGeometry);
+        mActionHandler.handleActions(mRightGeometry);
 
         mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createTopTriangle());
         mTopGeometry.setMesh(mesh);
         mTopGeometry.setMaterial(blueMaterial);
-        ActionHelper.handleMainThreadActions(mTopGeometry);
+        mActionHandler.handleActions(mTopGeometry);
 
         mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createBottomTriangle());
         mBottomGeometry.setMesh(mesh);
         mBottomGeometry.setMaterial(blueMaterial);
-        ActionHelper.handleMainThreadActions(mBottomGeometry);
+        mActionHandler.handleActions(mBottomGeometry);
 
         setTestInfo("red, blue, red, blue geometry");
 

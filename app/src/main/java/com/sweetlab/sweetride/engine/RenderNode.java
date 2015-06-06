@@ -5,14 +5,10 @@ import android.support.annotation.Nullable;
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
 import com.sweetlab.sweetride.action.HandleThread;
-import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.math.Camera;
 import com.sweetlab.sweetride.node.Node;
 import com.sweetlab.sweetride.node.NodeVisitor;
-import com.sweetlab.sweetride.node.ReusableVisitor;
-import com.sweetlab.sweetride.renderer.Renderer;
-
-import java.util.List;
+import com.sweetlab.sweetride.renderer.GeometryRenderer;
 
 /**
  * A render node. Provides way of rendering geometry. Nodes can be added to this render node.
@@ -25,12 +21,7 @@ public class RenderNode extends Node {
     /**
      * The renderer to use.
      */
-    private Renderer mRenderer;
-
-    /**
-     * A reusable geometry extractor.
-     */
-    private ReusableVisitor<List<Geometry>> mCollector = new GeometryCollector();
+    private GeometryRenderer mGeometryRenderer;
 
     @Override
     public void accept(NodeVisitor visitor) {
@@ -39,7 +30,9 @@ public class RenderNode extends Node {
 
     @Override
     public boolean handleAction(Action action) {
-        super.handleAction(action);
+        if (super.handleAction(action)) {
+            return true;
+        }
         switch (action.getType()) {
             case RENDER_NODE_CAMERA:
                 return true;
@@ -51,10 +44,10 @@ public class RenderNode extends Node {
     /**
      * Set the renderer to use.
      *
-     * @param renderer Renderer.
+     * @param geometryRenderer Renderer.
      */
-    public void setRenderer(Renderer renderer) {
-        mRenderer = renderer;
+    public void setRenderer(GeometryRenderer geometryRenderer) {
+        mGeometryRenderer = geometryRenderer;
     }
 
     /**
@@ -86,18 +79,7 @@ public class RenderNode extends Node {
      *
      * @return The renderer.
      */
-    public Renderer getRenderer() {
-        return mRenderer;
-    }
-
-    /**
-     * Collect all geometries by traversing the graph.
-     *
-     * @return The geometries.
-     */
-    public List<Geometry> collectGeometries() {
-        mCollector.clearResult();
-        accept(mCollector);
-        return mCollector.getResult();
+    public GeometryRenderer getRenderer() {
+        return mGeometryRenderer;
     }
 }

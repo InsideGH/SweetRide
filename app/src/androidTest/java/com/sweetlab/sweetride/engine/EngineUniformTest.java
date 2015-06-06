@@ -1,18 +1,18 @@
 package com.sweetlab.sweetride.engine;
 
 import android.graphics.Bitmap;
-import android.opengl.GLES20;
 
+import com.sweetlab.sweetride.Util.BitmapTestUtil;
+import com.sweetlab.sweetride.Util.BufferTestUtil;
+import com.sweetlab.sweetride.Util.CollectorUtil;
+import com.sweetlab.sweetride.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.Util.Verify;
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.context.BufferUsage;
 import com.sweetlab.sweetride.context.MagFilter;
 import com.sweetlab.sweetride.context.MeshDrawingMode;
 import com.sweetlab.sweetride.context.MinFilter;
-import com.sweetlab.sweetride.context.Util.ActionHelper;
-import com.sweetlab.sweetride.context.Util.BitmapTestUtil;
-import com.sweetlab.sweetride.context.Util.BufferTestUtil;
-import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
-import com.sweetlab.sweetride.context.Util.Verify;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.math.Camera;
@@ -54,6 +54,11 @@ public class EngineUniformTest extends OpenGLTestCase {
      */
     private DefaultRenderNode mRenderNode;
 
+    /**
+     * Front end action handler.
+     */
+    FrontEndActionHandler mActionHandler = new FrontEndActionHandler();
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -71,7 +76,7 @@ public class EngineUniformTest extends OpenGLTestCase {
         /**
          * Create primitive resources and the geometry. A quad with two textures.
          */
-        IndicesBuffer indicesBuffer = new IndicesBuffer(new short[]{0, 1, 2, 3}, GLES20.GL_STATIC_DRAW);
+        IndicesBuffer indicesBuffer = new IndicesBuffer(new short[]{0, 1, 2, 3}, BufferUsage.STATIC);
         ShaderProgram program = ProgramTestUtil.createEngineOneTexCoordTwoTextures();
         VertexBufferResource buffer = BufferTestUtil.createInterleavedQuadWithTextureCoords();
         TextureResource tex1 = new Texture2D("s_texture", BitmapTestUtil.createQuadColorBitmap(Bitmap.Config.ARGB_8888), MinFilter.NEAREST, MagFilter.NEAREST);
@@ -105,9 +110,9 @@ public class EngineUniformTest extends OpenGLTestCase {
         /**
          * Handle notifications. Simulates engine post update(dt).
          */
-        List<Geometry> geometries = mRenderNode.collectGeometries();
+        List<Geometry> geometries = CollectorUtil.collectGeometries(mRenderNode);
         for (Geometry g : geometries) {
-            ActionHelper.handleMainThreadActions(g);
+            mActionHandler.handleActions(g);
         }
     }
 
@@ -128,9 +133,9 @@ public class EngineUniformTest extends OpenGLTestCase {
             /**
              * Handle notifications. Simulating engine post update(dt).
              */
-            List<Geometry> geometries = mRenderNode.collectGeometries();
+            List<Geometry> geometries = CollectorUtil.collectGeometries(mRenderNode);
             for (Geometry g : geometries) {
-                ActionHelper.handleMainThreadActions(g);
+                mActionHandler.handleActions(g);
             }
 
             /**
@@ -147,15 +152,15 @@ public class EngineUniformTest extends OpenGLTestCase {
                     /**
                      * Handle GL thread notifications. Simulate engine pre draw.
                      */
-                    List<Geometry> geometries = mRenderNode.collectGeometries();
+                    List<Geometry> geometries = CollectorUtil.collectGeometries(mRenderNode);
                     for (Geometry g : geometries) {
-                        ActionHelper.handleGLThreadActions(g, mContext);
+                        mContext.getActionHandler().handleActions(g);
                     }
 
                     /**
                      * Draw.
                      */
-                    mRenderNode.getRenderer().render(mContext, mRenderNode.collectGeometries());
+                    mRenderNode.getRenderer().render(mContext, CollectorUtil.collectGeometries(mRenderNode));
                     return null;
                 }
             });

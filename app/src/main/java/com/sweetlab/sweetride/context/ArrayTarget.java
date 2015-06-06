@@ -62,7 +62,7 @@ public class ArrayTarget {
 
         final Buffer data = attributeData.getBuffer();
         final int totalByteCount = attributeData.getTotalByteCount();
-        final int bufferUsage = attributeData.getBufferUsage();
+        final int bufferUsage = attributeData.getBufferUsage().getGlHint();
         GLES20.glBufferData(TARGET, totalByteCount, data, bufferUsage);
     }
 

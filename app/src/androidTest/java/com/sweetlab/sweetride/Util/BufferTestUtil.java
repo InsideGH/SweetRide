@@ -1,4 +1,4 @@
-package com.sweetlab.sweetride.context.Util;
+package com.sweetlab.sweetride.Util;
 
 import android.opengl.GLES20;
 
@@ -7,6 +7,7 @@ import com.sweetlab.sweetride.attributedata.InterleavedVertexBuffer;
 import com.sweetlab.sweetride.attributedata.TextureCoordData;
 import com.sweetlab.sweetride.attributedata.VertexBuffer;
 import com.sweetlab.sweetride.attributedata.VerticesData;
+import com.sweetlab.sweetride.context.BufferUsage;
 
 /**
  * Collection of buffer related primitives.
@@ -19,7 +20,7 @@ public class BufferTestUtil {
      * @return Vertex buffer.
      */
     public static VertexBuffer createCenteredTriangle() {
-        return new VertexBuffer("a_Pos", new VerticesData(BufferTestUtil.createTriangleData(0.5f, 0.5f, 0, 0)), GLES20.GL_STATIC_DRAW);
+        return new VertexBuffer("a_Pos", new VerticesData(BufferTestUtil.createTriangleData(0.5f, 0.5f, 0, 0)), BufferUsage.STATIC);
     }
 
     /**
@@ -28,7 +29,7 @@ public class BufferTestUtil {
      * @return Vertex buffer.
      */
     public static VertexBuffer createLeftTriangle() {
-        return new VertexBuffer("a_Pos", new VerticesData(BufferTestUtil.createTriangleData(0.5f, 0.5f, -0.5f, 0)), GLES20.GL_STATIC_DRAW);
+        return new VertexBuffer("a_Pos", new VerticesData(BufferTestUtil.createTriangleData(0.5f, 0.5f, -0.5f, 0)), BufferUsage.STATIC);
     }
 
     /**
@@ -37,7 +38,7 @@ public class BufferTestUtil {
      * @return Vertex buffer.
      */
     public static VertexBuffer createRightTriangle() {
-        return new VertexBuffer("a_Pos", new VerticesData(BufferTestUtil.createTriangleData(0.5f, 0.5f, 0.5f, 0)), GLES20.GL_STATIC_DRAW);
+        return new VertexBuffer("a_Pos", new VerticesData(BufferTestUtil.createTriangleData(0.5f, 0.5f, 0.5f, 0)), BufferUsage.STATIC);
     }
 
     /**
@@ -46,7 +47,7 @@ public class BufferTestUtil {
      * @return Vertex buffer.
      */
     public static VertexBuffer createTopTriangle() {
-        return new VertexBuffer("a_Pos", new VerticesData(BufferTestUtil.createTriangleData(0.5f, 0.5f, 0, 0.5f)), GLES20.GL_STATIC_DRAW);
+        return new VertexBuffer("a_Pos", new VerticesData(BufferTestUtil.createTriangleData(0.5f, 0.5f, 0, 0.5f)), BufferUsage.STATIC);
     }
 
     /**
@@ -55,7 +56,7 @@ public class BufferTestUtil {
      * @return Vertex buffer.
      */
     public static VertexBuffer createBottomTriangle() {
-        return new VertexBuffer("a_Pos", new VerticesData(BufferTestUtil.createTriangleData(0.5f, 0.5f, 0, -0.5f)), GLES20.GL_STATIC_DRAW);
+        return new VertexBuffer("a_Pos", new VerticesData(BufferTestUtil.createTriangleData(0.5f, 0.5f, 0, -0.5f)), BufferUsage.STATIC);
     }
 
     /**
@@ -64,7 +65,7 @@ public class BufferTestUtil {
      * @return Buffer with colors.
      */
     public static VertexBuffer createColorBuffer() {
-        return new VertexBuffer("a_Color", new ColorData(BufferTestUtil.createColors()), GLES20.GL_STATIC_DRAW);
+        return new VertexBuffer("a_Color", new ColorData(BufferTestUtil.createColors()), BufferUsage.STATIC);
     }
 
     /**
@@ -73,7 +74,7 @@ public class BufferTestUtil {
      * @return The interleaved buffer.
      */
     public static InterleavedVertexBuffer createInterleavedLeftTriangleWithColor() {
-        InterleavedVertexBuffer.Builder left = new InterleavedVertexBuffer.Builder(GLES20.GL_STATIC_DRAW);
+        InterleavedVertexBuffer.Builder left = new InterleavedVertexBuffer.Builder(BufferUsage.STATIC);
         left.add("a_Pos", new VerticesData(BufferTestUtil.createTriangleData(0.5f, 0.5f, -0.5f, 0)));
         left.add("a_Color", new ColorData(BufferTestUtil.createColors()));
         return left.build();
@@ -85,7 +86,7 @@ public class BufferTestUtil {
      * @return The interleaved buffer.
      */
     public static InterleavedVertexBuffer createInterleavedRightTriangleWithColor() {
-        InterleavedVertexBuffer.Builder right = new InterleavedVertexBuffer.Builder(GLES20.GL_STATIC_DRAW);
+        InterleavedVertexBuffer.Builder right = new InterleavedVertexBuffer.Builder(BufferUsage.STATIC);
         right.add("a_Pos", new VerticesData(BufferTestUtil.createTriangleData(0.5f, 0.5f, 0.5f, 0)));
         right.add("a_Color", new ColorData(BufferTestUtil.createColors()));
         return right.build();
@@ -97,7 +98,7 @@ public class BufferTestUtil {
      * @return The interleaved buffer.
      */
     public static InterleavedVertexBuffer createInterleavedQuadWithTextureCoords() {
-        InterleavedVertexBuffer.Builder builder = new InterleavedVertexBuffer.Builder(GLES20.GL_STATIC_DRAW);
+        InterleavedVertexBuffer.Builder builder = new InterleavedVertexBuffer.Builder(BufferUsage.STATIC);
         builder.add("a_Pos", new VerticesData(BufferTestUtil.createQuadStrip(0.5f, 0.5f, 0, 0)));
         builder.add("a_texCoord", new TextureCoordData(BufferTestUtil.createQuadTextureCoords()));
         return builder.build();

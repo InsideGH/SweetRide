@@ -1,10 +1,10 @@
 package com.sweetlab.sweetride.context;
 
-import com.sweetlab.sweetride.context.Util.ActionHelper;
-import com.sweetlab.sweetride.context.Util.BufferTestUtil;
-import com.sweetlab.sweetride.context.Util.DrawTestUtil;
-import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
-import com.sweetlab.sweetride.context.Util.Verify;
+import com.sweetlab.sweetride.Util.BufferTestUtil;
+import com.sweetlab.sweetride.Util.DrawTestUtil;
+import com.sweetlab.sweetride.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.Util.Verify;
+import com.sweetlab.sweetride.engine.FrontEndActionHandler;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.mesh.Mesh;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
@@ -32,6 +32,11 @@ public class ArrayInterleavedMultiBuf_MatMesh_notifier extends OpenGLTestCase {
     private Mesh mTopMesh;
     private Mesh mBottomMesh;
 
+    /**
+     * Front end action handler.
+     */
+    FrontEndActionHandler mActionHandler = new FrontEndActionHandler();
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -41,22 +46,22 @@ public class ArrayInterleavedMultiBuf_MatMesh_notifier extends OpenGLTestCase {
          */
         mLeftMaterial = new Material();
         mLeftMaterial.setShaderProgram(ProgramTestUtil.createNdcColor());
-        ActionHelper.handleMainThreadActions(mLeftMaterial);
+        mActionHandler.handleActions(mLeftMaterial);
 
         mLeftMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mLeftMesh.addVertexBuffer(BufferTestUtil.createInterleavedLeftTriangleWithColor());
-        ActionHelper.handleMainThreadActions(mLeftMesh);
+        mActionHandler.handleActions(mLeftMesh);
 
         /**
          * Create top resources. Complete setup, with red-shader and mesh with vertices.
          */
         mTopMaterial = new Material();
         mTopMaterial.setShaderProgram(ProgramTestUtil.createNdcRed());
-        ActionHelper.handleMainThreadActions(mTopMaterial);
+        mActionHandler.handleActions(mTopMaterial);
 
         mTopMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mTopMesh.addVertexBuffer(BufferTestUtil.createTopTriangle());
-        ActionHelper.handleMainThreadActions(mTopMesh);
+        mActionHandler.handleActions(mTopMesh);
 
         /**
          * Create right resources. Complete setup with color shader and mesh with interleaved
@@ -64,11 +69,11 @@ public class ArrayInterleavedMultiBuf_MatMesh_notifier extends OpenGLTestCase {
          */
         mRightMaterial = new Material();
         mRightMaterial.setShaderProgram(ProgramTestUtil.createNdcColor());
-        ActionHelper.handleMainThreadActions(mRightMaterial);
+        mActionHandler.handleActions(mRightMaterial);
 
         mRightMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mRightMesh.addVertexBuffer(BufferTestUtil.createInterleavedRightTriangleWithColor());
-        ActionHelper.handleMainThreadActions(mRightMesh);
+        mActionHandler.handleActions(mRightMesh);
 
         /**
          * Create bottom resources. Complete setup with color shader and mesh with separate
@@ -76,12 +81,12 @@ public class ArrayInterleavedMultiBuf_MatMesh_notifier extends OpenGLTestCase {
          */
         mBottomMaterial = new Material();
         mBottomMaterial.setShaderProgram(ProgramTestUtil.createNdcColor());
-        ActionHelper.handleMainThreadActions(mBottomMaterial);
+        mActionHandler.handleActions(mBottomMaterial);
 
         mBottomMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mBottomMesh.addVertexBuffer(BufferTestUtil.createBottomTriangle());
         mBottomMesh.addVertexBuffer(BufferTestUtil.createColorBuffer());
-        ActionHelper.handleMainThreadActions(mBottomMesh);
+        mActionHandler.handleActions(mBottomMesh);
 
         setTestInfo("smooth, red, smooth, smooth material/mesh");
 
@@ -90,14 +95,14 @@ public class ArrayInterleavedMultiBuf_MatMesh_notifier extends OpenGLTestCase {
             public Object run() {
                 mContext = getBackendContext();
 
-                ActionHelper.handleGLThreadActions(mLeftMaterial, mContext);
-                ActionHelper.handleGLThreadActions(mTopMaterial, mContext);
-                ActionHelper.handleGLThreadActions(mRightMaterial, mContext);
-                ActionHelper.handleGLThreadActions(mBottomMaterial, mContext);
-                ActionHelper.handleGLThreadActions(mLeftMesh, mContext);
-                ActionHelper.handleGLThreadActions(mTopMesh, mContext);
-                ActionHelper.handleGLThreadActions(mRightMesh, mContext);
-                ActionHelper.handleGLThreadActions(mBottomMesh, mContext);
+                mContext.getActionHandler().handleActions(mLeftMaterial);
+                mContext.getActionHandler().handleActions(mTopMaterial);
+                mContext.getActionHandler().handleActions(mRightMaterial);
+                mContext.getActionHandler().handleActions(mBottomMaterial);
+                mContext.getActionHandler().handleActions(mLeftMesh);
+                mContext.getActionHandler().handleActions(mTopMesh);
+                mContext.getActionHandler().handleActions(mRightMesh);
+                mContext.getActionHandler().handleActions(mBottomMesh);
                 assertFalse(mLeftMaterial.hasActions());
                 assertFalse(mTopMaterial.hasActions());
                 assertFalse(mRightMaterial.hasActions());

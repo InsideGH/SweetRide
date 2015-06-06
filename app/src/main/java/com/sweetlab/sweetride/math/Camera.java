@@ -79,6 +79,14 @@ public class Camera extends NoHandleNotifier {
     }
 
     @Override
+    public boolean handleAction(Action action) {
+        if ((action.getType().equals(ActionId.CAMERA_UPDATED))) {
+            return true;
+        }
+        return super.handleAction(action);
+    }
+
+    @Override
     protected void onActionAdded(Action action) {
         super.onActionAdded(action);
         switch (action.getType()) {

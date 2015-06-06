@@ -70,6 +70,11 @@ public class BackendContext {
     private FrameBufferTarget mFrameBufferTarget;
 
     /**
+     * The backend action handler.
+     */
+    private BackendActionHandler mBackendActionHandler;
+
+    /**
      * Max number of texture units.
      */
     private int mMaxNumberTextureUnits;
@@ -233,5 +238,17 @@ public class BackendContext {
             mFrameBufferTarget = new FrameBufferTarget(this);
         }
         return mFrameBufferTarget;
+    }
+
+    /**
+     * Get the backend action handler.
+     *
+     * @return The backend action handler.
+     */
+    public BackendActionHandler getActionHandler() {
+        if (mBackendActionHandler == null) {
+            mBackendActionHandler = new BackendActionHandler(this);
+        }
+        return mBackendActionHandler;
     }
 }

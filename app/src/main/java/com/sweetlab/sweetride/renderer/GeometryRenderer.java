@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Renderer that renders geometry.
  */
-public interface Renderer {
+public interface GeometryRenderer {
     /**
      * Render the provided list of geometries.
      *

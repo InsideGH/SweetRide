@@ -1,4 +1,4 @@
-package com.sweetlab.sweetride.context.Util;
+package com.sweetlab.sweetride.Util;
 
 import com.sweetlab.sweetride.shader.FragmentShader;
 import com.sweetlab.sweetride.shader.ShaderProgram;

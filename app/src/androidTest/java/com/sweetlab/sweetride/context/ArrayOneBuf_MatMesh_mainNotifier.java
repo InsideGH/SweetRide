@@ -1,10 +1,10 @@
 package com.sweetlab.sweetride.context;
 
-import com.sweetlab.sweetride.context.Util.ActionHelper;
-import com.sweetlab.sweetride.context.Util.BufferTestUtil;
-import com.sweetlab.sweetride.context.Util.DrawTestUtil;
-import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
-import com.sweetlab.sweetride.context.Util.Verify;
+import com.sweetlab.sweetride.Util.BufferTestUtil;
+import com.sweetlab.sweetride.Util.DrawTestUtil;
+import com.sweetlab.sweetride.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.Util.Verify;
+import com.sweetlab.sweetride.engine.FrontEndActionHandler;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.mesh.Mesh;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
@@ -30,6 +30,11 @@ public class ArrayOneBuf_MatMesh_mainNotifier extends OpenGLTestCase {
     private Mesh mTopMesh;
     private Mesh mBottomMesh;
 
+    /**
+     * Front end action handler.
+     */
+    FrontEndActionHandler mActionHandler = new FrontEndActionHandler();
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -38,27 +43,27 @@ public class ArrayOneBuf_MatMesh_mainNotifier extends OpenGLTestCase {
          */
         mRedMaterial = new Material();
         mRedMaterial.setShaderProgram(ProgramTestUtil.createNdcRed());
-        ActionHelper.handleMainThreadActions(mRedMaterial);
+        mActionHandler.handleActions(mRedMaterial);
 
         mBlueMaterial = new Material();
         mBlueMaterial.setShaderProgram(ProgramTestUtil.createNdcBlue());
-        ActionHelper.handleMainThreadActions(mBlueMaterial);
+        mActionHandler.handleActions(mBlueMaterial);
 
         mLeftMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mLeftMesh.addVertexBuffer(BufferTestUtil.createLeftTriangle());
-        ActionHelper.handleMainThreadActions(mLeftMesh);
+        mActionHandler.handleActions(mLeftMesh);
 
         mRightMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mRightMesh.addVertexBuffer(BufferTestUtil.createRightTriangle());
-        ActionHelper.handleMainThreadActions(mRightMesh);
+        mActionHandler.handleActions(mRightMesh);
 
         mTopMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mTopMesh.addVertexBuffer(BufferTestUtil.createTopTriangle());
-        ActionHelper.handleMainThreadActions(mTopMesh);
+        mActionHandler.handleActions(mTopMesh);
 
         mBottomMesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mBottomMesh.addVertexBuffer(BufferTestUtil.createBottomTriangle());
-        ActionHelper.handleMainThreadActions(mBottomMesh);
+        mActionHandler.handleActions(mBottomMesh);
 
         setTestInfo("red, blue, red, blue material/mesh");
 

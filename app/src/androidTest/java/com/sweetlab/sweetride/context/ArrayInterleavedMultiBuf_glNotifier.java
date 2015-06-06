@@ -2,11 +2,10 @@ package com.sweetlab.sweetride.context;
 
 import com.sweetlab.sweetride.attributedata.InterleavedVertexBuffer;
 import com.sweetlab.sweetride.attributedata.VertexBuffer;
-import com.sweetlab.sweetride.context.Util.ActionHelper;
-import com.sweetlab.sweetride.context.Util.BufferTestUtil;
-import com.sweetlab.sweetride.context.Util.DrawTestUtil;
-import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
-import com.sweetlab.sweetride.context.Util.Verify;
+import com.sweetlab.sweetride.Util.BufferTestUtil;
+import com.sweetlab.sweetride.Util.DrawTestUtil;
+import com.sweetlab.sweetride.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.Util.Verify;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
@@ -61,13 +60,13 @@ public class ArrayInterleavedMultiBuf_glNotifier extends OpenGLTestCase {
             public Object run() {
                 mContext = getBackendContext();
 
-                ActionHelper.handleGLThreadActions(mRedShader, mContext);
-                ActionHelper.handleGLThreadActions(mColorShader, mContext);
-                ActionHelper.handleGLThreadActions(mTopTriangle, mContext);
-                ActionHelper.handleGLThreadActions(mBottomTriangle, mContext);
-                ActionHelper.handleGLThreadActions(mInterleavedLeftTriangle, mContext);
-                ActionHelper.handleGLThreadActions(mInterleavedRightTriangle, mContext);
-                ActionHelper.handleGLThreadActions(mColorBuffer, mContext);
+                mContext.getActionHandler().handleActions(mRedShader);
+                mContext.getActionHandler().handleActions(mColorShader);
+                mContext.getActionHandler().handleActions(mTopTriangle);
+                mContext.getActionHandler().handleActions(mBottomTriangle);
+                mContext.getActionHandler().handleActions(mInterleavedLeftTriangle);
+                mContext.getActionHandler().handleActions(mInterleavedRightTriangle);
+                mContext.getActionHandler().handleActions(mColorBuffer);
                 assertFalse(mRedShader.hasActions());
                 assertFalse(mColorShader.hasActions());
                 assertFalse(mTopTriangle.hasActions());

@@ -5,11 +5,11 @@ import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.attributedata.InterleavedVertexBuffer;
-import com.sweetlab.sweetride.context.Util.BitmapTestUtil;
-import com.sweetlab.sweetride.context.Util.BufferTestUtil;
-import com.sweetlab.sweetride.context.Util.DrawTestUtil;
-import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
-import com.sweetlab.sweetride.context.Util.Verify;
+import com.sweetlab.sweetride.Util.BitmapTestUtil;
+import com.sweetlab.sweetride.Util.BufferTestUtil;
+import com.sweetlab.sweetride.Util.DrawTestUtil;
+import com.sweetlab.sweetride.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.Util.Verify;
 import com.sweetlab.sweetride.resource.TextureResource;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
@@ -50,7 +50,7 @@ public class TextureMulti extends OpenGLTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        mIb = new IndicesBuffer(new short[]{0, 1, 2, 3}, GLES20.GL_STATIC_DRAW);
+        mIb = new IndicesBuffer(new short[]{0, 1, 2, 3}, BufferUsage.STATIC);
         mShaderProgram = ProgramTestUtil.createNdcOneTexCoordTwoTextures();
         mVertexBuffer = BufferTestUtil.createInterleavedQuadWithTextureCoords();
 

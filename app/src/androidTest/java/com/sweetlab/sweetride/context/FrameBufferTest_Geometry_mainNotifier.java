@@ -2,10 +2,10 @@ package com.sweetlab.sweetride.context;
 
 import android.opengl.GLES20;
 
-import com.sweetlab.sweetride.context.Util.ActionHelper;
-import com.sweetlab.sweetride.context.Util.BufferTestUtil;
-import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
-import com.sweetlab.sweetride.context.Util.Verify;
+import com.sweetlab.sweetride.Util.BufferTestUtil;
+import com.sweetlab.sweetride.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.Util.Verify;
+import com.sweetlab.sweetride.engine.FrontEndActionHandler;
 import com.sweetlab.sweetride.framebuffer.FrameBuffer;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
@@ -39,6 +39,11 @@ public class FrameBufferTest_Geometry_mainNotifier extends OpenGLTestCase {
      */
     private RenderBuffer mRenderBuffer;
 
+    /**
+     * Front end action handler.
+     */
+    FrontEndActionHandler mActionHandler = new FrontEndActionHandler();
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -54,7 +59,7 @@ public class FrameBufferTest_Geometry_mainNotifier extends OpenGLTestCase {
         mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createCenteredTriangle());
         mTriangle.setMesh(mesh);
-        ActionHelper.handleMainThreadActions(mTriangle);
+        mActionHandler.handleActions(mTriangle);
 
         /**
          * Create the quad material and mesh. It's a quad triangle strip with a texture.
@@ -70,7 +75,7 @@ public class FrameBufferTest_Geometry_mainNotifier extends OpenGLTestCase {
         mesh = new Mesh(MeshDrawingMode.TRIANGLE_STRIP);
         mesh.addVertexBuffer(BufferTestUtil.createInterleavedQuadWithTextureCoords());
         mQuad.setMesh(mesh);
-        ActionHelper.handleMainThreadActions(mQuad);
+        mActionHandler.handleActions(mQuad);
 
         /**
          * Create a frame buffer.

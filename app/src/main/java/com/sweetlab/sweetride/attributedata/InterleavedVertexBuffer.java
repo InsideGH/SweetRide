@@ -3,6 +3,7 @@ package com.sweetlab.sweetride.attributedata;
 import android.util.Pair;
 
 import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.context.BufferUsage;
 import com.sweetlab.sweetride.resource.VertexBufferResource;
 
 import java.nio.Buffer;
@@ -22,7 +23,7 @@ public class InterleavedVertexBuffer extends VertexBufferResource {
         /**
          * The buffer usage hint.
          */
-        private final int mBufferUsage;
+        private final BufferUsage mBufferUsage;
 
         /**
          * Keep track of added entries.
@@ -34,7 +35,7 @@ public class InterleavedVertexBuffer extends VertexBufferResource {
          *
          * @param bufferUsage The buffer usage hint.
          */
-        public Builder(int bufferUsage) {
+        public Builder(BufferUsage bufferUsage) {
             mBufferUsage = bufferUsage;
         }
 
@@ -163,7 +164,7 @@ public class InterleavedVertexBuffer extends VertexBufferResource {
     }
 
     @Override
-    public int getBufferUsage() {
+    public BufferUsage getBufferUsage() {
         return mData.getBufferUsage();
     }
 

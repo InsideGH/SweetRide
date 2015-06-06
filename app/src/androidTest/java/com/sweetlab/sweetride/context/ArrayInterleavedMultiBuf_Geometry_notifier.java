@@ -1,9 +1,9 @@
 package com.sweetlab.sweetride.context;
 
-import com.sweetlab.sweetride.context.Util.ActionHelper;
-import com.sweetlab.sweetride.context.Util.BufferTestUtil;
-import com.sweetlab.sweetride.context.Util.ProgramTestUtil;
-import com.sweetlab.sweetride.context.Util.Verify;
+import com.sweetlab.sweetride.Util.BufferTestUtil;
+import com.sweetlab.sweetride.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.Util.Verify;
+import com.sweetlab.sweetride.engine.FrontEndActionHandler;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.mesh.Mesh;
@@ -24,6 +24,11 @@ public class ArrayInterleavedMultiBuf_Geometry_notifier extends OpenGLTestCase {
     private Geometry mRightGeometry = new Geometry();
     private Geometry mBottomGeometry = new Geometry();
 
+    /**
+     * Front end action handler.
+     */
+    FrontEndActionHandler mActionHandler = new FrontEndActionHandler();
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -39,7 +44,7 @@ public class ArrayInterleavedMultiBuf_Geometry_notifier extends OpenGLTestCase {
         mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createInterleavedLeftTriangleWithColor());
         mLeftGeometry.setMesh(mesh);
-        ActionHelper.handleMainThreadActions(mLeftGeometry);
+        mActionHandler.handleActions(mLeftGeometry);
 
         /**
          * Create top resources. Complete setup, with red-shader and mesh with vertices.
@@ -50,7 +55,7 @@ public class ArrayInterleavedMultiBuf_Geometry_notifier extends OpenGLTestCase {
         mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createTopTriangle());
         mTopGeometry.setMesh(mesh);
-        ActionHelper.handleMainThreadActions(mTopGeometry);
+        mActionHandler.handleActions(mTopGeometry);
 
         /**
          * Create right resources. Complete setup with color shader and mesh with interleaved
@@ -62,7 +67,7 @@ public class ArrayInterleavedMultiBuf_Geometry_notifier extends OpenGLTestCase {
         mesh = new Mesh(MeshDrawingMode.TRIANGLES);
         mesh.addVertexBuffer(BufferTestUtil.createInterleavedRightTriangleWithColor());
         mRightGeometry.setMesh(mesh);
-        ActionHelper.handleMainThreadActions(mRightGeometry);
+        mActionHandler.handleActions(mRightGeometry);
 
         /**
          * Create bottom resources. Complete setup with color shader and mesh with separate
@@ -75,7 +80,7 @@ public class ArrayInterleavedMultiBuf_Geometry_notifier extends OpenGLTestCase {
         mesh.addVertexBuffer(BufferTestUtil.createBottomTriangle());
         mesh.addVertexBuffer(BufferTestUtil.createColorBuffer());
         mBottomGeometry.setMesh(mesh);
-        ActionHelper.handleMainThreadActions(mBottomGeometry);
+        mActionHandler.handleActions(mBottomGeometry);
 
         setTestInfo("smooth, red, smooth, smooth geometry");
 
@@ -84,10 +89,10 @@ public class ArrayInterleavedMultiBuf_Geometry_notifier extends OpenGLTestCase {
             public Object run() {
                 mContext = getBackendContext();
 
-                ActionHelper.handleGLThreadActions(mLeftGeometry, mContext);
-                ActionHelper.handleGLThreadActions(mRightGeometry, mContext);
-                ActionHelper.handleGLThreadActions(mTopGeometry, mContext);
-                ActionHelper.handleGLThreadActions(mBottomGeometry, mContext);
+                mContext.getActionHandler().handleActions(mLeftGeometry);
+                mContext.getActionHandler().handleActions(mRightGeometry);
+                mContext.getActionHandler().handleActions(mTopGeometry);
+                mContext.getActionHandler().handleActions(mBottomGeometry);
                 assertFalse(mLeftGeometry.hasActions());
                 assertFalse(mRightGeometry.hasActions());
                 assertFalse(mTopGeometry.hasActions());

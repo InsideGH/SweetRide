@@ -77,6 +77,15 @@ public class Frustrum extends NoHandleNotifier {
         mMode = Mode.UNINITIALIZED;
     }
 
+
+    @Override
+    public boolean handleAction(Action action) {
+        if ((action.getType().equals(ActionId.FRUSTRUM_UPDATED))) {
+            return true;
+        }
+        return super.handleAction(action);
+    }
+
     @Override
     protected void onActionAdded(Action action) {
         super.onActionAdded(action);

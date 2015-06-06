@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Default renderer. Renders to system window.
  */
-public class DefaultRenderer implements Renderer {
+public class DefaultGeometryRenderer implements GeometryRenderer {
 
     @Override
     public void render(BackendContext context, List<Geometry> list) {

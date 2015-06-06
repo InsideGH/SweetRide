@@ -4,6 +4,7 @@ import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
 import com.sweetlab.sweetride.action.HandleThread;
 import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.context.BufferUsage;
 import com.sweetlab.sweetride.context.ResourceManager;
 import com.sweetlab.sweetride.resource.VertexBufferResource;
 import com.sweetlab.sweetride.util.Util;
@@ -22,7 +23,7 @@ public class VertexBuffer extends VertexBufferResource {
     /**
      * The buffer usage hint.
      */
-    private final int mBufferUsage;
+    private final BufferUsage mBufferUsage;
 
     /**
      * The vertex data.
@@ -46,7 +47,7 @@ public class VertexBuffer extends VertexBufferResource {
      * @param vertexData  Vertex data.
      * @param bufferUsage Buffer usage hint.
      */
-    public VertexBuffer(String name, VertexData vertexData, int bufferUsage) {
+    public VertexBuffer(String name, VertexData vertexData, BufferUsage bufferUsage) {
         mBufferPointer = new BufferPointer(name, vertexData, 0, 0);
         mBufferUsage = bufferUsage;
         mVertexData = vertexData;
@@ -71,7 +72,7 @@ public class VertexBuffer extends VertexBufferResource {
     }
 
     @Override
-    public int getBufferUsage() {
+    public BufferUsage getBufferUsage() {
         return mBufferUsage;
     }
 

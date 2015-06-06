@@ -1,4 +1,4 @@
-package com.sweetlab.sweetride.context.Util;
+package com.sweetlab.sweetride.Util;
 
 public class Verify {
     /**

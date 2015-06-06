@@ -7,6 +7,7 @@ import com.sweetlab.sweetride.action.ActionId;
 import com.sweetlab.sweetride.action.HandleThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.context.BufferUsage;
 import com.sweetlab.sweetride.context.ResourceManager;
 import com.sweetlab.sweetride.resource.BufferResource;
 import com.sweetlab.sweetride.util.Util;
@@ -31,7 +32,7 @@ public class InterleavedData extends NoHandleNotifier implements BufferResource 
     /**
      * The buffer usage hint.
      */
-    private final int mBufferUsage;
+    private final BufferUsage mBufferUsage;
 
     /**
      * The buffer 'name'/id.
@@ -44,7 +45,7 @@ public class InterleavedData extends NoHandleNotifier implements BufferResource 
      * @param entryList   List of entries consisting of shader attribute name and vertex data.
      * @param bufferUsage Buffer usage hint for this interleaved data.
      */
-    public InterleavedData(List<Pair<String, VertexData>> entryList, int bufferUsage) {
+    public InterleavedData(List<Pair<String, VertexData>> entryList, BufferUsage bufferUsage) {
         int elementCount = 0;
         int byteCount = 0;
         for (Pair<String, VertexData> entry : entryList) {
@@ -109,7 +110,7 @@ public class InterleavedData extends NoHandleNotifier implements BufferResource 
     }
 
     @Override
-    public int getBufferUsage() {
+    public BufferUsage getBufferUsage() {
         return mBufferUsage;
     }
 
@@ -142,7 +143,7 @@ public class InterleavedData extends NoHandleNotifier implements BufferResource 
                 return true;
             case INTERLEAVED_BUFFER_LOAD:
                 load(context);
-                return false;
+                return true;
             default:
                 return false;
         }

@@ -1,12 +1,17 @@
 package com.sweetlab.sweetride;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    /**
+     * The GL surface view.
+     */
+    private EngineView mSurfaceView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

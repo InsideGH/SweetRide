@@ -18,6 +18,11 @@ public enum MinFilter {
      */
     private final int mGlParam;
 
+    /**
+     * Constructor.
+     *
+     * @param glParam The gl filter parameter.
+     */
     MinFilter(int glParam) {
         mGlParam = glParam;
     }

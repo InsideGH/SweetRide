@@ -1,5 +1,6 @@
 package com.sweetlab.sweetride.action;
 
+import com.sweetlab.sweetride.DebugOptions;
 import com.sweetlab.sweetride.context.BackendContext;
 
 /**
@@ -73,11 +74,19 @@ public class Action {
 
     /**
      * Handle the action on the main thread.
+     *
+     * @return True if action is handled.
      */
-    public void handleAction() {
-        if (!mSource.handleAction(this)) {
-            throw new RuntimeException("Unhandled action detected " + this);
+    public boolean handleAction() {
+        if (DebugOptions.DEBUG_ACTION) {
+            if (!mHandleThread.equals(HandleThread.MAIN)) {
+                throw new RuntimeException("Trying to handle a gl action using main handle method");
+            }
         }
+        if (!mSource.handleAction(this)) {
+            throw new RuntimeException("Unhandled main action detected " + this);
+        }
+        return true;
     }
 
     /**
@@ -85,8 +94,16 @@ public class Action {
      *
      * @param context
      */
-    public void handleAction(BackendContext context) {
-        mSource.handleAction(context, this);
+    public boolean handleAction(BackendContext context) {
+        if (DebugOptions.DEBUG_ACTION) {
+            if (!mHandleThread.equals(HandleThread.GL)) {
+                throw new RuntimeException("Trying to handle a main action using backend handle method");
+            }
+        }
+        if (!mSource.handleAction(context, this)) {
+            throw new RuntimeException("Unhandled gl action detected " + this);
+        }
+        return true;
     }
 
     @Override
