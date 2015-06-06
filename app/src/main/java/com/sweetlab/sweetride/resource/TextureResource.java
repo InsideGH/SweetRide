@@ -30,16 +30,16 @@ public abstract class TextureResource extends NoHandleNotifier implements Resour
     }
 
     @Override
-    public void handleAction(BackendContext context, Action action) {
+    public boolean handleAction(BackendContext context, Action action) {
         switch (action.getType()) {
             case TEXTURE_CREATE:
                 create(context);
-                break;
+                return true;
             case TEXTURE_LOAD:
                 load(context);
-                break;
+                return true;
             default:
-                throw new RuntimeException("wtf");
+                return false;
         }
     }
 

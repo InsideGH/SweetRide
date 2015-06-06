@@ -10,7 +10,7 @@ import com.sweetlab.sweetride.action.NoHandleNotifier;
  */
 public class Transform extends NoHandleNotifier {
     /**
-     * Transform has been updated.
+     * Transform has been updated. Used as indication only.
      */
     private Action mTransformChanged = new Action(this, ActionId.TRANSFORM_UPDATED, HandleThread.MAIN);
 
@@ -24,6 +24,16 @@ public class Transform extends NoHandleNotifier {
      */
     public Transform() {
         mMatrix = new Matrix44();
+    }
+
+    @Override
+    public boolean handleAction(Action action) {
+        switch (action.getType()) {
+            case TRANSFORM_UPDATED:
+                return true;
+            default:
+                return false;
+        }
     }
 
     /**

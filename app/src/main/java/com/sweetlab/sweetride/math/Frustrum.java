@@ -79,6 +79,7 @@ public class Frustrum extends NoHandleNotifier {
 
     @Override
     protected void onActionAdded(Action action) {
+        super.onActionAdded(action);
         switch (action.getType()) {
             case FRUSTRUM_UPDATED:
                 updateMatrices();

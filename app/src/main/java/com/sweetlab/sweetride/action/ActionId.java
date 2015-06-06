@@ -5,6 +5,16 @@ package com.sweetlab.sweetride.action;
  */
 public enum ActionId {
     /**
+     * Render node camera reference changed.
+     */
+    RENDER_NODE_CAMERA,
+
+    /**
+     * The world got dirty for a reason (several reasons).
+     */
+    NODE_WORLD_DIRTY,
+
+    /**
      * Geometry mesh reference changed.
      */
     GEOMETRY_MESH,
@@ -18,6 +28,11 @@ public enum ActionId {
      * Geometry custom uniform collection changed.
      */
     GEOMETRY_CUSTOM_UNIFORM,
+
+    /**
+     * Engine uniforms has changed.
+     */
+    GEOMETRY_ENGINE_UNIFORM,
 
     /**
      * Mesh vertex buffer collection changed.

@@ -8,6 +8,7 @@ import com.sweetlab.sweetride.context.ElementTarget;
 import com.sweetlab.sweetride.context.TextureUnit;
 import com.sweetlab.sweetride.context.TextureUnitManager;
 import com.sweetlab.sweetride.context.UniformWriter;
+import com.sweetlab.sweetride.engine.EngineUniform;
 import com.sweetlab.sweetride.material.BackendMaterial;
 import com.sweetlab.sweetride.mesh.BackendMesh;
 import com.sweetlab.sweetride.shader.ProgramUniform;
@@ -34,12 +35,17 @@ public class BackendGeometry {
     /**
      * List of custom uniforms used by GL thread.
      */
-    private List<CustomUniform> mCustomUniforms = new ArrayList<>();
+    private final List<CustomUniform> mCustomUniforms = new ArrayList<>();
 
     /**
      * This is a temporary list of taken texture units used during drawing.
      */
     private final List<TextureUnit> mTextureUnits = new ArrayList<>();
+
+    /**
+     * List of active engine uniforms.
+     */
+    private final List<EngineUniform> mEngineUniforms = new ArrayList<>();
 
     /**
      * Set the mesh reference.
@@ -67,6 +73,16 @@ public class BackendGeometry {
     public void setCustomUniforms(List<CustomUniform> list) {
         mCustomUniforms.clear();
         mCustomUniforms.addAll(list);
+    }
+
+    /**
+     * Set the active engine uniforms.
+     *
+     * @param list List of engine uniforms.
+     */
+    public void setEngineUniforms(List<EngineUniform> list) {
+        mEngineUniforms.clear();
+        mEngineUniforms.addAll(list);
     }
 
     /**
@@ -155,13 +171,12 @@ public class BackendGeometry {
     private void writeEngineUniforms(BackendContext context) {
         ShaderProgram program = mMaterial.getShaderProgram();
         UniformWriter uniformWriter = context.getUniformWriter();
-
-        String mvp = "";
-        float[] mvp_data = new float[16];
-
-        ProgramUniform uniform = program.getUniform(mvp);
-        if (uniform != null) {
-            uniformWriter.writeFloat(program, mvp, mvp_data);
+        for (EngineUniform engineUniform : mEngineUniforms) {
+            String name = engineUniform.getName();
+            ProgramUniform programUniform = program.getUniform(name);
+            if (programUniform != null) {
+                uniformWriter.writeFloat(program, name, engineUniform.getMatrix().m);
+            }
         }
     }
 

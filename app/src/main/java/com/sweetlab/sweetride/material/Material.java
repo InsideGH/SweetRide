@@ -41,16 +41,16 @@ public class Material extends NoHandleNotifier {
     private ShaderProgram mShaderProgram;
 
     @Override
-    public void handleAction(Action action) {
+    public boolean handleAction(Action action) {
         switch (action.getType()) {
             case MATERIAL_PROGRAM:
                 mBackendMaterial.setShaderProgram(mShaderProgram);
-                break;
+                return true;
             case MATERIAL_TEXTURES:
                 mBackendMaterial.setTextures(mTextures);
-                break;
+                return true;
             default:
-                throw new RuntimeException("wtf");
+                return false;
         }
     }
 

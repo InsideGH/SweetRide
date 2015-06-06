@@ -58,4 +58,13 @@ public class ProgramTestUtil {
     public static ShaderProgram createCameraOneTexCoordTwoTextures() {
         return new ShaderProgram(new VertexShader(VertexCodeTestUtil.VERTEX_CAMERA_ONE_TEXCOORD), new FragmentShader(FragCodeTestUtil.FRAGMENT_TWO_TEX));
     }
+
+    /**
+     * Create a engine shader program that uses two textures.
+     *
+     * @return The shader program.
+     */
+    public static ShaderProgram createEngineOneTexCoordTwoTextures() {
+        return new ShaderProgram(new VertexShader(VertexCodeTestUtil.VERTEX_ENGINE_ONE_TEXCOORD), new FragmentShader(FragCodeTestUtil.FRAGMENT_TWO_TEX));
+    }
 }

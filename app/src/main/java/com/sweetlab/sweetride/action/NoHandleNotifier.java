@@ -8,13 +8,13 @@ import com.sweetlab.sweetride.context.BackendContext;
  */
 public class NoHandleNotifier extends ActionNotifier {
     @Override
-    public void handleAction(Action action) {
-        throw new RuntimeException("wtf");
+    public boolean handleAction(Action action) {
+        throw new RuntimeException("Class did not provide main handleAction method for " + action);
     }
 
     @Override
-    public void handleAction(BackendContext context, Action action) {
-        throw new RuntimeException("wtf");
+    public boolean handleAction(BackendContext context, Action action) {
+        throw new RuntimeException("Class did not provide gl handleAction method for " + action);
     }
 
     @Override

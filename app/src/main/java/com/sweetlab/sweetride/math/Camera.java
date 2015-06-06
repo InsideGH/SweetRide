@@ -80,6 +80,7 @@ public class Camera extends NoHandleNotifier {
 
     @Override
     protected void onActionAdded(Action action) {
+        super.onActionAdded(action);
         switch (action.getType()) {
             case CAMERA_UPDATED:
             case FRUSTRUM_UPDATED:

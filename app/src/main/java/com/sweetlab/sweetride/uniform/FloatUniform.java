@@ -50,10 +50,12 @@ public class FloatUniform extends CustomUniform {
     }
 
     @Override
-    public void handleAction(Action action) {
+    public boolean handleAction(Action action) {
         if (action.getType().equals(ActionId.CUSTOM_UNIFORM_UPDATE)) {
             System.arraycopy(mData, 0, mDataGL, 0, mLength);
+            return true;
         }
+        return false;
     }
 
     @Override

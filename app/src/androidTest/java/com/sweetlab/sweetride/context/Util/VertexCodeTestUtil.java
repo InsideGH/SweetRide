@@ -47,4 +47,17 @@ public class VertexCodeTestUtil {
                     "    v_texCoord = a_texCoord;\n" +
                     "    gl_Position = u_Cam * a_Pos; " +
                     "} ";
+
+    /**
+     * Vertex code. Engine supported uniform. Single texture coord.
+     */
+    public static final String VERTEX_ENGINE_ONE_TEXCOORD =
+            "attribute vec4 a_Pos; \n" +
+                    "attribute vec2 a_texCoord;\n" +
+                    "uniform mat4 u_worldViewProjMat; \n" +
+                    "varying vec2 v_texCoord;\n" +
+                    "void main() { " +
+                    "    v_texCoord = a_texCoord;\n" +
+                    "    gl_Position = u_worldViewProjMat * a_Pos; " +
+                    "} ";
 }

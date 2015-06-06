@@ -107,16 +107,16 @@ public class VertexBuffer extends VertexBufferResource {
     }
 
     @Override
-    public void handleAction(BackendContext context, Action action) {
+    public boolean handleAction(BackendContext context, Action action) {
         switch (action.getType()) {
             case VERTEX_BUFFER_CREATE:
                 create(context);
-                break;
+                return true;
             case VERTEX_BUFFER_LOAD:
                 load(context);
-                break;
+                return true;
             default:
-                throw new RuntimeException("wtf");
+                return false;
         }
     }
 }

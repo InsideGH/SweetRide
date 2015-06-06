@@ -1,7 +1,11 @@
 package com.sweetlab.sweetride.node;
 
+import com.sweetlab.sweetride.action.Action;
+import com.sweetlab.sweetride.action.ActionId;
+import com.sweetlab.sweetride.action.HandleThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.math.Camera;
+import com.sweetlab.sweetride.math.Transform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +15,29 @@ import java.util.List;
  */
 public class Node extends NoHandleNotifier {
     /**
-     * The camera.
+     * Action when world is dirty.
      */
-    protected Camera mCamera;
+    private Action mWorldDirty = new Action(this, ActionId.NODE_WORLD_DIRTY, HandleThread.MAIN);
 
     /**
      * List of children.
      */
-    private List<Node> mChildren = new ArrayList<>();
+    private final List<Node> mChildren = new ArrayList<>();
+
+    /**
+     * The model transform.
+     */
+    private final Transform mModelTransform = new Transform();
+
+    /**
+     * The world transform.
+     */
+    private final MarkTransform mWorldTransform = new MarkTransform();
+
+    /**
+     * The camera.
+     */
+    protected Camera mCamera;
 
     /**
      * The parent.
@@ -26,14 +45,48 @@ public class Node extends NoHandleNotifier {
     private Node mParent;
 
     /**
+     * Constructor.
+     */
+    public Node() {
+        connectNotifier(mModelTransform);
+    }
+
+    @Override
+    public boolean handleAction(Action action) {
+        switch (action.getType()) {
+            case NODE_WORLD_DIRTY:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    protected void onActionAdded(Action action) {
+        super.onActionAdded(action);
+        switch (action.getType()) {
+            case NODE_WORLD_DIRTY:
+                mWorldTransform.mark();
+                break;
+            case FRUSTRUM_UPDATED:
+            case CAMERA_UPDATED:
+            case TRANSFORM_UPDATED:
+            case RENDER_NODE_CAMERA:
+                setWorldDirty();
+                break;
+        }
+    }
+
+    /**
      * Add a child.
      *
-     * @param node Child to add.
+     * @param child Child to add.
      */
-    public void addChild(Node node) {
-        if (!mChildren.contains(node)) {
-            mChildren.add(node);
-            node.mParent = this;
+    public void addChild(Node child) {
+        if (!mChildren.contains(child)) {
+            mChildren.add(child);
+            child.mParent = this;
+            child.setWorldDirty();
         }
     }
 
@@ -71,11 +124,47 @@ public class Node extends NoHandleNotifier {
     }
 
     /**
+     * Get the model transform.
+     *
+     * @return The model transform.
+     */
+    public Transform getModelTransform() {
+        return mModelTransform;
+    }
+
+    /**
+     * Get the world transform.
+     *
+     * @return The world transform.
+     */
+    public Transform getWorldTransform() {
+        if (mWorldTransform.isMarked()) {
+            if (mParent != null) {
+                mWorldTransform.combine(mParent.getWorldTransform(), mModelTransform);
+            } else {
+                mWorldTransform.set(mModelTransform);
+            }
+            mWorldTransform.clearMark();
+        }
+        return mWorldTransform;
+    }
+
+    /**
      * Accepts a node visitor.
      *
      * @param visitor The visitor.
      */
     public void accept(NodeVisitor visitor) {
         visitor.visit(this);
+    }
+
+    /**
+     * Set world dirty.
+     */
+    public void setWorldDirty() {
+        addAction(mWorldDirty);
+        for (Node child : mChildren) {
+            child.setWorldDirty();
+        }
     }
 }

@@ -86,12 +86,12 @@ public class ShaderProgram extends NoHandleNotifier implements Resource {
     }
 
     @Override
-    public void handleAction(BackendContext context, Action action) {
+    public boolean handleAction(BackendContext context, Action action) {
         if (action.getType().equals(ActionId.PROGRAM_CREATE)) {
             create(context);
-            return;
+            return true;
         }
-        throw new RuntimeException("wtf");
+        return false;
     }
 
     /**

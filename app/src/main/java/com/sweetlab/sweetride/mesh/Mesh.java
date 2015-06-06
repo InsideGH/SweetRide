@@ -65,16 +65,16 @@ public class Mesh extends NoHandleNotifier {
     }
 
     @Override
-    public void handleAction(Action action) {
+    public boolean handleAction(Action action) {
         switch (action.getType()) {
             case MESH_BUFFER:
                 mBackendMesh.setVertexBuffers(mVertexBuffers);
-                break;
+                return true;
             case MESH_INDICES:
                 mBackendMesh.setIndicesBuffer(mIndicesBuffer);
-                break;
+                return true;
             default:
-                throw new RuntimeException("wtf");
+                return false;
         }
     }
 

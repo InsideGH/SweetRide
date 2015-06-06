@@ -45,11 +45,12 @@ public class FrameBuffer extends NoHandleNotifier implements Resource {
     }
 
     @Override
-    public void handleAction(BackendContext context, Action action) {
+    public boolean handleAction(BackendContext context, Action action) {
         switch (action.getType()) {
             case FRAME_BUFFER_CREATE:
                 create(context);
-                break;
+                return true;
         }
+        return false;
     }
 }

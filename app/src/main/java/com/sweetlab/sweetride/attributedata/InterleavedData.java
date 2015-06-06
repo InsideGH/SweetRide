@@ -135,16 +135,16 @@ public class InterleavedData extends NoHandleNotifier implements BufferResource 
     }
 
     @Override
-    public void handleAction(BackendContext context, Action action) {
+    public boolean handleAction(BackendContext context, Action action) {
         switch (action.getType()) {
             case INTERLEAVED_BUFFER_CREATE:
                 create(context);
-                break;
+                return true;
             case INTERLEAVED_BUFFER_LOAD:
                 load(context);
-                break;
+                return false;
             default:
-                throw new RuntimeException("wtf");
+                return false;
         }
     }
 }

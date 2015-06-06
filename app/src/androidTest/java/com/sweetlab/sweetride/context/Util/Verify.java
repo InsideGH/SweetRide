@@ -4,5 +4,5 @@ public class Verify {
     /**
      * Amount of time to wait before terminating test.
      */
-    public static final int TERMINATE_TIME = 500;
+    public static final int TERMINATE_TIME = 1000;
 }

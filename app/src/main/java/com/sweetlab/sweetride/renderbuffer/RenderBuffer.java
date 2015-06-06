@@ -84,12 +84,13 @@ public class RenderBuffer extends NoHandleNotifier implements Resource, DepthAtt
     }
 
     @Override
-    public void handleAction(BackendContext context, Action action) {
+    public boolean handleAction(BackendContext context, Action action) {
         switch (action.getType()) {
             case RENDER_BUFFER_CREATE:
                 create(context);
-                break;
+                return true;
         }
+        return false;
     }
 
     /**

@@ -6,10 +6,15 @@ import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
 import com.sweetlab.sweetride.action.HandleThread;
 import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.engine.EngineUniform;
+import com.sweetlab.sweetride.engine.EngineUniformCache;
 import com.sweetlab.sweetride.material.Material;
+import com.sweetlab.sweetride.math.Camera;
+import com.sweetlab.sweetride.math.Matrix44;
 import com.sweetlab.sweetride.mesh.Mesh;
 import com.sweetlab.sweetride.node.Node;
 import com.sweetlab.sweetride.node.NodeVisitor;
+import com.sweetlab.sweetride.shader.ShaderProgram;
 import com.sweetlab.sweetride.uniform.CustomUniform;
 
 import java.util.ArrayList;
@@ -37,6 +42,11 @@ public class Geometry extends Node {
     private final Action mUniformCollectionChange = new Action(this, ActionId.GEOMETRY_CUSTOM_UNIFORM, HandleThread.MAIN);
 
     /**
+     * Engine uniform has changed.
+     */
+    private final Action mEngineUniformChange = new Action(this, ActionId.GEOMETRY_ENGINE_UNIFORM, HandleThread.MAIN);
+
+    /**
      * List of custom uniforms.
      */
     private final List<CustomUniform> mCustomUniforms = new ArrayList<>();
@@ -45,6 +55,11 @@ public class Geometry extends Node {
      * The backend geometry.
      */
     private final BackendGeometry mBackendGeometry = new BackendGeometry();
+
+    /**
+     * The supported engine uniforms.
+     */
+    private final EngineUniformCache mEngineUniformCache = new EngineUniformCache();
 
     /**
      * The mesh.
@@ -62,21 +77,44 @@ public class Geometry extends Node {
     }
 
     @Override
-    public void handleAction(Action action) {
+    protected void onActionAdded(Action action) {
+        super.onActionAdded(action);
         switch (action.getType()) {
-            case GEOMETRY_MESH:
-                mBackendGeometry.setMesh(mMesh.getBackendMesh());
+            case NODE_WORLD_DIRTY:
+                addAction(mEngineUniformChange);
                 break;
-            case GEOMETRY_MATERIAL:
-                mBackendGeometry.setMaterial(mMaterial.getBackendMaterial());
-                break;
-            case GEOMETRY_CUSTOM_UNIFORM:
-                mBackendGeometry.setCustomUniforms(mCustomUniforms);
-                break;
-            default:
-                throw new RuntimeException("wtf");
         }
     }
+
+    @Override
+    public boolean handleAction(Action action) {
+        if (super.handleAction(action)) {
+            return true;
+        }
+        switch (action.getType()) {
+            case GEOMETRY_ENGINE_UNIFORM:
+                if (mMaterial != null) {
+                    ShaderProgram shaderProgram = mMaterial.getShaderProgram();
+                    if (shaderProgram != null) {
+                        List<EngineUniform> engineUniforms = invalidateEngineUniforms(shaderProgram);
+                        mBackendGeometry.setEngineUniforms(engineUniforms);
+                    }
+                }
+                return true;
+            case GEOMETRY_MESH:
+                mBackendGeometry.setMesh(mMesh.getBackendMesh());
+                return true;
+            case GEOMETRY_MATERIAL:
+                mBackendGeometry.setMaterial(mMaterial.getBackendMaterial());
+                return true;
+            case GEOMETRY_CUSTOM_UNIFORM:
+                mBackendGeometry.setCustomUniforms(mCustomUniforms);
+                return true;
+            default:
+                return false;
+        }
+    }
+
 
     /**
      * Set mesh. Null allowed.
@@ -163,5 +201,56 @@ public class Geometry extends Node {
      */
     public void draw(BackendContext context) {
         mBackendGeometry.draw(context);
+    }
+
+    /**
+     * Invalidate active engine uniforms.
+     *
+     * @param program Shader program.
+     * @return List of active engine uniforms.
+     */
+    private List<EngineUniform> invalidateEngineUniforms(ShaderProgram program) {
+        List<EngineUniform> engineUniforms = mEngineUniformCache.getEngineUniforms(program);
+        if (!engineUniforms.isEmpty()) {
+            Camera camera = findCamera();
+            for (EngineUniform uniform : engineUniforms) {
+                switch (uniform) {
+                    case MODEL_MATRIX:
+                        uniform.getMatrix().set(getModelTransform().getMatrix());
+                        break;
+                    case WORLD_MATRIX:
+                        uniform.getMatrix().set(getWorldTransform().getMatrix());
+                        break;
+                    case VIEW_MATRIX:
+                        if (camera != null) {
+                            uniform.getMatrix().set(camera.getViewMatrix());
+                        }
+                        break;
+                    case PROJECTION_MATRIX:
+                        if (camera != null) {
+                            uniform.getMatrix().set(camera.getFrustrum().getProjectionMatrix());
+                        }
+                        break;
+                    case WORLD_VIEW_MATRIX:
+                        if (camera != null) {
+                            Matrix44 world = getWorldTransform().getMatrix();
+                            Matrix44 view = camera.getViewMatrix();
+                            /** worldView = view * world */
+                            Matrix44.mult(uniform.getMatrix(), view, world);
+                        }
+                        break;
+                    case WORLD_VIEW_PROJECTION_MATRIX:
+                        if (camera != null) {
+                            Matrix44 world = getWorldTransform().getMatrix();
+                            /** viewProj = proj * view */
+                            Matrix44 viewProj = camera.getViewProjectionMatrix();
+                            /** worldViewProj = viewProj * world = proj * view * world */
+                            Matrix44.mult(uniform.getMatrix(), viewProj, world);
+                        }
+                        break;
+                }
+            }
+        }
+        return engineUniforms;
     }
 }

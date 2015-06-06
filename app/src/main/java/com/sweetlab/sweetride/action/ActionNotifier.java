@@ -109,8 +109,9 @@ public abstract class ActionNotifier {
      * or the other handleAction method should be called.
      *
      * @param action Action to handle.
+     * @return True if handled.
      */
-    public abstract void handleAction(Action action);
+    public abstract boolean handleAction(Action action);
 
     /**
      * Handle the action on the GL thread. The action handle thread method tells if this
@@ -118,8 +119,9 @@ public abstract class ActionNotifier {
      *
      * @param context Backend context.
      * @param action  Action to handle.
+     * @return True if handled.
      */
-    public abstract void handleAction(BackendContext context, Action action);
+    public abstract boolean handleAction(BackendContext context, Action action);
 
     /**
      * Called every time an action has been added.

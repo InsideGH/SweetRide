@@ -75,7 +75,9 @@ public class Action {
      * Handle the action on the main thread.
      */
     public void handleAction() {
-        mSource.handleAction(this);
+        if (!mSource.handleAction(this)) {
+            throw new RuntimeException("Unhandled action detected " + this);
+        }
     }
 
     /**
@@ -85,5 +87,10 @@ public class Action {
      */
     public void handleAction(BackendContext context) {
         mSource.handleAction(context, this);
+    }
+
+    @Override
+    public String toString() {
+        return " id = " + mId.toString() + " source = " + mSource + " thread = " + mHandleThread;
     }
 }
