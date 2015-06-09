@@ -1,6 +1,7 @@
 package com.sweetlab.sweetride.demo;
 
 import com.sweetlab.sweetride.UserApplication;
+import com.sweetlab.sweetride.demo.mesh.QuadMesh;
 import com.sweetlab.sweetride.engine.DefaultRenderNode;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;

@@ -1,4 +1,4 @@
-package com.sweetlab.sweetride.demo;
+package com.sweetlab.sweetride.demo.mesh;
 
 import android.opengl.GLES20;
 import android.support.annotation.Nullable;
