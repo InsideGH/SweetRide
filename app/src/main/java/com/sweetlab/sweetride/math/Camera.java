@@ -1,9 +1,12 @@
 package com.sweetlab.sweetride.math;
 
+import android.util.Log;
+
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
 import com.sweetlab.sweetride.action.HandleThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
+import com.sweetlab.sweetride.mesh.Plane;
 
 /**
  * Camera. Three axis camera with a frustrum.
@@ -72,6 +75,11 @@ public class Camera extends NoHandleNotifier {
     private final Vec3 mTempVec = new Vec3();
 
     /**
+     * The frustrum planes.
+     */
+    private FrustrumPlanes mFrustrumPlanes = new FrustrumPlanes();
+
+    /**
      * Constructor.
      */
     public Camera() {
@@ -93,6 +101,7 @@ public class Camera extends NoHandleNotifier {
             case CAMERA_UPDATED:
             case FRUSTRUM_UPDATED:
                 updateMatrices();
+                mFrustrumPlanes.update(this);
                 break;
             default:
                 break;
@@ -134,14 +143,16 @@ public class Camera extends NoHandleNotifier {
 
         /**
          * Calculate the right vector using cross between known world up and look.
+         * This calculation can lead to gimbal lock resulting in a right vector being
+         * zero which then makes up vector zero as well.
          */
-        Vec3.cross(WORLD_UP, mLook, mRight);
+        Vec3.cross(mLook, WORLD_UP, mRight);
         mRight.norm();
 
         /**
          * Calculate up by using the known look and right vector.
          */
-        Vec3.cross(mLook, mRight, mUp);
+        Vec3.cross(mRight, mLook, mUp);
         mUp.norm();
 
         /**
@@ -231,16 +242,97 @@ public class Camera extends NoHandleNotifier {
     /**
      * Get camera position.
      *
-     * @return The position in world.
+     * @param dst where to store look vector.
      */
-    public Vec3 getPosition() {
-        return mPos;
+    public void getPosition(Vec3 dst) {
+        dst.set(mPos);
+    }
+
+    /**
+     * Get camera look vector in world space.
+     *
+     * @param dst where to store look vector.
+     */
+    public void getLook(Vec3 dst) {
+        dst.set(mLook);
+    }
+
+    /**
+     * Get camera right vector in world space.
+     *
+     * @param dst where to store look vector.
+     */
+    public void getRight(Vec3 dst) {
+        dst.set(mRight);
+    }
+
+    /**
+     * Get camera up vector in world space.
+     *
+     * @param dst where to store look vector.
+     */
+    public void getUp(Vec3 dst) {
+        dst.set(mUp);
+    }
+
+    /**
+     * Get the near plane in world space.
+     *
+     * @return The near plane in world space.
+     */
+    public Plane getNearPlane() {
+        return mFrustrumPlanes.getNearPlane();
+    }
+
+    /**
+     * Get the far plane in world space.
+     *
+     * @return The far plane in world space.
+     */
+    public Plane getFarPlane() {
+        return mFrustrumPlanes.getFarPlane();
+    }
+
+    /**
+     * Get the top plan in world space.
+     *
+     * @return The top plan in world space.
+     */
+    public Plane getTopPlane() {
+        return mFrustrumPlanes.getTopPlane();
+    }
+
+    /**
+     * Get the bottom plan in world space.
+     *
+     * @return The top plan in world space.
+     */
+    public Plane getBottomPlane() {
+        return mFrustrumPlanes.getBottomPlane();
+    }
+
+    /**
+     * Get the right plan in world space.
+     *
+     * @return The right plan in world space.
+     */
+    public Plane getRightPlane() {
+        return mFrustrumPlanes.getRightPlane();
+    }
+
+    /**
+     * Get the left plan in world space.
+     *
+     * @return The left plane in world space.
+     */
+    public Plane getLeftPlane() {
+        return mFrustrumPlanes.getLeftPlane();
     }
 
     /**
      * Updates all supported matrices.
      */
-    protected void updateMatrices() {
+    private void updateMatrices() {
         mInvViewMat.set(mViewMat);
         mInvViewMat.invert();
 
@@ -249,5 +341,6 @@ public class Camera extends NoHandleNotifier {
 
         Matrix44 invProjectionMatrix = mFrustrum.getInvProjectionMatrix();
         Matrix44.mult(mInvViewProjectionMat, mInvViewMat, invProjectionMatrix);
+
     }
 }

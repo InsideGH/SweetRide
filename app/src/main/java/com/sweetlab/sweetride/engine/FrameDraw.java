@@ -1,8 +1,12 @@
 package com.sweetlab.sweetride.engine;
 
+import android.util.Log;
+
+import com.sweetlab.sweetride.DebugOptions;
 import com.sweetlab.sweetride.context.BackendActionHandler;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.geometry.Geometry;
+import com.sweetlab.sweetride.util.Util;
 
 import java.util.List;
 
@@ -27,6 +31,7 @@ public class FrameDraw {
              * Handle all GL actions.
              */
             final List<Geometry> geometries = renderNodeTask.getGeometries();
+
             for (Geometry geometry : geometries) {
                 actionHandler.handleActions(geometry);
             }
@@ -35,6 +40,12 @@ public class FrameDraw {
              * Render geometries.
              */
             renderNodeTask.getRenderer().render(context, geometries);
+
+            if (DebugOptions.DEBUG_DRAW) {
+                if (Util.hasGlError()) {
+                    throw new RuntimeException("GL error during draw");
+                }
+            }
         }
     }
 }

@@ -1,14 +1,13 @@
 package com.sweetlab.sweetride.texture;
 
 import android.graphics.Bitmap;
-import android.opengl.GLES20;
 
-import com.sweetlab.sweetride.attributedata.IndicesBuffer;
-import com.sweetlab.sweetride.attributedata.InterleavedVertexBuffer;
 import com.sweetlab.sweetride.Util.BitmapTestUtil;
 import com.sweetlab.sweetride.Util.BufferTestUtil;
 import com.sweetlab.sweetride.Util.DrawTestUtil;
 import com.sweetlab.sweetride.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.attributedata.IndicesBuffer;
+import com.sweetlab.sweetride.attributedata.InterleavedVertexBuffer;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.BufferUsage;
 import com.sweetlab.sweetride.context.MagFilter;
@@ -20,7 +19,6 @@ import com.sweetlab.sweetride.resource.TextureResource;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
-import com.sweetlab.sweetride.texture.Texture2D;
 
 public class TextureMulti_camera extends OpenGLTestCase {
     /**
@@ -56,7 +54,7 @@ public class TextureMulti_camera extends OpenGLTestCase {
     /**
      * Vector used while moving.
      */
-    private Vec3 mPos = new Vec3(0, 0, -3f);
+    private Vec3 mPos = new Vec3(0, 0, 3f);
 
     /**
      * Vector used to make camera strafe.
@@ -137,7 +135,7 @@ public class TextureMulti_camera extends OpenGLTestCase {
                     camera.lookAt(mPos, mLookPos);
                     camera.getFrustrum().setPerspectiveProjection(90, Frustrum.FovType.AUTO_FIT, 0.1f, 10, getSurfaceWidth(), getSurfaceHeight());
 
-                    mPos.z += 0.05f;
+                    mPos.z -= 0.05f;
 
                     mContext.getState().useProgram(mShaderProgram);
                     mContext.getUniformWriter().writeFloat(mShaderProgram, "u_Cam", camera.getViewProjectionMatrix().m);
@@ -166,7 +164,7 @@ public class TextureMulti_camera extends OpenGLTestCase {
                     camera.lookAt(mPos, mLookPos);
                     camera.getFrustrum().setPerspectiveProjection(90, Frustrum.FovType.AUTO_FIT, 0.1f, 10, getSurfaceWidth(), getSurfaceHeight());
 
-                    mPos.z -= 0.05f;
+                    mPos.z += 0.05f;
 
                     mContext.getState().useProgram(mShaderProgram);
                     mContext.getUniformWriter().writeFloat(mShaderProgram, "u_Cam", camera.getViewProjectionMatrix().m);

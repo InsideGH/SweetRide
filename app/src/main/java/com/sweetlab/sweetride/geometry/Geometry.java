@@ -6,12 +6,14 @@ import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
 import com.sweetlab.sweetride.action.HandleThread;
 import com.sweetlab.sweetride.context.BackendContext;
-import com.sweetlab.sweetride.engine.EngineUniform;
 import com.sweetlab.sweetride.engine.EngineUniformCache;
+import com.sweetlab.sweetride.engine.uniform.EngineUniform;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.math.Camera;
 import com.sweetlab.sweetride.math.Matrix44;
+import com.sweetlab.sweetride.mesh.BoundingBox;
 import com.sweetlab.sweetride.mesh.Mesh;
+import com.sweetlab.sweetride.mesh.TransformableBoundingBox;
 import com.sweetlab.sweetride.node.Node;
 import com.sweetlab.sweetride.node.NodeVisitor;
 import com.sweetlab.sweetride.shader.ShaderProgram;
@@ -62,6 +64,11 @@ public class Geometry extends Node {
     private final EngineUniformCache mEngineUniformCache = new EngineUniformCache();
 
     /**
+     * The geometry bounding box.
+     */
+    private final TransformableBoundingBox mGeometryBox = new TransformableBoundingBox();
+
+    /**
      * The mesh.
      */
     private Mesh mMesh;
@@ -82,6 +89,12 @@ public class Geometry extends Node {
         switch (action.getType()) {
             case NODE_WORLD_DIRTY:
                 addAction(mEngineUniformChange);
+                if (mMesh != null) {
+                    BoundingBox meshBox = mMesh.getBoundingBox();
+                    if (meshBox != null) {
+                        meshBox.transform(getModelTransform().getMatrix(), mGeometryBox);
+                    }
+                }
                 break;
         }
     }
@@ -96,7 +109,10 @@ public class Geometry extends Node {
                 if (mMaterial != null) {
                     ShaderProgram shaderProgram = mMaterial.getShaderProgram();
                     if (shaderProgram != null) {
-                        List<EngineUniform> engineUniforms = invalidateEngineUniforms(shaderProgram);
+                        List<EngineUniform> engineUniforms = mEngineUniformCache.getEngineUniforms(shaderProgram);
+                        if (!engineUniforms.isEmpty()) {
+                            updateEngineUniforms(engineUniforms);
+                        }
                         mBackendGeometry.setEngineUniforms(engineUniforms);
                     }
                 }
@@ -115,6 +131,15 @@ public class Geometry extends Node {
         }
     }
 
+    /**
+     * Get this geometries transformable bounding box.
+     *
+     * @return The geometries bounding box.
+     */
+    @Nullable
+    public TransformableBoundingBox getTransformableBoundingBox() {
+        return mGeometryBox;
+    }
 
     /**
      * Set mesh. Null allowed.
@@ -204,53 +229,50 @@ public class Geometry extends Node {
     }
 
     /**
-     * Invalidate active engine uniforms.
+     * Update active engine uniforms from node/camera content.
      *
-     * @param program Shader program.
-     * @return List of active engine uniforms.
+     * @param engineUniforms List of active engine uniforms.
      */
-    private List<EngineUniform> invalidateEngineUniforms(ShaderProgram program) {
-        List<EngineUniform> engineUniforms = mEngineUniformCache.getEngineUniforms(program);
-        if (!engineUniforms.isEmpty()) {
-            Camera camera = findCamera();
-            for (EngineUniform uniform : engineUniforms) {
-                switch (uniform) {
-                    case MODEL_MATRIX:
-                        uniform.getMatrix().set(getModelTransform().getMatrix());
-                        break;
-                    case WORLD_MATRIX:
-                        uniform.getMatrix().set(getWorldTransform().getMatrix());
-                        break;
-                    case VIEW_MATRIX:
-                        if (camera != null) {
-                            uniform.getMatrix().set(camera.getViewMatrix());
-                        }
-                        break;
-                    case PROJECTION_MATRIX:
-                        if (camera != null) {
-                            uniform.getMatrix().set(camera.getFrustrum().getProjectionMatrix());
-                        }
-                        break;
-                    case WORLD_VIEW_MATRIX:
-                        if (camera != null) {
-                            Matrix44 world = getWorldTransform().getMatrix();
-                            Matrix44 view = camera.getViewMatrix();
-                            /** worldView = view * world */
-                            Matrix44.mult(uniform.getMatrix(), view, world);
-                        }
-                        break;
-                    case WORLD_VIEW_PROJECTION_MATRIX:
-                        if (camera != null) {
-                            Matrix44 world = getWorldTransform().getMatrix();
-                            /** viewProj = proj * view */
-                            Matrix44 viewProj = camera.getViewProjectionMatrix();
-                            /** worldViewProj = viewProj * world = proj * view * world */
-                            Matrix44.mult(uniform.getMatrix(), viewProj, world);
-                        }
-                        break;
-                }
+    private void updateEngineUniforms(List<EngineUniform> engineUniforms) {
+        Camera camera = findCamera();
+        for (EngineUniform uniform : engineUniforms) {
+            switch (uniform.getType()) {
+                case MODEL:
+                    uniform.getMatrix().set(getModelTransform().getMatrix());
+                    break;
+                case WORLD:
+                    uniform.getMatrix().set(getWorldTransform().getMatrix());
+                    break;
+                case VIEW:
+                    if (camera != null) {
+                        uniform.getMatrix().set(camera.getViewMatrix());
+                    }
+                    break;
+                case PROJECTION:
+                    if (camera != null) {
+                        uniform.getMatrix().set(camera.getFrustrum().getProjectionMatrix());
+                    }
+                    break;
+                case WORLD_VIEW:
+                    if (camera != null) {
+                        Matrix44 world = getWorldTransform().getMatrix();
+                        Matrix44 view = camera.getViewMatrix();
+                        /** worldView = view * world */
+                        Matrix44.mult(uniform.getMatrix(), view, world);
+                    }
+                    break;
+                case WORLD_VIEW_PROJECTION:
+                    if (camera != null) {
+                        Matrix44 world = getWorldTransform().getMatrix();
+                        /** viewProj = proj * view */
+                        Matrix44 viewProj = camera.getViewProjectionMatrix();
+                        /** worldViewProj = viewProj * world = proj * view * world */
+                        Matrix44.mult(uniform.getMatrix(), viewProj, world);
+                    }
+                    break;
+                default:
+                    throw new RuntimeException("trying to update unknown engine uniform");
             }
         }
-        return engineUniforms;
     }
 }

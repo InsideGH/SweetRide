@@ -130,18 +130,34 @@ public class Vec3 {
         return new Vec3(vec).transform(mat);
     }
 
+    /**
+     * Create 3 component vector from p1 to p2. Store vector into vec.
+     *
+     * @param p1  Vector start point.
+     * @param p2  Vector end point.
+     * @param vec Store result vector into this.
+     */
     public static void createVecFromPoints(Vec3 p1, Vec3 p2, Vec3 vec) {
         vec.set(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
     }
 
+    /**
+     * Create 4 component vector from p1 to p2. Store vector into vec. The fourth component
+     * is not touched.
+     *
+     * @param p1  Vector start point.
+     * @param p2  Vector end point.
+     * @param vec Store result vector into this.
+     */
     public static void createVecFromPoints(Vec4 p1, Vec4 p2, Vec3 vec) {
         vec.set(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
     }
 
-    public void set(Vec3 other) {
+    public Vec3 set(Vec3 other) {
         x = other.x;
         y = other.y;
         z = other.z;
+        return this;
     }
 
     /**
@@ -351,6 +367,6 @@ public class Vec3 {
 
     @Override
     public String toString() {
-        return String.format("[% #06.2f % #06.2f % #06.2f]", x, y, z);
+        return String.format("[% #06.4f % #06.4f % #06.4f]", x, y, z);
     }
 }

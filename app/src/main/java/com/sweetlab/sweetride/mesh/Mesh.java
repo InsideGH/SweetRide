@@ -55,6 +55,11 @@ public class Mesh extends NoHandleNotifier {
     private int mVertexCount;
 
     /**
+     * Optional bounding box.
+     */
+    private BoundingBox mBoundingBox;
+
+    /**
      * Constructor.
      *
      * @param mode Mode is the drawing mode.
@@ -114,6 +119,16 @@ public class Mesh extends NoHandleNotifier {
     }
 
     /**
+     * Set the bounding box.
+     *
+     * @param box The bounding box or null.
+     */
+    public void setBoundingBox(@Nullable BoundingBox box) {
+        mBoundingBox = box;
+    }
+
+
+    /**
      * Get the drawing mode.
      *
      * @return The drawing mode.
@@ -157,6 +172,16 @@ public class Mesh extends NoHandleNotifier {
      */
     public IndicesBuffer getIndicesBuffer() {
         return mIndicesBuffer;
+    }
+
+    /**
+     * Get the bounding box.
+     *
+     * @return The bounding box.
+     */
+    @Nullable
+    public BoundingBox getBoundingBox() {
+        return mBoundingBox;
     }
 
     /**

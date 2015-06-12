@@ -23,6 +23,11 @@ public class RenderNode extends Node {
      */
     private GeometryRenderer mGeometryRenderer;
 
+    /**
+     * If view frustrum culling is enabled or not.
+     */
+    private boolean mIsViewFrustrumCullingEnabled;
+
     @Override
     public void accept(NodeVisitor visitor) {
         visitor.visit(this);
@@ -81,5 +86,23 @@ public class RenderNode extends Node {
      */
     public GeometryRenderer getRenderer() {
         return mGeometryRenderer;
+    }
+
+    /**
+     * Set if view frustrum culling should be enabled or not.
+     *
+     * @param enable True if enabled.
+     */
+    public void enableViewFrustrumCulling(boolean enable) {
+        mIsViewFrustrumCullingEnabled = enable;
+    }
+
+    /**
+     * Check if view frustrum culling is enabled.
+     *
+     * @return True if enabled.
+     */
+    public boolean isViewFrustrumCullingEnabled() {
+        return mIsViewFrustrumCullingEnabled;
     }
 }

@@ -1,5 +1,7 @@
 package com.sweetlab.sweetride.geometry;
 
+import android.util.Log;
+
 import com.sweetlab.sweetride.DebugOptions;
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.context.ArrayTarget;
@@ -8,7 +10,8 @@ import com.sweetlab.sweetride.context.ElementTarget;
 import com.sweetlab.sweetride.context.TextureUnit;
 import com.sweetlab.sweetride.context.TextureUnitManager;
 import com.sweetlab.sweetride.context.UniformWriter;
-import com.sweetlab.sweetride.engine.EngineUniform;
+import com.sweetlab.sweetride.engine.EngineUniforms;
+import com.sweetlab.sweetride.engine.uniform.EngineUniform;
 import com.sweetlab.sweetride.material.BackendMaterial;
 import com.sweetlab.sweetride.mesh.BackendMesh;
 import com.sweetlab.sweetride.shader.ProgramUniform;
@@ -45,7 +48,7 @@ public class BackendGeometry {
     /**
      * List of active engine uniforms.
      */
-    private final List<EngineUniform> mEngineUniforms = new ArrayList<>();
+    private final List<EngineUniform> mEngineUniformses = new ArrayList<>();
 
     /**
      * Set the mesh reference.
@@ -81,8 +84,8 @@ public class BackendGeometry {
      * @param list List of engine uniforms.
      */
     public void setEngineUniforms(List<EngineUniform> list) {
-        mEngineUniforms.clear();
-        mEngineUniforms.addAll(list);
+        mEngineUniformses.clear();
+        mEngineUniformses.addAll(list);
     }
 
     /**
@@ -171,11 +174,11 @@ public class BackendGeometry {
     private void writeEngineUniforms(BackendContext context) {
         ShaderProgram program = mMaterial.getShaderProgram();
         UniformWriter uniformWriter = context.getUniformWriter();
-        for (EngineUniform engineUniform : mEngineUniforms) {
-            String name = engineUniform.getName();
+        for (EngineUniform engineUniforms : mEngineUniformses) {
+            String name = engineUniforms.getName();
             ProgramUniform programUniform = program.getUniform(name);
             if (programUniform != null) {
-                uniformWriter.writeFloat(program, name, engineUniform.getMatrix().m);
+                uniformWriter.writeFloat(program, name, engineUniforms.getMatrix().m);
             }
         }
     }

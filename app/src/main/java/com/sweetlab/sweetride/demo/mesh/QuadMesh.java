@@ -1,6 +1,5 @@
 package com.sweetlab.sweetride.demo.mesh;
 
-import android.opengl.GLES20;
 import android.support.annotation.Nullable;
 
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
@@ -9,6 +8,7 @@ import com.sweetlab.sweetride.attributedata.TextureCoordData;
 import com.sweetlab.sweetride.attributedata.VerticesData;
 import com.sweetlab.sweetride.context.BufferUsage;
 import com.sweetlab.sweetride.context.MeshDrawingMode;
+import com.sweetlab.sweetride.mesh.BoundingBox;
 import com.sweetlab.sweetride.mesh.Mesh;
 
 /**
@@ -29,13 +29,20 @@ public class QuadMesh extends Mesh {
         /**
          * Create indices buffer.
          */
-        setIndicesBuffer(new IndicesBuffer(new short[]{0, 1, 2, 3}, BufferUsage.STATIC));
+        short[] indices = new short[]{0, 1, 2, 3};
+        setIndicesBuffer(new IndicesBuffer(indices, BufferUsage.STATIC));
 
         /**
          * Create vertex buffers.
          */
         InterleavedVertexBuffer.Builder builder = new InterleavedVertexBuffer.Builder(BufferUsage.STATIC);
-        builder.add(vertexName, new VerticesData(createVertices(width, height)));
+        float[] vertices = createVertices(width, height);
+        builder.add(vertexName, new VerticesData(vertices));
+
+        /**
+         * Set bounding box.
+         */
+        setBoundingBox(new BoundingBox(vertices, indices));
 
         if (textureName != null) {
             /**

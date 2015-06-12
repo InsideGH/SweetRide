@@ -1,6 +1,7 @@
 package com.sweetlab.sweetride.mesh;
 
 import com.sweetlab.sweetride.math.Matrix44;
+import com.sweetlab.sweetride.math.Vec3;
 
 /**
  * A (aabb) bounding box.
@@ -9,12 +10,12 @@ public class BoundingBox {
     /**
      * The min vector (x,y,z).
      */
-    private float[] mMin = new float[3];
+    protected Vec3 mMin = new Vec3();
 
     /**
      * The max vector (x, y, z).
      */
-    private float[] mMax = new float[3];
+    protected Vec3 mMax = new Vec3();
 
     /**
      * Create an empty bounding box.
@@ -24,47 +25,24 @@ public class BoundingBox {
     }
 
     /**
-     * Expands the box by adding points to it.
+     * Create bounding box based of vertices.
      *
-     * @param point Point to add.
+     * @param vertices The vertices.
      */
-    public void addVertex(float[] point) {
-        if (point[0] < mMin[0]) {
-            mMin[0] = point[0];
-        }
-        if (point[0] > mMax[0]) {
-            mMax[0] = point[0];
-        }
-        if (point[1] < mMin[1]) {
-            mMin[1] = point[1];
-        }
-        if (point[1] > mMax[1]) {
-            mMax[1] = point[1];
-        }
-        if (point[2] < mMin[2]) {
-            mMin[2] = point[2];
-        }
-        if (point[2] > mMax[2]) {
-            mMax[2] = point[2];
-        }
+    public BoundingBox(float[] vertices) {
+        setEmpty();
+        addVertices(vertices);
     }
 
     /**
-     * Expand the box by adding an array of 3 component vertices.
+     * Create bounding box based on indices.
      *
-     * @param vertices The array of vertices.
+     * @param vertices The vertices.
+     * @param indices  The indices.
      */
-    public void addVertices(float[] vertices) {
-        if ((vertices.length % 3) != 0) {
-            throw new RuntimeException("Provided vertices array length is not multiple of 3, len = " + vertices.length);
-        }
-        float[] tmp = new float[3];
-        for (int i = 0; i < vertices.length; i += 3) {
-            tmp[0] = vertices[i];
-            tmp[1] = vertices[i + 1];
-            tmp[2] = vertices[i + 2];
-            addVertex(tmp);
-        }
+    public BoundingBox(float[] vertices, short[] indices) {
+        setEmpty();
+        addVertices(vertices, indices);
     }
 
     /**
@@ -106,15 +84,15 @@ public class BoundingBox {
      * elements.
      *
      * @param mat Transformation matrix.
-     * @param dst Destination bounding box.
+     * @param dst Destination transformable bounding box.
      */
-    public void transform(Matrix44 mat, BoundingBox dst) {
+    public void transform(Matrix44 mat, TransformableBoundingBox dst) {
         /**
          * Initialize with the translation part
          */
-        dst.mMin[0] = dst.mMax[0] = mat.m[12];
-        dst.mMin[1] = dst.mMax[1] = mat.m[13];
-        dst.mMin[2] = dst.mMax[2] = mat.m[14];
+        dst.mMin.x = dst.mMax.x = mat.m[12];
+        dst.mMin.y = dst.mMax.y = mat.m[13];
+        dst.mMin.z = dst.mMax.z = mat.m[14];
 
         /**
          * Start minimizing and maximizing.
@@ -122,110 +100,170 @@ public class BoundingBox {
 
         /** m0 * x */
         if (mat.m[0] > 0) {
-            dst.mMin[0] += mat.m[0] * mMin[0];
-            dst.mMax[0] += mat.m[0] * mMax[0];
+            dst.mMin.x += mat.m[0] * mMin.x;
+            dst.mMax.x += mat.m[0] * mMax.x;
         } else {
-            dst.mMin[0] += mat.m[0] * mMax[0];
-            dst.mMax[0] += mat.m[0] * mMin[0];
+            dst.mMin.x += mat.m[0] * mMax.x;
+            dst.mMax.x += mat.m[0] * mMin.x;
         }
         /** m4 * y */
         if (mat.m[4] > 0) {
-            dst.mMin[0] += mat.m[4] * mMin[1];
-            dst.mMax[0] += mat.m[4] * mMax[1];
+            dst.mMin.x += mat.m[4] * mMin.y;
+            dst.mMax.x += mat.m[4] * mMax.y;
         } else {
-            dst.mMin[0] += mat.m[4] * mMax[1];
-            dst.mMax[0] += mat.m[4] * mMin[1];
+            dst.mMin.x += mat.m[4] * mMax.y;
+            dst.mMax.x += mat.m[4] * mMin.y;
         }
         /** m8 * z */
         if (mat.m[8] > 0) {
-            dst.mMin[0] += mat.m[8] * mMin[2];
-            dst.mMax[0] += mat.m[8] * mMax[2];
+            dst.mMin.x += mat.m[8] * mMin.z;
+            dst.mMax.x += mat.m[8] * mMax.z;
         } else {
-            dst.mMin[0] += mat.m[8] * mMax[2];
-            dst.mMax[0] += mat.m[8] * mMin[2];
+            dst.mMin.x += mat.m[8] * mMax.z;
+            dst.mMax.x += mat.m[8] * mMin.z;
         }
 
 
         /** m1 * x */
         if (mat.m[1] > 0) {
-            dst.mMin[1] += mat.m[1] * mMin[0];
-            dst.mMax[1] += mat.m[1] * mMax[0];
+            dst.mMin.y += mat.m[1] * mMin.x;
+            dst.mMax.y += mat.m[1] * mMax.x;
         } else {
-            dst.mMin[1] += mat.m[1] * mMax[0];
-            dst.mMax[1] += mat.m[1] * mMin[0];
+            dst.mMin.y += mat.m[1] * mMax.x;
+            dst.mMax.y += mat.m[1] * mMin.x;
         }
         /** m5 * y */
         if (mat.m[5] > 0) {
-            dst.mMin[1] += mat.m[5] * mMin[1];
-            dst.mMax[1] += mat.m[5] * mMax[1];
+            dst.mMin.y += mat.m[5] * mMin.y;
+            dst.mMax.y += mat.m[5] * mMax.y;
         } else {
-            dst.mMin[1] += mat.m[5] * mMax[1];
-            dst.mMax[1] += mat.m[5] * mMin[1];
+            dst.mMin.y += mat.m[5] * mMax.y;
+            dst.mMax.y += mat.m[5] * mMin.y;
         }
         /** m9 * z */
         if (mat.m[9] > 0) {
-            dst.mMin[1] += mat.m[9] * mMin[2];
-            dst.mMax[1] += mat.m[9] * mMax[2];
+            dst.mMin.y += mat.m[9] * mMin.z;
+            dst.mMax.y += mat.m[9] * mMax.z;
         } else {
-            dst.mMin[1] += mat.m[9] * mMax[2];
-            dst.mMax[1] += mat.m[9] * mMin[2];
+            dst.mMin.y += mat.m[9] * mMax.z;
+            dst.mMax.y += mat.m[9] * mMin.z;
         }
 
 
         /** m2 * x */
         if (mat.m[2] > 0) {
-            dst.mMin[2] += mat.m[2] * mMin[0];
-            dst.mMax[2] += mat.m[2] * mMax[0];
+            dst.mMin.z += mat.m[2] * mMin.x;
+            dst.mMax.z += mat.m[2] * mMax.x;
         } else {
-            dst.mMin[2] += mat.m[2] * mMax[0];
-            dst.mMax[2] += mat.m[2] * mMin[0];
+            dst.mMin.z += mat.m[2] * mMax.x;
+            dst.mMax.z += mat.m[2] * mMin.x;
         }
         /** m6 * y */
         if (mat.m[6] > 0) {
-            dst.mMin[2] += mat.m[6] * mMin[1];
-            dst.mMax[2] += mat.m[6] * mMax[1];
+            dst.mMin.z += mat.m[6] * mMin.y;
+            dst.mMax.z += mat.m[6] * mMax.y;
         } else {
-            dst.mMin[2] += mat.m[6] * mMax[1];
-            dst.mMax[2] += mat.m[6] * mMin[1];
+            dst.mMin.z += mat.m[6] * mMax.y;
+            dst.mMax.z += mat.m[6] * mMin.y;
         }
         /** m10 * z */
         if (mat.m[10] > 0) {
-            dst.mMin[2] += mat.m[10] * mMin[2];
-            dst.mMax[2] += mat.m[10] * mMax[2];
+            dst.mMin.z += mat.m[10] * mMin.z;
+            dst.mMax.z += mat.m[10] * mMax.z;
         } else {
-            dst.mMin[2] += mat.m[10] * mMax[2];
-            dst.mMax[2] += mat.m[10] * mMin[2];
+            dst.mMin.z += mat.m[10] * mMax.z;
+            dst.mMax.z += mat.m[10] * mMin.z;
         }
+    }
+
+    /**
+     * Get the min point (x, y, z), stored into destination vector.
+     *
+     * @param dst The dst storage.
+     */
+    public void getMin(Vec3 dst) {
+        dst.set(mMin);
+    }
+
+    /**
+     * Get the max point (x, y, z), stored into destination vector.
+     *
+     * @param dst The dst storage.
+     */
+    public void getMax(Vec3 dst) {
+        dst.set(mMax);
     }
 
     /**
      * Reset the box.
      */
-    public void setEmpty() {
-        mMin[0] = mMin[1] = mMin[2] = Float.MAX_VALUE;
-        mMax[0] = mMax[1] = mMax[2] = -Float.MAX_VALUE;
+    private void setEmpty() {
+        mMin.set(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);
+        mMax.set(-Float.MAX_VALUE, -Float.MAX_VALUE, -Float.MAX_VALUE);
     }
 
     /**
-     * The min point (x, y, z).
+     * Expand the box by adding an array of 3 component vertices.
      *
-     * @return The array by reference.
+     * @param vertices The array of vertices.
      */
-    public float[] getMin() {
-        return mMin;
+    private void addVertices(float[] vertices) {
+        if ((vertices.length % 3) != 0) {
+            throw new RuntimeException("Provided vertices array length is not multiple of 3, len = " + vertices.length);
+        }
+        float[] tmp = new float[3];
+        for (int i = 0; i < vertices.length; i += 3) {
+            tmp[0] = vertices[i];
+            tmp[1] = vertices[i + 1];
+            tmp[2] = vertices[i + 2];
+            addVertex(tmp);
+        }
     }
 
     /**
-     * The max point (x, y, z).
+     * Expand the box by adding an array of 3 component vertices selected by indices.
      *
-     * @return The array by reference.
+     * @param vertices The vertices.
+     * @param indices  The indices.
      */
-    public float[] getMax() {
-        return mMax;
+    private void addVertices(float[] vertices, short[] indices) {
+        float[] tmp = new float[3];
+        for (short index : indices) {
+            tmp[0] = vertices[index * 3];
+            tmp[1] = vertices[index * 3 + 1];
+            tmp[2] = vertices[index * 3 + 2];
+            addVertex(tmp);
+        }
+    }
+
+    /**
+     * Expands the box by adding points to it.
+     *
+     * @param point Point to add.
+     */
+    private void addVertex(float[] point) {
+        if (point[0] < mMin.x) {
+            mMin.x = point[0];
+        }
+        if (point[0] > mMax.x) {
+            mMax.x = point[0];
+        }
+        if (point[1] < mMin.y) {
+            mMin.y = point[1];
+        }
+        if (point[1] > mMax.y) {
+            mMax.y = point[1];
+        }
+        if (point[2] < mMin.z) {
+            mMin.z = point[2];
+        }
+        if (point[2] > mMax.z) {
+            mMax.z = point[2];
+        }
     }
 
     @Override
     public String toString() {
-        return "Box min = " + mMin[0] + " " + mMin[1] + " " + mMin[2] + " max = " + mMax[0] + " " + mMax[1] + " " + mMax[2];
+        return "Box min = " + mMin.x + " " + mMin.y + " " + mMin.z + " max = " + mMax.x + " " + mMax.y + " " + mMax.z;
     }
 }

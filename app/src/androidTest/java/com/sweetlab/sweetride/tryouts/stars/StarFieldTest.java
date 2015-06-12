@@ -31,8 +31,8 @@ public class StarFieldTest extends OpenGLTestCase {
                     "uniform float timeStamp; \n" +
                     "void main() { " +
                     "    vec4 newPos = a_Pos; \n" +
-                    "    newPos.z += timeStamp; \n" +
-                    "    gl_PointSize = 30.0 - newPos.z*3.0; \n" +
+                    "    newPos.z -= timeStamp; \n" +
+                    "    gl_PointSize = 30.0 + newPos.z*3.0; \n" +
                     "    gl_Position = u_worldViewProjMat * newPos; " +
                     "} ";
 
@@ -90,7 +90,7 @@ public class StarFieldTest extends OpenGLTestCase {
         mStarBitmap = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.star);
         mStarTexture = new Texture2D("s_texture", mStarBitmap, MinFilter.NEAREST, MagFilter.NEAREST);
 
-        mCamera.lookAt(0, 0, -3, 0, 0, 0);
+        mCamera.lookAt(0, 0, 3, 0, 0, 0);
         mCamera.getFrustrum().setPerspectiveProjection(90, Frustrum.FovType.AUTO_FIT, 0.1f, 100f, getSurfaceWidth(), getSurfaceHeight());
 
         float[] starPositions = createStarPositions();

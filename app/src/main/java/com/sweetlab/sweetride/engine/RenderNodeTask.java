@@ -5,6 +5,9 @@ import com.sweetlab.sweetride.renderer.GeometryRenderer;
 
 import java.util.List;
 
+/**
+ * A task container used for rendering. Has geometries and a renderer.
+ */
 public class RenderNodeTask {
     /**
      * List of geometries to render.

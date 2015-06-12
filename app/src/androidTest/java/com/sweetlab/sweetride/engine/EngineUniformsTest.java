@@ -43,7 +43,7 @@ import java.util.List;
  * 4. Draw and observe that the quad is squarish
  * 5. Modify camera and observe that view is modified.
  */
-public class EngineUniformTest extends OpenGLTestCase {
+public class EngineUniformsTest extends OpenGLTestCase {
     /**
      * The backend context.
      */
@@ -103,7 +103,7 @@ public class EngineUniformTest extends OpenGLTestCase {
          * Create camera and set on render node.
          */
         Camera camera = new Camera();
-        camera.lookAt(0, 0, -3, 0, 0, 0);
+        camera.lookAt(0, 0, 3, 0, 0, 0);
         camera.getFrustrum().setPerspectiveProjection(90, Frustrum.FovType.AUTO_FIT, 0.1f, 10, getSurfaceWidth(), getSurfaceHeight());
         mRenderNode.setCamera(camera);
 
@@ -126,7 +126,7 @@ public class EngineUniformTest extends OpenGLTestCase {
              */
             Camera camera = mRenderNode.getCamera();
             if (camera!= null) {
-                camera.lookAt(0, 0, -3f / (i * 0.1f), 0, 0, 0);
+                camera.lookAt(0, 0, 3f / (i * 0.1f), 0, 0, 0);
                 camera.getFrustrum().setPerspectiveProjection(90, Frustrum.FovType.AUTO_FIT, 0.1f, 10, getSurfaceWidth(), getSurfaceHeight());
             }
 

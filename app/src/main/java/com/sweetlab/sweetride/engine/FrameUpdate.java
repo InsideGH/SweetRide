@@ -4,6 +4,7 @@ import android.os.SystemClock;
 
 import com.sweetlab.sweetride.UserApplication;
 import com.sweetlab.sweetride.geometry.Geometry;
+import com.sweetlab.sweetride.math.Camera;
 import com.sweetlab.sweetride.node.Node;
 import com.sweetlab.sweetride.pool.GraphContentPool;
 import com.sweetlab.sweetride.renderer.GeometryRenderer;
@@ -39,6 +40,11 @@ public class FrameUpdate {
      * The action handler
      */
     private FrontEndActionHandler mActionHandler = new FrontEndActionHandler();
+
+    /**
+     * View frustrum culling.
+     */
+    private ViewFrustrumCulling mViewFrustrumCulling = new ViewFrustrumCulling();
 
     /**
      * A frame update.
@@ -124,7 +130,7 @@ public class FrameUpdate {
     }
 
     /**
-     * Create a list render tasks.
+     * Create a list of render tasks.
      *
      * @param content Graph content.
      */
@@ -141,11 +147,43 @@ public class FrameUpdate {
         for (RenderNode renderNode : renderNodes) {
             final GeometryRenderer renderer = renderNode.getRenderer();
             if (renderer != null) {
-                List<Geometry> list = new ArrayList<>();
-                mGroupCollector.collect(renderNode, list);
+                List<Geometry> list = getGeometries(renderNode);
+
+                Camera camera = renderNode.getCamera();
+                if (camera != null && renderNode.isViewFrustrumCullingEnabled()) {
+                    removeInvisible(list, camera);
+                }
+
                 renderList.add(new RenderNodeTask(renderer, list));
             }
         }
         return renderList;
+    }
+
+    /**
+     * Get geometries in render node.
+     *
+     * @param renderNode Render node to fetch geometries from.
+     * @return List of geometries.
+     */
+    private List<Geometry> getGeometries(RenderNode renderNode) {
+        List<Geometry> list = new ArrayList<>();
+        mGroupCollector.collect(renderNode, list);
+        return list;
+    }
+
+    /**
+     * Remove invisible geometries.
+     *
+     * @param list   List of geometries.
+     * @param camera Camera.
+     */
+    private void removeInvisible(List<Geometry> list, Camera camera) {
+        final int lastIndex = list.size() - 1;
+        for (int i = lastIndex; i > -1; i--) {
+            if (!mViewFrustrumCulling.isVisible(list.get(i), camera)) {
+                list.remove(i);
+            }
+        }
     }
 }

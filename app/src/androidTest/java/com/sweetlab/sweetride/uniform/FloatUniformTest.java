@@ -1,19 +1,18 @@
 package com.sweetlab.sweetride.uniform;
 
 import android.graphics.Bitmap;
-import android.opengl.GLES20;
 
+import com.sweetlab.sweetride.Util.BitmapTestUtil;
+import com.sweetlab.sweetride.Util.BufferTestUtil;
 import com.sweetlab.sweetride.Util.CollectorUtil;
+import com.sweetlab.sweetride.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.Util.Verify;
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.BufferUsage;
 import com.sweetlab.sweetride.context.MagFilter;
 import com.sweetlab.sweetride.context.MeshDrawingMode;
 import com.sweetlab.sweetride.context.MinFilter;
-import com.sweetlab.sweetride.Util.BitmapTestUtil;
-import com.sweetlab.sweetride.Util.BufferTestUtil;
-import com.sweetlab.sweetride.Util.ProgramTestUtil;
-import com.sweetlab.sweetride.Util.Verify;
 import com.sweetlab.sweetride.engine.DefaultRenderNode;
 import com.sweetlab.sweetride.engine.FrontEndActionHandler;
 import com.sweetlab.sweetride.geometry.Geometry;
@@ -105,7 +104,7 @@ public class FloatUniformTest extends OpenGLTestCase {
          * Create custom float uniform that will write to a mat4 uniform in shader.
          */
         Camera camera = new Camera();
-        camera.lookAt(0, 0, -3, 0, 0, 0);
+        camera.lookAt(0, 0, 3, 0, 0, 0);
         camera.getFrustrum().setPerspectiveProjection(90, Frustrum.FovType.AUTO_FIT, 0.1f, 10, getSurfaceWidth(), getSurfaceHeight());
 
         mUniform = new FloatUniform("u_Cam");
@@ -136,7 +135,7 @@ public class FloatUniformTest extends OpenGLTestCase {
              * Simulate engine update(dt) loop.
              */
             Camera camera = new Camera();
-            camera.lookAt(0, 0, -3f / (i * 0.1f), 0, 0, 0);
+            camera.lookAt(0, 0, 3f / (i * 0.1f), 0, 0, 0);
             camera.getFrustrum().setPerspectiveProjection(90, Frustrum.FovType.AUTO_FIT, 0.1f, 10, getSurfaceWidth(), getSurfaceHeight());
             mUniform.set(camera.getViewProjectionMatrix().m);
 

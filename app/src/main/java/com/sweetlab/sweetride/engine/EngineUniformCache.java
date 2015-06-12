@@ -1,10 +1,10 @@
 package com.sweetlab.sweetride.engine;
 
+import com.sweetlab.sweetride.engine.uniform.EngineUniform;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,14 +18,21 @@ import java.util.List;
  */
 public class EngineUniformCache {
     /**
+     * List of all available engine uniforms.
+     */
+    private final List<EngineUniform> mCompleteList;
+
+    /**
      * A cache of active engine uniforms with shader program as key.
      */
     private HashMap<ShaderProgram, List<EngineUniform>> mCache = new HashMap<>();
 
     /**
-     * A list of all supported engine uniforms.
+     * Constructor.
      */
-    private final List<EngineUniform> mCompleteList = Collections.unmodifiableList(new ArrayList<>(EnumSet.allOf(EngineUniform.class)));
+    public EngineUniformCache() {
+        mCompleteList = Collections.unmodifiableList(new EngineUniforms().createList());
+    }
 
     /**
      * Get active engine uniforms in program.
@@ -35,14 +42,14 @@ public class EngineUniformCache {
      */
     public List<EngineUniform> getEngineUniforms(ShaderProgram program) {
         if (program.isCreated()) {
-            List<EngineUniform> engineUniforms = mCache.get(program);
-            if (engineUniforms == null) {
-                engineUniforms = getActiveEngineUniforms(program);
-                mCache.put(program, engineUniforms);
+            List<EngineUniform> activeList = mCache.get(program);
+            if (activeList == null) {
+                activeList = getActiveEngineUniforms(program);
+                mCache.put(program, activeList);
             }
-            return engineUniforms;
+            return activeList;
         }
-        return mCompleteList;
+        return new EngineUniforms().createList();
     }
 
     /**
@@ -52,12 +59,12 @@ public class EngineUniformCache {
      * @return List of active uniforms.
      */
     private List<EngineUniform> getActiveEngineUniforms(ShaderProgram program) {
-        List<EngineUniform> engineUniforms = new ArrayList<>();
+        List<EngineUniform> activeList = new ArrayList<>();
         for (EngineUniform u : mCompleteList) {
             if (program.getUniform(u.getName()) != null) {
-                engineUniforms.add(u);
+                activeList.add(u);
             }
         }
-        return engineUniforms;
+        return activeList;
     }
 }

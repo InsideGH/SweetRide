@@ -344,14 +344,24 @@ public class Frustrum extends NoHandleNotifier {
         }
 
         if (mFovType == FovType.HORIZONTAL_LOCK) {
-            /** fov = 2*tan(right/near) -> right = near * atan(fov/2) */
-            right = (float) (near * Math.atan(fovRad / 2));
+            /**
+             * tan(A) = right/near
+             * A = fov/2
+             * tan(fov/2) = right/near
+             * right = tan(fov/2) * near
+             */
+            right = (float) (near * Math.tan(fovRad / 2));
             left = -right;
             top = right / ratio;
             bottom = -top;
         } else {
-            /** fov = 2*tan(top/near) -> top = near * atan(fov/2) */
-            top = (float) (near * Math.atan(fovRad / 2));
+            /**
+             * tan(A) = top/near
+             * A = fov/2
+             * tan(fov/2) = top/near ->
+             * top = tan(fov/2) * near
+             */
+            top = (float) (near * Math.tan(fovRad / 2));
             bottom = -top;
             right = top * ratio;
             left = -right;
@@ -443,6 +453,60 @@ public class Frustrum extends NoHandleNotifier {
      */
     public float calcDepthAtWidth(float nearFieldFactor, float width) {
         return mNear * width / ((mRight - mLeft) * nearFieldFactor);
+    }
+
+    /**
+     * Get the distance from camera to near field.
+     *
+     * @return The distance to near field.
+     */
+    public float getNear() {
+        return mNear;
+    }
+
+    /**
+     * Get the distance from camera to far field.
+     *
+     * @return The distance to far field.
+     */
+    public float getFar() {
+        return mFar;
+    }
+
+    /**
+     * Get the left of the near field plane.
+     *
+     * @return The left of the near field plane.
+     */
+    public float getLeft() {
+        return mLeft;
+    }
+
+    /**
+     * Get the right of the near field plane.
+     *
+     * @return The right of the near field plane.
+     */
+    public float getRight() {
+        return mRight;
+    }
+
+    /**
+     * Get the top of the near field plane.
+     *
+     * @return The top of the near field plane.
+     */
+    public float getTop() {
+        return mTop;
+    }
+
+    /**
+     * Get the bottom of the near field plane.
+     *
+     * @return The bottom of the near field plane.
+     */
+    public float getBottom() {
+        return mBottom;
     }
 
     /**
