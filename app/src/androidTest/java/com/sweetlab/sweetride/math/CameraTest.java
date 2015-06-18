@@ -5,11 +5,6 @@ import android.test.AndroidTestCase;
 import com.sweetlab.sweetride.engine.FrontEndActionHandler;
 
 public class CameraTest extends AndroidTestCase {
-    /**
-     * Float compare.
-     */
-    private static final float EPS = 10e-6f;
-
     private Camera mCamera;
     private FrontEndActionHandler mActionHandler;
 
@@ -31,19 +26,19 @@ public class CameraTest extends AndroidTestCase {
         mActionHandler.handleActions(mCamera);
 
         mCamera.getLook(mLook);
-        assertEquals(0, mLook.x, EPS);
-        assertEquals(0, mLook.y, EPS);
-        assertEquals(-1, mLook.z, EPS);
+        assertEquals(0, mLook.x, FloatUtil.EPS);
+        assertEquals(0, mLook.y, FloatUtil.EPS);
+        assertEquals(-1, mLook.z, FloatUtil.EPS);
 
         mCamera.getRight(mRight);
-        assertEquals(1, mRight.x, EPS);
-        assertEquals(0, mRight.y, EPS);
-        assertEquals(0, mRight.z, EPS);
+        assertEquals(1, mRight.x, FloatUtil.EPS);
+        assertEquals(0, mRight.y, FloatUtil.EPS);
+        assertEquals(0, mRight.z, FloatUtil.EPS);
 
         mCamera.getUp(mUp);
-        assertEquals(0, mUp.x, EPS);
-        assertEquals(1, mUp.y, EPS);
-        assertEquals(0, mUp.z, EPS);
+        assertEquals(0, mUp.x, FloatUtil.EPS);
+        assertEquals(1, mUp.y, FloatUtil.EPS);
+        assertEquals(0, mUp.z, FloatUtil.EPS);
     }
 
     public void test2() {
@@ -53,19 +48,19 @@ public class CameraTest extends AndroidTestCase {
         mActionHandler.handleActions(mCamera);
 
         mCamera.getLook(mLook);
-        assertEquals(0, mLook.x, EPS);
-        assertEquals(0, mLook.y, EPS);
-        assertEquals(1, mLook.z, EPS);
+        assertEquals(0, mLook.x, FloatUtil.EPS);
+        assertEquals(0, mLook.y, FloatUtil.EPS);
+        assertEquals(1, mLook.z, FloatUtil.EPS);
 
         mCamera.getRight(mRight);
-        assertEquals(-1, mRight.x, EPS);
-        assertEquals(0, mRight.y, EPS);
-        assertEquals(0, mRight.z, EPS);
+        assertEquals(-1, mRight.x, FloatUtil.EPS);
+        assertEquals(0, mRight.y, FloatUtil.EPS);
+        assertEquals(0, mRight.z, FloatUtil.EPS);
 
         mCamera.getUp(mUp);
-        assertEquals(0, mUp.x, EPS);
-        assertEquals(1, mUp.y, EPS);
-        assertEquals(0, mUp.z, EPS);
+        assertEquals(0, mUp.x, FloatUtil.EPS);
+        assertEquals(1, mUp.y, FloatUtil.EPS);
+        assertEquals(0, mUp.z, FloatUtil.EPS);
     }
 
     public void test3() {
@@ -75,19 +70,19 @@ public class CameraTest extends AndroidTestCase {
         mActionHandler.handleActions(mCamera);
 
         mCamera.getLook(mLook);
-        assertEquals((1/Math.sqrt(2)), mLook.x, EPS);
-        assertEquals(0, mLook.y, EPS);
-        assertEquals(-(1/Math.sqrt(2)), mLook.z, EPS);
+        assertEquals((1/Math.sqrt(2)), mLook.x, FloatUtil.EPS);
+        assertEquals(0, mLook.y, FloatUtil.EPS);
+        assertEquals(-(1/Math.sqrt(2)), mLook.z, FloatUtil.EPS);
 
         mCamera.getRight(mRight);
-        assertEquals((1/Math.sqrt(2)), mRight.x, EPS);
-        assertEquals(0, mRight.y, EPS);
-        assertEquals((1/Math.sqrt(2)), mRight.z, EPS);
+        assertEquals((1/Math.sqrt(2)), mRight.x, FloatUtil.EPS);
+        assertEquals(0, mRight.y, FloatUtil.EPS);
+        assertEquals((1/Math.sqrt(2)), mRight.z, FloatUtil.EPS);
 
         mCamera.getUp(mUp);
-        assertEquals(0, mUp.x, EPS);
-        assertEquals(1, mUp.y, EPS);
-        assertEquals(0, mUp.z, EPS);
+        assertEquals(0, mUp.x, FloatUtil.EPS);
+        assertEquals(1, mUp.y, FloatUtil.EPS);
+        assertEquals(0, mUp.z, FloatUtil.EPS);
     }
 
 }

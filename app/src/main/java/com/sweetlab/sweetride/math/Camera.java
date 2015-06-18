@@ -1,7 +1,5 @@
 package com.sweetlab.sweetride.math;
 
-import android.util.Log;
-
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
 import com.sweetlab.sweetride.action.HandleThread;

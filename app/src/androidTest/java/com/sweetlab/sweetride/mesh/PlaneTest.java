@@ -1,5 +1,6 @@
 package com.sweetlab.sweetride.mesh;
 
+import com.sweetlab.sweetride.math.FloatUtil;
 import com.sweetlab.sweetride.math.Vec3;
 
 import junit.framework.TestCase;
@@ -8,11 +9,6 @@ import junit.framework.TestCase;
  * Plane test.
  */
 public class PlaneTest extends TestCase {
-    /**
-     * Float compare.
-     */
-    private static final float EPS = 10e-6f;
-
     /**
      * Temp vec.
      */
@@ -30,7 +26,7 @@ public class PlaneTest extends TestCase {
         Plane plane = new Plane(normal, pointInPlane);
 
         mOtherPoint.set(0, 5, 0);
-        assertEquals(-4, plane.getSignedDistToPoint(mOtherPoint), EPS);
+        assertEquals(-4, plane.getSignedDistToPoint(mOtherPoint), FloatUtil.EPS);
     }
 
     public void test2() {
@@ -40,7 +36,7 @@ public class PlaneTest extends TestCase {
         Plane plane = new Plane(normal, pointInPlane);
 
         mOtherPoint.set(0, 5, 0);
-        assertEquals(4, plane.getSignedDistToPoint(mOtherPoint), EPS);
+        assertEquals(4, plane.getSignedDistToPoint(mOtherPoint), FloatUtil.EPS);
     }
 
     public void test3() {

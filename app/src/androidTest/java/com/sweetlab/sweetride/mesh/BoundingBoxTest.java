@@ -1,6 +1,7 @@
 package com.sweetlab.sweetride.mesh;
 
 import com.sweetlab.sweetride.Util.BufferTestUtil;
+import com.sweetlab.sweetride.math.FloatUtil;
 import com.sweetlab.sweetride.math.Matrix44;
 import com.sweetlab.sweetride.math.Vec3;
 
@@ -10,11 +11,6 @@ import junit.framework.TestCase;
  * Test bounding box.
  */
 public class BoundingBoxTest extends TestCase {
-    /**
-     * Float compare.
-     */
-    private static final float EPS = 10e-6f;
-
     /**
      * The bounding box.
      */
@@ -41,13 +37,13 @@ public class BoundingBoxTest extends TestCase {
      */
     public void testSet() {
         mBoundingBox.getMin(mMin);
-        assertEquals(-0.5f, mMin.x, EPS);
-        assertEquals(-1.0f, mMin.y, EPS);
-        assertEquals(0.0f, mMin.z, EPS);
+        assertEquals(-0.5f, mMin.x, FloatUtil.EPS);
+        assertEquals(-1.0f, mMin.y, FloatUtil.EPS);
+        assertEquals(0.0f, mMin.z, FloatUtil.EPS);
         mBoundingBox.getMax(mMax);
-        assertEquals(0.5f, mMax.x, EPS);
-        assertEquals(1.0f, mMax.y, EPS);
-        assertEquals(0.0f, mMax.z, EPS);
+        assertEquals(0.5f, mMax.x, FloatUtil.EPS);
+        assertEquals(1.0f, mMax.y, FloatUtil.EPS);
+        assertEquals(0.0f, mMax.z, FloatUtil.EPS);
     }
 
     /**
@@ -56,13 +52,13 @@ public class BoundingBoxTest extends TestCase {
     public void testSetIndices() {
         BoundingBox boundingBox = new BoundingBox(BufferTestUtil.createQuadStrip(1, 2, 0, 0), new short[]{0, 1, 2, 3});
         boundingBox.getMin(mMin);
-        assertEquals(-0.5f, mMin.x, EPS);
-        assertEquals(-1.0f, mMin.y, EPS);
-        assertEquals(0.0f, mMin.z, EPS);
+        assertEquals(-0.5f, mMin.x, FloatUtil.EPS);
+        assertEquals(-1.0f, mMin.y, FloatUtil.EPS);
+        assertEquals(0.0f, mMin.z, FloatUtil.EPS);
         boundingBox.getMax(mMax);
-        assertEquals(0.5f, mMax.x, EPS);
-        assertEquals(1.0f, mMax.y, EPS);
-        assertEquals(0.0f, mMax.z, EPS);
+        assertEquals(0.5f, mMax.x, FloatUtil.EPS);
+        assertEquals(1.0f, mMax.y, FloatUtil.EPS);
+        assertEquals(0.0f, mMax.z, FloatUtil.EPS);
     }
 
     /**
@@ -73,13 +69,13 @@ public class BoundingBoxTest extends TestCase {
         Matrix44 mat = new Matrix44().setRotate(90, 0, 0, 1);
         mBoundingBox.transform(mat, transformedBox);
         transformedBox.getMin(mMin);
-        assertEquals(-1.0f, mMin.x, EPS);
-        assertEquals(-0.5f, mMin.y, EPS);
-        assertEquals(0.0f, mMin.z, EPS);
+        assertEquals(-1.0f, mMin.x, FloatUtil.EPS);
+        assertEquals(-0.5f, mMin.y, FloatUtil.EPS);
+        assertEquals(0.0f, mMin.z, FloatUtil.EPS);
         transformedBox.getMax(mMax);
-        assertEquals(1.0f, mMax.x, EPS);
-        assertEquals(0.5f, mMax.y, EPS);
-        assertEquals(0.0f, mMax.z, EPS);
+        assertEquals(1.0f, mMax.x, FloatUtil.EPS);
+        assertEquals(0.5f, mMax.y, FloatUtil.EPS);
+        assertEquals(0.0f, mMax.z, FloatUtil.EPS);
     }
 
     /**
@@ -90,13 +86,13 @@ public class BoundingBoxTest extends TestCase {
         Matrix44 mat = new Matrix44().setRotate(90, 1, 0, 0);
         mBoundingBox.transform(mat, transformedBox);
         transformedBox.getMin(mMin);
-        assertEquals(-0.5f, mMin.x, EPS);
-        assertEquals(0f, mMin.y, EPS);
-        assertEquals(-1f, mMin.z, EPS);
+        assertEquals(-0.5f, mMin.x, FloatUtil.EPS);
+        assertEquals(0f, mMin.y, FloatUtil.EPS);
+        assertEquals(-1f, mMin.z, FloatUtil.EPS);
         transformedBox.getMax(mMax);
-        assertEquals(0.5f, mMax.x, EPS);
-        assertEquals(0f, mMax.y, EPS);
-        assertEquals(1.0f, mMax.z, EPS);
+        assertEquals(0.5f, mMax.x, FloatUtil.EPS);
+        assertEquals(0f, mMax.y, FloatUtil.EPS);
+        assertEquals(1.0f, mMax.z, FloatUtil.EPS);
     }
 
     /**
@@ -107,13 +103,13 @@ public class BoundingBoxTest extends TestCase {
         Matrix44 mat = new Matrix44().setRotate(90, 0, 1, 0);
         mBoundingBox.transform(mat, transformedBox);
         transformedBox.getMin(mMin);
-        assertEquals(0f, mMin.x, EPS);
-        assertEquals(-1f, mMin.y, EPS);
-        assertEquals(-0.5f, mMin.z, EPS);
+        assertEquals(0f, mMin.x, FloatUtil.EPS);
+        assertEquals(-1f, mMin.y, FloatUtil.EPS);
+        assertEquals(-0.5f, mMin.z, FloatUtil.EPS);
         transformedBox.getMax(mMax);
-        assertEquals(0f, mMax.x, EPS);
-        assertEquals(1f, mMax.y, EPS);
-        assertEquals(0.5f, mMax.z, EPS);
+        assertEquals(0f, mMax.x, FloatUtil.EPS);
+        assertEquals(1f, mMax.y, FloatUtil.EPS);
+        assertEquals(0.5f, mMax.z, FloatUtil.EPS);
     }
 
     /**
@@ -124,13 +120,13 @@ public class BoundingBoxTest extends TestCase {
         Matrix44 mat = new Matrix44().setTranslate(33, 44, 55);
         mBoundingBox.transform(mat, transformedBox);
         transformedBox.getMin(mMin);
-        assertEquals(-0.5f + 33, mMin.x, EPS);
-        assertEquals(-1.0f + 44, mMin.y, EPS);
-        assertEquals(0.0f + 55, mMin.z, EPS);
+        assertEquals(-0.5f + 33, mMin.x, FloatUtil.EPS);
+        assertEquals(-1.0f + 44, mMin.y, FloatUtil.EPS);
+        assertEquals(0.0f + 55, mMin.z, FloatUtil.EPS);
         transformedBox.getMax(mMax);
-        assertEquals(0.5f + 33, mMax.x, EPS);
-        assertEquals(1.0f + 44, mMax.y, EPS);
-        assertEquals(0.0f + 55, mMax.z, EPS);
+        assertEquals(0.5f + 33, mMax.x, FloatUtil.EPS);
+        assertEquals(1.0f + 44, mMax.y, FloatUtil.EPS);
+        assertEquals(0.0f + 55, mMax.z, FloatUtil.EPS);
     }
 
     /**
@@ -144,13 +140,13 @@ public class BoundingBoxTest extends TestCase {
         mBoundingBox.transform(mat, transformedBox);
 
         transformedBox.getMin(mMin);
-        assertEquals(-1.0f + 33, mMin.x, EPS);
-        assertEquals(-0.5f + 44, mMin.y, EPS);
-        assertEquals(0.0f + 55, mMin.z, EPS);
+        assertEquals(-1.0f + 33, mMin.x, FloatUtil.EPS);
+        assertEquals(-0.5f + 44, mMin.y, FloatUtil.EPS);
+        assertEquals(0.0f + 55, mMin.z, FloatUtil.EPS);
         transformedBox.getMax(mMax);
-        assertEquals(1.0f + 33, mMax.x, EPS);
-        assertEquals(0.5f + 44, mMax.y, EPS);
-        assertEquals(0.0f + 55, mMax.z, EPS);
+        assertEquals(1.0f + 33, mMax.x, FloatUtil.EPS);
+        assertEquals(0.5f + 44, mMax.y, FloatUtil.EPS);
+        assertEquals(0.0f + 55, mMax.z, FloatUtil.EPS);
     }
 
     /**
@@ -172,13 +168,13 @@ public class BoundingBoxTest extends TestCase {
         mBoundingBox.transform(mat, transformedBox);
 
         transformedBox.getMin(mMin);
-        assertEquals(-1.0f - 30, mMin.x, EPS);
-        assertEquals(-0.5f + 1, mMin.y, EPS);
-        assertEquals(0.0f + 100, mMin.z, EPS);
+        assertEquals(-1.0f - 30, mMin.x, FloatUtil.EPS);
+        assertEquals(-0.5f + 1, mMin.y, FloatUtil.EPS);
+        assertEquals(0.0f + 100, mMin.z, FloatUtil.EPS);
         transformedBox.getMax(mMax);
-        assertEquals(1.0f - 30, mMax.x, EPS);
-        assertEquals(0.5f + 1, mMax.y, EPS);
-        assertEquals(0.0f + 100, mMax.z, EPS);
+        assertEquals(1.0f - 30, mMax.x, FloatUtil.EPS);
+        assertEquals(0.5f + 1, mMax.y, FloatUtil.EPS);
+        assertEquals(0.0f + 100, mMax.z, FloatUtil.EPS);
     }
 
     /**
@@ -194,13 +190,13 @@ public class BoundingBoxTest extends TestCase {
         mBoundingBox.transform(mat, transformedBox);
 
         transformedBox.getMin(mMin);
-        assertEquals(-0.5f, mMin.x, EPS);
-        assertEquals(-0.5f, mMin.y, EPS);
-        assertEquals(0.0f, mMin.z, EPS);
+        assertEquals(-0.5f, mMin.x, FloatUtil.EPS);
+        assertEquals(-0.5f, mMin.y, FloatUtil.EPS);
+        assertEquals(0.0f, mMin.z, FloatUtil.EPS);
         transformedBox.getMax(mMax);
-        assertEquals(0.5f, mMax.x, EPS);
-        assertEquals(0.5f, mMax.y, EPS);
-        assertEquals(0.0f, mMax.z, EPS);
+        assertEquals(0.5f, mMax.x, FloatUtil.EPS);
+        assertEquals(0.5f, mMax.y, FloatUtil.EPS);
+        assertEquals(0.0f, mMax.z, FloatUtil.EPS);
     }
 
     /**
@@ -216,13 +212,13 @@ public class BoundingBoxTest extends TestCase {
         mBoundingBox.transform(mat, transformedBox);
 
         transformedBox.getMin(mMin);
-        assertEquals(-0.5f + 10, mMin.x, EPS);
-        assertEquals(-0.5f + 10, mMin.y, EPS);
-        assertEquals(0.0f + 40, mMin.z, EPS);
+        assertEquals(-0.5f + 10, mMin.x, FloatUtil.EPS);
+        assertEquals(-0.5f + 10, mMin.y, FloatUtil.EPS);
+        assertEquals(0.0f + 40, mMin.z, FloatUtil.EPS);
         transformedBox.getMax(mMax);
-        assertEquals(0.5f + 10, mMax.x, EPS);
-        assertEquals(0.5f + 10, mMax.y, EPS);
-        assertEquals(0.0f + 40, mMax.z, EPS);
+        assertEquals(0.5f + 10, mMax.x, FloatUtil.EPS);
+        assertEquals(0.5f + 10, mMax.y, FloatUtil.EPS);
+        assertEquals(0.0f + 40, mMax.z, FloatUtil.EPS);
     }
 
 }

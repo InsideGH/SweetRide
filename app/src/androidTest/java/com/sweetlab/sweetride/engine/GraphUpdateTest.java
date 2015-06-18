@@ -4,6 +4,7 @@ import android.test.AndroidTestCase;
 
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.math.Camera;
+import com.sweetlab.sweetride.math.FloatUtil;
 import com.sweetlab.sweetride.node.Node;
 
 import java.util.ArrayList;
@@ -19,12 +20,7 @@ public class GraphUpdateTest extends AndroidTestCase {
      * Number of frames to run.
      */
     private static final int NBR_FRAMES = 10;
-
-    /**
-     * Float compare.
-     */
-    private static final float EPS = 10e-6f;
-
+    
     /**
      *
      */
@@ -216,7 +212,7 @@ public class GraphUpdateTest extends AndroidTestCase {
         @Override
         public boolean onUpdate(float dt) {
             mUpdateCount++;
-            assertEquals(dt, mDelta, EPS);
+            assertEquals(dt, mDelta, FloatUtil.EPS);
             return super.onUpdate(dt);
         }
     }
@@ -230,7 +226,7 @@ public class GraphUpdateTest extends AndroidTestCase {
         @Override
         public boolean onUpdate(float dt) {
             mUpdateCount++;
-            assertEquals(dt, mDelta, EPS);
+            assertEquals(dt, mDelta, FloatUtil.EPS);
             return super.onUpdate(dt);
         }
     }
@@ -244,7 +240,7 @@ public class GraphUpdateTest extends AndroidTestCase {
         @Override
         public boolean onUpdate(float dt) {
             mUpdateCount++;
-            assertEquals(dt, mDelta, EPS);
+            assertEquals(dt, mDelta, FloatUtil.EPS);
             return super.onUpdate(dt);
         }
     }

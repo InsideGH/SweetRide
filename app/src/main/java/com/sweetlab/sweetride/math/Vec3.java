@@ -35,6 +35,17 @@ public class Vec3 implements Reusable {
     }
 
     /**
+     * Compare this vector with other vector.
+     *
+     * @param other The other vector.
+     * @return True of equal values.
+     */
+    public boolean equals(Vec3 other) {
+        return Math.abs(x - other.x) < FloatUtil.EPS && Math.abs(y - other.y) < FloatUtil.EPS &&
+                Math.abs(z - other.z) < FloatUtil.EPS;
+    }
+
+    /**
      * Return a new vector which is the negate of vec
      *
      * @param vec

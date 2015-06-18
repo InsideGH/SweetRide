@@ -25,10 +25,6 @@ public class CameraNearTest extends AndroidTestCase {
      * Positive random limit.
      */
     private static final int RAND_POS_LIMIT = 1000;
-    /**
-     * Float compare.
-     */
-    private static final float EPS = 10e-6f;
 
     /**
      * Near field distance.
@@ -78,12 +74,12 @@ public class CameraNearTest extends AndroidTestCase {
 
         Plane nearPlane = mCamera.getNearPlane();
         nearPlane.getNormal(mNormal);
-        assertEquals(0, mNormal.x, EPS);
-        assertEquals(0, mNormal.y, EPS);
-        assertEquals(1, mNormal.z, EPS);
+        assertEquals(0, mNormal.x, FloatUtil.EPS);
+        assertEquals(0, mNormal.y, FloatUtil.EPS);
+        assertEquals(1, mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = nearPlane.getSignedDistToOrigo();
         // Origo is back side
-        assertEquals(-NEAR, signedDistToOrigo, EPS);
+        assertEquals(-NEAR, signedDistToOrigo, FloatUtil.EPS);
     }
 
     /**
@@ -96,12 +92,12 @@ public class CameraNearTest extends AndroidTestCase {
 
         Plane nearPlane = mCamera.getNearPlane();
         nearPlane.getNormal(mNormal);
-        assertEquals(0, mNormal.x, EPS);
-        assertEquals(0, mNormal.y, EPS);
-        assertEquals(-1, mNormal.z, EPS);
+        assertEquals(0, mNormal.x, FloatUtil.EPS);
+        assertEquals(0, mNormal.y, FloatUtil.EPS);
+        assertEquals(-1, mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = nearPlane.getSignedDistToOrigo();
         // Origo is back side
-        assertEquals(-NEAR, signedDistToOrigo, EPS);
+        assertEquals(-NEAR, signedDistToOrigo, FloatUtil.EPS);
     }
 
     /**
@@ -114,12 +110,12 @@ public class CameraNearTest extends AndroidTestCase {
 
         Plane nearPlane = mCamera.getNearPlane();
         nearPlane.getNormal(mNormal);
-        assertEquals(0, mNormal.x, EPS);
-        assertEquals(1, mNormal.y, EPS);
-        assertEquals(0, mNormal.z, EPS);
+        assertEquals(0, mNormal.x, FloatUtil.EPS);
+        assertEquals(1, mNormal.y, FloatUtil.EPS);
+        assertEquals(0, mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = nearPlane.getSignedDistToOrigo();
         // Origo is back side
-        assertEquals(-NEAR, signedDistToOrigo, EPS);
+        assertEquals(-NEAR, signedDistToOrigo, FloatUtil.EPS);
     }
 
     /**
@@ -132,12 +128,12 @@ public class CameraNearTest extends AndroidTestCase {
 
         Plane nearPlane = mCamera.getNearPlane();
         nearPlane.getNormal(mNormal);
-        assertEquals(0, mNormal.x, EPS);
-        assertEquals(-1, mNormal.y, EPS);
-        assertEquals(0, mNormal.z, EPS);
+        assertEquals(0, mNormal.x, FloatUtil.EPS);
+        assertEquals(-1, mNormal.y, FloatUtil.EPS);
+        assertEquals(0, mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = nearPlane.getSignedDistToOrigo();
         // Origo is back side
-        assertEquals(-NEAR, signedDistToOrigo, EPS);
+        assertEquals(-NEAR, signedDistToOrigo, FloatUtil.EPS);
     }
 
     /**
@@ -150,12 +146,12 @@ public class CameraNearTest extends AndroidTestCase {
 
         Plane nearPlane = mCamera.getNearPlane();
         nearPlane.getNormal(mNormal);
-        assertEquals(1, mNormal.x, EPS);
-        assertEquals(0, mNormal.y, EPS);
-        assertEquals(0, mNormal.z, EPS);
+        assertEquals(1, mNormal.x, FloatUtil.EPS);
+        assertEquals(0, mNormal.y, FloatUtil.EPS);
+        assertEquals(0, mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = nearPlane.getSignedDistToOrigo();
         // Origo is back side
-        assertEquals(-NEAR, signedDistToOrigo, EPS);
+        assertEquals(-NEAR, signedDistToOrigo, FloatUtil.EPS);
     }
 
     /**
@@ -168,12 +164,12 @@ public class CameraNearTest extends AndroidTestCase {
 
         Plane nearPlane = mCamera.getNearPlane();
         nearPlane.getNormal(mNormal);
-        assertEquals(-1, mNormal.x, EPS);
-        assertEquals(0, mNormal.y, EPS);
-        assertEquals(0, mNormal.z, EPS);
+        assertEquals(-1, mNormal.x, FloatUtil.EPS);
+        assertEquals(0, mNormal.y, FloatUtil.EPS);
+        assertEquals(0, mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = nearPlane.getSignedDistToOrigo();
         // Origo is back side
-        assertEquals(-NEAR, signedDistToOrigo, EPS);
+        assertEquals(-NEAR, signedDistToOrigo, FloatUtil.EPS);
     }
 
     /**
@@ -186,12 +182,12 @@ public class CameraNearTest extends AndroidTestCase {
 
         Plane nearPlane = mCamera.getNearPlane();
         nearPlane.getNormal(mNormal);
-        assertEquals(0, mNormal.x, EPS);
-        assertEquals(0, mNormal.y, EPS);
-        assertEquals(1, mNormal.z, EPS);
+        assertEquals(0, mNormal.x, FloatUtil.EPS);
+        assertEquals(0, mNormal.y, FloatUtil.EPS);
+        assertEquals(1, mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = nearPlane.getSignedDistToOrigo();
         // Origo is on front side
-        assertEquals(20 - NEAR, signedDistToOrigo, EPS);
+        assertEquals(20 - NEAR, signedDistToOrigo, FloatUtil.EPS);
     }
 
     /**
@@ -204,12 +200,12 @@ public class CameraNearTest extends AndroidTestCase {
 
         Plane nearPlane = mCamera.getNearPlane();
         nearPlane.getNormal(mNormal);
-        assertEquals(0, mNormal.x, EPS);
-        assertEquals(0, mNormal.y, EPS);
-        assertEquals(-1, mNormal.z, EPS);
+        assertEquals(0, mNormal.x, FloatUtil.EPS);
+        assertEquals(0, mNormal.y, FloatUtil.EPS);
+        assertEquals(-1, mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = nearPlane.getSignedDistToOrigo();
         // Origo is on front side
-        assertEquals(20 - NEAR, signedDistToOrigo, EPS);
+        assertEquals(20 - NEAR, signedDistToOrigo, FloatUtil.EPS);
     }
 
     /**
@@ -222,12 +218,12 @@ public class CameraNearTest extends AndroidTestCase {
 
         Plane nearPlane = mCamera.getNearPlane();
         nearPlane.getNormal(mNormal);
-        assertEquals(0, mNormal.x, EPS);
-        assertEquals(1, mNormal.y, EPS);
-        assertEquals(0, mNormal.z, EPS);
+        assertEquals(0, mNormal.x, FloatUtil.EPS);
+        assertEquals(1, mNormal.y, FloatUtil.EPS);
+        assertEquals(0, mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = nearPlane.getSignedDistToOrigo();
         // Origo is on back side
-        assertEquals(-20 - NEAR, signedDistToOrigo, EPS);
+        assertEquals(-20 - NEAR, signedDistToOrigo, FloatUtil.EPS);
     }
 
     /**
@@ -240,12 +236,12 @@ public class CameraNearTest extends AndroidTestCase {
 
         Plane nearPlane = mCamera.getNearPlane();
         nearPlane.getNormal(mNormal);
-        assertEquals(0, mNormal.x, EPS);
-        assertEquals(-1, mNormal.y, EPS);
-        assertEquals(0, mNormal.z, EPS);
+        assertEquals(0, mNormal.x, FloatUtil.EPS);
+        assertEquals(-1, mNormal.y, FloatUtil.EPS);
+        assertEquals(0, mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = nearPlane.getSignedDistToOrigo();
         // Origo is on front side
-        assertEquals(20 - NEAR, signedDistToOrigo, EPS);
+        assertEquals(20 - NEAR, signedDistToOrigo, FloatUtil.EPS);
     }
 
     /**
@@ -258,12 +254,12 @@ public class CameraNearTest extends AndroidTestCase {
 
         Plane nearPlane = mCamera.getNearPlane();
         nearPlane.getNormal(mNormal);
-        assertEquals(1, mNormal.x, EPS);
-        assertEquals(0, mNormal.y, EPS);
-        assertEquals(0, mNormal.z, EPS);
+        assertEquals(1, mNormal.x, FloatUtil.EPS);
+        assertEquals(0, mNormal.y, FloatUtil.EPS);
+        assertEquals(0, mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = nearPlane.getSignedDistToOrigo();
         // Origo is on back side
-        assertEquals(-20 - NEAR, signedDistToOrigo, EPS);
+        assertEquals(-20 - NEAR, signedDistToOrigo, FloatUtil.EPS);
     }
 
     /**
@@ -276,12 +272,12 @@ public class CameraNearTest extends AndroidTestCase {
 
         Plane nearPlane = mCamera.getNearPlane();
         nearPlane.getNormal(mNormal);
-        assertEquals(-1, mNormal.x, EPS);
-        assertEquals(0, mNormal.y, EPS);
-        assertEquals(0, mNormal.z, EPS);
+        assertEquals(-1, mNormal.x, FloatUtil.EPS);
+        assertEquals(0, mNormal.y, FloatUtil.EPS);
+        assertEquals(0, mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = nearPlane.getSignedDistToOrigo();
         // Origo is on front side
-        assertEquals(20 - NEAR, signedDistToOrigo, EPS);
+        assertEquals(20 - NEAR, signedDistToOrigo, FloatUtil.EPS);
     }
 
     public void testTurned() {
@@ -293,12 +289,12 @@ public class CameraNearTest extends AndroidTestCase {
 
         Plane nearPlane = mCamera.getNearPlane();
         nearPlane.getNormal(mNormal);
-        assertEquals(look.x, mNormal.x, EPS);
-        assertEquals(look.y, mNormal.y, EPS);
-        assertEquals(look.z, mNormal.z, EPS);
+        assertEquals(look.x, mNormal.x, FloatUtil.EPS);
+        assertEquals(look.y, mNormal.y, FloatUtil.EPS);
+        assertEquals(look.z, mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = nearPlane.getSignedDistToOrigo();
         // Origo is on back side
-        assertEquals(-NEAR, signedDistToOrigo, EPS);
+        assertEquals(-NEAR, signedDistToOrigo, FloatUtil.EPS);
     }
 
     public void testTurnedMoved() {
@@ -315,9 +311,9 @@ public class CameraNearTest extends AndroidTestCase {
 
         Plane nearPlane = mCamera.getNearPlane();
         nearPlane.getNormal(mNormal);
-        assertEquals(lookVector.x, mNormal.x, EPS);
-        assertEquals(lookVector.y, mNormal.y, EPS);
-        assertEquals(lookVector.z, mNormal.z, EPS);
+        assertEquals(lookVector.x, mNormal.x, FloatUtil.EPS);
+        assertEquals(lookVector.y, mNormal.y, FloatUtil.EPS);
+        assertEquals(lookVector.z, mNormal.z, FloatUtil.EPS);
     }
 
     /**

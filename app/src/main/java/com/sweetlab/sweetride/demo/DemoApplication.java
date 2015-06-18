@@ -1,14 +1,15 @@
 package com.sweetlab.sweetride.demo;
 
+import android.view.MotionEvent;
+
 import com.sweetlab.sweetride.UserApplication;
-import com.sweetlab.sweetride.demo.mesh.QuadMesh;
+import com.sweetlab.sweetride.demo.mesh.CubeMesh;
 import com.sweetlab.sweetride.engine.DefaultRenderNode;
 import com.sweetlab.sweetride.engine.ViewFrustrumCulling;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
-import com.sweetlab.sweetride.math.Camera;
+import com.sweetlab.sweetride.math.FirstPersonCamera;
 import com.sweetlab.sweetride.math.Frustrum;
-import com.sweetlab.sweetride.math.Transform;
 import com.sweetlab.sweetride.math.Vec3;
 import com.sweetlab.sweetride.node.Node;
 import com.sweetlab.sweetride.shader.FragmentShader;
@@ -54,7 +55,7 @@ public class DemoApplication extends UserApplication {
     /**
      * The camera far field.
      */
-    private static final float FAR_FIELD = 10f;
+    private static final float FAR_FIELD = 100f;
 
     /**
      * Camera distance to object.
@@ -64,7 +65,7 @@ public class DemoApplication extends UserApplication {
     /**
      * The camera used. Possible to use node find camera as well.
      */
-    private final Camera mCamera;
+    private final FirstPersonCamera mCamera;
 
     /**
      * Default system window render node.
@@ -101,6 +102,13 @@ public class DemoApplication extends UserApplication {
      */
     private Random mRandom = new Random(666);
 
+    private float mStrafeLeftRight;
+    private float mStrafeForwardBackward;
+    private float mTurnUpDown;
+    private float mTurnLeftRight;
+    private int mActionIndexStrafe;
+    private int mActionIndexTurn;
+
     /**
      * Constructor.
      */
@@ -119,7 +127,7 @@ public class DemoApplication extends UserApplication {
         /**
          * Place the camera, wait with projection until we get screen dimensions.
          */
-        mCamera = new Camera();
+        mCamera = new FirstPersonCamera();
         mRenderNode.setCamera(mCamera);
         mRenderNode.getCamera().lookAt(0, 0, CAMERA_DISTANCE, 0, 0, 0);
 
@@ -155,19 +163,13 @@ public class DemoApplication extends UserApplication {
          * Create a quad mesh that is a quarter of the screen width. Use same mesh for both geometries.
          */
         mQuadWidth = frustrum.calcWidthAtDepth(CAMERA_DISTANCE) / 4;
-        mRotatingQuad.setMesh(new QuadMesh(mQuadWidth, mQuadWidth, "a_Pos", null));
+        mRotatingQuad.setMesh(new CubeMesh("a_Pos", null));
         mRotatingQuad.getModelTransform().translate(mQuadWidth, 0, 0);
 
-        /**
-         * Apply transform to camera that 'undo' the translation and rotates camera around
-         * z axis 45 degrees.
-         */
-        Transform transform = new Transform();
-        transform.translate(mQuadWidth, 0, 0);
-        transform.rotate(45, 0, 0, 1);
-        mCamera.applyTransform(transform);
-
         mMovingQuad.setMesh(mRotatingQuad.getMesh());
+
+        setNewMovingDirection();
+
     }
 
     @Override
@@ -183,23 +185,89 @@ public class DemoApplication extends UserApplication {
         /**
          * Rotate each frame around y axis.
          */
-        mRotatingQuad.getModelTransform().rotate(0.000001f, 0, 1, 0);
+        mCamera.update(mStrafeLeftRight, mStrafeForwardBackward, mTurnUpDown, mTurnLeftRight);
 
+        mRotatingQuad.getModelTransform().rotate(2, 0, 1, 0);
+        mMovingQuad.getModelTransform().rotate(2, 0, 1, 0);
         /**
          * When object is not visible any longer reset position
          * and generate new random moving vector.
          */
         if (!mViewCulling.isVisible(mMovingQuad, mCamera)) {
-            mMovingQuad.getModelTransform().setIdentity();
-            float x = (mRandom.nextFloat() - 0.5f) * 0.2f;
-            float y = (mRandom.nextFloat() - 0.5f) * 0.2f;
-            float z = (mRandom.nextFloat() - 0.5f) * 0.1f;
-            mMovingVec.set(x, y, z);
+            setNewMovingDirection();
         }
 
         /**
          * Translate in random direction.
          */
         mMovingQuad.getModelTransform().translate(mMovingVec.x, mMovingVec.y, mMovingVec.z);
+    }
+
+    private float mDownStrafeX;
+    private float mDownStrafeY;
+
+    private float mDownTurnX;
+    private float mDownTurnY;
+
+    /**
+     * Action on view touch event.
+     *
+     * @param event The touch event.
+     * @return Always true/handled.
+     */
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getActionMasked()) {
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                mStrafeLeftRight = 0;
+                mStrafeForwardBackward = 0;
+                break;
+
+            case MotionEvent.ACTION_DOWN:
+                mActionIndexStrafe = event.getActionIndex();
+                mDownStrafeX = event.getX(mActionIndexStrafe);
+                mDownStrafeY = event.getY(mActionIndexStrafe);
+                break;
+
+            case MotionEvent.ACTION_POINTER_DOWN:
+                mActionIndexTurn = event.getActionIndex();
+                mDownTurnX = event.getX(mActionIndexTurn);
+                mDownTurnY = event.getY(mActionIndexTurn);
+                break;
+
+            case MotionEvent.ACTION_POINTER_UP:
+                mTurnLeftRight = 0;
+                mTurnUpDown = 0;
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                float x = event.getX(mActionIndexStrafe);
+                float y = event.getY(mActionIndexStrafe);
+                float sizeX = x - mDownStrafeX;
+                float sizeY = y - mDownStrafeY;
+                mStrafeLeftRight = sizeX * 0.0001f;
+                mStrafeForwardBackward = -sizeY * 0.0001f;
+                if (event.getPointerCount() > 1) {
+                    x = event.getX(mActionIndexTurn);
+                    y = event.getY(mActionIndexTurn);
+                    sizeX = x - mDownTurnX;
+                    sizeY = y - mDownTurnY;
+                    mTurnLeftRight = -sizeX * 0.001f;
+                    mTurnUpDown = -sizeY * 0.001f;
+                }
+                break;
+        }
+        return true;
+    }
+
+    /**
+     * Set new moving direction.
+     */
+    private void setNewMovingDirection() {
+        mMovingQuad.getModelTransform().setIdentity();
+        float x = (mRandom.nextFloat() - 0.5f) * 0.8f;
+        float y = (mRandom.nextFloat() - 0.5f) * 0.4f;
+        float z = (mRandom.nextFloat() - 0.5f) * 0.1f;
+        mMovingVec.set(x, y, z);
     }
 }

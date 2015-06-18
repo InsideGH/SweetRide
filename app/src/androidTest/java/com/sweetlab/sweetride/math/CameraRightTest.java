@@ -20,11 +20,6 @@ public class CameraRightTest extends AndroidTestCase {
     private static final int HEIGHT = 1080;
 
     /**
-     * Float compare.
-     */
-    private static final float EPS = 10e-6f;
-
-    /**
      * Near field distance.
      */
     private static final float NEAR = 0.1f;
@@ -71,11 +66,11 @@ public class CameraRightTest extends AndroidTestCase {
         mActionHandler.handleActions(mCamera);
         Plane rightPlane = mCamera.getRightPlane();
         rightPlane.getNormal(mNormal);
-        assertEquals(-1, mNormal.x, EPS);
-        assertEquals(0, mNormal.y, EPS);
-        assertEquals(0, mNormal.z, EPS);
+        assertEquals(-1, mNormal.x, FloatUtil.EPS);
+        assertEquals(0, mNormal.y, FloatUtil.EPS);
+        assertEquals(0, mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = rightPlane.getSignedDistToOrigo();
-        assertEquals(0, signedDistToOrigo, EPS);
+        assertEquals(0, signedDistToOrigo, FloatUtil.EPS);
     }
 
     /**
@@ -87,11 +82,11 @@ public class CameraRightTest extends AndroidTestCase {
         mActionHandler.handleActions(mCamera);
         Plane rightPlane = mCamera.getRightPlane();
         rightPlane.getNormal(mNormal);
-        assertEquals(0, mNormal.x, EPS);
-        assertEquals(0, mNormal.y, EPS);
-        assertEquals(-1, mNormal.z, EPS);
+        assertEquals(0, mNormal.x, FloatUtil.EPS);
+        assertEquals(0, mNormal.y, FloatUtil.EPS);
+        assertEquals(-1, mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = rightPlane.getSignedDistToOrigo();
-        assertEquals(0, signedDistToOrigo, EPS);
+        assertEquals(0, signedDistToOrigo, FloatUtil.EPS);
     }
 
     /**
@@ -103,11 +98,11 @@ public class CameraRightTest extends AndroidTestCase {
         mActionHandler.handleActions(mCamera);
         Plane rightPlane = mCamera.getRightPlane();
         rightPlane.getNormal(mNormal);
-        assertEquals(-((float) 1 / Math.sqrt(2)), mNormal.x, EPS);
-        assertEquals(0, mNormal.y, EPS);
-        assertEquals(-((float) 1 / Math.sqrt(2)), mNormal.z, EPS);
+        assertEquals(-((float) 1 / Math.sqrt(2)), mNormal.x, FloatUtil.EPS);
+        assertEquals(0, mNormal.y, FloatUtil.EPS);
+        assertEquals(-((float) 1 / Math.sqrt(2)), mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = rightPlane.getSignedDistToOrigo();
-        assertEquals(0, signedDistToOrigo, EPS);
+        assertEquals(0, signedDistToOrigo, FloatUtil.EPS);
     }
 
     /**
@@ -119,11 +114,11 @@ public class CameraRightTest extends AndroidTestCase {
         mActionHandler.handleActions(mCamera);
         Plane rightPlane = mCamera.getRightPlane();
         rightPlane.getNormal(mNormal);
-        assertEquals(((float) 1 / Math.sqrt(2)), mNormal.x, EPS);
-        assertEquals(0, mNormal.y, EPS);
-        assertEquals(-((float) 1 / Math.sqrt(2)), mNormal.z, EPS);
+        assertEquals(((float) 1 / Math.sqrt(2)), mNormal.x, FloatUtil.EPS);
+        assertEquals(0, mNormal.y, FloatUtil.EPS);
+        assertEquals(-((float) 1 / Math.sqrt(2)), mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = rightPlane.getSignedDistToOrigo();
-        assertEquals(0, signedDistToOrigo, EPS);
+        assertEquals(0, signedDistToOrigo, FloatUtil.EPS);
     }
 
     /**
@@ -135,11 +130,11 @@ public class CameraRightTest extends AndroidTestCase {
         mActionHandler.handleActions(mCamera);
         Plane rightPlane = mCamera.getRightPlane();
         rightPlane.getNormal(mNormal);
-        assertEquals(-((float) 1 / Math.sqrt(2)), mNormal.x, EPS);
-        assertEquals(0, mNormal.y, EPS);
-        assertEquals(((float) 1 / Math.sqrt(2)), mNormal.z, EPS);
+        assertEquals(-((float) 1 / Math.sqrt(2)), mNormal.x, FloatUtil.EPS);
+        assertEquals(0, mNormal.y, FloatUtil.EPS);
+        assertEquals(((float) 1 / Math.sqrt(2)), mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = rightPlane.getSignedDistToOrigo();
-        assertEquals(0, signedDistToOrigo, EPS);
+        assertEquals(0, signedDistToOrigo, FloatUtil.EPS);
     }
 
     /**
@@ -151,11 +146,11 @@ public class CameraRightTest extends AndroidTestCase {
         mActionHandler.handleActions(mCamera);
         Plane rightPlane = mCamera.getRightPlane();
         rightPlane.getNormal(mNormal);
-        assertEquals(((float) 1 / Math.sqrt(2)), mNormal.x, EPS);
-        assertEquals(0, mNormal.y, EPS);
-        assertEquals(((float) 1 / Math.sqrt(2)), mNormal.z, EPS);
+        assertEquals(((float) 1 / Math.sqrt(2)), mNormal.x, FloatUtil.EPS);
+        assertEquals(0, mNormal.y, FloatUtil.EPS);
+        assertEquals(((float) 1 / Math.sqrt(2)), mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = rightPlane.getSignedDistToOrigo();
-        assertEquals(0, signedDistToOrigo, EPS);
+        assertEquals(0, signedDistToOrigo, FloatUtil.EPS);
     }
 
     /**
@@ -166,11 +161,11 @@ public class CameraRightTest extends AndroidTestCase {
         mActionHandler.handleActions(mCamera);
         Plane rightPlane = mCamera.getRightPlane();
         rightPlane.getNormal(mNormal);
-        assertEquals(-((float) 1 / Math.sqrt(2)), mNormal.x, EPS);
-        assertEquals(0, mNormal.y, EPS);
-        assertEquals(-((float) 1 / Math.sqrt(2)), mNormal.z, EPS);
+        assertEquals(-((float) 1 / Math.sqrt(2)), mNormal.x, FloatUtil.EPS);
+        assertEquals(0, mNormal.y, FloatUtil.EPS);
+        assertEquals(-((float) 1 / Math.sqrt(2)), mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = rightPlane.getSignedDistToOrigo();
-        assertEquals(3 * (((float) 1 / Math.sqrt(2))), signedDistToOrigo, EPS);
+        assertEquals(3 * (((float) 1 / Math.sqrt(2))), signedDistToOrigo, FloatUtil.EPS);
     }
 
     /**
@@ -183,10 +178,10 @@ public class CameraRightTest extends AndroidTestCase {
         mActionHandler.handleActions(mCamera);
         Plane rightPlane = mCamera.getRightPlane();
         rightPlane.getNormal(mNormal);
-        assertEquals(-((float) 1 / Math.sqrt(2)), mNormal.x, EPS);
-        assertEquals(0, mNormal.y, EPS);
-        assertEquals(-((float) 1 / Math.sqrt(2)), mNormal.z, EPS);
+        assertEquals(-((float) 1 / Math.sqrt(2)), mNormal.x, FloatUtil.EPS);
+        assertEquals(0, mNormal.y, FloatUtil.EPS);
+        assertEquals(-((float) 1 / Math.sqrt(2)), mNormal.z, FloatUtil.EPS);
         float signedDistToOrigo = rightPlane.getSignedDistToOrigo();
-        assertEquals(0, signedDistToOrigo, EPS);
+        assertEquals(0, signedDistToOrigo, FloatUtil.EPS);
     }
 }
