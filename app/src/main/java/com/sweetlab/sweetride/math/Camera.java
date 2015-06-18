@@ -15,34 +15,54 @@ import com.sweetlab.sweetride.mesh.Plane;
  */
 public class Camera extends NoHandleNotifier {
     /**
-     * Camera has been updated.
-     */
-    private Action mCameraUpdated = new Action(this, ActionId.CAMERA_UPDATED, HandleThread.MAIN);
-
-    /**
      * World up is defined as this.
      */
     public static final Vec3 WORLD_UP = new Vec3(0, 1, 0);
 
     /**
+     * The default up vector.
+     */
+    public static final Vec3 sDefaultUp = new Vec3(0, 1, 0);
+
+    /**
+     * The default look vector.
+     */
+    public static final Vec3 sDefaultLook = new Vec3(0, 0, -1);
+
+    /**
+     * The default right vector.
+     */
+    public static final Vec3 sDefaultRight = new Vec3(1, 0, 0);
+
+    /**
+     * The default pos.
+     */
+    public static final Vec3 sDefaultPos = new Vec3(0, 0, 0);
+
+    /**
+     * Camera has been updated.
+     */
+    private Action mCameraUpdated = new Action(this, ActionId.CAMERA_UPDATED, HandleThread.MAIN);
+
+    /**
      * Position in world.
      */
-    private final Vec3 mPos = new Vec3(0, 0, 0);
+    private final Vec3 mPos = new Vec3(sDefaultPos);
 
     /**
      * Right vector.
      */
-    private final Vec3 mRight = new Vec3(1, 0, 0);
+    private final Vec3 mRight = new Vec3(sDefaultRight);
 
     /**
      * Up vector.
      */
-    private final Vec3 mUp = new Vec3(0, 1, 0);
+    private final Vec3 mUp = new Vec3(sDefaultUp);
 
     /**
      * Look vector.
      */
-    private final Vec3 mLook = new Vec3(0, 0, -1);
+    private final Vec3 mLook = new Vec3(sDefaultLook);
 
     /**
      * The camera matrix, i.e the view matrix.
@@ -70,9 +90,9 @@ public class Camera extends NoHandleNotifier {
     private final Frustrum mFrustrum = new Frustrum();
 
     /**
-     * Temporary vector.
+     * Temporary vector3.
      */
-    private final Vec3 mTempVec = new Vec3();
+    private final Vec3 mTmpVec3 = new Vec3();
 
     /**
      * The frustrum planes.
@@ -109,17 +129,55 @@ public class Camera extends NoHandleNotifier {
     }
 
     /**
-     * Look at.
+     * Apply a transform to the camera.
      *
-     * @param eye  Where the camera is positioned.
-     * @param look The point to look at.
+     * @param parent The parent transform.
      */
-    public void lookAt(Vec3 eye, Vec3 look) {
-        lookAt(eye.x, eye.y, eye.z, look.x, look.y, look.z);
+    public void applyTransform(Transform parent) {
+        Matrix44 matrix = parent.getMatrix();
+        /**
+         * Transform the position.
+         */
+        mPos.x += matrix.m[12];
+        mPos.y += matrix.m[13];
+        mPos.z += matrix.m[14];
+
+        /**
+         * Transform the right.
+         */
+        mRight.transform33(matrix);
+        mRight.norm();
+
+        /**
+         * Transform the look.
+         */
+        mLook.transform33(matrix);
+        mLook.norm();
+
+        /**
+         * Transform the up.
+         */
+        mUp.transform33(matrix);
+        mUp.norm();
+
+        /**
+         * Update camera.
+         */
+        updateCamera();
     }
 
     /**
-     * Look at.
+     * Set camera look at.
+     *
+     * @param eye    Where the camera is positioned in world space.
+     * @param lookAt The point to look at in world space.
+     */
+    public void lookAt(Vec3 eye, Vec3 lookAt) {
+        lookAt(eye.x, eye.y, eye.z, lookAt.x, lookAt.y, lookAt.z);
+    }
+
+    /**
+     * Set camera look at.
      *
      * @param eyeX    The world x position of the camera.
      * @param eyeY    The world y position of the camera.
@@ -137,8 +195,8 @@ public class Camera extends NoHandleNotifier {
         /**
          * Calculate the look vector from the camera position and point defined to look at.
          */
-        mTempVec.set(lookAtX, lookAtY, lookAtZ);
-        Vec3.sub(mTempVec, mPos, mLook);
+        mTmpVec3.set(lookAtX, lookAtY, lookAtZ);
+        Vec3.sub(mTmpVec3, mPos, mLook);
         mLook.norm();
 
         /**
@@ -156,42 +214,20 @@ public class Camera extends NoHandleNotifier {
         mUp.norm();
 
         /**
-         * Clear view matrix.
+         * Update camera.
          */
-        mViewMat.setIdentity();
-
-        /**
-         * Set the three axises in the matrix. Set the rotation parts of the camera matrix.
-         * Note that we are negating the camera look vector since we don't want to apply a
-         * negation to the rotation matrix.
-         */
-        mViewMat.setXAxis(mRight);
-        mViewMat.setYAxis(mUp);
-        mViewMat.setZAxis(-mLook.x, -mLook.y, -mLook.z);
-
-        /**
-         * Having orthogonal axises we can transpose instead of invert.
-         */
-        mViewMat.transpose();
-
-        /**
-         * Apply translation to the camera matrix. Note that we are negating it
-         * since we want to translate world with the inverse.
-         */
-        mViewMat.translate(-mPos.x, -mPos.y, -mPos.z);
-
-        /**
-         * Add action that camera has been updated.
-         */
-        addAction(mCameraUpdated);
+        updateCamera();
     }
 
     /**
      * Set identity. All matrices are reset.
      */
     public void setIdentity() {
-        mViewMat.setIdentity();
-        addAction(mCameraUpdated);
+        mPos.set(sDefaultPos);
+        mRight.set(sDefaultRight);
+        mLook.set(sDefaultLook);
+        mUp.set(sDefaultUp);
+        updateCamera();
     }
 
     /**
@@ -330,17 +366,58 @@ public class Camera extends NoHandleNotifier {
     }
 
     /**
+     * Update camera.
+     */
+    private void updateCamera() {
+        /**
+         * Clear view matrix.
+         */
+        mViewMat.setIdentity();
+
+        /**
+         * Set the three axises in the matrix. Set the rotation parts of the camera matrix.
+         * Note that we are negating the camera look vector since we don't want to apply a
+         * negation to the rotation matrix.
+         */
+        mViewMat.setXAxis(mRight);
+        mViewMat.setYAxis(mUp);
+        mViewMat.setZAxis(-mLook.x, -mLook.y, -mLook.z);
+
+        /**
+         * Having orthogonal axises we can transpose instead of invert.
+         */
+        mViewMat.transpose();
+
+        /**
+         * Apply translation to the camera matrix. Note that we are negating it
+         * since we want to translate world with the inverse.
+         */
+        mViewMat.translate(-mPos.x, -mPos.y, -mPos.z);
+
+        /**
+         * Add action that camera has been updated.
+         */
+        addAction(mCameraUpdated);
+    }
+
+    /**
      * Updates all supported matrices.
      */
     private void updateMatrices() {
+        /**
+         * Update inverted view matrix.
+         */
         mInvViewMat.set(mViewMat);
         mInvViewMat.invert();
 
-        Matrix44 projectionMatrix = mFrustrum.getProjectionMatrix();
-        Matrix44.mult(mViewProjectionMat, projectionMatrix, mViewMat);
+        /**
+         * Update view projection matrix.
+         */
+        Matrix44.mult(mViewProjectionMat, mFrustrum.getProjectionMatrix(), mViewMat);
 
-        Matrix44 invProjectionMatrix = mFrustrum.getInvProjectionMatrix();
-        Matrix44.mult(mInvViewProjectionMat, mInvViewMat, invProjectionMatrix);
-
+        /**
+         * Update inverted view projection matrix.
+         */
+        Matrix44.mult(mInvViewProjectionMat, mInvViewMat, mFrustrum.getInvProjectionMatrix());
     }
 }

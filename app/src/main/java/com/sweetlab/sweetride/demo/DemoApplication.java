@@ -8,6 +8,7 @@ import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.math.Camera;
 import com.sweetlab.sweetride.math.Frustrum;
+import com.sweetlab.sweetride.math.Transform;
 import com.sweetlab.sweetride.math.Vec3;
 import com.sweetlab.sweetride.node.Node;
 import com.sweetlab.sweetride.shader.FragmentShader;
@@ -157,6 +158,15 @@ public class DemoApplication extends UserApplication {
         mRotatingQuad.setMesh(new QuadMesh(mQuadWidth, mQuadWidth, "a_Pos", null));
         mRotatingQuad.getModelTransform().translate(mQuadWidth, 0, 0);
 
+        /**
+         * Apply transform to camera that 'undo' the translation and rotates camera around
+         * z axis 45 degrees.
+         */
+        Transform transform = new Transform();
+        transform.translate(mQuadWidth, 0, 0);
+        transform.rotate(45, 0, 0, 1);
+        mCamera.applyTransform(transform);
+
         mMovingQuad.setMesh(mRotatingQuad.getMesh());
     }
 
@@ -173,7 +183,7 @@ public class DemoApplication extends UserApplication {
         /**
          * Rotate each frame around y axis.
          */
-        mRotatingQuad.getModelTransform().rotate(2, 0, 1, 0);
+        mRotatingQuad.getModelTransform().rotate(0.000001f, 0, 1, 0);
 
         /**
          * When object is not visible any longer reset position
@@ -181,8 +191,8 @@ public class DemoApplication extends UserApplication {
          */
         if (!mViewCulling.isVisible(mMovingQuad, mCamera)) {
             mMovingQuad.getModelTransform().setIdentity();
-            float x = (mRandom.nextFloat() - 0.5f) * 0.1f;
-            float y = (mRandom.nextFloat() - 0.5f) * 0.1f;
+            float x = (mRandom.nextFloat() - 0.5f) * 0.2f;
+            float y = (mRandom.nextFloat() - 0.5f) * 0.2f;
             float z = (mRandom.nextFloat() - 0.5f) * 0.1f;
             mMovingVec.set(x, y, z);
         }

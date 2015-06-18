@@ -1,9 +1,11 @@
 package com.sweetlab.sweetride.math;
 
+import com.sweetlab.sweetride.engine.Reusable;
+
 /**
  * Old vec3 class that I have had around for a while. Should be cleaned up though.
  */
-public class Vec3 {
+public class Vec3 implements Reusable {
     public float x;
     public float y;
     public float z;
@@ -349,6 +351,24 @@ public class Vec3 {
 
     /**
      * Transform this vector. Matrix on left side and vector on right side. This
+     * is OpenGL style. Ignore translation part, just transform rotation.
+     *
+     * @param mat
+     */
+    public Vec3 transform33(Matrix44 mat) {
+        float xnew = x * mat.m[0] + y * mat.m[4] + z * mat.m[8];
+        float ynew = x * mat.m[1] + y * mat.m[5] + z * mat.m[9];
+        float znew = x * mat.m[2] + y * mat.m[6] + z * mat.m[10];
+
+        x = xnew;
+        y = ynew;
+        z = znew;
+
+        return this;
+    }
+
+    /**
+     * Transform this vector. Matrix on left side and vector on right side. This
      * is OpenGL style.
      *
      * @param mat
@@ -368,5 +388,10 @@ public class Vec3 {
     @Override
     public String toString() {
         return String.format("[% #06.4f % #06.4f % #06.4f]", x, y, z);
+    }
+
+    @Override
+    public void reset() {
+        x = y = z = 0;
     }
 }
