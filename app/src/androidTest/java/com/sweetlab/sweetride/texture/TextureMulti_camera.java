@@ -122,7 +122,7 @@ public class TextureMulti_camera extends OpenGLTestCase {
     }
 
     public void testTextureMulti_MoveCloser() throws Exception {
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 60; i++) {
             runOnDrawFrame(new ResultRunnable() {
                 @Override
                 public Object run() {
@@ -151,7 +151,7 @@ public class TextureMulti_camera extends OpenGLTestCase {
     }
 
     public void testTextureMulti_MoveAway() throws Exception {
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 60; i++) {
             runOnDrawFrame(new ResultRunnable() {
                 @Override
                 public Object run() {
@@ -180,7 +180,7 @@ public class TextureMulti_camera extends OpenGLTestCase {
     }
 
     public void testTextureMulti_MoveLeft() throws Exception {
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 60; i++) {
             runOnDrawFrame(new ResultRunnable() {
                 @Override
                 public Object run() {
@@ -209,7 +209,7 @@ public class TextureMulti_camera extends OpenGLTestCase {
     }
 
     public void testTextureMulti_MoveRight() throws Exception {
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 60; i++) {
             runOnDrawFrame(new ResultRunnable() {
                 @Override
                 public Object run() {
@@ -238,7 +238,7 @@ public class TextureMulti_camera extends OpenGLTestCase {
     }
 
     public void testTextureMulti_MoveUp() throws Exception {
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 60; i++) {
             runOnDrawFrame(new ResultRunnable() {
                 @Override
                 public Object run() {
@@ -267,7 +267,7 @@ public class TextureMulti_camera extends OpenGLTestCase {
     }
 
     public void testTextureMulti_MoveDown() throws Exception {
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 60; i++) {
             runOnDrawFrame(new ResultRunnable() {
                 @Override
                 public Object run() {

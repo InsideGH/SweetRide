@@ -1,4 +1,4 @@
-package com.sweetlab.sweetride.mesh;
+package com.sweetlab.sweetride.plane;
 
 import com.sweetlab.sweetride.math.Vec3;
 

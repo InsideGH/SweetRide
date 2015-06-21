@@ -4,7 +4,7 @@ import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
 import com.sweetlab.sweetride.action.HandleThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
-import com.sweetlab.sweetride.mesh.Plane;
+import com.sweetlab.sweetride.plane.Plane;
 
 /**
  * Camera. Three axis camera with a frustrum.

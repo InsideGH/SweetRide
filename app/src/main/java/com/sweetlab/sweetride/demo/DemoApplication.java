@@ -1,8 +1,12 @@
 package com.sweetlab.sweetride.demo;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.view.MotionEvent;
 
 import com.sweetlab.sweetride.UserApplication;
+import com.sweetlab.sweetride.context.MagFilter;
+import com.sweetlab.sweetride.context.MinFilter;
 import com.sweetlab.sweetride.demo.mesh.CubeMesh;
 import com.sweetlab.sweetride.engine.DefaultRenderNode;
 import com.sweetlab.sweetride.engine.ViewFrustrumCulling;
@@ -15,6 +19,7 @@ import com.sweetlab.sweetride.node.Node;
 import com.sweetlab.sweetride.shader.FragmentShader;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 import com.sweetlab.sweetride.shader.VertexShader;
+import com.sweetlab.sweetride.texture.Texture2D;
 
 import java.util.Random;
 
@@ -25,21 +30,21 @@ public class DemoApplication extends UserApplication {
     private static final String VERTEX_SHADER =
             "attribute vec4 a_Pos; \n" +
                     "uniform mat4 u_worldViewProjMat; \n" +
+                    "attribute vec2 a_texCoord;\n" +
+                    "varying vec2 v_texCoord;\n" +
                     "void main() { " +
+                    "    v_texCoord = a_texCoord;\n" +
                     "    gl_Position = u_worldViewProjMat * a_Pos;" +
                     "} ";
 
 
-    private static final String FRAGMENT_RED =
+    private static final String FRAGMENT_SHADER =
             "precision mediump float;\n" +
+                    "varying vec2 v_texCoord;\n" +
+                    "uniform sampler2D s_texture;\n" +
                     "void main() {\n" +
-                    "\tgl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n" +
-                    "}";
-
-    private static final String FRAGMENT_BLUE =
-            "precision mediump float;\n" +
-                    "void main() {\n" +
-                    "\tgl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);\n" +
+                    "vec4 color = texture2D(s_texture, v_texCoord);\n" +
+                    "gl_FragColor = color;\n" +
                     "}";
 
     /**
@@ -135,15 +140,21 @@ public class DemoApplication extends UserApplication {
          * Create red material.
          */
         mRotatingQuad.setMaterial(new Material());
-        ShaderProgram programRed = new ShaderProgram(new VertexShader(VERTEX_SHADER), new FragmentShader(FRAGMENT_RED));
+        ShaderProgram programRed = new ShaderProgram(new VertexShader(VERTEX_SHADER), new FragmentShader(FRAGMENT_SHADER));
         mRotatingQuad.getMaterial().setShaderProgram(programRed);
+
+        Texture2D textureFourColor = new Texture2D("s_texture", createQuadColorBitmap(Bitmap.Config.RGB_565), MinFilter.NEAREST, MagFilter.NEAREST);
+        mRotatingQuad.getMaterial().addTexture(textureFourColor);
 
         /**
          * Create blue material.
          */
         mMovingQuad.setMaterial(new Material());
-        ShaderProgram programBlue = new ShaderProgram(new VertexShader(VERTEX_SHADER), new FragmentShader(FRAGMENT_BLUE));
+        ShaderProgram programBlue = new ShaderProgram(new VertexShader(VERTEX_SHADER), new FragmentShader(FRAGMENT_SHADER));
         mMovingQuad.getMaterial().setShaderProgram(programBlue);
+
+        Texture2D textureChess = new Texture2D("s_texture", createChessColorBitmap(Bitmap.Config.RGB_565), MinFilter.NEAREST, MagFilter.NEAREST);
+        mMovingQuad.getMaterial().addTexture(textureChess);
     }
 
     @Override
@@ -163,13 +174,12 @@ public class DemoApplication extends UserApplication {
          * Create a quad mesh that is a quarter of the screen width. Use same mesh for both geometries.
          */
         mQuadWidth = frustrum.calcWidthAtDepth(CAMERA_DISTANCE) / 4;
-        mRotatingQuad.setMesh(new CubeMesh("a_Pos", null));
+        mRotatingQuad.setMesh(new CubeMesh("a_Pos", "a_texCoord"));
         mRotatingQuad.getModelTransform().translate(mQuadWidth, 0, 0);
 
         mMovingQuad.setMesh(mRotatingQuad.getMesh());
 
         setNewMovingDirection();
-
     }
 
     @Override
@@ -269,5 +279,23 @@ public class DemoApplication extends UserApplication {
         float y = (mRandom.nextFloat() - 0.5f) * 0.4f;
         float z = (mRandom.nextFloat() - 0.5f) * 0.1f;
         mMovingVec.set(x, y, z);
+    }
+
+    public static Bitmap createQuadColorBitmap(Bitmap.Config config) {
+        return Bitmap.createBitmap(new int[]{Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW}, 2, 2, config);
+    }
+
+    public static Bitmap createChessColorBitmap(Bitmap.Config config) {
+        int values[] = new int[10 * 10];
+        int p = 0;
+        Random random = new Random(10);
+        for (int y = 0; y < 10; y++) {
+            for (int x = 0; x < 10; x++) {
+                int grey = random.nextInt(256);
+                values[p] = Color.argb(255, grey, grey, grey);
+                p++;
+            }
+        }
+        return Bitmap.createBitmap(values, 10, 10, config);
     }
 }

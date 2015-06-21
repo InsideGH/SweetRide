@@ -96,6 +96,14 @@ public class Geometry extends Node {
                     }
                 }
                 break;
+            case GEOMETRY_MESH:
+                if (mMesh != null) {
+                    BoundingBox meshBox = mMesh.getBoundingBox();
+                    if (meshBox != null) {
+                        meshBox.transform(getModelTransform().getMatrix(), mGeometryBox);
+                    }
+                }
+                break;
         }
     }
 

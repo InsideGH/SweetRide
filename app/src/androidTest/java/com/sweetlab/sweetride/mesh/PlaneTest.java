@@ -2,6 +2,7 @@ package com.sweetlab.sweetride.mesh;
 
 import com.sweetlab.sweetride.math.FloatUtil;
 import com.sweetlab.sweetride.math.Vec3;
+import com.sweetlab.sweetride.plane.Plane;
 
 import junit.framework.TestCase;
 

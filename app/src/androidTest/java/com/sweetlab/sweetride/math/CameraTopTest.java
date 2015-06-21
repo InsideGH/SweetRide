@@ -3,7 +3,7 @@ package com.sweetlab.sweetride.math;
 import android.test.AndroidTestCase;
 
 import com.sweetlab.sweetride.engine.FrontEndActionHandler;
-import com.sweetlab.sweetride.mesh.Plane;
+import com.sweetlab.sweetride.plane.Plane;
 
 /**
  * Test camera.

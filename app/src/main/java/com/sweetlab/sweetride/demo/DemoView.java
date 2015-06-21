@@ -15,7 +15,7 @@ public class DemoView extends EngineView {
     /**
      * GL application.
      */
-    private DemoApplication mDemoApplication;
+    private DemoApplication2 mDemoApplication;
 
     public DemoView(Context context) {
         super(context);
@@ -27,7 +27,7 @@ public class DemoView extends EngineView {
 
     @Override
     protected UserApplication createUserApplication() {
-        mDemoApplication = new DemoApplication();
+        mDemoApplication = new DemoApplication2();
         return mDemoApplication;
     }
 
