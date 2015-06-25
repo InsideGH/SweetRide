@@ -6,7 +6,7 @@ import com.sweetlab.sweetride.Util.ProgramTestUtil;
 import com.sweetlab.sweetride.Util.Verify;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.MeshDrawingMode;
-import com.sweetlab.sweetride.engine.DefaultRenderNode;
+import com.sweetlab.sweetride.engine.rendernode.DefaultRenderNode;
 import com.sweetlab.sweetride.engine.FrontEndActionHandler;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;

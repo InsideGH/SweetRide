@@ -1,30 +1,49 @@
 package com.sweetlab.sweetride.demo;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.sweetlab.sweetride.R;
 import com.sweetlab.sweetride.UserApplication;
 import com.sweetlab.sweetride.context.MagFilter;
 import com.sweetlab.sweetride.context.MinFilter;
 import com.sweetlab.sweetride.demo.mesh.QuadMesh;
+import com.sweetlab.sweetride.engine.rendernode.AndroidRenderNode;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.intersect.Intersect;
+import com.sweetlab.sweetride.intersect.Ray;
+import com.sweetlab.sweetride.intersect.TransformableBoundingBox;
 import com.sweetlab.sweetride.material.Material;
-import com.sweetlab.sweetride.mesh.TransformableBoundingBox;
 import com.sweetlab.sweetride.node.Node;
-import com.sweetlab.sweetride.ray.Ray;
 import com.sweetlab.sweetride.shader.FragmentShader;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 import com.sweetlab.sweetride.shader.VertexShader;
 import com.sweetlab.sweetride.texture.Texture2D;
-import com.sweetlab.sweetride.touch.TouchToWorldRay;
+import com.sweetlab.sweetride.touch.TouchToRay;
+
+import rx.functions.Action1;
 
 /**
  * Demo application2. Head up display.
  */
 public class DemoApplication2 extends UserApplication {
+    /**
+     * Margin around controls.
+     */
+    private static final int CONTROL_MARGIN_DP = 10;
+
+    /**
+     * Size of controls.
+     */
+    private static final int CONTROL_SIZE_DP = 100;
+
+    /**
+     * Vertex shader.
+     */
     private static final String VERTEX_SHADER =
             "attribute vec4 a_Pos; \n" +
                     "uniform mat4 u_worldViewProjMat; \n" +
@@ -36,6 +55,9 @@ public class DemoApplication2 extends UserApplication {
                     "} ";
 
 
+    /**
+     * Fragment shader.
+     */
     private static final String FRAGMENT_SHADER =
             "precision mediump float;\n" +
                     "varying vec2 v_texCoord;\n" +
@@ -46,14 +68,29 @@ public class DemoApplication2 extends UserApplication {
                     "}";
 
     /**
+     * Android context.
+     */
+    private final Context mContext;
+
+    /**
      * The left quad, used for moving around.
      */
-    private Geometry mMoveQuad = new Geometry();
+    private final Geometry mMoveQuad = new Geometry();
 
     /**
      * The right quad, used for looking around.
      */
-    private Geometry mTurnQuad = new Geometry();
+    private final Geometry mTurnQuad = new Geometry();
+
+    /**
+     * Intersect.
+     */
+    private final Intersect mIntersect = new Intersect();
+
+    /**
+     * Android assets loader.
+     */
+    private final AssetsLoader mAssetLoader;
 
     /**
      * The head up display node/render node.
@@ -63,17 +100,19 @@ public class DemoApplication2 extends UserApplication {
     /**
      * World space ray generator.
      */
-    private TouchToWorldRay mTouchToWorldRay;
-
-    /**
-     * Intersect.
-     */
-    private Intersect mIntersect = new Intersect();
+    private TouchToRay mTouchToRay;
 
     /**
      * Constructor.
      */
-    public DemoApplication2() {
+    public DemoApplication2(Context context) {
+        mContext = context;
+
+        /**
+         * Create assets loader.
+         */
+        mAssetLoader = new AssetsLoader(context);
+
         /**
          * Create shader program.
          */
@@ -91,12 +130,30 @@ public class DemoApplication2 extends UserApplication {
         mTurnQuad.setMaterial(new Material());
         mTurnQuad.getMaterial().setShaderProgram(program);
 
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        opts.inPreferredConfig = Bitmap.Config.ARGB_8888;
 
-        Texture2D textureLeft = new Texture2D("s_texture", createQuadColorBitmap(Bitmap.Config.RGB_565), MinFilter.NEAREST, MagFilter.NEAREST);
-        mMoveQuad.getMaterial().addTexture(textureLeft);
+        /**
+         * Load bitmap.
+         */
+        mAssetLoader.loadBitmap(R.drawable.compass, opts).subscribe(new Action1<Bitmap>() {
+            @Override
+            public void call(Bitmap bitmap) {
+                Texture2D textureLeft = new Texture2D("s_texture", bitmap, MinFilter.NEAREST, MagFilter.NEAREST);
+                mMoveQuad.getMaterial().addTexture(textureLeft);
+            }
+        });
 
-        Texture2D textureRight = new Texture2D("s_texture", createQuadColorBitmap(Bitmap.Config.RGB_565), MinFilter.NEAREST, MagFilter.NEAREST);
-        mTurnQuad.getMaterial().addTexture(textureRight);
+        /**
+         * Load bitmap.
+         */
+        mAssetLoader.loadBitmap(R.drawable.turn, opts).subscribe(new Action1<Bitmap>() {
+            @Override
+            public void call(Bitmap bitmap) {
+                Texture2D textureRight = new Texture2D("s_texture", bitmap, MinFilter.NEAREST, MagFilter.NEAREST);
+                mTurnQuad.getMaterial().addTexture(textureRight);
+            }
+        });
     }
 
     @Override
@@ -105,18 +162,20 @@ public class DemoApplication2 extends UserApplication {
         mAndroidRenderNode.addChild(mMoveQuad);
         mAndroidRenderNode.addChild(mTurnQuad);
 
-        float quadWidth = width / 2;
-        float quadHeight = height / 4;
-        QuadMesh quadMesh = new QuadMesh(quadWidth, quadHeight, "a_Pos", "a_texCoord");
+        float margin = DpPx.dpToPx(mContext, CONTROL_MARGIN_DP);
+        float quadSize = DpPx.dpToPx(mContext, CONTROL_SIZE_DP);
+        float half = quadSize / 2;
+
+        QuadMesh quadMesh = new QuadMesh(quadSize, quadSize, "a_Pos", "a_texCoord");
         mMoveQuad.setMesh(quadMesh);
-        mMoveQuad.getModelTransform().translate(quadWidth / 2, height - quadHeight / 2, 0);
+        mMoveQuad.getModelTransform().translate(half + margin, height - half - margin, 0);
 
         mTurnQuad.setMesh(quadMesh);
-        mTurnQuad.getModelTransform().translate(width - quadWidth / 2, height - quadHeight / 2, 0);
+        mTurnQuad.getModelTransform().translate(width - half - margin, height - half - margin, 0);
 
         engineRoot.addChild(mAndroidRenderNode);
 
-        mTouchToWorldRay = new TouchToWorldRay(width, height);
+        mTouchToRay = new TouchToRay(width, height);
     }
 
     @Override
@@ -139,7 +198,7 @@ public class DemoApplication2 extends UserApplication {
                 int x = (int) event.getX(actionIndex);
                 int y = (int) event.getY(actionIndex);
 
-                Ray ray = mTouchToWorldRay.getRay(mAndroidRenderNode.getCamera(), x, y);
+                Ray ray = mTouchToRay.getRay(mAndroidRenderNode.getCamera(), x, y);
 
                 TransformableBoundingBox moveBox = mMoveQuad.getTransformableBoundingBox();
                 if (mIntersect.intersects(ray, moveBox)) {

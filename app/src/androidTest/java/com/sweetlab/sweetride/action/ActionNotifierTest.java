@@ -254,16 +254,16 @@ public class ActionNotifierTest extends AndroidTestCase {
     }
 
     private class NotifierA extends NoHandleNotifier {
-        public Action mCreateAction = new Action(this, ActionId.GEOMETRY_MESH, HandleThread.MAIN);
-        public Action mLoadAction = new Action(this, ActionId.GEOMETRY_MATERIAL, HandleThread.MAIN);
+        public Action mCreateAction = new Action(this, ActionId.GEOMETRY_MESH, ActionThread.MAIN);
+        public Action mLoadAction = new Action(this, ActionId.GEOMETRY_MATERIAL, ActionThread.MAIN);
     }
 
     private class NotifierB extends NoHandleNotifier {
-        public Action mCreateAction = new Action(this, ActionId.GEOMETRY_MESH, HandleThread.MAIN);
+        public Action mCreateAction = new Action(this, ActionId.GEOMETRY_MESH, ActionThread.MAIN);
     }
 
     private class NotifierC extends NoHandleNotifier {
-        public Action mCreateAction = new Action(this, ActionId.GEOMETRY_MESH, HandleThread.MAIN);
-        public Action mLoadAction = new Action(this, ActionId.GEOMETRY_MATERIAL, HandleThread.MAIN);
+        public Action mCreateAction = new Action(this, ActionId.GEOMETRY_MESH, ActionThread.MAIN);
+        public Action mLoadAction = new Action(this, ActionId.GEOMETRY_MATERIAL, ActionThread.MAIN);
     }
 }

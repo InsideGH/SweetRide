@@ -3,7 +3,7 @@ package com.sweetlab.sweetride.renderbuffer;
 import com.sweetlab.sweetride.DebugOptions;
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.HandleThread;
+import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.AttachmentType;
 import com.sweetlab.sweetride.context.BackendContext;
@@ -49,7 +49,7 @@ public class RenderBuffer extends NoHandleNotifier implements Resource, DepthAtt
         mFormat = format;
         mWidth = width;
         mHeight = height;
-        addAction(new Action(this, ActionId.RENDER_BUFFER_CREATE, HandleThread.GL));
+        addAction(new Action(this, ActionId.RENDER_BUFFER_CREATE, ActionThread.GL));
     }
 
     @Override

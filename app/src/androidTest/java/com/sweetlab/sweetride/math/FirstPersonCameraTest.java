@@ -2,6 +2,8 @@ package com.sweetlab.sweetride.math;
 
 import android.test.AndroidTestCase;
 
+import com.sweetlab.sweetride.camera.FirstPersonCamera;
+
 /**
  * First person camera test.
  */

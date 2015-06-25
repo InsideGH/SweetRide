@@ -3,10 +3,11 @@ package com.sweetlab.sweetride.mesh;
 import com.sweetlab.sweetride.demo.mesh.QuadMesh;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.intersect.Intersect;
+import com.sweetlab.sweetride.intersect.TransformableBoundingBox;
 import com.sweetlab.sweetride.math.FloatUtil;
 import com.sweetlab.sweetride.math.Vec3;
-import com.sweetlab.sweetride.plane.Plane;
-import com.sweetlab.sweetride.ray.Ray;
+import com.sweetlab.sweetride.intersect.Plane;
+import com.sweetlab.sweetride.intersect.Ray;
 
 import junit.framework.TestCase;
 

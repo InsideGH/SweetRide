@@ -1,4 +1,4 @@
-package com.sweetlab.sweetride.math;
+package com.sweetlab.sweetride.camera;
 
 /**
  * A view port holder.

@@ -2,7 +2,7 @@ package com.sweetlab.sweetride.Util;
 
 import com.sweetlab.sweetride.engine.ContentCollector;
 import com.sweetlab.sweetride.engine.GraphContent;
-import com.sweetlab.sweetride.engine.RenderNode;
+import com.sweetlab.sweetride.engine.rendernode.RenderNode;
 import com.sweetlab.sweetride.geometry.Geometry;
 
 import java.util.List;

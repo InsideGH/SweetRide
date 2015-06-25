@@ -23,5 +23,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:design:22.2.0'
     compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'io.reactivex:rxandroid:0.24.0'
     testCompile 'junit:junit:4.6'
 }

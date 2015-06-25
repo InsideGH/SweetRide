@@ -27,13 +27,13 @@ public class DemoView extends EngineView {
 
     @Override
     protected UserApplication createUserApplication() {
-        mDemoApplication = new DemoApplication2();
+        mDemoApplication = new DemoApplication2(getContext());
         return mDemoApplication;
     }
 
     @Override
     protected Vec4 getBackgroundColor() {
-        return new Vec4(0.5f, 0.5f, 0.5f, 1);
+        return new Vec4(0.0f,0.0f, 0.0f, 1);
     }
 
     @Override

@@ -11,7 +11,7 @@ import android.util.Log;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.engine.FrameDraw;
 import com.sweetlab.sweetride.engine.FrameUpdate;
-import com.sweetlab.sweetride.engine.RenderNodeTask;
+import com.sweetlab.sweetride.engine.rendernode.RenderNodeTask;
 import com.sweetlab.sweetride.math.Vec4;
 import com.sweetlab.sweetride.node.Node;
 
@@ -139,6 +139,8 @@ public abstract class EngineView extends GLSurfaceView implements EngineRenderer
              * Some gl stuff...to be replaced.
              */
             GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+            GLES20.glEnable(GLES20.GL_BLEND);
+            GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
             GLES20.glViewport(0, 0, mSurfaceWidth, mSurfaceHeight);
             GLES20.glClearColor(mBackgroundColor.x, mBackgroundColor.y, mBackgroundColor.z, mBackgroundColor.w);
             GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);

@@ -1,6 +1,8 @@
 package com.sweetlab.sweetride.mesh;
 
 import com.sweetlab.sweetride.Util.BufferTestUtil;
+import com.sweetlab.sweetride.intersect.BoundingBox;
+import com.sweetlab.sweetride.intersect.TransformableBoundingBox;
 import com.sweetlab.sweetride.math.FloatUtil;
 import com.sweetlab.sweetride.math.Matrix44;
 import com.sweetlab.sweetride.math.Vec3;

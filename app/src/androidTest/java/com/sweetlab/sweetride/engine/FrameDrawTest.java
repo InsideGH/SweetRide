@@ -4,6 +4,7 @@ import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.demo.DemoApplication;
+import com.sweetlab.sweetride.engine.rendernode.RenderNodeTask;
 import com.sweetlab.sweetride.node.Node;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;

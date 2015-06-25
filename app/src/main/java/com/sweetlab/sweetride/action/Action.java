@@ -23,7 +23,7 @@ public class Action {
     /**
      * Which thread to handle the action on.
      */
-    private final HandleThread mHandleThread;
+    private final ActionThread mActionThread;
 
     /**
      * Constructor.
@@ -32,10 +32,10 @@ public class Action {
      * @param id         The action id.
      * @param handleType The thread to handle the action on.
      */
-    public Action(ActionNotifier source, ActionId id, HandleThread handleType) {
+    public Action(ActionNotifier source, ActionId id, ActionThread handleType) {
         mSource = source;
         mId = id;
-        mHandleThread = handleType;
+        mActionThread = handleType;
     }
 
     /**
@@ -68,8 +68,8 @@ public class Action {
      *
      * @return The handle thread.
      */
-    public HandleThread getHandleThread() {
-        return mHandleThread;
+    public ActionThread getHandleThread() {
+        return mActionThread;
     }
 
     /**
@@ -79,7 +79,7 @@ public class Action {
      */
     public boolean handleAction() {
         if (DebugOptions.DEBUG_ACTION) {
-            if (!mHandleThread.equals(HandleThread.MAIN)) {
+            if (!mActionThread.equals(ActionThread.MAIN)) {
                 throw new RuntimeException("Trying to handle a gl action using main handle method");
             }
         }
@@ -96,7 +96,7 @@ public class Action {
      */
     public boolean handleAction(BackendContext context) {
         if (DebugOptions.DEBUG_ACTION) {
-            if (!mHandleThread.equals(HandleThread.GL)) {
+            if (!mActionThread.equals(ActionThread.GL)) {
                 throw new RuntimeException("Trying to handle a main action using backend handle method");
             }
         }
@@ -108,6 +108,6 @@ public class Action {
 
     @Override
     public String toString() {
-        return " id = " + mId.toString() + " source = " + mSource + " thread = " + mHandleThread;
+        return " id = " + mId.toString() + " source = " + mSource + " thread = " + mActionThread;
     }
 }

@@ -1,4 +1,4 @@
-package com.sweetlab.sweetride.engine;
+package com.sweetlab.sweetride.engine.rendernode;
 
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.renderer.GeometryRenderer;

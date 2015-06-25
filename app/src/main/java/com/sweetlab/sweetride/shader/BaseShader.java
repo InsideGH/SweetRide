@@ -2,7 +2,7 @@ package com.sweetlab.sweetride.shader;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.HandleThread;
+import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.resource.Resource;
@@ -23,7 +23,7 @@ public abstract class BaseShader extends NoHandleNotifier implements Resource {
      */
     public BaseShader(String source) {
         mSource = source;
-        addAction(new Action(this, ActionId.SHADER_CREATE, HandleThread.GL));
+        addAction(new Action(this, ActionId.SHADER_CREATE, ActionThread.GL));
     }
 
     @Override

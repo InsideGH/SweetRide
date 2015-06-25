@@ -2,7 +2,7 @@ package com.sweetlab.sweetride.engine;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionNotifier;
-import com.sweetlab.sweetride.action.HandleThread;
+import com.sweetlab.sweetride.action.ActionThread;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class FrontEndActionHandler {
             int actionCount = notifier.getActionCount();
             for (int i = 0; i < actionCount; i++) {
                 Action action = notifier.getAction(i);
-                if (action.getHandleThread().equals(HandleThread.MAIN)) {
+                if (action.getHandleThread().equals(ActionThread.MAIN)) {
                     mActions.add(action);
                 }
             }

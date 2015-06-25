@@ -2,7 +2,7 @@ package com.sweetlab.sweetride.framebuffer;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.HandleThread;
+import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.FrameBufferTarget;
@@ -21,7 +21,7 @@ public class FrameBuffer extends NoHandleNotifier implements Resource {
      * Constructor.
      */
     public FrameBuffer() {
-        addAction(new Action(this, ActionId.FRAME_BUFFER_CREATE, HandleThread.GL));
+        addAction(new Action(this, ActionId.FRAME_BUFFER_CREATE, ActionThread.GL));
     }
 
     @Override

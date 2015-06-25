@@ -1,10 +1,10 @@
-package com.sweetlab.sweetride.engine;
+package com.sweetlab.sweetride.camera;
 
 import com.sweetlab.sweetride.geometry.Geometry;
-import com.sweetlab.sweetride.math.Camera;
+import com.sweetlab.sweetride.camera.Camera;
 import com.sweetlab.sweetride.math.Vec3;
-import com.sweetlab.sweetride.mesh.BoundingBox;
-import com.sweetlab.sweetride.mesh.TransformableBoundingBox;
+import com.sweetlab.sweetride.intersect.BoundingBox;
+import com.sweetlab.sweetride.intersect.TransformableBoundingBox;
 
 /**
  * Provides visibility testing for points and geometries.

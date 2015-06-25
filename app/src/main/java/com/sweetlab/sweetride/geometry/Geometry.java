@@ -4,16 +4,16 @@ import android.support.annotation.Nullable;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.HandleThread;
+import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.engine.EngineUniformCache;
 import com.sweetlab.sweetride.engine.uniform.EngineUniform;
 import com.sweetlab.sweetride.material.Material;
-import com.sweetlab.sweetride.math.Camera;
+import com.sweetlab.sweetride.camera.Camera;
 import com.sweetlab.sweetride.math.Matrix44;
-import com.sweetlab.sweetride.mesh.BoundingBox;
+import com.sweetlab.sweetride.intersect.BoundingBox;
 import com.sweetlab.sweetride.mesh.Mesh;
-import com.sweetlab.sweetride.mesh.TransformableBoundingBox;
+import com.sweetlab.sweetride.intersect.TransformableBoundingBox;
 import com.sweetlab.sweetride.node.Node;
 import com.sweetlab.sweetride.node.NodeVisitor;
 import com.sweetlab.sweetride.shader.ShaderProgram;
@@ -31,22 +31,22 @@ public class Geometry extends Node {
     /**
      * Mesh reference has changed.
      */
-    private final Action mMeshChange = new Action(this, ActionId.GEOMETRY_MESH, HandleThread.MAIN);
+    private final Action mMeshChange = new Action(this, ActionId.GEOMETRY_MESH, ActionThread.MAIN);
 
     /**
      * Material reference has changed.
      */
-    private final Action mMaterialChange = new Action(this, ActionId.GEOMETRY_MATERIAL, HandleThread.MAIN);
+    private final Action mMaterialChange = new Action(this, ActionId.GEOMETRY_MATERIAL, ActionThread.MAIN);
 
     /**
      * Custom uniform collection has changed.
      */
-    private final Action mUniformCollectionChange = new Action(this, ActionId.GEOMETRY_CUSTOM_UNIFORM, HandleThread.MAIN);
+    private final Action mUniformCollectionChange = new Action(this, ActionId.GEOMETRY_CUSTOM_UNIFORM, ActionThread.MAIN);
 
     /**
      * Engine uniform has changed.
      */
-    private final Action mEngineUniformChange = new Action(this, ActionId.GEOMETRY_ENGINE_UNIFORM, HandleThread.MAIN);
+    private final Action mEngineUniformChange = new Action(this, ActionId.GEOMETRY_ENGINE_UNIFORM, ActionThread.MAIN);
 
     /**
      * List of custom uniforms.

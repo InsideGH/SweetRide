@@ -1,19 +1,19 @@
 package com.sweetlab.sweetride.touch;
 
-import com.sweetlab.sweetride.math.Camera;
+import com.sweetlab.sweetride.camera.Camera;
 import com.sweetlab.sweetride.math.Matrix44;
 import com.sweetlab.sweetride.math.Vec3;
 import com.sweetlab.sweetride.math.Vec4;
-import com.sweetlab.sweetride.ray.Ray;
+import com.sweetlab.sweetride.intersect.Ray;
 
 /**
  * Generates world space rays from android screen coordinates.
  */
-public class TouchToWorldRay {
+public class TouchToRay {
     /**
      * Converter from android screen coordinates to gl ndc coordinates.
      */
-    private final ScreenToNdc mScreenToNdc;
+    private final ScreenToNdcConverter mScreenToNdcConverter;
 
     /**
      * NDC near point.
@@ -41,8 +41,8 @@ public class TouchToWorldRay {
      * @param surfaceWidth  Android surface width.
      * @param surfaceHeight Android surface height.
      */
-    public TouchToWorldRay(int surfaceWidth, int surfaceHeight) {
-        mScreenToNdc = new ScreenToNdc(surfaceWidth, surfaceHeight);
+    public TouchToRay(int surfaceWidth, int surfaceHeight) {
+        mScreenToNdcConverter = new ScreenToNdcConverter(surfaceWidth, surfaceHeight);
     }
 
     /**
@@ -53,8 +53,8 @@ public class TouchToWorldRay {
      * @return Ray in world space.
      */
     public Ray getRay(Camera camera, int screenX, int screenY) {
-        final float x = mScreenToNdc.getX(screenX);
-        final float y = mScreenToNdc.getY(screenY);
+        final float x = mScreenToNdcConverter.getX(screenX);
+        final float y = mScreenToNdcConverter.getY(screenY);
 
         mNearPoint.set(x, y, -1, 1);
         mFarPoint.set(x, y, 1, 1);

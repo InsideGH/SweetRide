@@ -2,8 +2,9 @@ package com.sweetlab.sweetride.engine;
 
 import android.test.AndroidTestCase;
 
-import com.sweetlab.sweetride.math.Camera;
-import com.sweetlab.sweetride.math.Frustrum;
+import com.sweetlab.sweetride.camera.Camera;
+import com.sweetlab.sweetride.camera.Frustrum;
+import com.sweetlab.sweetride.camera.ViewFrustrumCulling;
 import com.sweetlab.sweetride.math.Vec3;
 
 /**

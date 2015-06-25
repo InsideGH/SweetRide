@@ -3,6 +3,8 @@ package com.sweetlab.sweetride.engine;
 import android.test.AndroidTestCase;
 
 import com.sweetlab.sweetride.UserApplication;
+import com.sweetlab.sweetride.engine.rendernode.DefaultRenderNode;
+import com.sweetlab.sweetride.engine.rendernode.RenderNodeTask;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.node.Node;
 

@@ -2,9 +2,6 @@ package com.sweetlab.sweetride.intersect;
 
 import com.sweetlab.sweetride.math.FloatUtil;
 import com.sweetlab.sweetride.math.Vec3;
-import com.sweetlab.sweetride.mesh.BoundingBox;
-import com.sweetlab.sweetride.plane.Plane;
-import com.sweetlab.sweetride.ray.Ray;
 
 /**
  * Helps with various intersections. Idea is to create it once and use it a lot.

@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.HandleThread;
+import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.ColorAttachment;
@@ -25,8 +25,8 @@ public abstract class TextureResource extends NoHandleNotifier implements Resour
      * Constructor.
      */
     public TextureResource() {
-        addAction(new Action(this, ActionId.TEXTURE_CREATE, HandleThread.GL));
-        addAction(new Action(this, ActionId.TEXTURE_LOAD, HandleThread.GL));
+        addAction(new Action(this, ActionId.TEXTURE_CREATE, ActionThread.GL));
+        addAction(new Action(this, ActionId.TEXTURE_LOAD, ActionThread.GL));
     }
 
     @Override
