@@ -1,11 +1,11 @@
-package com.sweetlab.sweetride.engine;
+package com.sweetlab.sweetride.engine.rendernode;
 
 import android.support.annotation.Nullable;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.HandleThread;
-import com.sweetlab.sweetride.math.Camera;
+import com.sweetlab.sweetride.action.ActionThread;
+import com.sweetlab.sweetride.camera.Camera;
 import com.sweetlab.sweetride.node.Node;
 import com.sweetlab.sweetride.node.NodeVisitor;
 import com.sweetlab.sweetride.renderer.GeometryRenderer;
@@ -17,7 +17,7 @@ public class RenderNode extends Node {
     /**
      * Action when camera has been set.
      */
-    private Action mCameraSet = new Action(this, ActionId.RENDER_NODE_CAMERA, HandleThread.MAIN);
+    private Action mCameraSet = new Action(this, ActionId.RENDER_NODE_CAMERA, ActionThread.MAIN);
     /**
      * The renderer to use.
      */

@@ -3,7 +3,7 @@ package com.sweetlab.sweetride.tryouts.stars;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
-import com.sweetlab.sweetride.math.Camera;
+import com.sweetlab.sweetride.camera.Camera;
 import com.sweetlab.sweetride.math.Matrix33;
 import com.sweetlab.sweetride.math.Matrix44;
 import com.sweetlab.sweetride.math.Vec3;

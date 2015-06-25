@@ -2,7 +2,7 @@ package com.sweetlab.sweetride.math;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.HandleThread;
+import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 
 /**
@@ -12,7 +12,7 @@ public class Transform extends NoHandleNotifier {
     /**
      * Transform has been updated. Used as indication only.
      */
-    private Action mTransformChanged = new Action(this, ActionId.TRANSFORM_UPDATED, HandleThread.MAIN);
+    private Action mTransformChanged = new Action(this, ActionId.TRANSFORM_UPDATED, ActionThread.MAIN);
 
     /**
      * The matrix

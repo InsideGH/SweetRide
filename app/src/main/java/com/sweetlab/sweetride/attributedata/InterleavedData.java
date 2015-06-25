@@ -4,7 +4,7 @@ import android.util.Pair;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.HandleThread;
+import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.BufferUsage;
@@ -90,8 +90,8 @@ public class InterleavedData extends NoHandleNotifier implements BufferResource 
         mBufferUsage = bufferUsage;
         mTotalByteCount = byteCount;
         mBuffer = Util.createBuffer(data, mTotalByteCount);
-        addAction(new Action(this, ActionId.INTERLEAVED_BUFFER_CREATE, HandleThread.GL));
-        addAction(new Action(this, ActionId.INTERLEAVED_BUFFER_LOAD, HandleThread.GL));
+        addAction(new Action(this, ActionId.INTERLEAVED_BUFFER_CREATE, ActionThread.GL));
+        addAction(new Action(this, ActionId.INTERLEAVED_BUFFER_LOAD, ActionThread.GL));
     }
 
     @Override

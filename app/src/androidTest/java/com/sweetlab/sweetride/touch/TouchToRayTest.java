@@ -2,18 +2,18 @@ package com.sweetlab.sweetride.touch;
 
 import android.test.AndroidTestCase;
 
-import com.sweetlab.sweetride.demo.AndroidRenderNode;
-import com.sweetlab.sweetride.math.Camera;
+import com.sweetlab.sweetride.engine.rendernode.AndroidRenderNode;
+import com.sweetlab.sweetride.camera.Camera;
 import com.sweetlab.sweetride.math.FloatUtil;
-import com.sweetlab.sweetride.math.Frustrum;
+import com.sweetlab.sweetride.camera.Frustrum;
 import com.sweetlab.sweetride.math.Vec3;
-import com.sweetlab.sweetride.ray.Ray;
+import com.sweetlab.sweetride.intersect.Ray;
 
 /**
  * Test touch to ray generation. The ray generated originates somewhere from camera
  * near field rectangle (in world space), almost camera position.
  */
-public class TouchToWorldRayTest extends AndroidTestCase {
+public class TouchToRayTest extends AndroidTestCase {
 
     private Vec3 mOrigin = new Vec3();
     private Vec3 mDirection = new Vec3();
@@ -28,9 +28,9 @@ public class TouchToWorldRayTest extends AndroidTestCase {
         camera.lookAt(0, 0, 3, 0, 0, -1);
         camera.getFrustrum().setPerspectiveProjection(90, Frustrum.FovType.AUTO_FIT, 0.1f, 10, 1080, 1920);
 
-        TouchToWorldRay touchToWorldRay = new TouchToWorldRay(1080, 1920);
+        TouchToRay touchToRay = new TouchToRay(1080, 1920);
 
-        Ray ray = touchToWorldRay.getRay(camera, 540, 960);
+        Ray ray = touchToRay.getRay(camera, 540, 960);
 
         ray.getOrigin(mOrigin);
         ray.getDirection(mDirection);
@@ -43,9 +43,9 @@ public class TouchToWorldRayTest extends AndroidTestCase {
         camera.lookAt(30, 0, 0, 0, 0, 0);
         camera.getFrustrum().setPerspectiveProjection(90, Frustrum.FovType.AUTO_FIT, 0.1f, 10, 1080, 1920);
 
-        TouchToWorldRay touchToWorldRay = new TouchToWorldRay(1080, 1920);
+        TouchToRay touchToRay = new TouchToRay(1080, 1920);
 
-        Ray ray = touchToWorldRay.getRay(camera, 540, 960);
+        Ray ray = touchToRay.getRay(camera, 540, 960);
 
         ray.getOrigin(mOrigin);
         ray.getDirection(mDirection);
@@ -58,9 +58,9 @@ public class TouchToWorldRayTest extends AndroidTestCase {
         camera.lookAt(0, 0, -30, 0, 0, 0);
         camera.getFrustrum().setPerspectiveProjection(90, Frustrum.FovType.AUTO_FIT, 0.1f, 10, 1080, 1920);
 
-        TouchToWorldRay touchToWorldRay = new TouchToWorldRay(1080, 1920);
+        TouchToRay touchToRay = new TouchToRay(1080, 1920);
 
-        Ray ray = touchToWorldRay.getRay(camera, 540, 960);
+        Ray ray = touchToRay.getRay(camera, 540, 960);
 
         ray.getOrigin(mOrigin);
         ray.getDirection(mDirection);
@@ -73,9 +73,9 @@ public class TouchToWorldRayTest extends AndroidTestCase {
         camera.lookAt(0, 0, 3, 0, 0, -1);
         camera.getFrustrum().setPerspectiveProjection(90, Frustrum.FovType.AUTO_FIT, 0.1f, 10, 1080, 1920);
 
-        TouchToWorldRay touchToWorldRay = new TouchToWorldRay(1080, 1920);
+        TouchToRay touchToRay = new TouchToRay(1080, 1920);
 
-        Ray ray = touchToWorldRay.getRay(camera, 0, 960);
+        Ray ray = touchToRay.getRay(camera, 0, 960);
 
         float left = camera.getFrustrum().getLeft();
         float near = camera.getFrustrum().getNear();
@@ -97,9 +97,9 @@ public class TouchToWorldRayTest extends AndroidTestCase {
         AndroidRenderNode androidRenderNode = new AndroidRenderNode(1080, 1920);
         Camera camera = androidRenderNode.getCamera();
 
-        TouchToWorldRay touchToWorldRay = new TouchToWorldRay(1080, 1920);
+        TouchToRay touchToRay = new TouchToRay(1080, 1920);
 
-        Ray ray = touchToWorldRay.getRay(camera, 540, 960);
+        Ray ray = touchToRay.getRay(camera, 540, 960);
 
         ray.getOrigin(mOrigin);
         ray.getDirection(mDirection);
@@ -110,9 +110,9 @@ public class TouchToWorldRayTest extends AndroidTestCase {
         AndroidRenderNode androidRenderNode = new AndroidRenderNode(1080, 1920);
         Camera camera = androidRenderNode.getCamera();
 
-        TouchToWorldRay touchToWorldRay = new TouchToWorldRay(1080, 1920);
+        TouchToRay touchToRay = new TouchToRay(1080, 1920);
 
-        Ray ray = touchToWorldRay.getRay(camera, 0, 960);
+        Ray ray = touchToRay.getRay(camera, 0, 960);
 
         float left = camera.getFrustrum().getLeft();
         float near = camera.getFrustrum().getNear();

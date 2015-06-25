@@ -1,7 +1,6 @@
-package com.sweetlab.sweetride.demo;
+package com.sweetlab.sweetride.engine.rendernode;
 
-import com.sweetlab.sweetride.engine.DefaultRenderNode;
-import com.sweetlab.sweetride.math.Camera;
+import com.sweetlab.sweetride.camera.Camera;
 
 /**
  * This is based on default render node, i.e it renders to default system window.

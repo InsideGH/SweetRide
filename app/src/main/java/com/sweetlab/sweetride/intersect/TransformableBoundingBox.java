@@ -1,4 +1,6 @@
-package com.sweetlab.sweetride.mesh;
+package com.sweetlab.sweetride.intersect;
+
+import com.sweetlab.sweetride.intersect.BoundingBox;
 
 /**
  * Bounding box that can be transformed.

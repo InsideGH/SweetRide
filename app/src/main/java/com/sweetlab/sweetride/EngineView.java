@@ -11,7 +11,7 @@ import android.util.Log;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.engine.FrameDraw;
 import com.sweetlab.sweetride.engine.FrameUpdate;
-import com.sweetlab.sweetride.engine.RenderNodeTask;
+import com.sweetlab.sweetride.engine.rendernode.RenderNodeTask;
 import com.sweetlab.sweetride.math.Vec4;
 import com.sweetlab.sweetride.node.Node;
 

@@ -1,9 +1,10 @@
-package com.sweetlab.sweetride.math;
+package com.sweetlab.sweetride.camera;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.HandleThread;
+import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
+import com.sweetlab.sweetride.math.Matrix44;
 
 /**
  * Supports perspective and orthogonal projection.
@@ -28,7 +29,7 @@ public class Frustrum extends NoHandleNotifier {
     /**
      * Camera has been updated.
      */
-    private Action mFrustrumUpdated = new Action(this, ActionId.FRUSTRUM_UPDATED, HandleThread.MAIN);
+    private Action mFrustrumUpdated = new Action(this, ActionId.FRUSTRUM_UPDATED, ActionThread.MAIN);
 
     /**
      * The projection or orthographic matrix

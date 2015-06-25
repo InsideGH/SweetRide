@@ -2,7 +2,7 @@ package com.sweetlab.sweetride.material;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.HandleThread;
+import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.resource.TextureResource;
@@ -18,12 +18,12 @@ public class Material extends NoHandleNotifier {
     /**
      * Shader program reference has changed.
      */
-    private final Action mProgramChange = new Action(this, ActionId.MATERIAL_PROGRAM, HandleThread.MAIN);
+    private final Action mProgramChange = new Action(this, ActionId.MATERIAL_PROGRAM, ActionThread.MAIN);
 
     /**
      * Texture collection has changed.
      */
-    private final Action mTextureChange = new Action(this, ActionId.MATERIAL_TEXTURES, HandleThread.MAIN);
+    private final Action mTextureChange = new Action(this, ActionId.MATERIAL_TEXTURES, ActionThread.MAIN);
 
     /**
      * List of textures.

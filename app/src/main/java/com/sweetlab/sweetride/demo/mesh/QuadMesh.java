@@ -8,7 +8,7 @@ import com.sweetlab.sweetride.attributedata.TextureCoordData;
 import com.sweetlab.sweetride.attributedata.VerticesData;
 import com.sweetlab.sweetride.context.BufferUsage;
 import com.sweetlab.sweetride.context.MeshDrawingMode;
-import com.sweetlab.sweetride.mesh.BoundingBox;
+import com.sweetlab.sweetride.intersect.BoundingBox;
 import com.sweetlab.sweetride.mesh.Mesh;
 
 /**

@@ -1,10 +1,13 @@
-package com.sweetlab.sweetride.math;
+package com.sweetlab.sweetride.camera;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.HandleThread;
+import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
-import com.sweetlab.sweetride.plane.Plane;
+import com.sweetlab.sweetride.intersect.Plane;
+import com.sweetlab.sweetride.math.Matrix44;
+import com.sweetlab.sweetride.math.Transform;
+import com.sweetlab.sweetride.math.Vec3;
 
 /**
  * Camera. Three axis camera with a frustrum.
@@ -40,7 +43,7 @@ public class Camera extends NoHandleNotifier {
     /**
      * Camera has been updated.
      */
-    private Action mCameraUpdated = new Action(this, ActionId.CAMERA_UPDATED, HandleThread.MAIN);
+    private Action mCameraUpdated = new Action(this, ActionId.CAMERA_UPDATED, ActionThread.MAIN);
 
     /**
      * Position in world.

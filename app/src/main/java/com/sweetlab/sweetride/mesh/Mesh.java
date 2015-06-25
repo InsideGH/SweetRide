@@ -4,11 +4,12 @@ import android.support.annotation.Nullable;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.HandleThread;
+import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.MeshDrawingMode;
+import com.sweetlab.sweetride.intersect.BoundingBox;
 import com.sweetlab.sweetride.resource.VertexBufferResource;
 
 import java.util.ArrayList;
@@ -22,12 +23,12 @@ public class Mesh extends NoHandleNotifier {
     /**
      * Indices reference has changed.
      */
-    private final Action mIndicesChanged = new Action(this, ActionId.MESH_INDICES, HandleThread.MAIN);
+    private final Action mIndicesChanged = new Action(this, ActionId.MESH_INDICES, ActionThread.MAIN);
 
     /**
      * Vertex buffers collection has changed.
      */
-    private final Action mVertexBuffersChanged = new Action(this, ActionId.MESH_BUFFER, HandleThread.MAIN);
+    private final Action mVertexBuffersChanged = new Action(this, ActionId.MESH_BUFFER, ActionThread.MAIN);
 
     /**
      * List of vertex buffers.

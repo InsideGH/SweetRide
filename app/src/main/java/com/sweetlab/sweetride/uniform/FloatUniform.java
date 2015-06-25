@@ -2,7 +2,7 @@ package com.sweetlab.sweetride.uniform;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.HandleThread;
+import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 
@@ -18,7 +18,7 @@ public class FloatUniform extends CustomUniform {
     /**
      * Action when uniform has changed.
      */
-    private final Action mUniformChanged = new Action(this, ActionId.CUSTOM_UNIFORM_UPDATE, HandleThread.MAIN);
+    private final Action mUniformChanged = new Action(this, ActionId.CUSTOM_UNIFORM_UPDATE, ActionThread.MAIN);
 
     /**
      * The data storage.

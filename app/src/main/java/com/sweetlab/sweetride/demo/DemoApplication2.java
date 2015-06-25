@@ -9,17 +9,18 @@ import com.sweetlab.sweetride.UserApplication;
 import com.sweetlab.sweetride.context.MagFilter;
 import com.sweetlab.sweetride.context.MinFilter;
 import com.sweetlab.sweetride.demo.mesh.QuadMesh;
+import com.sweetlab.sweetride.engine.rendernode.AndroidRenderNode;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.intersect.Intersect;
 import com.sweetlab.sweetride.material.Material;
-import com.sweetlab.sweetride.mesh.TransformableBoundingBox;
+import com.sweetlab.sweetride.intersect.TransformableBoundingBox;
 import com.sweetlab.sweetride.node.Node;
-import com.sweetlab.sweetride.ray.Ray;
+import com.sweetlab.sweetride.intersect.Ray;
 import com.sweetlab.sweetride.shader.FragmentShader;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 import com.sweetlab.sweetride.shader.VertexShader;
 import com.sweetlab.sweetride.texture.Texture2D;
-import com.sweetlab.sweetride.touch.TouchToWorldRay;
+import com.sweetlab.sweetride.touch.TouchToRay;
 
 /**
  * Demo application2. Head up display.
@@ -63,7 +64,7 @@ public class DemoApplication2 extends UserApplication {
     /**
      * World space ray generator.
      */
-    private TouchToWorldRay mTouchToWorldRay;
+    private TouchToRay mTouchToRay;
 
     /**
      * Intersect.
@@ -116,7 +117,7 @@ public class DemoApplication2 extends UserApplication {
 
         engineRoot.addChild(mAndroidRenderNode);
 
-        mTouchToWorldRay = new TouchToWorldRay(width, height);
+        mTouchToRay = new TouchToRay(width, height);
     }
 
     @Override
@@ -139,7 +140,7 @@ public class DemoApplication2 extends UserApplication {
                 int x = (int) event.getX(actionIndex);
                 int y = (int) event.getY(actionIndex);
 
-                Ray ray = mTouchToWorldRay.getRay(mAndroidRenderNode.getCamera(), x, y);
+                Ray ray = mTouchToRay.getRay(mAndroidRenderNode.getCamera(), x, y);
 
                 TransformableBoundingBox moveBox = mMoveQuad.getTransformableBoundingBox();
                 if (mIntersect.intersects(ray, moveBox)) {

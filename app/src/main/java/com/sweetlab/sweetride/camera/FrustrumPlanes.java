@@ -1,6 +1,7 @@
-package com.sweetlab.sweetride.math;
+package com.sweetlab.sweetride.camera;
 
-import com.sweetlab.sweetride.plane.Plane;
+import com.sweetlab.sweetride.intersect.Plane;
+import com.sweetlab.sweetride.math.Vec3;
 
 /**
  * Camera frustrum planes in world space.

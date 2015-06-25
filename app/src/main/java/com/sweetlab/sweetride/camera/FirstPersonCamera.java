@@ -1,4 +1,8 @@
-package com.sweetlab.sweetride.math;
+package com.sweetlab.sweetride.camera;
+
+import com.sweetlab.sweetride.math.Matrix44;
+import com.sweetlab.sweetride.math.Transform;
+import com.sweetlab.sweetride.math.Vec3;
 
 /**
  * First person (shooter) camera. Strafe left/right/forward/backward and

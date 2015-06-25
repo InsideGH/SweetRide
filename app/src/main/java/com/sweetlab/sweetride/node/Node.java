@@ -2,9 +2,9 @@ package com.sweetlab.sweetride.node;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.HandleThread;
+import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
-import com.sweetlab.sweetride.math.Camera;
+import com.sweetlab.sweetride.camera.Camera;
 import com.sweetlab.sweetride.math.Transform;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class Node extends NoHandleNotifier {
     /**
      * Action when world is dirty.
      */
-    private Action mWorldDirty = new Action(this, ActionId.NODE_WORLD_DIRTY, HandleThread.MAIN);
+    private Action mWorldDirty = new Action(this, ActionId.NODE_WORLD_DIRTY, ActionThread.MAIN);
 
     /**
      * List of children.

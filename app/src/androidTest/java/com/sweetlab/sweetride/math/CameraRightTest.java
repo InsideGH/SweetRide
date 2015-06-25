@@ -2,8 +2,10 @@ package com.sweetlab.sweetride.math;
 
 import android.test.AndroidTestCase;
 
+import com.sweetlab.sweetride.camera.Camera;
+import com.sweetlab.sweetride.camera.Frustrum;
 import com.sweetlab.sweetride.engine.FrontEndActionHandler;
-import com.sweetlab.sweetride.plane.Plane;
+import com.sweetlab.sweetride.intersect.Plane;
 
 /**
  * Test camera.

@@ -1,5 +1,6 @@
 package com.sweetlab.sweetride.engine;
 
+import com.sweetlab.sweetride.engine.rendernode.RenderNode;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.node.Node;
 

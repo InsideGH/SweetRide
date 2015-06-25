@@ -2,7 +2,7 @@ package com.sweetlab.sweetride.attributedata;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionId;
-import com.sweetlab.sweetride.action.HandleThread;
+import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.BufferUsage;
@@ -52,8 +52,8 @@ public class IndicesBuffer extends NoHandleNotifier implements BufferResource {
         mIndicesCount = data.length;
         mByteCount = data.length * Util.BYTES_PER_SHORT;
         mBuffer = createShortBuffer(data);
-        addAction(new Action(this, ActionId.INDICES_CREATE, HandleThread.GL));
-        addAction(new Action(this, ActionId.INDICES_LOAD, HandleThread.GL));
+        addAction(new Action(this, ActionId.INDICES_CREATE, ActionThread.GL));
+        addAction(new Action(this, ActionId.INDICES_LOAD, ActionThread.GL));
     }
 
     @Override

@@ -2,8 +2,11 @@ package com.sweetlab.sweetride.engine;
 
 import android.test.AndroidTestCase;
 
+import com.sweetlab.sweetride.engine.rendernode.DefaultRenderNode;
+import com.sweetlab.sweetride.engine.rendernode.RenderGroupCollector;
+import com.sweetlab.sweetride.engine.rendernode.RenderNode;
 import com.sweetlab.sweetride.geometry.Geometry;
-import com.sweetlab.sweetride.math.Camera;
+import com.sweetlab.sweetride.camera.Camera;
 import com.sweetlab.sweetride.math.FloatUtil;
 import com.sweetlab.sweetride.node.Node;
 

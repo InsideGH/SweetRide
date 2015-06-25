@@ -1,4 +1,4 @@
-package com.sweetlab.sweetride.ray;
+package com.sweetlab.sweetride.intersect;
 
 import com.sweetlab.sweetride.math.Vec3;
 
