@@ -88,7 +88,7 @@ public class DemoApplication2 extends UserApplication {
     private final Intersect mIntersect = new Intersect();
 
     /**
-     * Android assets loader.
+     * Android assets loader using RX java.
      */
     private final AssetsLoader mAssetLoader;
 
@@ -162,6 +162,9 @@ public class DemoApplication2 extends UserApplication {
         mAndroidRenderNode.addChild(mMoveQuad);
         mAndroidRenderNode.addChild(mTurnQuad);
 
+        /**
+         * Place and size based on DP.
+         */
         float margin = DpPx.dpToPx(mContext, CONTROL_MARGIN_DP);
         float quadSize = DpPx.dpToPx(mContext, CONTROL_SIZE_DP);
         float half = quadSize / 2;

@@ -136,7 +136,7 @@ public abstract class EngineView extends GLSurfaceView implements EngineRenderer
     public void onDrawFrame(BackendContext context) {
         synchronized (mGuard) {
             /**
-             * Some gl stuff...to be replaced.
+             * Some gl stuff...to be replaced even more.
              */
             GLES20.glEnable(GLES20.GL_DEPTH_TEST);
             GLES20.glEnable(GLES20.GL_BLEND);

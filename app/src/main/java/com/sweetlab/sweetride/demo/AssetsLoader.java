@@ -10,7 +10,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Android assets loader.
+ * Android assets loader using RX java.
  */
 public class AssetsLoader {
 
