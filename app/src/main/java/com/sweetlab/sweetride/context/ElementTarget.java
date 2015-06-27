@@ -25,20 +25,15 @@ public class ElementTarget {
     /**
      * Buffer to read GL information.
      */
-    private int[] mReadBuffer = new int[4];
-
-    /**
-     * The backend context.
-     */
-    private final BackendContext mContext;
+    private final int[] mReadBuffer = new int[4];
 
     /**
      * Constructor.
      *
      * @param backendContext The backend context.
      */
+    @SuppressWarnings("unused")
     public ElementTarget(BackendContext backendContext) {
-        mContext = backendContext;
     }
 
     /**
@@ -53,7 +48,7 @@ public class ElementTarget {
             }
         }
         final int bufferId = indicesBuffer.getId();
-        if (!isBufferBound(bufferId)) {
+        if (isBufferUnBound(bufferId)) {
             GLES20.glBindBuffer(TARGET, bufferId);
         }
 
@@ -74,7 +69,7 @@ public class ElementTarget {
          * Check if buffer needs to be bound.
          */
         final int bufferId = indicesBuffer.getId();
-        if (!isBufferBound(bufferId)) {
+        if (isBufferUnBound(bufferId)) {
             GLES20.glBindBuffer(TARGET, bufferId);
         }
     }
@@ -83,7 +78,7 @@ public class ElementTarget {
      * Disable indices buffer from elements target.
      */
     public void disableElements() {
-        if (!isAnyBufferBound()) {
+        if (isNoBufferBound()) {
             throw new RuntimeException("Can't disable elements with not bound buffer object to target GL_ELEMENT_ARRAY_BUFFER");
         }
         unBindBuffer();
@@ -97,7 +92,7 @@ public class ElementTarget {
      * @param count  Number of indices to draw with.
      */
     public void draw(int mode, int offset, int count) {
-        if (!isAnyBufferBound()) {
+        if (isNoBufferBound()) {
             throw new RuntimeException("Can't draw using elements without elements buffer object bound");
         }
         if (count * Util.BYTES_PER_SHORT > getBoundBufferSize()) {
@@ -107,13 +102,13 @@ public class ElementTarget {
     }
 
     /**
-     * Get if target has any buffer bound.
+     * Check if no buffer is bound.
      *
-     * @return True if target has buffer bound.
+     * @return True no buffer is bound.
      */
-    private boolean isAnyBufferBound() {
+    private boolean isNoBufferBound() {
         GLES20.glGetIntegerv(BINDING, mReadBuffer, 0);
-        return mReadBuffer[0] != 0;
+        return mReadBuffer[0] == 0;
     }
 
     /**
@@ -129,7 +124,7 @@ public class ElementTarget {
      * @return The bound buffer size.
      */
     private int getBoundBufferSize() {
-        if (!isAnyBufferBound()) {
+        if (isNoBufferBound()) {
             throw new RuntimeException("Can't read buffer size when no buffer object is bound to target GL_ELEMENT_ARRAY_BUFFER");
         }
         GLES20.glGetBufferParameteriv(TARGET, GLES20.GL_BUFFER_SIZE, mReadBuffer, 0);
@@ -137,16 +132,16 @@ public class ElementTarget {
     }
 
     /**
-     * Get if buffer id is bound to target.
+     * Get if buffer id is unbound to target.
      *
      * @param id The buffer id.
-     * @return True if bound.
+     * @return True if unbound.
      */
-    private boolean isBufferBound(int id) {
+    private boolean isBufferUnBound(int id) {
         if (id > 0) {
             GLES20.glGetIntegerv(BINDING, mReadBuffer, 0);
-            return mReadBuffer[0] == id;
+            return mReadBuffer[0] != id;
         }
-        return false;
+        return true;
     }
 }

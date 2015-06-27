@@ -25,7 +25,7 @@ public class EngineUniformCache {
     /**
      * A cache of active engine uniforms with shader program as key.
      */
-    private HashMap<ShaderProgram, List<EngineUniform>> mCache = new HashMap<>();
+    private final HashMap<ShaderProgram, List<EngineUniform>> mCache = new HashMap<>();
 
     /**
      * Constructor.

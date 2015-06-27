@@ -9,7 +9,7 @@ public class ProgramUniform {
     /**
      * Name of the uniform.
      */
-    private String mName;
+    private final String mName;
 
     /**
      * Array size of uniform.
@@ -19,17 +19,17 @@ public class ProgramUniform {
     /**
      * The element count of the uniform (for example, GL_FLOAT_VEC2 would be 2)
      */
-    private int mElementCount;
+    private final int mElementCount;
 
     /**
      * The type of uniform (for example GL_FLOAT)
      */
-    private int mType;
+    private final int mType;
 
     /**
      * Location in shader program.
      */
-    private int mLocation;
+    private final int mLocation;
 
     /**
      * Constructor.

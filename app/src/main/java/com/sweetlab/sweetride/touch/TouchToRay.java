@@ -18,22 +18,22 @@ public class TouchToRay {
     /**
      * NDC near point.
      */
-    private Vec4 mNearPoint = new Vec4();
+    private final Vec4 mNearPoint = new Vec4();
 
     /**
      * NDC far point.
      */
-    private Vec4 mFarPoint = new Vec4();
+    private final Vec4 mFarPoint = new Vec4();
 
     /**
      * Ray position.
      */
-    private Vec3 mPosition = new Vec3();
+    private final Vec3 mPosition = new Vec3();
 
     /**
      * Ray direction.
      */
-    private Vec3 mDirection = new Vec3();
+    private final Vec3 mDirection = new Vec3();
 
     /**
      * Constructor.

@@ -11,7 +11,7 @@ public class GraphContentPool implements Pool<GraphContent> {
     /**
      * The pool content.
      */
-    private Stack<GraphContent> mStack = new Stack<>();
+    private final Stack<GraphContent> mStack = new Stack<>();
 
     @Override
     public synchronized GraphContent get() {

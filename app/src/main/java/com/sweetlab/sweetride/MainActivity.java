@@ -5,6 +5,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -21,11 +22,6 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
 
     /**
-     * Navigation view.
-     */
-    private NavigationView mNavigationView;
-
-    /**
      * Main content frame.
      */
     private DemoView mDemoView;
@@ -36,12 +32,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer);
-        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         mDemoView = (DemoView) findViewById(R.id.demo_gl_view);
 
         Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+        }
         toolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 menuItem.setChecked(true);

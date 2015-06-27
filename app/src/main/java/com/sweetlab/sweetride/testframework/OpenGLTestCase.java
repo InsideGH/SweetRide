@@ -73,7 +73,7 @@ public class OpenGLTestCase extends ActivityInstrumentationTestCase2<TestActivit
     /**
      * Run a task on gl thread.
      *
-     * @param task
+     * @param task Task to run.
      * @return Result.
      */
     protected Object runOnGLThread(ResultRunnable task) {

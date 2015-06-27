@@ -12,21 +12,15 @@ public class GLES20State {
     /**
      * Buffer for reading GL information.
      */
-    private int[] buf = new int[1];
-
-    /**
-     * Backend context.
-     */
-    @SuppressWarnings("unused")
-    private final BackendContext mContext;
+    private final int[] buf = new int[1];
 
     /**
      * Constructor.
      *
      * @param backendContext The backend context.
      */
+    @SuppressWarnings("unused")
     public GLES20State(BackendContext backendContext) {
-        mContext = backendContext;
     }
 
     /**

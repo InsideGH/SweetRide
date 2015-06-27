@@ -11,7 +11,7 @@ public class ResourceManager {
     /**
      * Invalid render buffer id.
      */
-    public static int INVALID_RENDER_BUFFER_ID = 0;
+    public static final int INVALID_RENDER_BUFFER_ID = 0;
 
     /**
      * Invalid program id.
@@ -21,7 +21,7 @@ public class ResourceManager {
     /**
      * Invalid texture id.
      */
-    public static int INVALID_TEXTURE_ID = -1;
+    public static final int INVALID_TEXTURE_ID = -1;
 
     /**
      * Invalid shader id.
@@ -31,25 +31,20 @@ public class ResourceManager {
     /**
      * Invalid buffer id.
      */
-    public static int INVALID_BUFFER_ID = -1;
-
-    /**
-     * The backend context.
-     */
-    private final BackendContext mContext;
+    public static final int INVALID_BUFFER_ID = -1;
 
     /**
      * Used during buffer generation.
      */
-    private int[] mBuf = new int[1];
+    private final int[] mBuf = new int[1];
 
     /**
      * Constructor.
      *
      * @param backendContext Backend context.
      */
+    @SuppressWarnings("unused")
     public ResourceManager(BackendContext backendContext) {
-        mContext = backendContext;
     }
 
     /**

@@ -13,14 +13,14 @@ import java.util.List;
  */
 public class BackendMaterial {
     /**
+     * The texture collection references.
+     */
+    private final List<TextureResource> mTextures = new ArrayList<>();
+
+    /**
      * The shader program reference.
      */
     private ShaderProgram mShaderProgram;
-
-    /**
-     * The texture collection references.
-     */
-    private List<TextureResource> mTextures = new ArrayList<>();
 
     /**
      * Set the shader program.

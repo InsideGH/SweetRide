@@ -18,7 +18,7 @@ public class Node extends NoHandleNotifier {
     /**
      * Action when world is dirty.
      */
-    private Action mWorldDirty = new Action(this, ActionId.NODE_WORLD_DIRTY, ActionThread.MAIN);
+    private final Action mWorldDirty = new Action(this, ActionId.NODE_WORLD_DIRTY, ActionThread.MAIN);
 
     /**
      * List of children.
@@ -39,11 +39,6 @@ public class Node extends NoHandleNotifier {
      * List of node controllers.
      */
     private final List<NodeController> mNodeControllers = new ArrayList<>();
-
-    /**
-     * The camera.
-     */
-    protected Camera mCamera;
 
     /**
      * The parent.
@@ -129,13 +124,23 @@ public class Node extends NoHandleNotifier {
      * @return The camera or null if not found.
      */
     public Camera findCamera() {
-        if (mCamera != null) {
-            return mCamera;
+        Camera camera = getCamera();
+        if (camera != null) {
+            return camera;
         } else if (mParent != null) {
             return mParent.findCamera();
         } else {
             return null;
         }
+    }
+
+    /**
+     * Get camera.
+     *
+     * @return The camera or null if no camera exist.
+     */
+    public Camera getCamera() {
+        return null;
     }
 
     /**
@@ -201,6 +206,7 @@ public class Node extends NoHandleNotifier {
 
         if (onUpdate(dt)) {
             Iterator<Node> iterator = mChildren.iterator();
+            //noinspection WhileLoopReplaceableByForEach
             while (iterator.hasNext()) {
                 iterator.next().update(dt);
             }

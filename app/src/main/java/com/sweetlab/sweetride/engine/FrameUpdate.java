@@ -23,32 +23,32 @@ public class FrameUpdate {
     /**
      * Delta time.
      */
-    private DeltaTime mDeltaTime = new DeltaTime();
+    private final DeltaTime mDeltaTime = new DeltaTime();
 
     /**
      * A pool of graph content storage objects.
      */
-    private GraphContentPool mGraphContentPool = new GraphContentPool();
+    private final GraphContentPool mGraphContentPool = new GraphContentPool();
 
     /**
      * Graph content collector.
      */
-    private ContentCollector mContentCollector = new ContentCollector();
+    private final ContentCollector mContentCollector = new ContentCollector();
 
     /**
      * A render node group geometry collector.
      */
-    private RenderGroupCollector mGroupCollector = new RenderGroupCollector();
+    private final RenderGroupCollector mGroupCollector = new RenderGroupCollector();
 
     /**
      * The action handler
      */
-    private FrontEndActionHandler mActionHandler = new FrontEndActionHandler();
+    private final FrontEndActionHandler mActionHandler = new FrontEndActionHandler();
 
     /**
      * View frustrum culling.
      */
-    private ViewFrustrumCulling mViewFrustrumCulling = new ViewFrustrumCulling();
+    private final ViewFrustrumCulling mViewFrustrumCulling = new ViewFrustrumCulling();
 
     /**
      * A frame update.

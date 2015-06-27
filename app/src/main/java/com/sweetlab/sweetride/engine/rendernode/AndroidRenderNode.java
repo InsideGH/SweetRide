@@ -25,40 +25,14 @@ public class AndroidRenderNode extends DefaultRenderNode {
     private static final float CAMERA_DISTANCE = 3f;
 
     /**
-     * Head up display right value.
-     */
-    private final int mRight;
-
-    /**
-     * Head up display left value.
-     */
-    private final int mLeft;
-
-    /**
-     * Head up display top value.
-     */
-    private final int mTop;
-
-    /**
-     * Head up display bottom value.
-     */
-    private final int mBottom;
-
-    /**
-     * Orthogonal camera.
-     */
-    private Camera mCamera = new Camera();
-
-    /**
      * Constructor.
      */
     public AndroidRenderNode(int surfaceWidth, int surfaceHeight) {
-        mLeft = 0;
-        mTop = 0;
-        mRight = surfaceWidth;
-        mBottom = surfaceHeight;
-        mCamera.getFrustrum().setOrthographicProjection(mLeft, mRight, mBottom, mTop, NEAR, FAR, surfaceWidth, surfaceHeight);
-        mCamera.lookAt(0, 0, CAMERA_DISTANCE, 0, 0, 0);
-        setCamera(mCamera);
+        int left = 0;
+        int top = 0;
+        Camera camera = new Camera();
+        camera.getFrustrum().setOrthographicProjection(left, surfaceWidth, surfaceHeight, top, NEAR, FAR, surfaceWidth, surfaceHeight);
+        camera.lookAt(0, 0, CAMERA_DISTANCE, 0, 0, 0);
+        setCamera(camera);
     }
 }

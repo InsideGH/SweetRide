@@ -10,47 +10,47 @@ public class FrustrumPlanes {
     /**
      * Plane normal.
      */
-    private Vec3 mNormal = new Vec3();
+    private final Vec3 mNormal = new Vec3();
 
     /**
      * Plane point.
      */
-    private Vec3 mPoint = new Vec3();
+    private final Vec3 mPoint = new Vec3();
 
     /**
      * Near field center.
      */
-    private Vec3 mCenterVec = new Vec3();
+    private final Vec3 mCenterVec = new Vec3();
 
     /**
      * Near field top/bottom/left/right.
      */
-    private Vec3 mSideVec = new Vec3();
+    private final Vec3 mSideVec = new Vec3();
 
     /**
      * Near field offset to top/bottom/left/right.
      */
-    private Vec3 mOffsetVec = new Vec3();
+    private final Vec3 mOffsetVec = new Vec3();
 
     /**
      * The look vector.
      */
-    private Vec3 mLookVec = new Vec3();
+    private final Vec3 mLookVec = new Vec3();
 
     /**
      * The right vector.
      */
-    private Vec3 mRightVec = new Vec3();
+    private final Vec3 mRightVec = new Vec3();
 
     /**
      * The up vector.
      */
-    private Vec3 mUpVec = new Vec3();
+    private final Vec3 mUpVec = new Vec3();
 
     /**
      * The position.
      */
-    private Vec3 mPos = new Vec3();
+    private final Vec3 mPos = new Vec3();
 
     /**
      * The near plane in world space.
@@ -160,7 +160,7 @@ public class FrustrumPlanes {
     /**
      * Get the left plan in world space.
      *
-     * @return The leftplan in world space.
+     * @return The left plane in world space.
      */
     public Plane getLeftPlane() {
         return mLeftPlane;

@@ -9,7 +9,7 @@ import java.util.Stack;
  */
 public class Vec3Pool implements Pool<Vec3> {
 
-    private Stack<Vec3> mStack = new Stack<>();
+    private final Stack<Vec3> mStack = new Stack<>();
 
     @Override
     public Vec3 get() {

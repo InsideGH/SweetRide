@@ -10,12 +10,12 @@ public class BoundingBox {
     /**
      * The min vector (x,y,z).
      */
-    protected Vec3 mMin = new Vec3();
+    protected final Vec3 mMin = new Vec3();
 
     /**
      * The max vector (x, y, z).
      */
-    protected Vec3 mMax = new Vec3();
+    protected final Vec3 mMax = new Vec3();
 
     /**
      * Create an empty bounding box.

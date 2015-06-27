@@ -11,7 +11,7 @@ public abstract class UserApplication {
      *
      * @param engineRoot The engine root node.
      * @param width      The surface height in pixels.
-     * @param height     The surface widht in pixels.
+     * @param height     The surface width in pixels.
      */
     public abstract void onInitialized(Node engineRoot, int width, int height);
 
@@ -19,7 +19,7 @@ public abstract class UserApplication {
      * Called when surface is changed.
      *
      * @param width  The surface height in pixels.
-     * @param height The surface widht in pixels.
+     * @param height The surface width in pixels.
      */
     public abstract void onSurfaceChanged(int width, int height);
 

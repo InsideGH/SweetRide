@@ -17,7 +17,7 @@ public class DeltaTime {
     /**
      * Calculate delta time since last call.
      *
-     * @param currentTime
+     * @param currentTime Current time.
      * @return The delta time in same base as provided current time.
      */
     public long get(long currentTime) {

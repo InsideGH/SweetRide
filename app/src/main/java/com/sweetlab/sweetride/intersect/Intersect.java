@@ -30,42 +30,42 @@ public class Intersect {
     /**
      * Ray origin
      */
-    private Vec3 mRay1Origin = new Vec3();
+    private final Vec3 mRay1Origin = new Vec3();
 
     /**
      * Ray origin
      */
-    private Vec3 mRay2Origin = new Vec3();
+    private final Vec3 mRay2Origin = new Vec3();
 
     /**
      * Ray direction
      */
-    private Vec3 mRay1Direction = new Vec3();
+    private final Vec3 mRay1Direction = new Vec3();
 
     /**
      * Ray direction
      */
-    private Vec3 mRay2Direction = new Vec3();
+    private final Vec3 mRay2Direction = new Vec3();
 
     /**
      * Used a intersection point.
      */
-    private Vec3 mIntersectPoint = new Vec3();
+    private final Vec3 mIntersectPoint = new Vec3();
 
     /**
      * Used to get plane normal and in bounding box intersection.
      */
-    private Vec3 mNormal = new Vec3();
+    private final Vec3 mNormal = new Vec3();
 
     /**
      * Used in bounding box intersection
      */
-    private Vec3 mMin = new Vec3();
+    private final Vec3 mMin = new Vec3();
 
     /**
      * Used in bounding box intersection
      */
-    private Vec3 mMax = new Vec3();
+    private final Vec3 mMax = new Vec3();
 
     /**
      * Check if two rays intersect.

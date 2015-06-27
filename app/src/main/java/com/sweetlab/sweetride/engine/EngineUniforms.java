@@ -20,7 +20,7 @@ public class EngineUniforms {
     /**
      * Create a new list of all available engine uniforms.
      *
-     * @return
+     * @return List of engine uniforms.
      */
     public List<EngineUniform> createList() {
         List<EngineUniform> list = new ArrayList<>();

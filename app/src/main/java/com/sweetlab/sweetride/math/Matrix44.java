@@ -42,7 +42,7 @@ public class Matrix44 {
         System.arraycopy(a.m, 0, prod.m, 0, a.m.length);
         for (int i = 0; i < 4; i++) {
             float ai0 = prod.m[i], ai1 = prod.m[4 + i], ai2 = prod.m[8 + i], ai3 = prod.m[12 + i];
-            prod.m[i + 0] = ai0 * b.m[0] + ai1 * b.m[1] + ai2 * b.m[2] + ai3 * b.m[3];
+            prod.m[i] = ai0 * b.m[0] + ai1 * b.m[1] + ai2 * b.m[2] + ai3 * b.m[3];
             prod.m[i + 4] = ai0 * b.m[4] + ai1 * b.m[5] + ai2 * b.m[6] + ai3 * b.m[7];
             prod.m[i + 8] = ai0 * b.m[8] + ai1 * b.m[9] + ai2 * b.m[10] + ai3 * b.m[11];
             prod.m[i + 12] = ai0 * b.m[12] + ai1 * b.m[13] + ai2 * b.m[14] + ai3 * b.m[15];
@@ -52,8 +52,8 @@ public class Matrix44 {
     /**
      * Copies the array from src to this matrix.
      *
-     * @param src
-     * @return
+     * @param src Source data.
+     * @return This matrix.
      */
     public Matrix44 set(float[] src) {
         System.arraycopy(src, 0, m, 0, src.length);
@@ -63,7 +63,7 @@ public class Matrix44 {
     /**
      * Copies the array from src to this matrix.
      *
-     * @param src
+     * @param src Source data.
      */
     public void set(Matrix44 src) {
         System.arraycopy(src.m, 0, m, 0, src.m.length);
@@ -88,7 +88,7 @@ public class Matrix44 {
      * Set the translation part [12,13,14] only in this matrix
      *
      * @param t - The translation part
-     * @return
+     * @return This matrix.
      */
     public Matrix44 setTranslate(Vec3 t) {
         m[12] = t.x;
@@ -100,7 +100,7 @@ public class Matrix44 {
     /**
      * Set the translation part [12,13,14] only in this matrix
      *
-     * @return
+     * @return This matrix.
      */
     public Matrix44 setTranslate(float x, float y, float z) {
         m[12] = x;
@@ -113,10 +113,10 @@ public class Matrix44 {
      * Makes this matrix a pure translation matrix. All previous values are
      * overwritten.
      *
-     * @param x
-     * @param y
-     * @param z
-     * @return this
+     * @param x x value.
+     * @param y y value.
+     * @param z z value.
+     * @return This matrix.
      */
     public Matrix44 createTranslation(float x, float y, float z) {
         setIdentity();
@@ -130,8 +130,8 @@ public class Matrix44 {
      * Makes this matrix a pure translation matrix. All previous values are
      * overwritten.
      *
-     * @param trans
-     * @return
+     * @param trans The translation vector.
+     * @return This matrix.
      */
     public Matrix44 createTranslation(Vec3 trans) {
         setIdentity();
@@ -145,10 +145,10 @@ public class Matrix44 {
      * Translate this matrix by x,y,z.<br>
      * Equivalent to <b> mult(new Matrix44().setTranslate(x, y, z));
      *
-     * @param x
-     * @param y
-     * @param z
-     * @return this
+     * @param x x value.
+     * @param y y value.
+     * @param z z value.
+     * @return This matrix.
      */
     public Matrix44 translate(float x, float y, float z) {
         m[12] = m[0] * x + m[4] * y + m[8] * z + m[12];
@@ -161,8 +161,8 @@ public class Matrix44 {
      * Translate this matrix by the values in trans vector.<br>
      * Equivalent to <b> mult(new Matrix44().setTranslate(x, y, z));
      *
-     * @param trans
-     * @return
+     * @param trans Translation vector.
+     * @return This matrix.
      */
     public Matrix44 translate(Vec3 trans) {
         m[12] = m[0] * trans.x + m[4] * trans.y + m[8] * trans.z + m[12];
@@ -176,10 +176,10 @@ public class Matrix44 {
      * overwritten.
      *
      * @param angle - in degrees
-     * @param x
-     * @param y
-     * @param z
-     * @return this
+     * @param x     x value.
+     * @param y     y value.
+     * @param z     z value.
+     * @return This matrix.
      */
     public Matrix44 setRotate(float angle, float x, float y, float z) {
         float mag, s, c;
@@ -242,10 +242,10 @@ public class Matrix44 {
      * Rotate this matrix by angle (radians) around axis x,y,z.
      *
      * @param angle - degrees
-     * @param x
-     * @param y
-     * @param z
-     * @return this
+     * @param x     x value.
+     * @param y     y value.
+     * @param z     z value.
+     * @return This matrix.
      */
     public Matrix44 rotate(float angle, float x, float y, float z) {
         float mag, s, c;
@@ -303,7 +303,7 @@ public class Matrix44 {
 
         for (int i = 0; i < 4; i++) {
             float ai0 = m[i], ai1 = m[4 + i], ai2 = m[8 + i], ai3 = m[12 + i];
-            m[i + 0] = ai0 * tmpArray[0] + ai1 * tmpArray[1] + ai2 * tmpArray[2] + ai3
+            m[i] = ai0 * tmpArray[0] + ai1 * tmpArray[1] + ai2 * tmpArray[2] + ai3
                     * tmpArray[3];
             m[i + 4] = ai0 * tmpArray[4] + ai1 * tmpArray[5] + ai2 * tmpArray[6] + ai3
                     * tmpArray[7];
@@ -320,9 +320,9 @@ public class Matrix44 {
      * Makes this matrix a pure scale matrix. All previous values are
      * overwritten.
      *
-     * @param x
-     * @param y
-     * @param z
+     * @param x x value.
+     * @param y y value.
+     * @param z z value.
      */
     public Matrix44 setScale(float x, float y, float z) {
         setIdentity();
@@ -335,10 +335,10 @@ public class Matrix44 {
     /**
      * Scale this matrix.
      *
-     * @param x
-     * @param y
-     * @param z
-     * @return this
+     * @param x x value.
+     * @param y y value.
+     * @param z z value.
+     * @return This matrix.
      */
     public Matrix44 scale(float x, float y, float z) {
         m[0] *= x;
@@ -374,8 +374,8 @@ public class Matrix44 {
      * Sets the 3x3 rotation part of this matrix to the same values contained in
      * mat.
      *
-     * @param mat
-     * @return
+     * @param mat The source rotation matrix.
+     * @return This matrix.
      */
     public Matrix44 setRotation(Matrix33 mat) {
         m[0] = mat.m[0];
@@ -431,8 +431,6 @@ public class Matrix44 {
 
     /**
      * Sets the translation part of this matrix to dst vector.
-     *
-     * @return
      */
     public void get3x1Translation(Vec3 dst) {
         dst.set(m[12], m[13], m[14]);
@@ -440,8 +438,6 @@ public class Matrix44 {
 
     /**
      * Set dst 4x4 matrix, with only the translation part of this matrix.
-     *
-     * @return
      */
     public void get4x4Translation(Matrix44 dst) {
         dst.createTranslation(m[12], m[13], m[14]);
@@ -450,8 +446,8 @@ public class Matrix44 {
     /**
      * Set the X axis of this matrix (column)
      *
-     * @param src
-     * @return
+     * @param src x axis values.
+     * @return This matrix.
      */
     public Matrix44 setXAxis(Vec3 src) {
         m[0] = src.x;
@@ -462,11 +458,6 @@ public class Matrix44 {
 
     /**
      * Set the X axis of this matrix (column)
-     *
-     * @param x
-     * @param y
-     * @param z
-     * @return
      */
     public Matrix44 setXAxis(float x, float y, float z) {
         m[0] = x;
@@ -477,8 +468,6 @@ public class Matrix44 {
 
     /**
      * Set the Y axis of this matrix (column)
-     *
-     * @return
      */
     public Matrix44 setYAxis(Vec3 src) {
         m[4] = src.x;
@@ -489,11 +478,6 @@ public class Matrix44 {
 
     /**
      * Set the Y axis of this matrix (column)
-     *
-     * @param x
-     * @param y
-     * @param z
-     * @return
      */
     public Matrix44 setYAxis(float x, float y, float z) {
         m[4] = x;
@@ -504,8 +488,6 @@ public class Matrix44 {
 
     /**
      * Set the Z axis of this matrix (column)
-     *
-     * @return
      */
     public Matrix44 setZAxis(Vec3 src) {
         setZAxis(src.x, src.y, src.z);
@@ -514,11 +496,6 @@ public class Matrix44 {
 
     /**
      * Set the Z axis of this matrix (column)
-     *
-     * @param x
-     * @param y
-     * @param z
-     * @return
      */
     public Matrix44 setZAxis(float x, float y, float z) {
         m[8] = x;
@@ -529,8 +506,6 @@ public class Matrix44 {
 
     /**
      * Get the X axis from this matrix (column)
-     *
-     * @return
      */
     public void getXAxis(Vec3 dst) {
         dst.set(m[0], m[1], m[2]);
@@ -538,8 +513,6 @@ public class Matrix44 {
 
     /**
      * Get the Y axis from this matrix (column)
-     *
-     * @return
      */
     public void getYAxis(Vec3 dst) {
         dst.set(m[4], m[5], m[6]);
@@ -547,8 +520,6 @@ public class Matrix44 {
 
     /**
      * Get the Z axis from this matrix (column)
-     *
-     * @return
      */
     public void getZAxis(Vec3 dst) {
         dst.set(m[8], m[9], m[10]);
@@ -556,8 +527,6 @@ public class Matrix44 {
 
     /**
      * Transpose this matrix
-     *
-     * @return
      */
     public Matrix44 transpose() {
         float tmp;
@@ -678,13 +647,13 @@ public class Matrix44 {
      * side. This is performing a post multiplication of this matrix with b
      * matrix (OpenGL style)
      *
-     * @param b
+     * @param b Right side matrix.
      * @return This matrix
      */
     public Matrix44 mult(final Matrix44 b) {
         for (int i = 0; i < 4; i++) {
             float ai0 = m[i], ai1 = m[4 + i], ai2 = m[8 + i], ai3 = m[12 + i];
-            m[i + 0] = ai0 * b.m[0] + ai1 * b.m[1] + ai2 * b.m[2] + ai3 * b.m[3];
+            m[i] = ai0 * b.m[0] + ai1 * b.m[1] + ai2 * b.m[2] + ai3 * b.m[3];
             m[i + 4] = ai0 * b.m[4] + ai1 * b.m[5] + ai2 * b.m[6] + ai3 * b.m[7];
             m[i + 8] = ai0 * b.m[8] + ai1 * b.m[9] + ai2 * b.m[10] + ai3 * b.m[11];
             m[i + 12] = ai0 * b.m[12] + ai1 * b.m[13] + ai2 * b.m[14] + ai3 * b.m[15];

@@ -44,17 +44,12 @@ public class AttributeExtractor {
     private final int[] mType = new int[1];
 
     /**
-     * Backend context.
-     */
-    private final BackendContext mContext;
-
-    /**
      * Constructor.
      *
      * @param backendContext The backend context.
      */
+    @SuppressWarnings("unused")
     public AttributeExtractor(BackendContext backendContext) {
-        mContext = backendContext;
     }
 
     /**

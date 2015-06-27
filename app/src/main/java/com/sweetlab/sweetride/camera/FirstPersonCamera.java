@@ -12,47 +12,47 @@ public class FirstPersonCamera extends Camera {
     /**
      * Temporary vector during update.
      */
-    private Vec3 mTmp = new Vec3();
+    private final Vec3 mTmp = new Vec3();
 
     /**
      * Right vector during update.
      */
-    private Vec3 mDeltaRight = new Vec3();
+    private final Vec3 mDeltaRight = new Vec3();
 
     /**
      * Up vector during update.
      */
-    private Vec3 mDeltaUp = new Vec3();
+    private final Vec3 mDeltaUp = new Vec3();
 
     /**
      * Look vector during update.
      */
-    private Vec3 mDeltaLook = new Vec3();
+    private final Vec3 mDeltaLook = new Vec3();
 
     /**
      * Right vector during update.
      */
-    private Vec3 mCameraRight = new Vec3();
+    private final Vec3 mCameraRight = new Vec3();
 
     /**
      * Look vector during update.
      */
-    private Vec3 mCameraLook = new Vec3();
+    private final Vec3 mCameraLook = new Vec3();
 
     /**
      * Pos vector during update.
      */
-    private Vec3 mDeltaPos = new Vec3();
+    private final Vec3 mDeltaPos = new Vec3();
 
     /**
      * Rotation matrix during update.
      */
-    private Matrix44 mRotationMatrix = new Matrix44();
+    private final Matrix44 mRotationMatrix = new Matrix44();
 
     /**
      * Transform to be applied to camera.
      */
-    private Transform mTransform = new Transform();
+    private final Transform mTransform = new Transform();
 
     /**
      * Move and turn camera.

@@ -88,11 +88,6 @@ public class DemoApplication2 extends UserApplication {
     private final Intersect mIntersect = new Intersect();
 
     /**
-     * Android assets loader using RX java.
-     */
-    private final AssetsLoader mAssetLoader;
-
-    /**
      * The head up display node/render node.
      */
     private AndroidRenderNode mAndroidRenderNode;
@@ -111,7 +106,7 @@ public class DemoApplication2 extends UserApplication {
         /**
          * Create assets loader.
          */
-        mAssetLoader = new AssetsLoader(context);
+        AssetsLoader assetsLoader = new AssetsLoader(context);
 
         /**
          * Create shader program.
@@ -121,14 +116,16 @@ public class DemoApplication2 extends UserApplication {
         /**
          * Create left quad.
          */
-        mMoveQuad.setMaterial(new Material());
-        mMoveQuad.getMaterial().setShaderProgram(program);
+        Material material = new Material();
+        mMoveQuad.setMaterial(material);
+        material.setShaderProgram(program);
 
         /**
          * Create right quad.
          */
-        mTurnQuad.setMaterial(new Material());
-        mTurnQuad.getMaterial().setShaderProgram(program);
+        material = new Material();
+        mTurnQuad.setMaterial(material);
+        material.setShaderProgram(program);
 
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inPreferredConfig = Bitmap.Config.ARGB_8888;
@@ -136,22 +133,28 @@ public class DemoApplication2 extends UserApplication {
         /**
          * Load bitmap.
          */
-        mAssetLoader.loadBitmap(R.drawable.compass, opts).subscribe(new Action1<Bitmap>() {
+        assetsLoader.loadBitmap(R.drawable.compass, opts).subscribe(new Action1<Bitmap>() {
             @Override
             public void call(Bitmap bitmap) {
-                Texture2D textureLeft = new Texture2D("s_texture", bitmap, MinFilter.NEAREST, MagFilter.NEAREST);
-                mMoveQuad.getMaterial().addTexture(textureLeft);
+                Material moveMaterial = mMoveQuad.getMaterial();
+                if (moveMaterial != null) {
+                    Texture2D textureLeft = new Texture2D("s_texture", bitmap, MinFilter.NEAREST, MagFilter.NEAREST);
+                    moveMaterial.addTexture(textureLeft);
+                }
             }
         });
 
         /**
          * Load bitmap.
          */
-        mAssetLoader.loadBitmap(R.drawable.turn, opts).subscribe(new Action1<Bitmap>() {
+        assetsLoader.loadBitmap(R.drawable.turn, opts).subscribe(new Action1<Bitmap>() {
             @Override
             public void call(Bitmap bitmap) {
-                Texture2D textureRight = new Texture2D("s_texture", bitmap, MinFilter.NEAREST, MagFilter.NEAREST);
-                mTurnQuad.getMaterial().addTexture(textureRight);
+                Material turnMaterial = mTurnQuad.getMaterial();
+                if (turnMaterial != null) {
+                    Texture2D textureRight = new Texture2D("s_texture", bitmap, MinFilter.NEAREST, MagFilter.NEAREST);
+                    turnMaterial.addTexture(textureRight);
+                }
             }
         });
     }

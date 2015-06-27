@@ -43,7 +43,7 @@ public class Camera extends NoHandleNotifier {
     /**
      * Camera has been updated.
      */
-    private Action mCameraUpdated = new Action(this, ActionId.CAMERA_UPDATED, ActionThread.MAIN);
+    private final Action mCameraUpdated = new Action(this, ActionId.CAMERA_UPDATED, ActionThread.MAIN);
 
     /**
      * Position in world.
@@ -98,7 +98,7 @@ public class Camera extends NoHandleNotifier {
     /**
      * The frustrum planes.
      */
-    private FrustrumPlanes mFrustrumPlanes = new FrustrumPlanes();
+    private final FrustrumPlanes mFrustrumPlanes = new FrustrumPlanes();
 
     /**
      * Constructor.
@@ -109,8 +109,9 @@ public class Camera extends NoHandleNotifier {
 
     @Override
     public boolean handleAction(Action action) {
-        if ((action.getType().equals(ActionId.CAMERA_UPDATED))) {
-            return true;
+        switch (action.getType()) {
+            case CAMERA_UPDATED:
+                return true;
         }
         return super.handleAction(action);
     }

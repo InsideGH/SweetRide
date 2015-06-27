@@ -29,7 +29,7 @@ public class Attribute {
     /**
      * The element count of the uniform (for example, GL_FLOAT_VEC2 would be 2)
      */
-    private int mVertexSize;
+    private final int mVertexSize;
 
     /**
      * The location of the attribute.

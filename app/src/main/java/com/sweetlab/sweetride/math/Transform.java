@@ -12,12 +12,12 @@ public class Transform extends NoHandleNotifier {
     /**
      * Transform has been updated. Used as indication only.
      */
-    private Action mTransformChanged = new Action(this, ActionId.TRANSFORM_UPDATED, ActionThread.MAIN);
+    private final Action mTransformChanged = new Action(this, ActionId.TRANSFORM_UPDATED, ActionThread.MAIN);
 
     /**
      * The matrix
      */
-    private Matrix44 mMatrix;
+    private final Matrix44 mMatrix;
 
     /**
      * Constructor initializing this transform to identity.
@@ -50,7 +50,7 @@ public class Transform extends NoHandleNotifier {
     /**
      * Set this transform to be a copy of source transform.
      *
-     * @param sourceTransform
+     * @param sourceTransform The source transform.
      */
     public void set(Transform sourceTransform) {
         mMatrix.set(sourceTransform.getMatrix());
@@ -120,7 +120,7 @@ public class Transform extends NoHandleNotifier {
      *
      * @param angle Angle degrees.
      * @param x     x axis.
-     * @param y     y axix.
+     * @param y     y axis.
      * @param z     z axis.
      */
     public void setRotate(float angle, float x, float y, float z) {
@@ -133,7 +133,7 @@ public class Transform extends NoHandleNotifier {
      *
      * @param angle Angle degrees.
      * @param x     x axis.
-     * @param y     y axix.
+     * @param y     y axis.
      * @param z     z axis.
      */
     public void rotate(float angle, float x, float y, float z) {

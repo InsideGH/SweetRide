@@ -20,9 +20,7 @@ public class Vec3 implements Reusable {
     }
 
     /**
-     * Create a vector with same x, y, z components as input
-     *
-     * @param
+     * Create a vector with same x, y, z components as input.
      */
     public Vec3(final Vec3 from) {
         x = from.x;
@@ -47,8 +45,6 @@ public class Vec3 implements Reusable {
 
     /**
      * Return a new vector which is the negate of vec
-     *
-     * @param vec
      */
     public static Vec3 neg(Vec3 vec) {
         return new Vec3(vec).neg();
@@ -56,9 +52,6 @@ public class Vec3 implements Reusable {
 
     /**
      * Returns a new vector which is v1 + v2 vector
-     *
-     * @param
-     * @return New vector
      */
     public static Vec3 add(final Vec3 v1, final Vec3 v2) {
         return new Vec3(v1).add(v2);
@@ -66,9 +59,6 @@ public class Vec3 implements Reusable {
 
     /**
      * Return a new vector which is v1 - v2 vector.
-     *
-     * @param
-     * @return New vector
      */
     public static Vec3 sub(final Vec3 v1, final Vec3 v2) {
         return new Vec3(v1).sub(v2);
@@ -76,10 +66,6 @@ public class Vec3 implements Reusable {
 
     /**
      * Does dst = v1 -v2
-     *
-     * @param v1
-     * @param v2
-     * @param dst
      */
     public static void sub(final Vec3 v1, final Vec3 v2, Vec3 dst) {
         dst.x = v1.x - v2.x;
@@ -89,10 +75,6 @@ public class Vec3 implements Reusable {
 
     /**
      * Returns a new vector which is scalar*vec
-     *
-     * @param vec
-     * @param scalar
-     * @return
      */
     public static Vec3 mult(Vec3 vec, float scalar) {
         return new Vec3(vec).mult(scalar);
@@ -100,10 +82,6 @@ public class Vec3 implements Reusable {
 
     /**
      * Returns a new vector which is vec divided by scalar
-     *
-     * @param vec
-     * @param scalar
-     * @return
      */
     public static Vec3 div(Vec3 vec, float scalar) {
         return new Vec3(vec).div(scalar);
@@ -111,9 +89,6 @@ public class Vec3 implements Reusable {
 
     /**
      * Return a new normalised vector based on vec
-     *
-     * @param vec
-     * @return - a new normalised vector
      */
     public static Vec3 norm(Vec3 vec) {
         return new Vec3(vec).norm();
@@ -121,10 +96,6 @@ public class Vec3 implements Reusable {
 
     /**
      * Calculates the cross prod between v1 and v2 and stores result in dst
-     *
-     * @param v1
-     * @param v2
-     * @param dst
      */
     public static void cross(final Vec3 v1, final Vec3 v2, Vec3 dst) {
         dst.x = v1.y * v2.z - v1.z * v2.y;
@@ -134,10 +105,6 @@ public class Vec3 implements Reusable {
 
     /**
      * Returns a new transformed vector
-     *
-     * @param mat
-     * @param vec
-     * @return
      */
     public static Vec3 transform(Matrix44 mat, Vec3 vec) {
         return new Vec3(vec).transform(mat);
@@ -175,11 +142,6 @@ public class Vec3 implements Reusable {
 
     /**
      * Set this vector
-     *
-     * @param x
-     * @param y
-     * @param z
-     * @return
      */
     public Vec3 set(float x, float y, float z) {
         this.x = x;
@@ -190,9 +152,6 @@ public class Vec3 implements Reusable {
 
     /**
      * Negates this vector
-     *
-     * @param
-     * @return This
      */
     public Vec3 neg() {
         x = -x;
@@ -203,9 +162,6 @@ public class Vec3 implements Reusable {
 
     /**
      * This vector + v2 vector
-     *
-     * @param
-     * @return This
      */
     public Vec3 add(final Vec3 v2) {
         this.x += v2.x;
@@ -216,9 +172,6 @@ public class Vec3 implements Reusable {
 
     /**
      * This vector - v2 vector
-     *
-     * @param
-     * @return This
      */
     public Vec3 sub(final Vec3 v2) {
         x -= v2.x;
@@ -229,9 +182,6 @@ public class Vec3 implements Reusable {
 
     /**
      * This vector multiplied with scalar
-     *
-     * @param
-     * @return This
      */
     public Vec3 mult(float scalar) {
         x *= scalar;
@@ -242,9 +192,6 @@ public class Vec3 implements Reusable {
 
     /**
      * This vector divided with scalar (no check for division by 0)
-     *
-     * @param
-     * @return This
      */
     public Vec3 div(float scalar) {
         scalar = 1 / scalar;
@@ -254,9 +201,6 @@ public class Vec3 implements Reusable {
 
     /**
      * Length of vector squared
-     *
-     * @param
-     * @return Length of this vector squared
      */
     public float lengthSq() {
         return x * x + y * y + z * z;
@@ -264,9 +208,6 @@ public class Vec3 implements Reusable {
 
     /**
      * Length of vector
-     *
-     * @param
-     * @return Length of this vector
      */
     public float length() {
         return (float) Math.sqrt(lengthSq());
@@ -274,9 +215,6 @@ public class Vec3 implements Reusable {
 
     /**
      * Dot product between this and v2
-     *
-     * @param
-     * @return Dot product
      */
     public float dot(final Vec3 v2) {
         return x * v2.x + y * v2.y + z * v2.z;
@@ -284,19 +222,13 @@ public class Vec3 implements Reusable {
 
     /**
      * The angle in radians between vectors
-     *
-     * @param
-     * @return Angle between this and v2 vector
      */
     public float angle(final Vec3 v2) {
         return (float) Math.acos(dot(v2) / (this.length() * v2.length()));
     }
 
     /**
-     * This vector projected onto v2
-     *
-     * @param
-     * @return New projected vector
+     * This vector projected onto v2. New vector returned.
      */
     public Vec3 project(final Vec3 v2) {
         float len = dot(v2) / v2.length();
@@ -305,9 +237,6 @@ public class Vec3 implements Reusable {
 
     /**
      * Normalize this vector
-     *
-     * @param
-     * @return This
      */
     public Vec3 norm() {
         float len = length();
@@ -322,9 +251,6 @@ public class Vec3 implements Reusable {
 
     /**
      * Returns a new vector which is the cross product between this and other
-     *
-     * @param other
-     * @return
      */
     public Vec3 cross(final Vec3 other) {
         return new Vec3(y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y
@@ -334,9 +260,6 @@ public class Vec3 implements Reusable {
 
     /**
      * Return the distance between this point and v2 point
-     *
-     * @param v2
-     * @return
      */
     public float distance(final Vec3 v2) {
         return Vec3.sub(this, v2).length();
@@ -345,17 +268,15 @@ public class Vec3 implements Reusable {
     /**
      * Transform this vector. Matrix on left side and vector on right side. This
      * is OpenGL style.
-     *
-     * @param mat
      */
     public Vec3 transform(Matrix44 mat) {
-        float xnew = x * mat.m[0] + y * mat.m[4] + z * mat.m[8] + mat.m[12];
-        float ynew = x * mat.m[1] + y * mat.m[5] + z * mat.m[9] + mat.m[13];
-        float znew = x * mat.m[2] + y * mat.m[6] + z * mat.m[10] + mat.m[14];
+        float xNew = x * mat.m[0] + y * mat.m[4] + z * mat.m[8] + mat.m[12];
+        float yNew = x * mat.m[1] + y * mat.m[5] + z * mat.m[9] + mat.m[13];
+        float zNew = x * mat.m[2] + y * mat.m[6] + z * mat.m[10] + mat.m[14];
 
-        x = xnew;
-        y = ynew;
-        z = znew;
+        x = xNew;
+        y = yNew;
+        z = zNew;
 
         return this;
     }
@@ -363,17 +284,15 @@ public class Vec3 implements Reusable {
     /**
      * Transform this vector. Matrix on left side and vector on right side. This
      * is OpenGL style. Ignore translation part, just transform rotation.
-     *
-     * @param mat
      */
     public Vec3 transform33(Matrix44 mat) {
-        float xnew = x * mat.m[0] + y * mat.m[4] + z * mat.m[8];
-        float ynew = x * mat.m[1] + y * mat.m[5] + z * mat.m[9];
-        float znew = x * mat.m[2] + y * mat.m[6] + z * mat.m[10];
+        float xNew = x * mat.m[0] + y * mat.m[4] + z * mat.m[8];
+        float yNew = x * mat.m[1] + y * mat.m[5] + z * mat.m[9];
+        float zNew = x * mat.m[2] + y * mat.m[6] + z * mat.m[10];
 
-        x = xnew;
-        y = ynew;
-        z = znew;
+        x = xNew;
+        y = yNew;
+        z = zNew;
 
         return this;
     }
@@ -381,17 +300,15 @@ public class Vec3 implements Reusable {
     /**
      * Transform this vector. Matrix on left side and vector on right side. This
      * is OpenGL style.
-     *
-     * @param mat
      */
     public Vec3 transform(Matrix33 mat) {
-        float xnew = x * mat.m[0] + y * mat.m[3] + z * mat.m[6];
-        float ynew = x * mat.m[1] + y * mat.m[4] + z * mat.m[7];
-        float znew = x * mat.m[2] + y * mat.m[5] + z * mat.m[8];
+        float xNew = x * mat.m[0] + y * mat.m[3] + z * mat.m[6];
+        float yNew = x * mat.m[1] + y * mat.m[4] + z * mat.m[7];
+        float zNew = x * mat.m[2] + y * mat.m[5] + z * mat.m[8];
 
-        x = xnew;
-        y = ynew;
-        z = znew;
+        x = xNew;
+        y = yNew;
+        z = zNew;
 
         return this;
     }

@@ -68,14 +68,14 @@ public abstract class EngineView extends GLSurfaceView implements EngineRenderer
     private final Object mGuard = new Object();
 
     /**
+     * The background color.
+     */
+    private final Vec4 mBackgroundColor = new Vec4();
+
+    /**
      * The users application.
      */
     private UserApplication mApplication;
-
-    /**
-     * The background color.
-     */
-    private Vec4 mBackgroundColor = new Vec4();
 
     /**
      * The surface width.

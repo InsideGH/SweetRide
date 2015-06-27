@@ -9,7 +9,7 @@ public class WorldMatrix implements EngineUniform {
     /**
      * The matrix.
      */
-    private Matrix44 mMatrix = new Matrix44();
+    private final Matrix44 mMatrix = new Matrix44();
 
     @Override
     public String getName() {

@@ -13,14 +13,14 @@ import java.util.List;
  */
 public class BackendMesh {
     /**
+     * The vertex buffer collection references.
+     */
+    private final List<VertexBufferResource> mVertexBuffers = new ArrayList<>();
+
+    /**
      * The indices buffer.
      */
     private IndicesBuffer mIndicesBuffer;
-
-    /**
-     * The vertex buffer collection references.
-     */
-    private List<VertexBufferResource> mVertexBuffers = new ArrayList<>();
 
     /**
      * The drawing mode.

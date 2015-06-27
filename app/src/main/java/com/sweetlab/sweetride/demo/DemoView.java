@@ -33,11 +33,11 @@ public class DemoView extends EngineView {
 
     @Override
     protected Vec4 getBackgroundColor() {
-        return new Vec4(0.0f,0.0f, 0.0f, 1);
+        return new Vec4(0.0f, 0.0f, 0.0f, 1);
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(@SuppressWarnings("NullableProblems") MotionEvent event) {
         return mDemoApplication.onTouchEvent(event);
     }
 }

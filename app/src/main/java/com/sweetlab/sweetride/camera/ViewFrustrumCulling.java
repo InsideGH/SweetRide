@@ -1,10 +1,9 @@
 package com.sweetlab.sweetride.camera;
 
 import com.sweetlab.sweetride.geometry.Geometry;
-import com.sweetlab.sweetride.camera.Camera;
-import com.sweetlab.sweetride.math.Vec3;
 import com.sweetlab.sweetride.intersect.BoundingBox;
 import com.sweetlab.sweetride.intersect.TransformableBoundingBox;
+import com.sweetlab.sweetride.math.Vec3;
 
 /**
  * Provides visibility testing for points and geometries.
@@ -58,17 +57,17 @@ public class ViewFrustrumCulling {
     /**
      * Bounding box max (x,y,z) values
      */
-    private Vec3 mMax = new Vec3();
+    private final Vec3 mMax = new Vec3();
 
     /**
      * Bounding box min (x,y,z) values
      */
-    private Vec3 mMin = new Vec3();
+    private final Vec3 mMin = new Vec3();
 
     /**
      * Corners in bounding box.
      */
-    private Vec3[] mPoints = new Vec3[NBR_BOX_CORNERS];
+    private final Vec3[] mPoints = new Vec3[NBR_BOX_CORNERS];
 
     /**
      * Constructor.
@@ -102,6 +101,7 @@ public class ViewFrustrumCulling {
         if (camera.getTopPlane().getSignedDistToPoint(point) < 0) {
             return false;
         }
+        //noinspection RedundantIfStatement
         if (camera.getBottomPlane().getSignedDistToPoint(point) < 0) {
             return false;
         }
@@ -132,6 +132,7 @@ public class ViewFrustrumCulling {
      * @param camera   Camera to use.
      * @return True if visible. If no bounding box exists method return true.
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isVisible(Geometry geometry, Camera camera) {
         TransformableBoundingBox box = geometry.getTransformableBoundingBox();
         return box == null || isVisible(box, camera);

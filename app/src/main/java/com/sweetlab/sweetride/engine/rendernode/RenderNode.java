@@ -17,11 +17,16 @@ public class RenderNode extends Node {
     /**
      * Action when camera has been set.
      */
-    private Action mCameraSet = new Action(this, ActionId.RENDER_NODE_CAMERA, ActionThread.MAIN);
+    private final Action mCameraSet = new Action(this, ActionId.RENDER_NODE_CAMERA, ActionThread.MAIN);
     /**
      * The renderer to use.
      */
     private GeometryRenderer mGeometryRenderer;
+
+    /**
+     * The camera.
+     */
+    private Camera mCamera;
 
     /**
      * If view frustrum culling is enabled or not.
@@ -69,12 +74,8 @@ public class RenderNode extends Node {
         addAction(mCameraSet);
     }
 
-    /**
-     * Get the camera, or null if not set.
-     *
-     * @return The camera.
-     */
     @Nullable
+    @Override
     public Camera getCamera() {
         return mCamera;
     }

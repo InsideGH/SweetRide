@@ -7,8 +7,8 @@ public class TraverseHelper {
     /**
      * Traverse depth first using visitor.
      *
-     * @param node
-     * @param visitor
+     * @param node    The root node to start at.
+     * @param visitor The visitor.
      */
     public static void depthFirst(Node node, NodeVisitor visitor) {
         int childCount = node.getChildCount();

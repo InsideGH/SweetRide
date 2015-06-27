@@ -30,8 +30,6 @@ public class Vec4 {
 
     /**
      * Create a vector with same x, y, z components as input
-     *
-     * @param
      */
     public Vec4(Vec4 from) {
         x = from.x;
@@ -42,8 +40,6 @@ public class Vec4 {
 
     /**
      * Return a new vector which is the negate of vec
-     *
-     * @param vec
      */
     public static Vec4 neg(Vec4 vec) {
         return new Vec4(vec).neg();
@@ -51,9 +47,6 @@ public class Vec4 {
 
     /**
      * Returns a new vector which is v1 + v2 vector
-     *
-     * @param
-     * @return New vector
      */
     public static Vec4 add(final Vec4 v1, final Vec4 v2) {
         return new Vec4(v1).add(v2);
@@ -61,9 +54,6 @@ public class Vec4 {
 
     /**
      * Return a new vector which is v1 - v2 vector.
-     *
-     * @param
-     * @return New vector
      */
     public static Vec4 sub(final Vec4 v1, final Vec4 v2) {
         return new Vec4(v1).sub(v2);
@@ -71,10 +61,6 @@ public class Vec4 {
 
     /**
      * Does dst = v1 -v2
-     *
-     * @param v1
-     * @param v2
-     * @param dst
      */
     public static void sub(final Vec4 v1, final Vec4 v2, Vec4 dst) {
         dst.x = v1.x - v2.x;
@@ -85,10 +71,6 @@ public class Vec4 {
 
     /**
      * Returns a new vector which is scalar*vec
-     *
-     * @param vec
-     * @param scalar
-     * @return
      */
     public static Vec4 mult(Vec4 vec, float scalar) {
         return new Vec4(vec).mult(scalar);
@@ -96,10 +78,6 @@ public class Vec4 {
 
     /**
      * Returns a new vector which is vec divided by scalar
-     *
-     * @param vec
-     * @param scalar
-     * @return
      */
     public static Vec4 div(Vec4 vec, float scalar) {
         return new Vec4(vec).div(scalar);
@@ -107,8 +85,6 @@ public class Vec4 {
 
     /**
      * Set this vector.
-     *
-     * @param from
      */
     public void set(Vec4 from) {
         x = from.x;
@@ -119,11 +95,6 @@ public class Vec4 {
 
     /**
      * Set this vector
-     *
-     * @param x
-     * @param y
-     * @param z
-     * @return
      */
     public Vec4 set(float x, float y, float z, float w) {
         this.x = x;
@@ -135,9 +106,6 @@ public class Vec4 {
 
     /**
      * Negates this vector
-     *
-     * @param
-     * @return This
      */
     public Vec4 neg() {
         x = -x;
@@ -149,9 +117,6 @@ public class Vec4 {
 
     /**
      * This vector + v2 vector
-     *
-     * @param
-     * @return This
      */
     public Vec4 add(final Vec4 v2) {
         this.x += v2.x;
@@ -163,9 +128,6 @@ public class Vec4 {
 
     /**
      * This vector - v2 vector
-     *
-     * @param
-     * @return This
      */
     public Vec4 sub(final Vec4 v2) {
         this.x -= v2.x;
@@ -177,9 +139,6 @@ public class Vec4 {
 
     /**
      * This vector multiplied with scalar
-     *
-     * @param
-     * @return This
      */
     public Vec4 mult(float scalar) {
         this.x *= scalar;
@@ -191,9 +150,6 @@ public class Vec4 {
 
     /**
      * This vector divided with scalar (no check for division by 0)
-     *
-     * @param
-     * @return This
      */
     public Vec4 div(float scalar) {
         scalar = 1 / scalar;
@@ -203,9 +159,6 @@ public class Vec4 {
 
     /**
      * Length of vector squared
-     *
-     * @param
-     * @return Length of this vector squared
      */
     public float lengthSq() {
         return x * x + y * y + z * z;
@@ -213,9 +166,6 @@ public class Vec4 {
 
     /**
      * Length of vector
-     *
-     * @param
-     * @return Length of this vector
      */
     public float length() {
         return (float) Math.sqrt(lengthSq());
@@ -223,9 +173,6 @@ public class Vec4 {
 
     /**
      * Dot product between this and v2
-     *
-     * @param
-     * @return Dot product
      */
     public float dot(final Vec4 v2) {
         return x * v2.x + y * v2.y + z * v2.z + w * v2.w;
@@ -233,9 +180,6 @@ public class Vec4 {
 
     /**
      * The angle in radians between vectors
-     *
-     * @param
-     * @return Angle between this and v2 vector
      */
     public float angle(final Vec4 v2) {
         return (float) Math.acos(dot(v2) / (this.length() * v2.length()));
@@ -243,9 +187,6 @@ public class Vec4 {
 
     /**
      * This vector projected onto v2
-     *
-     * @param
-     * @return New projected vector
      */
     public Vec4 project(final Vec4 v2) {
         float len = dot(v2) / v2.lengthSq();
@@ -254,9 +195,6 @@ public class Vec4 {
 
     /**
      * Normalize this vector
-     *
-     * @param
-     * @return This
      */
     public Vec4 norm() {
         float oneDivLen = 1 / length();
@@ -269,9 +207,6 @@ public class Vec4 {
 
     /**
      * Return the distance between this point and v2 point
-     *
-     * @param v2
-     * @return
      */
     public float distance(final Vec4 v2) {
         return Vec4.sub(this, v2).length();
@@ -280,19 +215,17 @@ public class Vec4 {
     /**
      * Transform this vector. Matrix on left side and vector on right side. This
      * is OpenGL style.
-     *
-     * @param mat
      */
     public Vec4 transform(Matrix44 mat) {
-        float xnew = x * mat.m[0] + y * mat.m[4] + z * mat.m[8] + mat.m[12];
-        float ynew = x * mat.m[1] + y * mat.m[5] + z * mat.m[9] + mat.m[13];
-        float znew = x * mat.m[2] + y * mat.m[6] + z * mat.m[10] + mat.m[14];
-        float wnew = x * mat.m[3] + y * mat.m[7] + z * mat.m[11] + mat.m[15];
+        float xNew = x * mat.m[0] + y * mat.m[4] + z * mat.m[8] + mat.m[12];
+        float yNew = x * mat.m[1] + y * mat.m[5] + z * mat.m[9] + mat.m[13];
+        float zNew = x * mat.m[2] + y * mat.m[6] + z * mat.m[10] + mat.m[14];
+        float wNew = x * mat.m[3] + y * mat.m[7] + z * mat.m[11] + mat.m[15];
 
-        x = xnew;
-        y = ynew;
-        z = znew;
-        w = wnew;
+        x = xNew;
+        y = yNew;
+        z = zNew;
+        w = wNew;
 
         return this;
     }

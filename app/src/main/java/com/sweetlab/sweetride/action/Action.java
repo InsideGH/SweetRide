@@ -92,7 +92,7 @@ public class Action {
     /**
      * Handle the action on the GL thread.
      *
-     * @param context
+     * @param context Backend context.
      */
     public boolean handleAction(BackendContext context) {
         if (DebugOptions.DEBUG_ACTION) {

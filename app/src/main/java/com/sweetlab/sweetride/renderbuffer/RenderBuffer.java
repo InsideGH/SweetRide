@@ -19,24 +19,24 @@ import com.sweetlab.sweetride.resource.Resource;
  */
 public class RenderBuffer extends NoHandleNotifier implements Resource, DepthAttachment, StencilAttachment {
     /**
-     * The render buffer id.
-     */
-    private int mBufferId;
-
-    /**
      * The internal format (GL_RGB565, GL_RGBA4, GL_RGB5_A1, GL_DEPTH_COMPONENT16, GL_STENCIL_INDEX8).
      */
-    private int mFormat;
+    private final int mFormat;
 
     /**
      * The width in pixels.
      */
-    private int mWidth;
+    private final int mWidth;
 
     /**
      * The height in pixels.
      */
-    private int mHeight;
+    private final int mHeight;
+
+    /**
+     * The render buffer id.
+     */
+    private int mBufferId;
 
     /**
      * Constructor.

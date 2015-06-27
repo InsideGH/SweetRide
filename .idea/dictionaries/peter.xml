@@ -2,8 +2,15 @@
   <dictionary name="peter">
     <words>
       <w>aabb</w>
+      <w>coord</w>
+      <w>fisheye</w>
       <w>frustrum</w>
+      <w>gimbal</w>
+      <w>gles</w>
+      <w>mediump</w>
+      <w>mult</w>
       <w>origo</w>
+      <w>proj</w>
     </words>
   </dictionary>
 </component>

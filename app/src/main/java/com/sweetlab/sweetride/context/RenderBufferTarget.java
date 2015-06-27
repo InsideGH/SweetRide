@@ -9,9 +9,14 @@ import com.sweetlab.sweetride.renderbuffer.RenderBuffer;
  */
 public class RenderBufferTarget {
     /**
+     * Buffer to read GL information.
+     */
+    private final int[] mReadBuffer = new int[4];
+    /**
      * Binding with this value unbinds any previously bound render buffer.
      */
     private static final int DISABLE_TARGET = 0;
+
     /**
      * The render buffer target.
      */
@@ -23,22 +28,12 @@ public class RenderBufferTarget {
     private static final int BINDING = GLES20.GL_RENDERBUFFER_BINDING;
 
     /**
-     * Buffer to read GL information.
-     */
-    private int[] mReadBuffer = new int[4];
-
-    /**
-     * The backend context.
-     */
-    private final BackendContext mContext;
-
-    /**
      * Constructor.
      *
      * @param context The backend context.
      */
+    @SuppressWarnings("unused")
     public RenderBufferTarget(BackendContext context) {
-        mContext = context;
     }
 
     /**

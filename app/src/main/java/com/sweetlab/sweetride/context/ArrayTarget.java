@@ -28,7 +28,7 @@ public class ArrayTarget {
     /**
      * Buffer to read GL information.
      */
-    private int[] mReadBuffer = new int[4];
+    private final int[] mReadBuffer = new int[4];
 
     /**
      * The backend context.
@@ -56,7 +56,7 @@ public class ArrayTarget {
             }
         }
         final int bufferId = attributeData.getId();
-        if (!isBufferBound(bufferId)) {
+        if (isBufferUnBound(bufferId)) {
             GLES20.glBindBuffer(TARGET, bufferId);
         }
 
@@ -78,7 +78,7 @@ public class ArrayTarget {
          * Check if buffer needs to be bound.
          */
         final int bufferId = resource.getId();
-        if (!isBufferBound(bufferId)) {
+        if (isBufferUnBound(bufferId)) {
             GLES20.glBindBuffer(TARGET, bufferId);
         }
 
@@ -91,7 +91,7 @@ public class ArrayTarget {
                  * Check if attribute need to be enabled.
                  */
                 final int attributeLocation = attribute.getLocation();
-                if (!isAttributeEnabled(attributeLocation)) {
+                if (isAttributeDisabled(attributeLocation)) {
                     GLES20.glEnableVertexAttribArray(attributeLocation);
                 }
 
@@ -128,7 +128,7 @@ public class ArrayTarget {
      * @param resource The vertex buffer resource.
      */
     public void disableAttribute(ShaderProgram program, VertexBufferResource resource) {
-        if (!isAnyBufferBound()) {
+        if (isNoBufferBound()) {
             throw new RuntimeException("Can't disable active attribute with not bound buffer object to target GL_ARRAY_BUFFER");
         }
 
@@ -155,7 +155,7 @@ public class ArrayTarget {
          * Check if buffer needs to be bound.
          */
         final int bufferId = data.getId();
-        if (!isBufferBound(bufferId)) {
+        if (isBufferUnBound(bufferId)) {
             GLES20.glBindBuffer(TARGET, bufferId);
         }
 
@@ -163,7 +163,7 @@ public class ArrayTarget {
          * Check if attribute need to be enabled.
          */
         final int attributeLocation = attribute.getLocation();
-        if (!isAttributeEnabled(attributeLocation)) {
+        if (isAttributeDisabled(attributeLocation)) {
             GLES20.glEnableVertexAttribArray(attributeLocation);
         }
 
@@ -197,7 +197,7 @@ public class ArrayTarget {
      * @param attribute The shader program attribute.
      */
     public void disableAttribute(Attribute attribute) {
-        if (!isAnyBufferBound()) {
+        if (isNoBufferBound()) {
             throw new RuntimeException("Can't disable active attribute with not bound buffer object to target GL_ARRAY_BUFFER");
         }
         GLES20.glDisableVertexAttribArray(attribute.getLocation());
@@ -214,45 +214,45 @@ public class ArrayTarget {
         if (mContext.getState().readActiveProgram() <= ResourceManager.INVALID_PROGRAM_ID) {
             throw new RuntimeException("Invalid shader program while array draw is called");
         }
-        if (!isAnyBufferBound()) {
+        if (isNoBufferBound()) {
             throw new RuntimeException("Can't draw without a bound buffer to GL_ARRAY_BUFFER");
         }
         GLES20.glDrawArrays(mode, startIndex, count);
     }
 
     /**
-     * Get if target has any buffer bound.
+     * Check if not buffer is bound.
      *
      * @return True if target has buffer bound.
      */
-    public boolean isAnyBufferBound() {
+    public boolean isNoBufferBound() {
         GLES20.glGetIntegerv(BINDING, mReadBuffer, 0);
-        return mReadBuffer[0] != 0;
+        return mReadBuffer[0] == 0;
     }
 
     /**
-     * Get if buffer id is bound to target.
+     * Get if buffer id is unbound to target.
      *
      * @param id The buffer id.
-     * @return True if bound.
+     * @return True if unbound.
      */
-    private boolean isBufferBound(int id) {
+    private boolean isBufferUnBound(int id) {
         if (id > 0) {
             GLES20.glGetIntegerv(BINDING, mReadBuffer, 0);
-            return mReadBuffer[0] == id;
+            return mReadBuffer[0] != id;
         }
-        return false;
+        return true;
     }
 
     /**
-     * Get if attribute is enabled.
+     * Get if attribute is disabled.
      *
      * @param location Location of attribute.
-     * @return True if enabled.
+     * @return True if disabled.
      */
-    public boolean isAttributeEnabled(int location) {
+    public boolean isAttributeDisabled(int location) {
         GLES20.glGetVertexAttribiv(location, GLES20.GL_VERTEX_ATTRIB_ARRAY_ENABLED, mReadBuffer, 0);
-        return mReadBuffer[0] != 0;
+        return mReadBuffer[0] == 0;
     }
 
     /**

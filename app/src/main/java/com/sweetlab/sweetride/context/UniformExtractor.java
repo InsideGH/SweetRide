@@ -19,42 +19,37 @@ public class UniformExtractor {
     private static final int MAX_NAME_LENGTH = 100;
 
     /**
-     * Backend context.
-     */
-    private final BackendContext mContext;
-
-    /**
      * Number of uniforms.
      */
-    private int[] mCount = new int[1];
+    private final int[] mCount = new int[1];
 
     /**
      * The len of the found uniform name.
      */
-    private int[] mNameSize = new int[1];
+    private final int[] mNameSize = new int[1];
 
     /**
      * Array size.
      */
-    private int[] mArraySize = new int[1];
+    private final int[] mArraySize = new int[1];
 
     /**
      * Type of uniform.
      */
-    private int[] mType = new int[1];
+    private final int[] mType = new int[1];
 
     /**
      * The storage for the name of the uniform.
      */
-    private byte[] mName = new byte[MAX_NAME_LENGTH];
+    private final byte[] mName = new byte[MAX_NAME_LENGTH];
 
     /**
      * Constructor.
      *
      * @param backendContext Backend context.
      */
+    @SuppressWarnings("unused")
     public UniformExtractor(BackendContext backendContext) {
-        mContext = backendContext;
     }
 
     /**

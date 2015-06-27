@@ -26,20 +26,15 @@ public class FrameBufferTarget {
     /**
      * Buffer to read GL information.
      */
-    private int[] mReadBuffer = new int[4];
-
-    /**
-     * The backend context.
-     */
-    private final BackendContext mContext;
+    private final int[] mReadBuffer = new int[4];
 
     /**
      * Constructor.
      *
      * @param context The backend context.
      */
+    @SuppressWarnings("unused")
     public FrameBufferTarget(BackendContext context) {
-        mContext = context;
     }
 
     /**

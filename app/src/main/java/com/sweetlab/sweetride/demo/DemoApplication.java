@@ -5,15 +5,16 @@ import android.graphics.Color;
 import android.view.MotionEvent;
 
 import com.sweetlab.sweetride.UserApplication;
+import com.sweetlab.sweetride.camera.Camera;
+import com.sweetlab.sweetride.camera.FirstPersonCamera;
+import com.sweetlab.sweetride.camera.Frustrum;
+import com.sweetlab.sweetride.camera.ViewFrustrumCulling;
 import com.sweetlab.sweetride.context.MagFilter;
 import com.sweetlab.sweetride.context.MinFilter;
 import com.sweetlab.sweetride.demo.mesh.CubeMesh;
 import com.sweetlab.sweetride.engine.rendernode.DefaultRenderNode;
-import com.sweetlab.sweetride.camera.ViewFrustrumCulling;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
-import com.sweetlab.sweetride.camera.FirstPersonCamera;
-import com.sweetlab.sweetride.camera.Frustrum;
 import com.sweetlab.sweetride.math.Vec3;
 import com.sweetlab.sweetride.node.Node;
 import com.sweetlab.sweetride.shader.FragmentShader;
@@ -75,42 +76,37 @@ public class DemoApplication extends UserApplication {
     /**
      * Default system window render node.
      */
-    private DefaultRenderNode mRenderNode = new DefaultRenderNode();
+    private final DefaultRenderNode mRenderNode = new DefaultRenderNode();
 
     /**
      * The geometry rotating.
      */
-    private Geometry mRotatingQuad = new Geometry();
+    private final Geometry mRotatingQuad = new Geometry();
 
     /**
      * The geometry moving around.
      */
-    private Geometry mMovingQuad = new Geometry();
-
-    /**
-     * The gl quad width.
-     */
-    private float mQuadWidth;
+    private final Geometry mMovingQuad = new Geometry();
 
     /**
      * View frustrum culling.
      */
-    private ViewFrustrumCulling mViewCulling = new ViewFrustrumCulling();
+    private final ViewFrustrumCulling mViewCulling = new ViewFrustrumCulling();
 
     /**
      * Random moving vector.
      */
-    private Vec3 mMovingVec = new Vec3();
+    private final Vec3 mMovingVec = new Vec3();
 
     /**
      * Random generator.
      */
-    private Random mRandom = new Random(666);
+    private final Random mRandom = new Random(666);
 
     private float mStrafeLeftRight;
     private float mStrafeForwardBackward;
-    private float mTurnUpDown;
-    private float mTurnLeftRight;
+    private float mTurnAroundX;
+    private float mTurnAroundY;
     private int mActionIndexStrafe;
     private int mActionIndexTurn;
 
@@ -134,27 +130,29 @@ public class DemoApplication extends UserApplication {
          */
         mCamera = new FirstPersonCamera();
         mRenderNode.setCamera(mCamera);
-        mRenderNode.getCamera().lookAt(0, 0, CAMERA_DISTANCE, 0, 0, 0);
+        mCamera.lookAt(0, 0, CAMERA_DISTANCE, 0, 0, 0);
 
         /**
          * Create red material.
          */
-        mRotatingQuad.setMaterial(new Material());
+        Material material = new Material();
+        mRotatingQuad.setMaterial(material);
         ShaderProgram programRed = new ShaderProgram(new VertexShader(VERTEX_SHADER), new FragmentShader(FRAGMENT_SHADER));
-        mRotatingQuad.getMaterial().setShaderProgram(programRed);
+        material.setShaderProgram(programRed);
 
         Texture2D textureFourColor = new Texture2D("s_texture", createQuadColorBitmap(Bitmap.Config.RGB_565), MinFilter.NEAREST, MagFilter.NEAREST);
-        mRotatingQuad.getMaterial().addTexture(textureFourColor);
+        material.addTexture(textureFourColor);
 
         /**
          * Create blue material.
          */
-        mMovingQuad.setMaterial(new Material());
+        material = new Material();
+        mMovingQuad.setMaterial(material);
         ShaderProgram programBlue = new ShaderProgram(new VertexShader(VERTEX_SHADER), new FragmentShader(FRAGMENT_SHADER));
-        mMovingQuad.getMaterial().setShaderProgram(programBlue);
+        material.setShaderProgram(programBlue);
 
         Texture2D textureChess = new Texture2D("s_texture", createChessColorBitmap(Bitmap.Config.RGB_565), MinFilter.NEAREST, MagFilter.NEAREST);
-        mMovingQuad.getMaterial().addTexture(textureChess);
+        material.addTexture(textureChess);
     }
 
     @Override
@@ -167,19 +165,19 @@ public class DemoApplication extends UserApplication {
         /**
          * Setup camera frustrum.
          */
-        Frustrum frustrum = mRenderNode.getCamera().getFrustrum();
-        frustrum.setPerspectiveProjection(FIELD_OF_VIEW, Frustrum.FovType.AUTO_FIT, NEAR_FIELD, FAR_FIELD, width, height);
-
-        /**
-         * Create a quad mesh that is a quarter of the screen width. Use same mesh for both geometries.
-         */
-        mQuadWidth = frustrum.calcWidthAtDepth(CAMERA_DISTANCE) / 4;
-        mRotatingQuad.setMesh(new CubeMesh("a_Pos", "a_texCoord"));
-        mRotatingQuad.getModelTransform().translate(mQuadWidth, 0, 0);
-
-        mMovingQuad.setMesh(mRotatingQuad.getMesh());
-
-        setNewMovingDirection();
+        Camera camera = mRenderNode.getCamera();
+        if (camera != null) {
+            Frustrum frustrum = mRenderNode.getCamera().getFrustrum();
+            frustrum.setPerspectiveProjection(FIELD_OF_VIEW, Frustrum.FovType.AUTO_FIT, NEAR_FIELD, FAR_FIELD, width, height);
+            /**
+             * Create a quad mesh that is a quarter of the screen width. Use same mesh for both geometries.
+             */
+            float quadSize = frustrum.calcWidthAtDepth(CAMERA_DISTANCE) / 4;
+            mRotatingQuad.setMesh(new CubeMesh("a_Pos", "a_texCoord"));
+            mRotatingQuad.getModelTransform().translate(quadSize, 0, 0);
+            mMovingQuad.setMesh(mRotatingQuad.getMesh());
+            setNewMovingDirection();
+        }
     }
 
     @Override
@@ -195,7 +193,7 @@ public class DemoApplication extends UserApplication {
         /**
          * Rotate each frame around y axis.
          */
-        mCamera.update(mStrafeLeftRight, mStrafeForwardBackward, mTurnUpDown, mTurnLeftRight);
+        mCamera.update(mStrafeLeftRight, mStrafeForwardBackward, mTurnAroundX, mTurnAroundY);
 
         mRotatingQuad.getModelTransform().rotate(2, 0, 1, 0);
         mMovingQuad.getModelTransform().rotate(2, 0, 1, 0);
@@ -246,8 +244,8 @@ public class DemoApplication extends UserApplication {
                 break;
 
             case MotionEvent.ACTION_POINTER_UP:
-                mTurnLeftRight = 0;
-                mTurnUpDown = 0;
+                mTurnAroundY = 0;
+                mTurnAroundX = 0;
                 break;
 
             case MotionEvent.ACTION_MOVE:
@@ -262,8 +260,8 @@ public class DemoApplication extends UserApplication {
                     y = event.getY(mActionIndexTurn);
                     sizeX = x - mDownTurnX;
                     sizeY = y - mDownTurnY;
-                    mTurnLeftRight = -sizeX * 0.001f;
-                    mTurnUpDown = -sizeY * 0.001f;
+                    mTurnAroundY = -sizeX * 0.001f;
+                    mTurnAroundX = -sizeY * 0.001f;
                 }
                 break;
         }
@@ -281,11 +279,11 @@ public class DemoApplication extends UserApplication {
         mMovingVec.set(x, y, z);
     }
 
-    public static Bitmap createQuadColorBitmap(Bitmap.Config config) {
+    private static Bitmap createQuadColorBitmap(Bitmap.Config config) {
         return Bitmap.createBitmap(new int[]{Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW}, 2, 2, config);
     }
 
-    public static Bitmap createChessColorBitmap(Bitmap.Config config) {
+    private static Bitmap createChessColorBitmap(Bitmap.Config config) {
         int values[] = new int[10 * 10];
         int p = 0;
         Random random = new Random(10);

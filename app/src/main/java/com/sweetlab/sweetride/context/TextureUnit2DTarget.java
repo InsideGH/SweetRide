@@ -43,7 +43,7 @@ public class TextureUnit2DTarget {
      * Zero based texture unit number of this target. This variable is used to write the
      * texture unit number into the shader program uniform sampler.
      */
-    private int[] mZeroBasedNr = new int[1];
+    private final int[] mZeroBasedNr = new int[1];
 
     /**
      * Constructor.
@@ -64,7 +64,7 @@ public class TextureUnit2DTarget {
      * @param texture Texture to load.
      */
     public void load(TextureResource texture) {
-        if (!isUnitActive()) {
+        if (isUnitInActive()) {
             GLES20.glActiveTexture(mGLUnitNr);
         }
 
@@ -86,7 +86,7 @@ public class TextureUnit2DTarget {
      * @param mag     Mag filter parameter.
      */
     public void setFilter(TextureResource texture, int min, int mag) {
-        if (!isUnitActive()) {
+        if (isUnitInActive()) {
             GLES20.glActiveTexture(mGLUnitNr);
         }
 
@@ -115,7 +115,7 @@ public class TextureUnit2DTarget {
         String name = texture.getName();
         ProgramUniform programUniform = program.getUniform(name);
         if (programUniform != null) {
-            if (!isUnitActive()) {
+            if (isUnitInActive()) {
                 GLES20.glActiveTexture(mGLUnitNr);
             }
 
@@ -132,7 +132,7 @@ public class TextureUnit2DTarget {
      * Disable the texture from this target.
      */
     public void disable(TextureResource texture) {
-        if (!isUnitActive()) {
+        if (isUnitInActive()) {
             GLES20.glActiveTexture(mGLUnitNr);
         }
         int textureId = texture.getId();
@@ -142,12 +142,12 @@ public class TextureUnit2DTarget {
     }
 
     /**
-     * Check if unit this target belongs to is active.
+     * Check if unit this target belongs to is inactive.
      *
-     * @return True if active.
+     * @return True if inactive.
      */
-    private boolean isUnitActive() {
-        return getActiveTextureUnit() == mGLUnitNr;
+    private boolean isUnitInActive() {
+        return getActiveTextureUnit() != mGLUnitNr;
     }
 
     /**

@@ -15,12 +15,12 @@ public abstract class ActionNotifier {
     /**
      * List of pending actions.
      */
-    final List<Action> mActions = new ArrayList<>();
+    private final List<Action> mActions = new ArrayList<>();
 
     /**
      * List of parents.
      */
-    final List<ActionNotifier> mParents = new ArrayList<>();
+    private final List<ActionNotifier> mParents = new ArrayList<>();
 
     /**
      * Connect the provided notifier. Any pending actions in the notifier that is

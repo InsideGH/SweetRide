@@ -127,7 +127,7 @@ public class InterleavedVertexBuffer extends VertexBufferResource {
      * @param data     The attribute data.
      * @param pointers A list of attribute pointers.
      */
-    public InterleavedVertexBuffer(InterleavedData data, List<AttributePointer> pointers) {
+    private InterleavedVertexBuffer(InterleavedData data, List<AttributePointer> pointers) {
         mData = data;
         mPointers = pointers;
         connectNotifier(mData);

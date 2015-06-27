@@ -29,7 +29,7 @@ public class Frustrum extends NoHandleNotifier {
     /**
      * Camera has been updated.
      */
-    private Action mFrustrumUpdated = new Action(this, ActionId.FRUSTRUM_UPDATED, ActionThread.MAIN);
+    private final Action mFrustrumUpdated = new Action(this, ActionId.FRUSTRUM_UPDATED, ActionThread.MAIN);
 
     /**
      * The projection or orthographic matrix
@@ -81,8 +81,9 @@ public class Frustrum extends NoHandleNotifier {
 
     @Override
     public boolean handleAction(Action action) {
-        if ((action.getType().equals(ActionId.FRUSTRUM_UPDATED))) {
-            return true;
+        switch (action.getType()) {
+            case FRUSTRUM_UPDATED:
+                return true;
         }
         return super.handleAction(action);
     }
@@ -122,7 +123,7 @@ public class Frustrum extends NoHandleNotifier {
      *
      * After ndc, the viewport transform is performed (in gpu) based on viewport settings
      *
-     * Eucledian (X, Y, Z) = (x/w, y/w, z/w) <-> Homogeneous (x, y, z, w) = (X, Y, Z, 1)
+     * Euclidean (X, Y, Z) = (x/w, y/w, z/w) <-> Homogeneous (x, y, z, w) = (X, Y, Z, 1)
      * w == 0 means infinity (representable in homogeneous space by 0)
      *
      * clip = perspective matrix * euclidean vertex
@@ -256,7 +257,7 @@ public class Frustrum extends NoHandleNotifier {
      * We know that the relationship between ndc and clip coordinates are that near (-n) is -1 and
      * far (-f) is +1.
      *
-     * This gives us two equations with two unknows which can be solved.
+     * This gives us two equations with two unknowns which can be solved.
      *
      * -1 = -A*n + B
      * +1 = -A*f + B
@@ -523,23 +524,23 @@ public class Frustrum extends NoHandleNotifier {
         StringBuilder b = new StringBuilder();
         if (mMode.equals(Mode.PERSPECTIVE)) {
             b.append("Perspective projection");
-            b.append("\nInput fov type " + mInputFovType);
-            b.append("\nResulted fov type " + mFovType);
-            b.append("\nFov in degrees " + mFovDeg);
-            b.append("\nNear = " + mNear);
-            b.append("\nFar = " + mFar);
-            b.append("\nLeft = " + mLeft);
-            b.append("\nRight = " + mRight);
-            b.append("\nBottom = " + mBottom);
-            b.append("\nTop = " + mTop);
+            b.append("\nInput fov type ").append(mInputFovType);
+            b.append("\nResulted fov type ").append(mFovType);
+            b.append("\nFov in degrees ").append(mFovDeg);
+            b.append("\nNear = ").append(mNear);
+            b.append("\nFar = ").append(mFar);
+            b.append("\nLeft = ").append(mLeft);
+            b.append("\nRight = ").append(mRight);
+            b.append("\nBottom = ").append(mBottom);
+            b.append("\nTop = ").append(mTop);
         } else if (mMode.equals(Mode.ORTHOGRAPHIC)) {
             b.append("Orthographic projection\n");
-            b.append("\nNear = " + mNear);
-            b.append("\nFar = " + mFar);
-            b.append("\nLeft = " + mLeft);
-            b.append("\nRight = " + mRight);
-            b.append("\nBottom = " + mBottom);
-            b.append("\nTop = " + mTop);
+            b.append("\nNear = ").append(mNear);
+            b.append("\nFar = ").append(mFar);
+            b.append("\nLeft = ").append(mLeft);
+            b.append("\nRight = ").append(mRight);
+            b.append("\nBottom = ").append(mBottom);
+            b.append("\nTop = ").append(mTop);
         } else {
             b.append("UNINITIALIZED");
         }

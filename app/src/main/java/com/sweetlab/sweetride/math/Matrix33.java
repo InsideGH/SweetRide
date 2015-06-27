@@ -34,7 +34,7 @@ public class Matrix33 {
     /**
      * Take the rotation part from a 4x4 matrix
      *
-     * @param mat
+     * @param mat The matrix.
      */
     public Matrix33(Matrix44 mat) {
         m[0] = mat.m[0];

@@ -10,6 +10,11 @@ public class BackendContext {
     private final Capabilities mCapabilities;
 
     /**
+     * Max number of texture units.
+     */
+    private final int mMaxNumberTextureUnits;
+
+    /**
      * Shader compiler.
      */
     private ShaderCompiler mShaderCompiler;
@@ -73,11 +78,6 @@ public class BackendContext {
      * The backend action handler.
      */
     private BackendActionHandler mBackendActionHandler;
-
-    /**
-     * Max number of texture units.
-     */
-    private int mMaxNumberTextureUnits;
 
     /**
      * Constructor. Must be created with GL context available.

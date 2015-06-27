@@ -32,9 +32,8 @@ public class TextureUnitManager {
     public TextureUnitManager(BackendContext context, int maxNrTextureUnits) {
         mMaxNrTextureUnits = maxNrTextureUnits;
         for (int i = mMaxNrTextureUnits - 1; i > 0; i--) {
-            int zeroBasedNr = i;
             int glBasedNr = GLES20.GL_TEXTURE0 + i;
-            mStack.push(new TextureUnit(context, zeroBasedNr, glBasedNr));
+            mStack.push(new TextureUnit(context, i, glBasedNr));
         }
 
         mDefaultTextureUnit = new TextureUnit(context, 0, GLES20.GL_TEXTURE0);

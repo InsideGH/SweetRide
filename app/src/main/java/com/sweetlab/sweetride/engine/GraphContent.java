@@ -14,17 +14,17 @@ public class GraphContent implements Reusable {
     /**
      * List of nodes.
      */
-    private List<Node> mNodes = new ArrayList<>();
+    private final List<Node> mNodes = new ArrayList<>();
 
     /**
      * List of geometry nodes.
      */
-    private List<Geometry> mGeometries = new ArrayList<>();
+    private final List<Geometry> mGeometries = new ArrayList<>();
 
     /**
      * List of render nodes.
      */
-    private List<RenderNode> mRenderNodes = new ArrayList<>();
+    private final List<RenderNode> mRenderNodes = new ArrayList<>();
 
     @Override
     public void reset() {
