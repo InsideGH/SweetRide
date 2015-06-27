@@ -73,6 +73,14 @@ public class EngineRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 gl) {
+        /**
+         * Start of new frame. Reset clear order.
+         */
+        mBackendContext.onNewFrame();
+
+        /**
+         * Drive on draw frame.
+         */
         mListener.onDrawFrame(mBackendContext);
     }
 }

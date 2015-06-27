@@ -2,13 +2,15 @@ package com.sweetlab.sweetride.engine;
 
 import android.test.AndroidTestCase;
 
-import com.sweetlab.sweetride.engine.rendernode.DefaultRenderNode;
-import com.sweetlab.sweetride.engine.rendernode.RenderGroupCollector;
-import com.sweetlab.sweetride.engine.rendernode.RenderNode;
-import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.camera.Camera;
+import com.sweetlab.sweetride.engine.frame.update.GraphContentCollector;
+import com.sweetlab.sweetride.engine.frame.update.GraphContent;
+import com.sweetlab.sweetride.engine.frame.update.RenderNodeContentCollector;
+import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.math.FloatUtil;
 import com.sweetlab.sweetride.node.Node;
+import com.sweetlab.sweetride.rendernode.DefaultRenderNode;
+import com.sweetlab.sweetride.rendernode.RenderNode;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,11 +25,16 @@ public class GraphUpdateTest extends AndroidTestCase {
      * Number of frames to run.
      */
     private static final int NBR_FRAMES = 10;
-    
+
     /**
      *
      */
     private Random mRand = new Random(666);
+
+    /**
+     * Number of engine roots.
+     */
+    private static final int ENGINE_ROOT = 1;
 
     /**
      * Number of application nodes.
@@ -133,13 +140,11 @@ public class GraphUpdateTest extends AndroidTestCase {
         assertFalse(mEngineRoot.hasActions());
 
         GraphContent collect = new GraphContent();
-        new ContentCollector().collect(mEngineRoot, collect);
-        List<Geometry> geometries = collect.getGeometries();
-        List<RenderNode> renderNodes = collect.getRenderNodes();
+        new GraphContentCollector().collect(mEngineRoot, collect);
         List<Node> nodes = collect.getNodes();
+        List<RenderNode> renderNodes = collect.getRenderNodes();
 
-        assertEquals(APP_GEOMETRIES, geometries.size());
-        assertEquals(APP_NODES, nodes.size());
+        assertEquals(APP_NODES + APP_GEOMETRIES + ENGINE_ROOT, nodes.size());
         assertEquals(APP_RENDER_NODES, renderNodes.size());
 
         boolean foundActions = false;
@@ -155,12 +160,6 @@ public class GraphUpdateTest extends AndroidTestCase {
                 foundActions = true;
             }
         }
-        for (Node node : geometries) {
-            boolean handledAction = mActionHandler.handleActions(node);
-            if (handledAction) {
-                foundActions = true;
-            }
-        }
         assertTrue(foundActions);
 
         for (Node node : renderNodes) {
@@ -169,41 +168,39 @@ public class GraphUpdateTest extends AndroidTestCase {
         for (Node node : nodes) {
             assertFalse(node.hasActions());
         }
-        for (Node node : geometries) {
-            assertFalse(node.hasActions());
-        }
     }
 
     public void testRenderNodes() {
         GraphContent collect = new GraphContent();
-        new ContentCollector().collect(mEngineRoot, collect);
-        List<Geometry> geometries = collect.getGeometries();
+        new GraphContentCollector().collect(mEngineRoot, collect);
         List<RenderNode> renderNodes = collect.getRenderNodes();
         List<Node> nodes = collect.getNodes();
 
-        assertEquals(APP_GEOMETRIES, geometries.size());
-        assertEquals(APP_NODES, nodes.size());
+        assertEquals(APP_GEOMETRIES + APP_NODES + ENGINE_ROOT, nodes.size());
         assertEquals(APP_RENDER_NODES, renderNodes.size());
 
         /**
-         * Might be so that geometries are added without having a render node as parent.
-         * So we need to exclude these from the test.
+         * Might be so that nodes are added without having a render node as parent.
+         * So we need to exclude these from the test. Note that the engine root doesn't
+         * have a camera and will add to the exclude count.
          */
         int excludeCount = 0;
-        for (Geometry geometry : geometries) {
-            if (geometry.findCamera() == null) {
+        for (Node node : nodes) {
+            if (node.findCamera() == null) {
                 excludeCount++;
             }
         }
+        excludeCount--;
 
-        int geometryCount = 0;
+        int nodeCount = 0;
         for (RenderNode renderNode : renderNodes) {
-            List<Geometry> subBranch = new ArrayList<>();
-            new RenderGroupCollector().collect(renderNode, subBranch);
-            geometryCount += subBranch.size();
+            RenderNodeContentCollector collector = new RenderNodeContentCollector();
+            collector.collect(renderNode);
+            List<Node> subBranch = collector.getResult();
+            // -1 to exclude the actual renderNode
+            nodeCount += subBranch.size() - 0;
         }
-
-        assertEquals(APP_GEOMETRIES - excludeCount, geometryCount);
+        assertEquals(APP_GEOMETRIES + APP_NODES + APP_RENDER_NODES - excludeCount, nodeCount);
     }
 
     /**

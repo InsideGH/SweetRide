@@ -13,4 +13,6 @@ public class DebugOptions {
     public static final boolean DEBUG_GEOMETRY = true;
     public static final boolean DEBUG_ACTION = true;
     public static final boolean DEBUG_DRAW = true;
+    public static final boolean DEBUG_RENDER_SETTINGS = true;
+    public static final boolean DEBUG_NODE = true;
 }

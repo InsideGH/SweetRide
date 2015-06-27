@@ -1,13 +1,12 @@
 package com.sweetlab.sweetride.element;
 
-import android.opengl.GLES20;
-
-import com.sweetlab.sweetride.attributedata.IndicesBuffer;
-import com.sweetlab.sweetride.attributedata.VertexBuffer;
+import com.sweetlab.sweetride.Util.BackendRenderSettingsUtil;
 import com.sweetlab.sweetride.Util.BufferTestUtil;
 import com.sweetlab.sweetride.Util.DrawTestUtil;
 import com.sweetlab.sweetride.Util.ProgramTestUtil;
 import com.sweetlab.sweetride.Util.Verify;
+import com.sweetlab.sweetride.attributedata.IndicesBuffer;
+import com.sweetlab.sweetride.attributedata.VertexBuffer;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.BufferUsage;
 import com.sweetlab.sweetride.shader.ShaderProgram;
@@ -111,7 +110,7 @@ public class ElementTargetTest extends OpenGLTestCase {
                 /**
                  * Clear screen.
                  */
-                clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
+                mContext.getRenderState().useSettings(BackendRenderSettingsUtil.getDefaultGrey(getSurfaceWidth(), getSurfaceHeight())).clear();
 
                 DrawTestUtil.drawElementsSeparateBuffers(mContext, mRedShader, mIndicesBuffer, mLeftTriangle);
                 DrawTestUtil.drawElementsSeparateBuffers(mContext, mBlueShader, mIndicesBuffer, mTopTriangle);

@@ -2,7 +2,7 @@ package com.sweetlab.sweetride.touch;
 
 import android.test.AndroidTestCase;
 
-import com.sweetlab.sweetride.engine.rendernode.AndroidRenderNode;
+import com.sweetlab.sweetride.rendernode.AndroidRenderNode;
 import com.sweetlab.sweetride.camera.Camera;
 import com.sweetlab.sweetride.math.FloatUtil;
 import com.sweetlab.sweetride.camera.Frustrum;
@@ -95,7 +95,7 @@ public class TouchToRayTest extends AndroidTestCase {
 
     public void testOrtho1() {
         AndroidRenderNode androidRenderNode = new AndroidRenderNode(1080, 1920);
-        Camera camera = androidRenderNode.getCamera();
+        Camera camera = androidRenderNode.findCamera();
 
         TouchToRay touchToRay = new TouchToRay(1080, 1920);
 
@@ -108,7 +108,7 @@ public class TouchToRayTest extends AndroidTestCase {
 
     public void testOrtho2() {
         AndroidRenderNode androidRenderNode = new AndroidRenderNode(1080, 1920);
-        Camera camera = androidRenderNode.getCamera();
+        Camera camera = androidRenderNode.findCamera();
 
         TouchToRay touchToRay = new TouchToRay(1080, 1920);
 

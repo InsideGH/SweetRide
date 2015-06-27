@@ -1,7 +1,5 @@
 package com.sweetlab.sweetride.pool;
 
-import com.sweetlab.sweetride.engine.Reusable;
-
 /**
  * Pool of reusable objects.
  *

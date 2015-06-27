@@ -46,7 +46,9 @@ public class CubeMesh extends Mesh {
             /**
              * Create texture coordinates.
              */
-            builder.add(textureName, new TextureCoordData(createTextureCoordinates()));
+            float[] textureCoordinates = createTextureCoordinates();
+            flip(textureCoordinates);
+            builder.add(textureName, new TextureCoordData(textureCoordinates));
         }
 
         addVertexBuffer(builder.build());
@@ -137,5 +139,18 @@ public class CubeMesh extends Mesh {
                 -0.5f, -0.5f, 0.5f, // 22
                 0.5f, -0.5f, 0.5f, // 23
         };
+    }
+
+    /**
+     * Flip the texture coordinates around y axis.
+     *
+     * @param data Texture coordinates.
+     */
+    private void flip(float[] data) {
+        if (data != null) {
+            for (int i = 1; i < data.length; i += 2) {
+                data[i] = 1 - data[i];
+            }
+        }
     }
 }

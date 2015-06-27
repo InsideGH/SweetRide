@@ -2,6 +2,7 @@ package com.sweetlab.sweetride.array;
 
 import com.sweetlab.sweetride.Util.BufferTestUtil;
 import com.sweetlab.sweetride.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.Util.RenderSettingsUtil;
 import com.sweetlab.sweetride.Util.Verify;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.MeshDrawingMode;
@@ -9,6 +10,7 @@ import com.sweetlab.sweetride.engine.FrontEndActionHandler;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.mesh.Mesh;
+import com.sweetlab.sweetride.node.Node;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
 
@@ -34,6 +36,16 @@ public class ArrayMultiBuf_Geometry_mainNotifier extends OpenGLTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        /**
+         * Attach to root node with a default render settings. The settings
+         * will be inherited to children.
+         */
+        Node root = RenderSettingsUtil.getDefaultGrey(getSurfaceWidth(), getSurfaceHeight());
+        root.addChild(mLeftGeometry);
+        root.addChild(mTopGeometry);
+        root.addChild(mRightGeometry);
+        root.addChild(mBottomGeometry);
+
         Material material;
         Mesh mesh;
 
@@ -121,11 +133,6 @@ public class ArrayMultiBuf_Geometry_mainNotifier extends OpenGLTestCase {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {
-                /**
-                 * Clear screen.
-                 */
-                clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
-
                 /**
                  * Draw the triangles.
                  */

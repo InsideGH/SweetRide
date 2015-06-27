@@ -1,6 +1,6 @@
 package com.sweetlab.sweetride.pool;
 
-import com.sweetlab.sweetride.engine.GraphContent;
+import com.sweetlab.sweetride.engine.frame.update.GraphContent;
 
 import java.util.Stack;
 

@@ -1,5 +1,6 @@
 package com.sweetlab.sweetride.array;
 
+import com.sweetlab.sweetride.Util.BackendRenderSettingsUtil;
 import com.sweetlab.sweetride.Util.BufferTestUtil;
 import com.sweetlab.sweetride.Util.DrawTestUtil;
 import com.sweetlab.sweetride.Util.ProgramTestUtil;
@@ -103,7 +104,7 @@ public class ArrayOneBuf_MatMesh_notifier extends OpenGLTestCase {
                 /**
                  * Clear screen.
                  */
-                clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
+                mContext.getRenderState().useSettings(BackendRenderSettingsUtil.getDefaultGrey(getSurfaceWidth(), getSurfaceHeight())).clear();
 
                 /**
                  * Draw the triangles.

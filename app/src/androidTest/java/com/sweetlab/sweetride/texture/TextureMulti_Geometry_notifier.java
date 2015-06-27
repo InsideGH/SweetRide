@@ -1,13 +1,13 @@
 package com.sweetlab.sweetride.texture;
 
 import android.graphics.Bitmap;
-import android.opengl.GLES20;
 
-import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.Util.BitmapTestUtil;
 import com.sweetlab.sweetride.Util.BufferTestUtil;
 import com.sweetlab.sweetride.Util.ProgramTestUtil;
+import com.sweetlab.sweetride.Util.RenderSettingsUtil;
 import com.sweetlab.sweetride.Util.Verify;
+import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.BufferUsage;
 import com.sweetlab.sweetride.context.MagFilter;
@@ -17,9 +17,9 @@ import com.sweetlab.sweetride.engine.FrontEndActionHandler;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.mesh.Mesh;
+import com.sweetlab.sweetride.node.Node;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
-import com.sweetlab.sweetride.texture.Texture2D;
 
 public class TextureMulti_Geometry_notifier extends OpenGLTestCase {
 
@@ -41,6 +41,11 @@ public class TextureMulti_Geometry_notifier extends OpenGLTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        /**
+         * Get node with default render settings. Attached child will inherit them.
+         */
+        Node root = RenderSettingsUtil.getDefaultGrey(getSurfaceWidth(), getSurfaceHeight());
+        root.addChild(mGeometry);
 
         Material material = new Material();
         material.setShaderProgram(ProgramTestUtil.createNdcOneTexCoordTwoTextures());
@@ -84,11 +89,6 @@ public class TextureMulti_Geometry_notifier extends OpenGLTestCase {
         runOnDrawFrame(new ResultRunnable() {
             @Override
             public Object run() {
-                /**
-                 * Clear screen.
-                 */
-                clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
-
                 /**
                  * This quad should be drawn centered and contain 4 primary colors with additional chess color board added.
                  */

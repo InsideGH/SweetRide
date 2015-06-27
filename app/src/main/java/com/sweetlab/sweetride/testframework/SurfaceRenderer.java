@@ -55,6 +55,8 @@ public class SurfaceRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public synchronized void onDrawFrame(GL10 gl) {
+        mBackendContext.onNewFrame();
+
         if (!mQueue.isEmpty()) {
             LatchedRunnable latchedRunnable = mQueue.removeFirst();
             latchedRunnable.run();

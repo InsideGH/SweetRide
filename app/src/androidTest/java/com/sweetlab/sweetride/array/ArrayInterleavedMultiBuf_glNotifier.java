@@ -1,5 +1,6 @@
 package com.sweetlab.sweetride.array;
 
+import com.sweetlab.sweetride.Util.BackendRenderSettingsUtil;
 import com.sweetlab.sweetride.attributedata.InterleavedVertexBuffer;
 import com.sweetlab.sweetride.attributedata.VertexBuffer;
 import com.sweetlab.sweetride.Util.BufferTestUtil;
@@ -92,7 +93,7 @@ public class ArrayInterleavedMultiBuf_glNotifier extends OpenGLTestCase {
                 /**
                  * Clear screen.
                  */
-                clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
+                mContext.getRenderState().useSettings(BackendRenderSettingsUtil.getDefaultGrey(getSurfaceWidth(), getSurfaceHeight())).clear();
 
                 /**
                  * This triangle should be smooth colored on left side.

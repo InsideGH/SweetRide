@@ -12,13 +12,16 @@ import com.sweetlab.sweetride.UserApplication;
 import com.sweetlab.sweetride.context.MagFilter;
 import com.sweetlab.sweetride.context.MinFilter;
 import com.sweetlab.sweetride.demo.mesh.QuadMesh;
-import com.sweetlab.sweetride.engine.rendernode.AndroidRenderNode;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.intersect.Intersect;
 import com.sweetlab.sweetride.intersect.Ray;
 import com.sweetlab.sweetride.intersect.TransformableBoundingBox;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.node.Node;
+import com.sweetlab.sweetride.node.rendersettings.BlendDstFact;
+import com.sweetlab.sweetride.node.rendersettings.BlendSrcFact;
+import com.sweetlab.sweetride.node.rendersettings.ClearBit;
+import com.sweetlab.sweetride.rendernode.AndroidRenderNode;
 import com.sweetlab.sweetride.shader.FragmentShader;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 import com.sweetlab.sweetride.shader.VertexShader;
@@ -162,6 +165,11 @@ public class DemoApplication2 extends UserApplication {
     @Override
     public void onInitialized(Node engineRoot, int width, int height) {
         mAndroidRenderNode = new AndroidRenderNode(width, height);
+        mAndroidRenderNode.getRenderSettings().setClearColor(new float[]{0.3f, 0.3f, 0.3f, 1});
+        mAndroidRenderNode.getRenderSettings().setClear(0, ClearBit.COLOR_BUFFER_BIT, ClearBit.DEPTH_BUFFER_BIT);
+        mAndroidRenderNode.getRenderSettings().setBlend(true);
+        mAndroidRenderNode.getRenderSettings().setBlendFact(BlendSrcFact.SRC_ALPHA, BlendDstFact.ONE_MINUS_SRC_ALPHA);
+
         mAndroidRenderNode.addChild(mMoveQuad);
         mAndroidRenderNode.addChild(mTurnQuad);
 
@@ -204,7 +212,7 @@ public class DemoApplication2 extends UserApplication {
                 int x = (int) event.getX(actionIndex);
                 int y = (int) event.getY(actionIndex);
 
-                Ray ray = mTouchToRay.getRay(mAndroidRenderNode.getCamera(), x, y);
+                Ray ray = mTouchToRay.getRay(mAndroidRenderNode.findCamera(), x, y);
 
                 TransformableBoundingBox moveBox = mMoveQuad.getTransformableBoundingBox();
                 if (mIntersect.intersects(ray, moveBox)) {

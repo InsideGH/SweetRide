@@ -13,7 +13,8 @@ import com.sweetlab.sweetride.context.BufferUsage;
 import com.sweetlab.sweetride.context.MagFilter;
 import com.sweetlab.sweetride.context.MeshDrawingMode;
 import com.sweetlab.sweetride.context.MinFilter;
-import com.sweetlab.sweetride.engine.rendernode.DefaultRenderNode;
+import com.sweetlab.sweetride.node.rendersettings.ClearBit;
+import com.sweetlab.sweetride.rendernode.DefaultRenderNode;
 import com.sweetlab.sweetride.engine.FrontEndActionHandler;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
@@ -115,6 +116,13 @@ public class FloatUniformTest extends OpenGLTestCase {
          * Create render node and attach geometry.
          */
         mRenderNode = new DefaultRenderNode();
+        /**
+         * Setup render node.
+         */
+        mRenderNode.getRenderSettings().setClearColor(new float[]{0.3f, 0.3f, 0.3f, 1});
+        mRenderNode.getRenderSettings().setClear(1, ClearBit.COLOR_BUFFER_BIT, ClearBit.DEPTH_BUFFER_BIT);
+        mRenderNode.getRenderSettings().setViewPort(0, 0, getSurfaceWidth(), getSurfaceHeight());
+
         mRenderNode.addChild(geometry);
 
         /**
@@ -154,11 +162,6 @@ public class FloatUniformTest extends OpenGLTestCase {
                 @Override
                 public Object run() {
                     /**
-                     * Clear screen.
-                     */
-                    clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
-
-                    /**
                      * Handle GL thread notifications. Simulate engine pre draw.
                      */
                     List<Geometry> geometries = CollectorUtil.collectGeometries(mRenderNode);
@@ -169,7 +172,7 @@ public class FloatUniformTest extends OpenGLTestCase {
                     /**
                      * Draw.
                      */
-                    mRenderNode.getRenderer().render(mContext, CollectorUtil.collectGeometries(mRenderNode));
+                    mRenderNode.getRenderer().render(mContext, CollectorUtil.collectNodes(mRenderNode));
                     return null;
                 }
             });

@@ -6,11 +6,12 @@ import com.sweetlab.sweetride.Util.ProgramTestUtil;
 import com.sweetlab.sweetride.Util.Verify;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.MeshDrawingMode;
-import com.sweetlab.sweetride.engine.rendernode.DefaultRenderNode;
 import com.sweetlab.sweetride.engine.FrontEndActionHandler;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.mesh.Mesh;
+import com.sweetlab.sweetride.node.rendersettings.ClearBit;
+import com.sweetlab.sweetride.rendernode.DefaultRenderNode;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
 
@@ -35,6 +36,13 @@ public class ArrayOneBuf_Geometry_RenderNode_mainNotifier extends OpenGLTestCase
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        /**
+         * Setup render node.
+         */
+        mRenderNode.getRenderSettings().setClearColor(new float[]{0.3f, 0.3f, 0.3f, 1});
+        mRenderNode.getRenderSettings().setClear(0, ClearBit.COLOR_BUFFER_BIT, ClearBit.DEPTH_BUFFER_BIT);
+        mRenderNode.getRenderSettings().setViewPort(0, 0, getSurfaceWidth(), getSurfaceHeight());
+
         /**
          * Create materials. No need for GL thread.
          */
@@ -103,14 +111,9 @@ public class ArrayOneBuf_Geometry_RenderNode_mainNotifier extends OpenGLTestCase
             @Override
             public Object run() {
                 /**
-                 * Clear screen.
-                 */
-                clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
-
-                /**
                  * Render.
                  */
-                mRenderNode.getRenderer().render(mContext, CollectorUtil.collectGeometries(mRenderNode));
+                mRenderNode.getRenderer().render(mContext, CollectorUtil.collectNodes(mRenderNode));
 
                 return null;
             }

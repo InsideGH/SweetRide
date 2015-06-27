@@ -2,6 +2,7 @@ package com.sweetlab.sweetride.texture;
 
 import android.graphics.Bitmap;
 
+import com.sweetlab.sweetride.Util.BackendRenderSettingsUtil;
 import com.sweetlab.sweetride.Util.BitmapTestUtil;
 import com.sweetlab.sweetride.Util.BufferTestUtil;
 import com.sweetlab.sweetride.Util.DrawTestUtil;
@@ -129,7 +130,7 @@ public class TextureMulti_camera extends OpenGLTestCase {
                     /**
                      * Clear screen.
                      */
-                    clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
+                    mContext.getRenderState().useSettings(BackendRenderSettingsUtil.getDefaultGrey(getSurfaceWidth(), getSurfaceHeight())).clear();
 
                     Camera camera = new Camera();
                     camera.lookAt(mPos, mLookPos);
@@ -158,7 +159,7 @@ public class TextureMulti_camera extends OpenGLTestCase {
                     /**
                      * Clear screen.
                      */
-                    clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
+                    mContext.getRenderState().useSettings(BackendRenderSettingsUtil.getDefaultGrey(getSurfaceWidth(), getSurfaceHeight())).clear();
 
                     Camera camera = new Camera();
                     camera.lookAt(mPos, mLookPos);
@@ -187,7 +188,7 @@ public class TextureMulti_camera extends OpenGLTestCase {
                     /**
                      * Clear screen.
                      */
-                    clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
+                    mContext.getRenderState().useSettings(BackendRenderSettingsUtil.getDefaultGrey(getSurfaceWidth(), getSurfaceHeight())).clear();
 
                     Camera camera = new Camera();
                     camera.lookAt(mPos, mLookPos);
@@ -216,7 +217,7 @@ public class TextureMulti_camera extends OpenGLTestCase {
                     /**
                      * Clear screen.
                      */
-                    clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
+                    mContext.getRenderState().useSettings(BackendRenderSettingsUtil.getDefaultGrey(getSurfaceWidth(), getSurfaceHeight())).clear();
 
                     Camera camera = new Camera();
                     camera.lookAt(mPos, mLookPos);
@@ -245,7 +246,7 @@ public class TextureMulti_camera extends OpenGLTestCase {
                     /**
                      * Clear screen.
                      */
-                    clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
+                    mContext.getRenderState().useSettings(BackendRenderSettingsUtil.getDefaultGrey(getSurfaceWidth(), getSurfaceHeight())).clear();
 
                     Camera camera = new Camera();
                     camera.lookAt(mPos, mLookPos);
@@ -274,7 +275,7 @@ public class TextureMulti_camera extends OpenGLTestCase {
                     /**
                      * Clear screen.
                      */
-                    clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
+                    mContext.getRenderState().useSettings(BackendRenderSettingsUtil.getDefaultGrey(getSurfaceWidth(), getSurfaceHeight())).clear();
 
                     Camera camera = new Camera();
                     camera.lookAt(mPos, mLookPos);

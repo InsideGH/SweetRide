@@ -2,16 +2,16 @@ package com.sweetlab.sweetride.framebuffer;
 
 import android.opengl.GLES20;
 
-import com.sweetlab.sweetride.attributedata.InterleavedVertexBuffer;
-import com.sweetlab.sweetride.attributedata.VertexBuffer;
+import com.sweetlab.sweetride.Util.BackendRenderSettingsUtil;
 import com.sweetlab.sweetride.Util.BufferTestUtil;
 import com.sweetlab.sweetride.Util.DrawTestUtil;
 import com.sweetlab.sweetride.Util.ProgramTestUtil;
 import com.sweetlab.sweetride.Util.Verify;
+import com.sweetlab.sweetride.attributedata.InterleavedVertexBuffer;
+import com.sweetlab.sweetride.attributedata.VertexBuffer;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.MagFilter;
 import com.sweetlab.sweetride.context.MinFilter;
-import com.sweetlab.sweetride.framebuffer.FrameBuffer;
 import com.sweetlab.sweetride.renderbuffer.RenderBuffer;
 import com.sweetlab.sweetride.resource.TextureResource;
 import com.sweetlab.sweetride.shader.ShaderProgram;
@@ -131,7 +131,7 @@ public class FrameBufferTest_glNotifier extends OpenGLTestCase {
                 /**
                  * Clear frame buffer screen.
                  */
-                clearScreen(0.0f, 1.0f, 0.0f, 1.0f);
+                mContext.getRenderState().useSettings(BackendRenderSettingsUtil.getDefaultGreen(getSurfaceWidth(), getSurfaceHeight())).clear();
 
                 /**
                  * Draw triangle to screen.
@@ -146,7 +146,7 @@ public class FrameBufferTest_glNotifier extends OpenGLTestCase {
                 /**
                  * Clear screen.
                  */
-                clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
+                mContext.getRenderState().useSettings(BackendRenderSettingsUtil.getDefaultGrey(getSurfaceWidth(), getSurfaceHeight())).clear();
 
                 /**
                  * This quad should be drawn centered with the texture that was previously drawn

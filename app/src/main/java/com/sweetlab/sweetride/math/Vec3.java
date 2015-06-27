@@ -1,6 +1,6 @@
 package com.sweetlab.sweetride.math;
 
-import com.sweetlab.sweetride.engine.Reusable;
+import com.sweetlab.sweetride.pool.Reusable;
 
 /**
  * Old vec3 class that I have had around for a while. Should be cleaned up though.

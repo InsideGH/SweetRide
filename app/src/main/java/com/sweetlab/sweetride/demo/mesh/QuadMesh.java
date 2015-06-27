@@ -87,6 +87,6 @@ public class QuadMesh extends Mesh {
      * @return Flipped texture coordinates suitable for bitmap.
      */
     private float[] createTextureCoordinates() {
-        return new float[]{0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f};
+        return new float[]{0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f};
     }
 }

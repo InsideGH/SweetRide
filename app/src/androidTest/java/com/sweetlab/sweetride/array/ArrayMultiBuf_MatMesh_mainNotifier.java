@@ -1,5 +1,6 @@
 package com.sweetlab.sweetride.array;
 
+import com.sweetlab.sweetride.Util.BackendRenderSettingsUtil;
 import com.sweetlab.sweetride.Util.BufferTestUtil;
 import com.sweetlab.sweetride.Util.DrawTestUtil;
 import com.sweetlab.sweetride.Util.ProgramTestUtil;
@@ -142,12 +143,7 @@ public class ArrayMultiBuf_MatMesh_mainNotifier extends OpenGLTestCase {
                 /**
                  * Clear screen.
                  */
-                clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
-
-                /**
-                 * Clear screen.
-                 */
-                clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
+                mContext.getRenderState().useSettings(BackendRenderSettingsUtil.getDefaultGrey(getSurfaceWidth(), getSurfaceHeight())).clear();
 
                 /**
                  * This left triangle should be smooth colored.

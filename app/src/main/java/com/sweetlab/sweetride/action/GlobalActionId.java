@@ -7,7 +7,7 @@ public enum GlobalActionId {
     /**
      * Render node camera reference changed.
      */
-    RENDER_NODE_CAMERA,
+    NODE_CAMERA,
 
     /**
      * The world got dirty for a reason (several reasons).
@@ -133,4 +133,9 @@ public enum GlobalActionId {
      * Uniform has been updated.
      */
     CUSTOM_UNIFORM_UPDATE,
+
+    /**
+     * Render settings updated.
+     */
+    RENDER_SETTINGS_DIRTY,
 }

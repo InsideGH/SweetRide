@@ -13,7 +13,8 @@ import com.sweetlab.sweetride.context.BufferUsage;
 import com.sweetlab.sweetride.context.MagFilter;
 import com.sweetlab.sweetride.context.MeshDrawingMode;
 import com.sweetlab.sweetride.context.MinFilter;
-import com.sweetlab.sweetride.engine.rendernode.DefaultRenderNode;
+import com.sweetlab.sweetride.node.rendersettings.ClearBit;
+import com.sweetlab.sweetride.rendernode.DefaultRenderNode;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.camera.Camera;
@@ -98,6 +99,13 @@ public class EngineUniformsTest extends OpenGLTestCase {
          * Create render node and attach geometry.
          */
         mRenderNode = new DefaultRenderNode();
+
+        /**
+         * Setup render node.
+         */
+        mRenderNode.getRenderSettings().setClearColor(new float[]{0.3f, 0.3f, 0.3f, 1});
+        mRenderNode.getRenderSettings().setClear(0, ClearBit.COLOR_BUFFER_BIT, ClearBit.DEPTH_BUFFER_BIT);
+
         mRenderNode.addChild(geometry);
 
         /**
@@ -125,7 +133,7 @@ public class EngineUniformsTest extends OpenGLTestCase {
             /**
              * Simulate engine update(dt) loop.
              */
-            Camera camera = mRenderNode.getCamera();
+            Camera camera = mRenderNode.findCamera();
             if (camera!= null) {
                 camera.lookAt(0, 0, 3f / (i * 0.1f), 0, 0, 0);
                 camera.getFrustrum().setPerspectiveProjection(90, Frustrum.FovType.AUTO_FIT, 0.1f, 10, getSurfaceWidth(), getSurfaceHeight());
@@ -146,11 +154,6 @@ public class EngineUniformsTest extends OpenGLTestCase {
                 @Override
                 public Object run() {
                     /**
-                     * Clear screen.
-                     */
-                    clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
-
-                    /**
                      * Handle GL thread notifications. Simulate engine pre draw.
                      */
                     List<Geometry> geometries = CollectorUtil.collectGeometries(mRenderNode);
@@ -161,7 +164,7 @@ public class EngineUniformsTest extends OpenGLTestCase {
                     /**
                      * Draw.
                      */
-                    mRenderNode.getRenderer().render(mContext, CollectorUtil.collectGeometries(mRenderNode));
+                    mRenderNode.getRenderer().render(mContext, CollectorUtil.collectNodes(mRenderNode));
                     return null;
                 }
             });

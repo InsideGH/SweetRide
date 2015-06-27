@@ -1,9 +1,12 @@
 package com.sweetlab.sweetride.demo;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.view.MotionEvent;
 
+import com.sweetlab.sweetride.R;
 import com.sweetlab.sweetride.UserApplication;
 import com.sweetlab.sweetride.camera.Camera;
 import com.sweetlab.sweetride.camera.FirstPersonCamera;
@@ -12,17 +15,22 @@ import com.sweetlab.sweetride.camera.ViewFrustrumCulling;
 import com.sweetlab.sweetride.context.MagFilter;
 import com.sweetlab.sweetride.context.MinFilter;
 import com.sweetlab.sweetride.demo.mesh.CubeMesh;
-import com.sweetlab.sweetride.engine.rendernode.DefaultRenderNode;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.math.Vec3;
 import com.sweetlab.sweetride.node.Node;
+import com.sweetlab.sweetride.node.rendersettings.BlendDstFact;
+import com.sweetlab.sweetride.node.rendersettings.BlendSrcFact;
+import com.sweetlab.sweetride.node.rendersettings.ClearBit;
+import com.sweetlab.sweetride.rendernode.DefaultRenderNode;
 import com.sweetlab.sweetride.shader.FragmentShader;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 import com.sweetlab.sweetride.shader.VertexShader;
 import com.sweetlab.sweetride.texture.Texture2D;
 
 import java.util.Random;
+
+import rx.functions.Action1;
 
 /**
  * A demo application. Currently a rotating red quad.
@@ -45,6 +53,9 @@ public class DemoApplication extends UserApplication {
                     "uniform sampler2D s_texture;\n" +
                     "void main() {\n" +
                     "vec4 color = texture2D(s_texture, v_texCoord);\n" +
+                    "if (color.a < 0.5) { \n" +
+                    "  discard;\n" +
+                    " } \n" +
                     "gl_FragColor = color;\n" +
                     "}";
 
@@ -113,11 +124,21 @@ public class DemoApplication extends UserApplication {
     /**
      * Constructor.
      */
-    public DemoApplication() {
+    public DemoApplication(Context context) {
+        /**
+         * Create assets loader.
+         */
+        AssetsLoader assetsLoader = new AssetsLoader(context);
+
         /**
          * Enable view frustrum culling.
          */
         mRenderNode.enableViewFrustrumCulling(true);
+        mRenderNode.getRenderSettings().setClearColor(new float[]{1.0f, 0.3f, 0.3f, 1});
+        mRenderNode.getRenderSettings().setClear(0, ClearBit.COLOR_BUFFER_BIT, ClearBit.DEPTH_BUFFER_BIT);
+        mRenderNode.getRenderSettings().setDepthTest(true);
+        mRenderNode.getRenderSettings().setBlend(true);
+        mRenderNode.getRenderSettings().setBlendFact(BlendSrcFact.SRC_ALPHA, BlendDstFact.ONE_MINUS_SRC_ALPHA);
 
         /**
          * Add the geometries to demo root.
@@ -140,8 +161,19 @@ public class DemoApplication extends UserApplication {
         ShaderProgram programRed = new ShaderProgram(new VertexShader(VERTEX_SHADER), new FragmentShader(FRAGMENT_SHADER));
         material.setShaderProgram(programRed);
 
-        Texture2D textureFourColor = new Texture2D("s_texture", createQuadColorBitmap(Bitmap.Config.RGB_565), MinFilter.NEAREST, MagFilter.NEAREST);
-        material.addTexture(textureFourColor);
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        opts.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+        assetsLoader.loadBitmap(R.drawable.compass, opts).subscribe(new Action1<Bitmap>() {
+            @Override
+            public void call(Bitmap bitmap) {
+                Material rotMaterial = mRotatingQuad.getMaterial();
+                if (rotMaterial != null) {
+                    Texture2D textureLeft = new Texture2D("s_texture", bitmap, MinFilter.NEAREST, MagFilter.NEAREST);
+                    rotMaterial.addTexture(textureLeft);
+                }
+            }
+        });
 
         /**
          * Create blue material.
@@ -151,6 +183,9 @@ public class DemoApplication extends UserApplication {
         ShaderProgram programBlue = new ShaderProgram(new VertexShader(VERTEX_SHADER), new FragmentShader(FRAGMENT_SHADER));
         material.setShaderProgram(programBlue);
 
+        /**
+         * Load bitmap.
+         */
         Texture2D textureChess = new Texture2D("s_texture", createChessColorBitmap(Bitmap.Config.RGB_565), MinFilter.NEAREST, MagFilter.NEAREST);
         material.addTexture(textureChess);
     }
@@ -165,9 +200,9 @@ public class DemoApplication extends UserApplication {
         /**
          * Setup camera frustrum.
          */
-        Camera camera = mRenderNode.getCamera();
+        Camera camera = mRenderNode.findCamera();
         if (camera != null) {
-            Frustrum frustrum = mRenderNode.getCamera().getFrustrum();
+            Frustrum frustrum = mRenderNode.findCamera().getFrustrum();
             frustrum.setPerspectiveProjection(FIELD_OF_VIEW, Frustrum.FovType.AUTO_FIT, NEAR_FIELD, FAR_FIELD, width, height);
             /**
              * Create a quad mesh that is a quarter of the screen width. Use same mesh for both geometries.
@@ -195,7 +230,7 @@ public class DemoApplication extends UserApplication {
          */
         mCamera.update(mStrafeLeftRight, mStrafeForwardBackward, mTurnAroundX, mTurnAroundY);
 
-        mRotatingQuad.getModelTransform().rotate(2, 0, 1, 0);
+        mRotatingQuad.getModelTransform().rotate(2f, 0, 1, 0);
         mMovingQuad.getModelTransform().rotate(2, 0, 1, 0);
         /**
          * When object is not visible any longer reset position

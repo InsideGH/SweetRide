@@ -1,10 +1,13 @@
 package com.sweetlab.sweetride.node;
 
+import com.sweetlab.sweetride.DebugOptions;
 import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.ActionThread;
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.camera.Camera;
+import com.sweetlab.sweetride.camera.LowerLeftBox;
+import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.math.Transform;
 
 import java.util.ArrayList;
@@ -19,6 +22,11 @@ public class Node extends NoHandleNotifier<GlobalActionId> {
      * Action when world is dirty.
      */
     private final Action<GlobalActionId> mWorldDirty = new Action<>(this, GlobalActionId.NODE_WORLD_DIRTY, ActionThread.MAIN);
+
+    /**
+     * Action when camera has been set.
+     */
+    private final Action<GlobalActionId> mCameraSet = new Action<>(this, GlobalActionId.NODE_CAMERA, ActionThread.MAIN);
 
     /**
      * List of children.
@@ -41,21 +49,33 @@ public class Node extends NoHandleNotifier<GlobalActionId> {
     private final List<NodeController> mNodeControllers = new ArrayList<>();
 
     /**
+     * The render settings.
+     */
+    private final RenderSettings mRenderSettings = new RenderSettings();
+
+    /**
      * The parent.
      */
     private Node mParent;
+
+    /**
+     * The camera.
+     */
+    private Camera mCamera;
 
     /**
      * Constructor.
      */
     public Node() {
         connectNotifier(mModelTransform);
+        connectNotifier(mRenderSettings);
     }
 
     @Override
     public boolean handleAction(Action<GlobalActionId> action) {
         switch (action.getType()) {
             case NODE_WORLD_DIRTY:
+            case NODE_CAMERA:
                 return true;
             default:
                 return false;
@@ -69,13 +89,29 @@ public class Node extends NoHandleNotifier<GlobalActionId> {
             case NODE_WORLD_DIRTY:
                 mWorldTransform.mark();
                 break;
+
             case FRUSTRUM_UPDATED:
+                LowerLeftBox vp = mCamera.getFrustrum().getViewPort();
+                mRenderSettings.setViewPort(vp.getX(), vp.getY(), vp.getWidth(), vp.getHeight());
             case CAMERA_UPDATED:
             case TRANSFORM_UPDATED:
-            case RENDER_NODE_CAMERA:
+            case NODE_CAMERA:
                 setWorldDirty();
                 break;
+
+            case RENDER_SETTINGS_DIRTY:
+                invalidateWorldRenderSettings();
+                break;
         }
+    }
+
+    /**
+     * Draw this node.
+     *
+     * @param context The backend context.
+     */
+    public void draw(BackendContext context) {
+        mRenderSettings.useSettings(context);
     }
 
     /**
@@ -88,6 +124,20 @@ public class Node extends NoHandleNotifier<GlobalActionId> {
             mChildren.add(child);
             child.mParent = this;
             child.setWorldDirty();
+            child.mRenderSettings.inherit(mRenderSettings);
+        }
+    }
+
+    /**
+     * Remove child.
+     *
+     * @param child Child to remove.
+     */
+    public void removeChild(Node child) {
+        if (mChildren.remove(child)) {
+            child.mParent = null;
+        } else if (DebugOptions.DEBUG_NODE) {
+            throw new RuntimeException("Trying to remove a child that doesn't exist");
         }
     }
 
@@ -118,29 +168,34 @@ public class Node extends NoHandleNotifier<GlobalActionId> {
         return mChildren.get(index);
     }
 
+
+    /**
+     * Set the camera.
+     *
+     * @param camera The camera.
+     */
+    public void setCamera(Camera camera) {
+        if (mCamera != null) {
+            disconnectNotifier(mCamera);
+        }
+        mCamera = camera;
+        connectNotifier(mCamera);
+        addAction(mCameraSet);
+    }
+
     /**
      * Find camera by searching upwards in the graph.
      *
      * @return The camera or null if not found.
      */
     public Camera findCamera() {
-        Camera camera = getCamera();
-        if (camera != null) {
-            return camera;
+        if (mCamera != null) {
+            return mCamera;
         } else if (mParent != null) {
             return mParent.findCamera();
         } else {
             return null;
         }
-    }
-
-    /**
-     * Get camera.
-     *
-     * @return The camera or null if no camera exist.
-     */
-    public Camera getCamera() {
-        return null;
     }
 
     /**
@@ -189,6 +244,16 @@ public class Node extends NoHandleNotifier<GlobalActionId> {
     }
 
     /**
+     * Invalidate world render settings by forcing children nodes to
+     * inherit parent render settings.
+     */
+    public void invalidateWorldRenderSettings() {
+        for (Node child : mChildren) {
+            child.mRenderSettings.inherit(mRenderSettings);
+        }
+    }
+
+    /**
      * Called by the engine, each frame. All controllers all updated prior to onUpdate is called. Using iterator
      * because nodes can be added/removed during application update.
      *
@@ -211,6 +276,24 @@ public class Node extends NoHandleNotifier<GlobalActionId> {
                 iterator.next().update(dt);
             }
         }
+    }
+
+    /**
+     * Get render settings.
+     *
+     * @return The render settings.
+     */
+    public RenderSettings getRenderSettings() {
+        return mRenderSettings;
+    }
+
+    /**
+     * Use render settings.
+     *
+     * @param context Backend context.
+     */
+    public void useRenderSettings(BackendContext context) {
+        mRenderSettings.useSettings(context);
     }
 
     /**

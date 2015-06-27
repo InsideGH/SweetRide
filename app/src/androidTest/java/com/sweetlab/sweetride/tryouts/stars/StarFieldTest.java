@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 
 import com.sweetlab.sweetride.R;
+import com.sweetlab.sweetride.Util.BackendRenderSettingsUtil;
 import com.sweetlab.sweetride.attributedata.VertexBuffer;
 import com.sweetlab.sweetride.attributedata.VerticesData;
 import com.sweetlab.sweetride.context.BackendContext;
@@ -118,7 +119,7 @@ public class StarFieldTest extends OpenGLTestCase {
             runOnDrawFrame(new ResultRunnable() {
                 @Override
                 public Object run() {
-                    clearScreen(0, 0, 0, 1);
+                    mContext.getRenderState().useSettings(BackendRenderSettingsUtil.getDefaultBlack(getSurfaceWidth(), getSurfaceHeight())).clear();
                     mTimeStamp[0] += 0.05f;
                     draw(mContext, mShaderProgram, mStarTexture, mVertexBuffer);
                     return null;

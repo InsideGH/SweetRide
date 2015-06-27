@@ -10,10 +10,10 @@ import com.sweetlab.sweetride.context.MagFilter;
 import com.sweetlab.sweetride.context.MeshDrawingMode;
 import com.sweetlab.sweetride.context.MinFilter;
 import com.sweetlab.sweetride.engine.FrontEndActionHandler;
-import com.sweetlab.sweetride.framebuffer.FrameBuffer;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.mesh.Mesh;
+import com.sweetlab.sweetride.node.rendersettings.ClearBit;
 import com.sweetlab.sweetride.renderbuffer.RenderBuffer;
 import com.sweetlab.sweetride.resource.TextureResource;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
@@ -51,6 +51,15 @@ public class FrameBufferTest_Geometry_mainNotifier extends OpenGLTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+
+        mTriangle.getRenderSettings().setViewPort(0, 0, getSurfaceWidth(), getSurfaceHeight());
+        mTriangle.getRenderSettings().setClearColor(new float[]{0.0f, 1.0f, 0.0f, 1.0f});
+        mTriangle.getRenderSettings().setClear(0, ClearBit.COLOR_BUFFER_BIT);
+
+        mQuad.getRenderSettings().setViewPort(0, 0, getSurfaceWidth(), getSurfaceHeight());
+        mQuad.getRenderSettings().setClearColor(new float[]{0.5f, 0.5f, 0.5f, 1.0f});
+        mQuad.getRenderSettings().setClear(1, ClearBit.COLOR_BUFFER_BIT);
+
         Material material;
         Mesh mesh;
 
@@ -133,11 +142,6 @@ public class FrameBufferTest_Geometry_mainNotifier extends OpenGLTestCase {
                 assertTrue(isComplete);
 
                 /**
-                 * Clear frame buffer screen.
-                 */
-                clearScreen(0.0f, 1.0f, 0.0f, 1.0f);
-
-                /**
                  * Draw triangle to screen.
                  */
                 mTriangle.draw(mContext);
@@ -146,11 +150,6 @@ public class FrameBufferTest_Geometry_mainNotifier extends OpenGLTestCase {
                  * Switch back to system window rendering.
                  */
                 mContext.getFrameBufferTarget().useWindowFrameBuffer();
-
-                /**
-                 * Clear screen.
-                 */
-                clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
 
                 /**
                  * This quad should be drawn centered with the texture that was previously drawn

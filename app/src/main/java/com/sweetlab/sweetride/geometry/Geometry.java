@@ -3,17 +3,17 @@ package com.sweetlab.sweetride.geometry;
 import android.support.annotation.Nullable;
 
 import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.ActionThread;
-import com.sweetlab.sweetride.context.BackendContext;
-import com.sweetlab.sweetride.engine.EngineUniformCache;
-import com.sweetlab.sweetride.engine.uniform.EngineUniform;
-import com.sweetlab.sweetride.material.Material;
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.camera.Camera;
-import com.sweetlab.sweetride.math.Matrix44;
+import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.engine.uniform.EngineUniform;
+import com.sweetlab.sweetride.engine.uniform.EngineUniformCache;
 import com.sweetlab.sweetride.intersect.BoundingBox;
-import com.sweetlab.sweetride.mesh.Mesh;
 import com.sweetlab.sweetride.intersect.TransformableBoundingBox;
+import com.sweetlab.sweetride.material.Material;
+import com.sweetlab.sweetride.math.Matrix44;
+import com.sweetlab.sweetride.mesh.Mesh;
 import com.sweetlab.sweetride.node.Node;
 import com.sweetlab.sweetride.node.NodeVisitor;
 import com.sweetlab.sweetride.shader.ShaderProgram;
@@ -54,11 +54,6 @@ public class Geometry extends Node {
     private final List<CustomUniform> mCustomUniforms = new ArrayList<>();
 
     /**
-     * The backend geometry.
-     */
-    private final BackendGeometry mBackendGeometry = new BackendGeometry();
-
-    /**
      * The supported engine uniforms.
      */
     private final EngineUniformCache mEngineUniformCache = new EngineUniformCache();
@@ -67,6 +62,11 @@ public class Geometry extends Node {
      * The geometry bounding box.
      */
     private final TransformableBoundingBox mGeometryBox = new TransformableBoundingBox();
+
+    /**
+     * The backend geometry.
+     */
+    private final BackendGeometry mBackendGeometry = new BackendGeometry();
 
     /**
      * The mesh.
@@ -226,13 +226,9 @@ public class Geometry extends Node {
         mBackendGeometry.load(context);
     }
 
-    /**
-     * Draw the geometry. The drawing will be performed on outside decided framebuffer or
-     * default window system (frame buffer).
-     *
-     * @param context The backend context.
-     */
+    @Override
     public void draw(BackendContext context) {
+        super.draw(context);
         mBackendGeometry.draw(context);
     }
 

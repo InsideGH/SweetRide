@@ -1,13 +1,19 @@
 package com.sweetlab.sweetride.context;
 
 /**
- * Backend context. Must be created with GL context available.
+ * Backend context. Must be created with GL context available. Each new frame, onNewFrame must be
+ * called.
  */
 public class BackendContext {
     /**
      * GL HW capabilities
      */
     private final Capabilities mCapabilities;
+
+    /**
+     * The render state.
+     */
+    private final RenderState mRenderSettings;
 
     /**
      * Max number of texture units.
@@ -80,11 +86,13 @@ public class BackendContext {
     private BackendActionHandler mBackendActionHandler;
 
     /**
-     * Constructor. Must be created with GL context available.
+     * Constructor. Must be created with GL context available. Each new frame, onNewFrame must be
+     * called.
      */
     public BackendContext() {
         mCapabilities = new Capabilities();
         mMaxNumberTextureUnits = mCapabilities.getMaxNumberTextureUnits();
+        mRenderSettings = new RenderState();
     }
 
     /**
@@ -94,6 +102,15 @@ public class BackendContext {
      */
     public Capabilities getCapabilities() {
         return mCapabilities;
+    }
+
+    /**
+     * Get the render settings.
+     *
+     * @return The render settings.
+     */
+    public RenderState getRenderState() {
+        return mRenderSettings;
     }
 
     /**
@@ -250,5 +267,12 @@ public class BackendContext {
             mBackendActionHandler = new BackendActionHandler(this);
         }
         return mBackendActionHandler;
+    }
+
+    /**
+     * Must be called on each new frame.
+     */
+    public void onNewFrame() {
+        mRenderSettings.resetClearOrder();
     }
 }

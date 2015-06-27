@@ -1,5 +1,6 @@
 package com.sweetlab.sweetride.framebuffer;
 
+import com.sweetlab.sweetride.Util.BackendRenderSettingsUtil;
 import com.sweetlab.sweetride.Util.BufferTestUtil;
 import com.sweetlab.sweetride.Util.DrawTestUtil;
 import com.sweetlab.sweetride.Util.ProgramTestUtil;
@@ -9,7 +10,6 @@ import com.sweetlab.sweetride.context.MagFilter;
 import com.sweetlab.sweetride.context.MeshDrawingMode;
 import com.sweetlab.sweetride.context.MinFilter;
 import com.sweetlab.sweetride.engine.FrontEndActionHandler;
-import com.sweetlab.sweetride.framebuffer.FrameBuffer;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.mesh.Mesh;
 import com.sweetlab.sweetride.resource.TextureResource;
@@ -129,7 +129,7 @@ public class FrameBufferTest_MatMesh_mainNotifier extends OpenGLTestCase {
                 /**
                  * Clear frame buffer screen.
                  */
-                clearScreen(0.0f, 1.0f, 0.0f, 1.0f);
+                mContext.getRenderState().useSettings(BackendRenderSettingsUtil.getDefaultGreen(getSurfaceWidth(), getSurfaceHeight())).clear();
 
                 /**
                  * Draw triangle to screen.
@@ -144,7 +144,7 @@ public class FrameBufferTest_MatMesh_mainNotifier extends OpenGLTestCase {
                 /**
                  * Clear screen.
                  */
-                clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
+                mContext.getRenderState().useSettings(BackendRenderSettingsUtil.getDefaultGrey(getSurfaceWidth(), getSurfaceHeight())).clear();
 
                 /**
                  * This quad should be drawn centered with the texture that was previously drawn

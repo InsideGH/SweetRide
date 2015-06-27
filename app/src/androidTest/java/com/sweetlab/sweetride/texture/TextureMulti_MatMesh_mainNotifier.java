@@ -1,14 +1,14 @@
 package com.sweetlab.sweetride.texture;
 
 import android.graphics.Bitmap;
-import android.opengl.GLES20;
 
-import com.sweetlab.sweetride.attributedata.IndicesBuffer;
+import com.sweetlab.sweetride.Util.BackendRenderSettingsUtil;
 import com.sweetlab.sweetride.Util.BitmapTestUtil;
 import com.sweetlab.sweetride.Util.BufferTestUtil;
 import com.sweetlab.sweetride.Util.DrawTestUtil;
 import com.sweetlab.sweetride.Util.ProgramTestUtil;
 import com.sweetlab.sweetride.Util.Verify;
+import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.BufferUsage;
 import com.sweetlab.sweetride.context.MagFilter;
@@ -19,7 +19,6 @@ import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.mesh.Mesh;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
-import com.sweetlab.sweetride.texture.Texture2D;
 
 public class TextureMulti_MatMesh_mainNotifier extends OpenGLTestCase {
     /**
@@ -89,7 +88,7 @@ public class TextureMulti_MatMesh_mainNotifier extends OpenGLTestCase {
                 /**
                  * Clear screen.
                  */
-                clearScreen(0.5f, 0.5f, 0.5f, 1.0f);
+                mContext.getRenderState().useSettings(BackendRenderSettingsUtil.getDefaultGrey(getSurfaceWidth(), getSurfaceHeight())).clear();
 
                 /**
                  * This quad should be drawn centered and contain 4 primary colors with additional chess color board added.
