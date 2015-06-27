@@ -3,7 +3,7 @@ package com.sweetlab.sweetride.geometry;
 import android.support.annotation.Nullable;
 
 import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.ActionId;
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.engine.EngineUniformCache;
@@ -31,22 +31,22 @@ public class Geometry extends Node {
     /**
      * Mesh reference has changed.
      */
-    private final Action mMeshChange = new Action(this, ActionId.GEOMETRY_MESH, ActionThread.MAIN);
+    private final Action<GlobalActionId> mMeshChange = new Action<>(this, GlobalActionId.GEOMETRY_MESH, ActionThread.MAIN);
 
     /**
      * Material reference has changed.
      */
-    private final Action mMaterialChange = new Action(this, ActionId.GEOMETRY_MATERIAL, ActionThread.MAIN);
+    private final Action<GlobalActionId> mMaterialChange = new Action<>(this, GlobalActionId.GEOMETRY_MATERIAL, ActionThread.MAIN);
 
     /**
      * Custom uniform collection has changed.
      */
-    private final Action mUniformCollectionChange = new Action(this, ActionId.GEOMETRY_CUSTOM_UNIFORM, ActionThread.MAIN);
+    private final Action<GlobalActionId> mUniformCollectionChange = new Action<>(this, GlobalActionId.GEOMETRY_CUSTOM_UNIFORM, ActionThread.MAIN);
 
     /**
      * Engine uniform has changed.
      */
-    private final Action mEngineUniformChange = new Action(this, ActionId.GEOMETRY_ENGINE_UNIFORM, ActionThread.MAIN);
+    private final Action<GlobalActionId> mEngineUniformChange = new Action<>(this, GlobalActionId.GEOMETRY_ENGINE_UNIFORM, ActionThread.MAIN);
 
     /**
      * List of custom uniforms.
@@ -84,7 +84,7 @@ public class Geometry extends Node {
     }
 
     @Override
-    protected void onActionAdded(Action action) {
+    protected void onActionAdded(Action<GlobalActionId> action) {
         super.onActionAdded(action);
         switch (action.getType()) {
             case NODE_WORLD_DIRTY:
@@ -108,7 +108,7 @@ public class Geometry extends Node {
     }
 
     @Override
-    public boolean handleAction(Action action) {
+    public boolean handleAction(Action<GlobalActionId> action) {
         if (super.handleAction(action)) {
             return true;
         }

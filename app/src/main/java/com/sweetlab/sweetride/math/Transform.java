@@ -1,18 +1,18 @@
 package com.sweetlab.sweetride.math;
 
 import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.ActionId;
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 
 /**
  * Transform backed by {@link Matrix44} matrix.
  */
-public class Transform extends NoHandleNotifier {
+public class Transform extends NoHandleNotifier<GlobalActionId> {
     /**
      * Transform has been updated. Used as indication only.
      */
-    private final Action mTransformChanged = new Action(this, ActionId.TRANSFORM_UPDATED, ActionThread.MAIN);
+    private final Action<GlobalActionId> mTransformChanged = new Action<>(this, GlobalActionId.TRANSFORM_UPDATED, ActionThread.MAIN);
 
     /**
      * The matrix
@@ -27,7 +27,7 @@ public class Transform extends NoHandleNotifier {
     }
 
     @Override
-    public boolean handleAction(Action action) {
+    public boolean handleAction(Action<GlobalActionId> action) {
         switch (action.getType()) {
             case TRANSFORM_UPDATED:
                 return true;

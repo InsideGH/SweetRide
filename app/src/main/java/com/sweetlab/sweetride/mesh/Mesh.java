@@ -3,7 +3,7 @@ package com.sweetlab.sweetride.mesh;
 import android.support.annotation.Nullable;
 
 import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.ActionId;
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
@@ -19,16 +19,16 @@ import java.util.List;
  * Mesh is an abstraction that contains multiple vertex buffer resources and optional
  * indices buffer resource.
  */
-public class Mesh extends NoHandleNotifier {
+public class Mesh extends NoHandleNotifier<GlobalActionId> {
     /**
      * Indices reference has changed.
      */
-    private final Action mIndicesChanged = new Action(this, ActionId.MESH_INDICES, ActionThread.MAIN);
+    private final Action<GlobalActionId> mIndicesChanged = new Action<>(this, GlobalActionId.MESH_INDICES, ActionThread.MAIN);
 
     /**
      * Vertex buffers collection has changed.
      */
-    private final Action mVertexBuffersChanged = new Action(this, ActionId.MESH_BUFFER, ActionThread.MAIN);
+    private final Action<GlobalActionId> mVertexBuffersChanged = new Action<>(this, GlobalActionId.MESH_BUFFER, ActionThread.MAIN);
 
     /**
      * List of vertex buffers.
@@ -71,7 +71,7 @@ public class Mesh extends NoHandleNotifier {
     }
 
     @Override
-    public boolean handleAction(Action action) {
+    public boolean handleAction(Action<GlobalActionId> action) {
         switch (action.getType()) {
             case MESH_BUFFER:
                 mBackendMesh.setVertexBuffers(mVertexBuffers);

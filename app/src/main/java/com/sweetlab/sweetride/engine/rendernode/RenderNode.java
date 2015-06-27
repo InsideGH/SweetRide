@@ -3,7 +3,7 @@ package com.sweetlab.sweetride.engine.rendernode;
 import android.support.annotation.Nullable;
 
 import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.ActionId;
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.camera.Camera;
 import com.sweetlab.sweetride.node.Node;
@@ -17,7 +17,7 @@ public class RenderNode extends Node {
     /**
      * Action when camera has been set.
      */
-    private final Action mCameraSet = new Action(this, ActionId.RENDER_NODE_CAMERA, ActionThread.MAIN);
+    private final Action<GlobalActionId> mCameraSet = new Action<>(this, GlobalActionId.RENDER_NODE_CAMERA, ActionThread.MAIN);
     /**
      * The renderer to use.
      */
@@ -39,7 +39,7 @@ public class RenderNode extends Node {
     }
 
     @Override
-    public boolean handleAction(Action action) {
+    public boolean handleAction(Action<GlobalActionId> action) {
         if (super.handleAction(action)) {
             return true;
         }

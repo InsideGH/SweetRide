@@ -8,17 +8,19 @@ import com.sweetlab.sweetride.context.BackendContext;
  * 1. The source the action originates from.
  * 2. The type of action.
  * 3. Which thread the action should execute on.
+ *
+ * @param <T> Type of action id.
  */
-public class Action {
+public class Action<T> {
     /**
      * The source this action originates from.
      */
-    private final ActionNotifier mSource;
+    private final ActionNotifier<T> mSource;
 
     /**
      * The action id.
      */
-    private final ActionId mId;
+    private final T mId;
 
     /**
      * Which thread to handle the action on.
@@ -32,7 +34,7 @@ public class Action {
      * @param id         The action id.
      * @param handleType The thread to handle the action on.
      */
-    public Action(ActionNotifier source, ActionId id, ActionThread handleType) {
+    public Action(ActionNotifier<T> source, T id, ActionThread handleType) {
         mSource = source;
         mId = id;
         mActionThread = handleType;
@@ -52,7 +54,7 @@ public class Action {
      *
      * @return The type.
      */
-    public ActionId getType() {
+    public T getType() {
         return mId;
     }
 

@@ -10,17 +10,19 @@ import java.util.List;
  * Notifiers can be connected or disconnected from the parent (which is a notifier as well).
  * During connect and disconnect, any pending actions are added/removed.
  * Actions that are added/removed are reflected to the top of the graph.
+ *
+ * @param <T> Type of action.
  */
-public abstract class ActionNotifier {
+public abstract class ActionNotifier<T> {
     /**
      * List of pending actions.
      */
-    private final List<Action> mActions = new ArrayList<>();
+    private final List<Action<T>> mActions = new ArrayList<>();
 
     /**
      * List of parents.
      */
-    private final List<ActionNotifier> mParents = new ArrayList<>();
+    private final List<ActionNotifier<T>> mParents = new ArrayList<>();
 
     /**
      * Connect the provided notifier. Any pending actions in the notifier that is
@@ -28,7 +30,7 @@ public abstract class ActionNotifier {
      *
      * @param notifier The notifier to connect.
      */
-    public void connectNotifier(ActionNotifier notifier) {
+    public void connectNotifier(ActionNotifier<T> notifier) {
         notifier.mParents.add(this);
         if (notifier.hasActions()) {
             int actionCount = notifier.getActionCount();
@@ -44,7 +46,7 @@ public abstract class ActionNotifier {
      *
      * @param notifier The notifier to disconnect.
      */
-    public void disconnectNotifier(ActionNotifier notifier) {
+    public void disconnectNotifier(ActionNotifier<T> notifier) {
         notifier.mParents.remove(this);
         if (notifier.hasActions()) {
             int actionCount = notifier.getActionCount();
@@ -59,7 +61,7 @@ public abstract class ActionNotifier {
      *
      * @param action The action to add.
      */
-    public void addAction(Action action) {
+    public void addAction(Action<T> action) {
         mActions.remove(action);
         mActions.add(action);
         onActionAdded(action);
@@ -71,7 +73,7 @@ public abstract class ActionNotifier {
      *
      * @param action The action to remove.
      */
-    public void removeAction(Action action) {
+    public void removeAction(Action<T> action) {
         mActions.remove(action);
         reportRemoveAction(action);
     }
@@ -91,7 +93,7 @@ public abstract class ActionNotifier {
      * @param index The index to fetch action from.
      * @return The action
      */
-    public Action getAction(int index) {
+    public Action<T> getAction(int index) {
         return mActions.get(index);
     }
 
@@ -111,7 +113,7 @@ public abstract class ActionNotifier {
      * @param action Action to handle.
      * @return True if handled.
      */
-    public abstract boolean handleAction(Action action);
+    public abstract boolean handleAction(Action<T> action);
 
     /**
      * Handle the action on the GL thread. The action handle thread method tells if this
@@ -121,22 +123,22 @@ public abstract class ActionNotifier {
      * @param action  Action to handle.
      * @return True if handled.
      */
-    public abstract boolean handleAction(BackendContext context, Action action);
+    public abstract boolean handleAction(BackendContext context, Action<T> action);
 
     /**
      * Called every time an action has been added.
      *
      * @param action The action that has been added.
      */
-    protected abstract void onActionAdded(Action action);
+    protected abstract void onActionAdded(Action<T> action);
 
     /**
      * Report action add to all parents all the way to top.
      *
      * @param action The action to add.
      */
-    private void reportAddAction(Action action) {
-        for (ActionNotifier parent : mParents) {
+    private void reportAddAction(Action<T> action) {
+        for (ActionNotifier<T> parent : mParents) {
             parent.addAction(action);
         }
     }
@@ -146,8 +148,8 @@ public abstract class ActionNotifier {
      *
      * @param action Action to remove.
      */
-    private void reportRemoveAction(Action action) {
-        for (ActionNotifier parent : mParents) {
+    private void reportRemoveAction(Action<T> action) {
+        for (ActionNotifier<T> parent : mParents) {
             parent.removeAction(action);
         }
     }

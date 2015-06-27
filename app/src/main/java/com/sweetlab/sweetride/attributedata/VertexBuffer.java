@@ -1,7 +1,7 @@
 package com.sweetlab.sweetride.attributedata;
 
 import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.ActionId;
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.BufferUsage;
@@ -52,8 +52,8 @@ public class VertexBuffer extends VertexBufferResource {
         mBufferUsage = bufferUsage;
         mVertexData = vertexData;
         mBuffer = Util.createBuffer(vertexData.getData(), vertexData.getTotalByteCount());
-        addAction(new Action(this, ActionId.VERTEX_BUFFER_CREATE, ActionThread.GL));
-        addAction(new Action(this, ActionId.VERTEX_BUFFER_LOAD, ActionThread.GL));
+        addAction(new Action<>(this, GlobalActionId.VERTEX_BUFFER_CREATE, ActionThread.GL));
+        addAction(new Action<>(this, GlobalActionId.VERTEX_BUFFER_LOAD, ActionThread.GL));
     }
 
     @Override
@@ -108,7 +108,7 @@ public class VertexBuffer extends VertexBufferResource {
     }
 
     @Override
-    public boolean handleAction(BackendContext context, Action action) {
+    public boolean handleAction(BackendContext context, Action<GlobalActionId> action) {
         switch (action.getType()) {
             case VERTEX_BUFFER_CREATE:
                 create(context);

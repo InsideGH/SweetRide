@@ -1,9 +1,9 @@
 package com.sweetlab.sweetride.action;
 
 /**
- * Action id.
+ * Global Action id.
  */
-public enum ActionId {
+public enum GlobalActionId {
     /**
      * Render node camera reference changed.
      */

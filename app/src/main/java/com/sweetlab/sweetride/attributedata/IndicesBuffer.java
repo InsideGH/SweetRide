@@ -1,7 +1,7 @@
 package com.sweetlab.sweetride.attributedata;
 
 import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.ActionId;
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
@@ -16,7 +16,7 @@ import java.nio.ShortBuffer;
 /**
  * Indices buffer holding indices, used while drawing with indices.
  */
-public class IndicesBuffer extends NoHandleNotifier implements BufferResource {
+public class IndicesBuffer extends NoHandleNotifier<GlobalActionId> implements BufferResource {
     /**
      * Buffer holding the indices.
      */
@@ -52,8 +52,8 @@ public class IndicesBuffer extends NoHandleNotifier implements BufferResource {
         mIndicesCount = data.length;
         mByteCount = data.length * Util.BYTES_PER_SHORT;
         mBuffer = createShortBuffer(data);
-        addAction(new Action(this, ActionId.INDICES_CREATE, ActionThread.GL));
-        addAction(new Action(this, ActionId.INDICES_LOAD, ActionThread.GL));
+        addAction(new Action<>(this, GlobalActionId.INDICES_CREATE, ActionThread.GL));
+        addAction(new Action<>(this, GlobalActionId.INDICES_LOAD, ActionThread.GL));
     }
 
     @Override
@@ -97,7 +97,7 @@ public class IndicesBuffer extends NoHandleNotifier implements BufferResource {
     }
 
     @Override
-    public boolean handleAction(BackendContext context, Action action) {
+    public boolean handleAction(BackendContext context, Action<GlobalActionId> action) {
         switch (action.getType()) {
             case INDICES_CREATE:
                 create(context);

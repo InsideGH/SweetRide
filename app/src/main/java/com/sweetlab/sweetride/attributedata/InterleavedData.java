@@ -3,7 +3,7 @@ package com.sweetlab.sweetride.attributedata;
 import android.util.Pair;
 
 import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.ActionId;
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Interleaved vertex data used for shader program attributes.
  */
-public class InterleavedData extends NoHandleNotifier implements BufferResource {
+public class InterleavedData extends NoHandleNotifier<GlobalActionId> implements BufferResource {
     /**
      * Buffer of interleaved data.
      */
@@ -90,8 +90,8 @@ public class InterleavedData extends NoHandleNotifier implements BufferResource 
         mBufferUsage = bufferUsage;
         mTotalByteCount = byteCount;
         mBuffer = Util.createBuffer(data, mTotalByteCount);
-        addAction(new Action(this, ActionId.INTERLEAVED_BUFFER_CREATE, ActionThread.GL));
-        addAction(new Action(this, ActionId.INTERLEAVED_BUFFER_LOAD, ActionThread.GL));
+        addAction(new Action<>(this, GlobalActionId.INTERLEAVED_BUFFER_CREATE, ActionThread.GL));
+        addAction(new Action<>(this, GlobalActionId.INTERLEAVED_BUFFER_LOAD, ActionThread.GL));
     }
 
     @Override
@@ -136,7 +136,7 @@ public class InterleavedData extends NoHandleNotifier implements BufferResource 
     }
 
     @Override
-    public boolean handleAction(BackendContext context, Action action) {
+    public boolean handleAction(BackendContext context, Action<GlobalActionId> action) {
         switch (action.getType()) {
             case INTERLEAVED_BUFFER_CREATE:
                 create(context);

@@ -1,7 +1,7 @@
 package com.sweetlab.sweetride.node;
 
 import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.ActionId;
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.camera.Camera;
@@ -14,11 +14,11 @@ import java.util.List;
 /**
  * A general node.
  */
-public class Node extends NoHandleNotifier {
+public class Node extends NoHandleNotifier<GlobalActionId> {
     /**
      * Action when world is dirty.
      */
-    private final Action mWorldDirty = new Action(this, ActionId.NODE_WORLD_DIRTY, ActionThread.MAIN);
+    private final Action<GlobalActionId> mWorldDirty = new Action<>(this, GlobalActionId.NODE_WORLD_DIRTY, ActionThread.MAIN);
 
     /**
      * List of children.
@@ -53,7 +53,7 @@ public class Node extends NoHandleNotifier {
     }
 
     @Override
-    public boolean handleAction(Action action) {
+    public boolean handleAction(Action<GlobalActionId> action) {
         switch (action.getType()) {
             case NODE_WORLD_DIRTY:
                 return true;
@@ -63,7 +63,7 @@ public class Node extends NoHandleNotifier {
     }
 
     @Override
-    protected void onActionAdded(Action action) {
+    protected void onActionAdded(Action<GlobalActionId> action) {
         super.onActionAdded(action);
         switch (action.getType()) {
             case NODE_WORLD_DIRTY:

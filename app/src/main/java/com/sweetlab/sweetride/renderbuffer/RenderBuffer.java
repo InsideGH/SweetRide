@@ -2,7 +2,7 @@ package com.sweetlab.sweetride.renderbuffer;
 
 import com.sweetlab.sweetride.DebugOptions;
 import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.ActionId;
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.AttachmentType;
@@ -17,7 +17,7 @@ import com.sweetlab.sweetride.resource.Resource;
  * as a render destination or source of reading. Possible attachment points to a frame buffer are
  * depth and stencil.
  */
-public class RenderBuffer extends NoHandleNotifier implements Resource, DepthAttachment, StencilAttachment {
+public class RenderBuffer extends NoHandleNotifier<GlobalActionId> implements Resource, DepthAttachment, StencilAttachment {
     /**
      * The internal format (GL_RGB565, GL_RGBA4, GL_RGB5_A1, GL_DEPTH_COMPONENT16, GL_STENCIL_INDEX8).
      */
@@ -49,7 +49,7 @@ public class RenderBuffer extends NoHandleNotifier implements Resource, DepthAtt
         mFormat = format;
         mWidth = width;
         mHeight = height;
-        addAction(new Action(this, ActionId.RENDER_BUFFER_CREATE, ActionThread.GL));
+        addAction(new Action<>(this, GlobalActionId.RENDER_BUFFER_CREATE, ActionThread.GL));
     }
 
     @Override
@@ -84,7 +84,7 @@ public class RenderBuffer extends NoHandleNotifier implements Resource, DepthAtt
     }
 
     @Override
-    public boolean handleAction(BackendContext context, Action action) {
+    public boolean handleAction(BackendContext context, Action<GlobalActionId> action) {
         switch (action.getType()) {
             case RENDER_BUFFER_CREATE:
                 create(context);

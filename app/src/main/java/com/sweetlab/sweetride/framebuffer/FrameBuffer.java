@@ -1,7 +1,7 @@
 package com.sweetlab.sweetride.framebuffer;
 
 import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.ActionId;
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
@@ -11,7 +11,7 @@ import com.sweetlab.sweetride.resource.Resource;
 /**
  * Represents a frame buffer resource.
  */
-public class FrameBuffer extends NoHandleNotifier implements Resource {
+public class FrameBuffer extends NoHandleNotifier<GlobalActionId> implements Resource {
     /**
      * The frame buffer name/id.
      */
@@ -21,7 +21,7 @@ public class FrameBuffer extends NoHandleNotifier implements Resource {
      * Constructor.
      */
     public FrameBuffer() {
-        addAction(new Action(this, ActionId.FRAME_BUFFER_CREATE, ActionThread.GL));
+        addAction(new Action<>(this, GlobalActionId.FRAME_BUFFER_CREATE, ActionThread.GL));
     }
 
     @Override
@@ -45,7 +45,7 @@ public class FrameBuffer extends NoHandleNotifier implements Resource {
     }
 
     @Override
-    public boolean handleAction(BackendContext context, Action action) {
+    public boolean handleAction(BackendContext context, Action<GlobalActionId> action) {
         switch (action.getType()) {
             case FRAME_BUFFER_CREATE:
                 create(context);

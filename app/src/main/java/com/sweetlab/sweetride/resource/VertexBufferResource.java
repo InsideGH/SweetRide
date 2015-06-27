@@ -1,12 +1,13 @@
 package com.sweetlab.sweetride.resource;
 
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.attributedata.AttributePointer;
 
 /**
  * A vertex buffer resource which is a buffer resource.
  */
-public abstract class VertexBufferResource extends NoHandleNotifier implements BufferResource {
+public abstract class VertexBufferResource extends NoHandleNotifier<GlobalActionId> implements BufferResource {
     /**
      * Get number of attribute pointers.
      *

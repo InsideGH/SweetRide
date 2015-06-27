@@ -1,7 +1,7 @@
 package com.sweetlab.sweetride.material;
 
 import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.ActionId;
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
@@ -14,16 +14,16 @@ import java.util.List;
 /**
  * Material is an abstraction that contains a shader program and textures.
  */
-public class Material extends NoHandleNotifier {
+public class Material extends NoHandleNotifier<GlobalActionId> {
     /**
      * Shader program reference has changed.
      */
-    private final Action mProgramChange = new Action(this, ActionId.MATERIAL_PROGRAM, ActionThread.MAIN);
+    private final Action<GlobalActionId> mProgramChange = new Action<>(this, GlobalActionId.MATERIAL_PROGRAM, ActionThread.MAIN);
 
     /**
      * Texture collection has changed.
      */
-    private final Action mTextureChange = new Action(this, ActionId.MATERIAL_TEXTURES, ActionThread.MAIN);
+    private final Action<GlobalActionId> mTextureChange = new Action<>(this, GlobalActionId.MATERIAL_TEXTURES, ActionThread.MAIN);
 
     /**
      * List of textures.
@@ -41,7 +41,7 @@ public class Material extends NoHandleNotifier {
     private ShaderProgram mShaderProgram;
 
     @Override
-    public boolean handleAction(Action action) {
+    public boolean handleAction(Action<GlobalActionId> action) {
         switch (action.getType()) {
             case MATERIAL_PROGRAM:
                 mBackendMaterial.setShaderProgram(mShaderProgram);

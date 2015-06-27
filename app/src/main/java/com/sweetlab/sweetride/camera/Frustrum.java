@@ -1,7 +1,7 @@
 package com.sweetlab.sweetride.camera;
 
 import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.ActionId;
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.math.Matrix44;
@@ -11,7 +11,7 @@ import com.sweetlab.sweetride.math.Matrix44;
  * <p/>
  * Old class that I have had around for a while. Should be cleaned up though.
  */
-public class Frustrum extends NoHandleNotifier {
+public class Frustrum extends NoHandleNotifier<GlobalActionId> {
     /**
      * Field of view can be either horizontal, vertical or auto fit.
      */
@@ -29,7 +29,7 @@ public class Frustrum extends NoHandleNotifier {
     /**
      * Camera has been updated.
      */
-    private final Action mFrustrumUpdated = new Action(this, ActionId.FRUSTRUM_UPDATED, ActionThread.MAIN);
+    private final Action<GlobalActionId> mFrustrumUpdated = new Action<>(this, GlobalActionId.FRUSTRUM_UPDATED, ActionThread.MAIN);
 
     /**
      * The projection or orthographic matrix
@@ -80,7 +80,7 @@ public class Frustrum extends NoHandleNotifier {
 
 
     @Override
-    public boolean handleAction(Action action) {
+    public boolean handleAction(Action<GlobalActionId> action) {
         switch (action.getType()) {
             case FRUSTRUM_UPDATED:
                 return true;
@@ -89,7 +89,7 @@ public class Frustrum extends NoHandleNotifier {
     }
 
     @Override
-    protected void onActionAdded(Action action) {
+    protected void onActionAdded(Action<GlobalActionId> action) {
         super.onActionAdded(action);
         switch (action.getType()) {
             case FRUSTRUM_UPDATED:

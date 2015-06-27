@@ -47,10 +47,10 @@ public class ActionNotifierTest extends AndroidTestCase {
         /**
          * The the action source and type.
          */
-        Action createAction = notifierA.getAction(0);
+        Action<GlobalActionId> createAction = notifierA.getAction(0);
         ActionNotifier source = createAction.getSource();
-        ActionId type = createAction.getType();
-        assertEquals(ActionId.GEOMETRY_MESH, type);
+        GlobalActionId type = createAction.getType();
+        assertEquals(GlobalActionId.GEOMETRY_MESH, type);
         assertEquals(source, notifierC);
 
         /**
@@ -253,17 +253,17 @@ public class ActionNotifierTest extends AndroidTestCase {
         assertFalse(notifierA.hasActions());
     }
 
-    private class NotifierA extends NoHandleNotifier {
-        public Action mCreateAction = new Action(this, ActionId.GEOMETRY_MESH, ActionThread.MAIN);
-        public Action mLoadAction = new Action(this, ActionId.GEOMETRY_MATERIAL, ActionThread.MAIN);
+    private class NotifierA extends NoHandleNotifier<GlobalActionId> {
+        public Action mCreateAction = new Action<>(this, GlobalActionId.GEOMETRY_MESH, ActionThread.MAIN);
+        public Action mLoadAction = new Action<>(this, GlobalActionId.GEOMETRY_MATERIAL, ActionThread.MAIN);
     }
 
-    private class NotifierB extends NoHandleNotifier {
-        public Action mCreateAction = new Action(this, ActionId.GEOMETRY_MESH, ActionThread.MAIN);
+    private class NotifierB extends NoHandleNotifier<GlobalActionId> {
+        public Action mCreateAction = new Action<>(this, GlobalActionId.GEOMETRY_MESH, ActionThread.MAIN);
     }
 
-    private class NotifierC extends NoHandleNotifier {
-        public Action mCreateAction = new Action(this, ActionId.GEOMETRY_MESH, ActionThread.MAIN);
-        public Action mLoadAction = new Action(this, ActionId.GEOMETRY_MATERIAL, ActionThread.MAIN);
+    private class NotifierC extends NoHandleNotifier<GlobalActionId> {
+        public Action mCreateAction = new Action<>(this, GlobalActionId.GEOMETRY_MESH, ActionThread.MAIN);
+        public Action mLoadAction = new Action<>(this, GlobalActionId.GEOMETRY_MATERIAL, ActionThread.MAIN);
     }
 }

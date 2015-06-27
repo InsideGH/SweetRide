@@ -1,7 +1,7 @@
 package com.sweetlab.sweetride.camera;
 
 import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.ActionId;
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.intersect.Plane;
@@ -14,7 +14,7 @@ import com.sweetlab.sweetride.math.Vec3;
  * <p/>
  * Old class that I have had around for a while. Should be cleaned up though.
  */
-public class Camera extends NoHandleNotifier {
+public class Camera extends NoHandleNotifier<GlobalActionId> {
     /**
      * World up is defined as this.
      */
@@ -43,7 +43,7 @@ public class Camera extends NoHandleNotifier {
     /**
      * Camera has been updated.
      */
-    private final Action mCameraUpdated = new Action(this, ActionId.CAMERA_UPDATED, ActionThread.MAIN);
+    private final Action<GlobalActionId> mCameraUpdated = new Action<>(this, GlobalActionId.CAMERA_UPDATED, ActionThread.MAIN);
 
     /**
      * Position in world.
@@ -108,7 +108,7 @@ public class Camera extends NoHandleNotifier {
     }
 
     @Override
-    public boolean handleAction(Action action) {
+    public boolean handleAction(Action<GlobalActionId> action) {
         switch (action.getType()) {
             case CAMERA_UPDATED:
                 return true;
@@ -117,7 +117,7 @@ public class Camera extends NoHandleNotifier {
     }
 
     @Override
-    protected void onActionAdded(Action action) {
+    protected void onActionAdded(Action<GlobalActionId> action) {
         super.onActionAdded(action);
         switch (action.getType()) {
             case CAMERA_UPDATED:

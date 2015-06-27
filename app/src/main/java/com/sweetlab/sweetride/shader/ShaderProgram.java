@@ -1,7 +1,7 @@
 package com.sweetlab.sweetride.shader;
 
 import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.ActionId;
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Shader program.
  */
-public class ShaderProgram extends NoHandleNotifier implements Resource {
+public class ShaderProgram extends NoHandleNotifier<GlobalActionId> implements Resource {
     /**
      * The vertex shader.
      */
@@ -51,7 +51,7 @@ public class ShaderProgram extends NoHandleNotifier implements Resource {
         mFragmentShader = fragmentShader;
         connectNotifier(mVertexShader);
         connectNotifier(mFragmentShader);
-        addAction(new Action(this, ActionId.PROGRAM_CREATE, ActionThread.GL));
+        addAction(new Action<>(this, GlobalActionId.PROGRAM_CREATE, ActionThread.GL));
     }
 
     @Override
@@ -87,7 +87,7 @@ public class ShaderProgram extends NoHandleNotifier implements Resource {
 
     @Override
     public boolean handleAction(BackendContext context, Action action) {
-        if (action.getType().equals(ActionId.PROGRAM_CREATE)) {
+        if (action.getType().equals(GlobalActionId.PROGRAM_CREATE)) {
             create(context);
             return true;
         }
