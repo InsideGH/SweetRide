@@ -7,12 +7,17 @@ public enum GlobalActionId {
     /**
      * Render node camera reference changed.
      */
-    NODE_CAMERA,
+    NODE_CAMERA_SET,
 
     /**
-     * The world got dirty for a reason (several reasons).
+     * Node action for whole graph that transform got dirty for a reason (several reasons).
      */
-    NODE_WORLD_DIRTY,
+    NODE_TRANSFORM_UPDATED,
+
+    /**
+     * Node action for whole graph that frustrum has been updated.
+     */
+    NODE_FRUSTRUM_UPDATED,
 
     /**
      * Geometry mesh reference changed.

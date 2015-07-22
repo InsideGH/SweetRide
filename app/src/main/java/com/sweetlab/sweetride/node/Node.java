@@ -1,5 +1,7 @@
 package com.sweetlab.sweetride.node;
 
+import android.view.MotionEvent;
+
 import com.sweetlab.sweetride.DebugOptions;
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionThread;
@@ -19,14 +21,19 @@ import java.util.List;
  */
 public class Node extends NoHandleNotifier<GlobalActionId> {
     /**
-     * Action when world is dirty.
+     * Action when transform has been updated.
      */
-    private final Action<GlobalActionId> mWorldDirty = new Action<>(this, GlobalActionId.NODE_WORLD_DIRTY, ActionThread.MAIN);
+    private final Action<GlobalActionId> mTransformUpdated = new Action<>(this, GlobalActionId.NODE_TRANSFORM_UPDATED, ActionThread.MAIN);
 
     /**
      * Action when camera has been set.
      */
-    private final Action<GlobalActionId> mCameraSet = new Action<>(this, GlobalActionId.NODE_CAMERA, ActionThread.MAIN);
+    private final Action<GlobalActionId> mCameraSet = new Action<>(this, GlobalActionId.NODE_CAMERA_SET, ActionThread.MAIN);
+
+    /**
+     * Action when camera frustrum has been updated.
+     */
+    private final Action<GlobalActionId> mFrustrumUpdated = new Action<>(this, GlobalActionId.NODE_FRUSTRUM_UPDATED, ActionThread.MAIN);
 
     /**
      * List of children.
@@ -74,8 +81,9 @@ public class Node extends NoHandleNotifier<GlobalActionId> {
     @Override
     public boolean handleAction(Action<GlobalActionId> action) {
         switch (action.getType()) {
-            case NODE_WORLD_DIRTY:
-            case NODE_CAMERA:
+            case NODE_TRANSFORM_UPDATED:
+            case NODE_CAMERA_SET:
+            case NODE_FRUSTRUM_UPDATED:
                 return true;
             default:
                 return false;
@@ -86,21 +94,25 @@ public class Node extends NoHandleNotifier<GlobalActionId> {
     protected void onActionAdded(Action<GlobalActionId> action) {
         super.onActionAdded(action);
         switch (action.getType()) {
-            case NODE_WORLD_DIRTY:
+            case NODE_TRANSFORM_UPDATED:
                 mWorldTransform.mark();
                 break;
 
             case FRUSTRUM_UPDATED:
                 LowerLeftBox vp = mCamera.getFrustrum().getViewPort();
                 mRenderSettings.setViewPort(vp.getX(), vp.getY(), vp.getWidth(), vp.getHeight());
+                setGraphFrustrumUpdated();
+                // fall through.
             case CAMERA_UPDATED:
+                // fall through.
             case TRANSFORM_UPDATED:
-            case NODE_CAMERA:
-                setWorldDirty();
+                // fall through.
+            case NODE_CAMERA_SET:
+                setGraphTransformUpdated();
                 break;
 
             case RENDER_SETTINGS_DIRTY:
-                invalidateWorldRenderSettings();
+                setGraphRenderSettings();
                 break;
         }
     }
@@ -123,8 +135,11 @@ public class Node extends NoHandleNotifier<GlobalActionId> {
         if (!mChildren.contains(child)) {
             mChildren.add(child);
             child.mParent = this;
-            child.setWorldDirty();
+            child.setGraphTransformUpdated();
             child.mRenderSettings.inherit(mRenderSettings);
+            if (findCamera() != null) {
+                child.setGraphFrustrumUpdated();
+            }
         }
     }
 
@@ -234,26 +249,6 @@ public class Node extends NoHandleNotifier<GlobalActionId> {
     }
 
     /**
-     * Set world dirty.
-     */
-    public void setWorldDirty() {
-        addAction(mWorldDirty);
-        for (Node child : mChildren) {
-            child.setWorldDirty();
-        }
-    }
-
-    /**
-     * Invalidate world render settings by forcing children nodes to
-     * inherit parent render settings.
-     */
-    public void invalidateWorldRenderSettings() {
-        for (Node child : mChildren) {
-            child.mRenderSettings.inherit(mRenderSettings);
-        }
-    }
-
-    /**
      * Called by the engine, each frame. All controllers all updated prior to onUpdate is called. Using iterator
      * because nodes can be added/removed during application update.
      *
@@ -304,5 +299,54 @@ public class Node extends NoHandleNotifier<GlobalActionId> {
      */
     public boolean onUpdate(float dt) {
         return true;
+    }
+
+    /**
+     * Handle touch events in this node. The touch event is progressed to all child nodes
+     * until a node handles the event.
+     *
+     * @param event The touch event.
+     * @return True if handled, false otherwise.
+     */
+    public boolean onTouch(MotionEvent event) {
+        // Using iterator to avoid index out of bounds in case children are modified in any
+        // touch listener.
+        Iterator<Node> childrenIterator = mChildren.iterator();
+        while (childrenIterator.hasNext()) {
+            if (childrenIterator.next().onTouch(event)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Set transform dirty in whole graph.
+     */
+    private void setGraphTransformUpdated() {
+        addAction(mTransformUpdated);
+        for (Node child : mChildren) {
+            child.setGraphTransformUpdated();
+        }
+    }
+
+    /**
+     * Set frustrum dirty in whole graph.
+     */
+    private void setGraphFrustrumUpdated() {
+        addAction(mFrustrumUpdated);
+        for (Node child : mChildren) {
+            child.setGraphFrustrumUpdated();
+        }
+    }
+
+    /**
+     * Invalidate graph render settings by forcing children nodes to
+     * inherit parent render settings.
+     */
+    private void setGraphRenderSettings() {
+        for (Node child : mChildren) {
+            child.mRenderSettings.inherit(mRenderSettings);
+        }
     }
 }

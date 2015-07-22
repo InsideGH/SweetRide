@@ -30,9 +30,9 @@ public class GraphContentTest extends TestCase {
 
         fill(mGraphContent);
         nodes = mGraphContent.getNodes();
-        assertEquals(100 * 100, nodes.size());
+        assertEquals(50 * 50, nodes.size());
         renderNodes = mGraphContent.getRenderNodes();
-        assertEquals(100, renderNodes.size());
+        assertEquals(50, renderNodes.size());
 
         // Get is by reference.
         mGraphContent.reset();
@@ -45,15 +45,15 @@ public class GraphContentTest extends TestCase {
     public void testAdd() throws Exception {
         fill(mGraphContent);
         List<Node> nodes = mGraphContent.getNodes();
-        assertEquals(100 * 100, nodes.size());
+        assertEquals(50 * 50, nodes.size());
         List<RenderNode> renderNodes = mGraphContent.getRenderNodes();
-        assertEquals(100, renderNodes.size());
+        assertEquals(50, renderNodes.size());
     }
 
     private void fill(GraphContent graphContent) {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 50; i++) {
             graphContent.add(new RenderNode());
-            for (int j = 0; j < 100; j++) {
+            for (int j = 0; j < 50; j++) {
                 graphContent.add(new Node());
             }
         }

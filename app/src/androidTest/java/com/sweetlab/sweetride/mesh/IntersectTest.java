@@ -1,15 +1,18 @@
 package com.sweetlab.sweetride.mesh;
 
+import com.sweetlab.sweetride.demo.mesh.CubeMesh;
 import com.sweetlab.sweetride.demo.mesh.QuadMesh;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.intersect.Intersect;
+import com.sweetlab.sweetride.intersect.Plane;
+import com.sweetlab.sweetride.intersect.Ray;
 import com.sweetlab.sweetride.intersect.TransformableBoundingBox;
 import com.sweetlab.sweetride.math.FloatUtil;
 import com.sweetlab.sweetride.math.Vec3;
-import com.sweetlab.sweetride.intersect.Plane;
-import com.sweetlab.sweetride.intersect.Ray;
 
 import junit.framework.TestCase;
+
+import java.util.Random;
 
 /**
  * Test intersection.
@@ -273,5 +276,56 @@ public class IntersectTest extends TestCase {
 
         ray = new Ray(new Vec3(5, 0, -9.51f), new Vec3(1, 0, 0));
         assertFalse(mIntersect.intersects(ray, box));
+    }
+
+    public void testHitCube() {
+        Random random = new Random(342);
+        for (int i = 0; i < 50; i++) {
+            float x = (random.nextFloat() - 0.5f) * 100;
+            float y = (random.nextFloat() - 0.5f) * 100;
+            float z = (random.nextFloat() - 0.5f) * 100;
+            hitCube(new Vec3(x, y, z));
+        }
+    }
+
+    /**
+     * Hit cube box from all sides.
+     *
+     * @param cubeCenter The cube center.
+     */
+    private void hitCube(Vec3 cubeCenter) {
+        Geometry geometry = new Geometry();
+        geometry.setMesh(new CubeMesh("", ""));
+        geometry.getModelTransform().translate(cubeCenter.x, cubeCenter.y, cubeCenter.z);
+        geometry.getModelTransform().rotate(cubeCenter.x, cubeCenter.x, cubeCenter.y, cubeCenter.z);
+        TransformableBoundingBox box = geometry.getTransformableBoundingBox();
+
+        Ray ray;
+        Vec3 rayOrigin = new Vec3();
+
+        // Hit front
+        rayOrigin.set(cubeCenter).add(0, 0, 3);
+        ray = new Ray(rayOrigin, new Vec3(0, 0, -1));
+        assertTrue(mIntersect.intersects(ray, box));
+
+        // Hit right
+        rayOrigin.set(cubeCenter).add(3, 0, 0);
+        ray = new Ray(rayOrigin, new Vec3(-1, 0, 0));
+        assertTrue(mIntersect.intersects(ray, box));
+
+        // Hit left
+        rayOrigin.set(cubeCenter).add(-3, 0, 0);
+        ray = new Ray(rayOrigin, new Vec3(1, 0, 0));
+        assertTrue(mIntersect.intersects(ray, box));
+
+        // Hit top
+        rayOrigin.set(cubeCenter).add(0, 3, 0);
+        ray = new Ray(rayOrigin, new Vec3(0, -1, 0));
+        assertTrue(mIntersect.intersects(ray, box));
+
+        // Hit bottom
+        rayOrigin.set(cubeCenter).add(0, -3, 0);
+        ray = new Ray(rayOrigin, new Vec3(0, 1, 0));
+        assertTrue(mIntersect.intersects(ray, box));
     }
 }

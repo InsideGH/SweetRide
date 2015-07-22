@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.view.MotionEvent;
+import android.util.Log;
 
 import com.sweetlab.sweetride.R;
 import com.sweetlab.sweetride.UserApplication;
@@ -16,6 +16,7 @@ import com.sweetlab.sweetride.context.MagFilter;
 import com.sweetlab.sweetride.context.MinFilter;
 import com.sweetlab.sweetride.demo.mesh.CubeMesh;
 import com.sweetlab.sweetride.geometry.Geometry;
+import com.sweetlab.sweetride.intersect.Ray;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.math.Vec3;
 import com.sweetlab.sweetride.node.Node;
@@ -113,18 +114,23 @@ public class DemoApplication extends UserApplication {
      * Random generator.
      */
     private final Random mRandom = new Random(666);
+    private final Context mContext;
 
-    private float mStrafeLeftRight;
-    private float mStrafeForwardBackward;
+    private float mDownStrafeX;
+    private float mDownStrafeZ;
+    private float mDownTurnAroundX;
+    private float mDownTurnAroundY;
+
+    private float mStrafeX;
+    private float mStrafeZ;
     private float mTurnAroundX;
     private float mTurnAroundY;
-    private int mActionIndexStrafe;
-    private int mActionIndexTurn;
 
     /**
      * Constructor.
      */
     public DemoApplication(Context context) {
+        mContext = context;
         /**
          * Create assets loader.
          */
@@ -170,6 +176,7 @@ public class DemoApplication extends UserApplication {
                 Material rotMaterial = mRotatingQuad.getMaterial();
                 if (rotMaterial != null) {
                     Texture2D textureLeft = new Texture2D("s_texture", bitmap, MinFilter.NEAREST, MagFilter.NEAREST);
+//                    Texture2D textureLeft = new Texture2D("s_texture", createChessColorBitmap(Bitmap.Config.RGB_565), MinFilter.NEAREST, MagFilter.NEAREST);
                     rotMaterial.addTexture(textureLeft);
                 }
             }
@@ -188,7 +195,58 @@ public class DemoApplication extends UserApplication {
          */
         Texture2D textureChess = new Texture2D("s_texture", createChessColorBitmap(Bitmap.Config.RGB_565), MinFilter.NEAREST, MagFilter.NEAREST);
         material.addTexture(textureChess);
+
+        mRotatingQuad.addOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onDown(Ray ray, int x, int y) {
+                Log.d("Peter100", "mRotatingQuad.onDown");
+                return true;
+            }
+
+            @Override
+            public boolean onUp(Ray ray, int x, int y) {
+                Log.d("Peter100", "mRotatingQuad.onUp");
+                return true;
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d("Peter100", "mRotatingQuad.onCancel");
+            }
+
+            @Override
+            public boolean onMove(Ray ray, boolean isHit, int x, int y) {
+                Log.d("Peter100", "mRotatingQuad.onMove isHit = " + isHit);
+                return false;
+            }
+        });
+
+        mMovingQuad.addOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onDown(Ray ray, int x, int y) {
+                Log.d("Peter100", "mMovingQuad.onDown");
+                return true;
+            }
+
+            @Override
+            public boolean onUp(Ray ray, int x, int y) {
+                Log.d("Peter100", "mMovingQuad.onUp");
+                return true;
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d("Peter100", "mMovingQuad.onCancel");
+            }
+
+            @Override
+            public boolean onMove(Ray ray, boolean isHit, int x, int y) {
+                Log.d("Peter100", "mMovingQuad.onMove isHit = " + isHit);
+                return false;
+            }
+        });
     }
+
 
     @Override
     public void onInitialized(Node engineRoot, int width, int height) {
@@ -209,10 +267,75 @@ public class DemoApplication extends UserApplication {
              */
             float quadSize = frustrum.calcWidthAtDepth(CAMERA_DISTANCE) / 4;
             mRotatingQuad.setMesh(new CubeMesh("a_Pos", "a_texCoord"));
-            mRotatingQuad.getModelTransform().translate(quadSize, 0, 0);
+            mRotatingQuad.getModelTransform().translate(-quadSize, -quadSize, -quadSize);
             mMovingQuad.setMesh(mRotatingQuad.getMesh());
             setNewMovingDirection();
         }
+
+        HeadUpDisplay headUpDisplay = new HeadUpDisplay(mContext, width, height);
+        engineRoot.addChild(headUpDisplay);
+
+        headUpDisplay.addMoveTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onDown(Ray ray, int x, int y) {
+                mDownStrafeX = x;
+                mDownStrafeZ = y;
+                return true;
+            }
+
+            @Override
+            public boolean onUp(Ray ray, int x, int y) {
+                mStrafeX = 0;
+                mStrafeZ = 0;
+                return true;
+            }
+
+            @Override
+            public void onCancel() {
+                mStrafeX = 0;
+                mStrafeZ = 0;
+            }
+
+            @Override
+            public boolean onMove(Ray ray, boolean isHit, int x, int y) {
+                float sizeX = x - mDownStrafeX;
+                float sizeY = y - mDownStrafeZ;
+                mStrafeX = sizeX * 0.0001f;
+                mStrafeZ = -sizeY * 0.0001f;
+                return false;
+            }
+        });
+
+        headUpDisplay.addTurnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onDown(Ray ray, int x, int y) {
+                mDownTurnAroundX = x;
+                mDownTurnAroundY = y;
+                return true;
+            }
+
+            @Override
+            public boolean onUp(Ray ray, int x, int y) {
+                mTurnAroundX = 0;
+                mTurnAroundY = 0;
+                return true;
+            }
+
+            @Override
+            public void onCancel() {
+                mTurnAroundX = 0;
+                mTurnAroundY = 0;
+            }
+
+            @Override
+            public boolean onMove(Ray ray, boolean isHit, int x, int y) {
+                float sizeX = x - mDownTurnAroundX;
+                float sizeY = y - mDownTurnAroundY;
+                mTurnAroundY = -sizeX * 0.001f;
+                mTurnAroundX = -sizeY * 0.001f;
+                return false;
+            }
+        });
     }
 
     @Override
@@ -228,10 +351,10 @@ public class DemoApplication extends UserApplication {
         /**
          * Rotate each frame around y axis.
          */
-        mCamera.update(mStrafeLeftRight, mStrafeForwardBackward, mTurnAroundX, mTurnAroundY);
-
-        mRotatingQuad.getModelTransform().rotate(2f, 0, 1, 0);
+        mCamera.update(mStrafeX, mStrafeZ, mTurnAroundX, mTurnAroundY);
+        mRotatingQuad.getModelTransform().rotate(1f, 0, 1, 0);
         mMovingQuad.getModelTransform().rotate(2, 0, 1, 0);
+
         /**
          * When object is not visible any longer reset position
          * and generate new random moving vector.
@@ -246,63 +369,6 @@ public class DemoApplication extends UserApplication {
         mMovingQuad.getModelTransform().translate(mMovingVec.x, mMovingVec.y, mMovingVec.z);
     }
 
-    private float mDownStrafeX;
-    private float mDownStrafeY;
-
-    private float mDownTurnX;
-    private float mDownTurnY;
-
-    /**
-     * Action on view touch event.
-     *
-     * @param event The touch event.
-     * @return Always true/handled.
-     */
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getActionMasked()) {
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
-                mStrafeLeftRight = 0;
-                mStrafeForwardBackward = 0;
-                break;
-
-            case MotionEvent.ACTION_DOWN:
-                mActionIndexStrafe = event.getActionIndex();
-                mDownStrafeX = event.getX(mActionIndexStrafe);
-                mDownStrafeY = event.getY(mActionIndexStrafe);
-                break;
-
-            case MotionEvent.ACTION_POINTER_DOWN:
-                mActionIndexTurn = event.getActionIndex();
-                mDownTurnX = event.getX(mActionIndexTurn);
-                mDownTurnY = event.getY(mActionIndexTurn);
-                break;
-
-            case MotionEvent.ACTION_POINTER_UP:
-                mTurnAroundY = 0;
-                mTurnAroundX = 0;
-                break;
-
-            case MotionEvent.ACTION_MOVE:
-                float x = event.getX(mActionIndexStrafe);
-                float y = event.getY(mActionIndexStrafe);
-                float sizeX = x - mDownStrafeX;
-                float sizeY = y - mDownStrafeY;
-                mStrafeLeftRight = sizeX * 0.0001f;
-                mStrafeForwardBackward = -sizeY * 0.0001f;
-                if (event.getPointerCount() > 1) {
-                    x = event.getX(mActionIndexTurn);
-                    y = event.getY(mActionIndexTurn);
-                    sizeX = x - mDownTurnX;
-                    sizeY = y - mDownTurnY;
-                    mTurnAroundY = -sizeX * 0.001f;
-                    mTurnAroundX = -sizeY * 0.001f;
-                }
-                break;
-        }
-        return true;
-    }
-
     /**
      * Set new moving direction.
      */
@@ -314,21 +380,17 @@ public class DemoApplication extends UserApplication {
         mMovingVec.set(x, y, z);
     }
 
-    private static Bitmap createQuadColorBitmap(Bitmap.Config config) {
-        return Bitmap.createBitmap(new int[]{Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW}, 2, 2, config);
-    }
-
     private static Bitmap createChessColorBitmap(Bitmap.Config config) {
-        int values[] = new int[10 * 10];
+        int values[] = new int[16 * 16];
         int p = 0;
-        Random random = new Random(10);
-        for (int y = 0; y < 10; y++) {
-            for (int x = 0; x < 10; x++) {
+        Random random = new Random(16);
+        for (int y = 0; y < 16; y++) {
+            for (int x = 0; x < 16; x++) {
                 int grey = random.nextInt(256);
                 values[p] = Color.argb(255, grey, grey, grey);
                 p++;
             }
         }
-        return Bitmap.createBitmap(values, 10, 10, config);
+        return Bitmap.createBitmap(values, 16, 16, config);
     }
 }

@@ -5,6 +5,7 @@ import android.opengl.GLSurfaceView;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.engine.frame.Frame;
@@ -130,6 +131,11 @@ public abstract class EngineView extends GLSurfaceView implements EngineRenderer
              */
             mHandler.post(mRenderRequest);
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return mEngineRoot.onTouch(event);
     }
 
     /**

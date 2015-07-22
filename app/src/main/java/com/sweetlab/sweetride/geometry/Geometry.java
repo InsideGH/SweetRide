@@ -1,12 +1,16 @@
 package com.sweetlab.sweetride.geometry;
 
 import android.support.annotation.Nullable;
+import android.view.MotionEvent;
 
 import com.sweetlab.sweetride.action.Action;
 import com.sweetlab.sweetride.action.ActionThread;
 import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.camera.Camera;
+import com.sweetlab.sweetride.camera.LowerLeftBox;
 import com.sweetlab.sweetride.context.BackendContext;
+import com.sweetlab.sweetride.demo.OnTouchListener;
+import com.sweetlab.sweetride.demo.TouchEventHandler;
 import com.sweetlab.sweetride.engine.uniform.EngineUniform;
 import com.sweetlab.sweetride.engine.uniform.EngineUniformCache;
 import com.sweetlab.sweetride.intersect.BoundingBox;
@@ -69,6 +73,16 @@ public class Geometry extends Node {
     private final BackendGeometry mBackendGeometry = new BackendGeometry();
 
     /**
+     * On touch listeners.
+     */
+    private final List<OnTouchListener> mOnTouchListeners = new ArrayList<>();
+
+    /**
+     * The touch motion event handler.
+     */
+    private TouchEventHandler mTouchEventHandler;
+
+    /**
      * The mesh.
      */
     private Mesh mMesh;
@@ -87,7 +101,7 @@ public class Geometry extends Node {
     protected void onActionAdded(Action<GlobalActionId> action) {
         super.onActionAdded(action);
         switch (action.getType()) {
-            case NODE_WORLD_DIRTY:
+            case NODE_TRANSFORM_UPDATED:
                 addAction(mEngineUniformChange);
                 if (mMesh != null) {
                     BoundingBox meshBox = mMesh.getBoundingBox();
@@ -96,6 +110,12 @@ public class Geometry extends Node {
                     }
                 }
                 break;
+
+            case NODE_FRUSTRUM_UPDATED:
+                LowerLeftBox viewPort = findCamera().getFrustrum().getViewPort();
+                mTouchEventHandler = new TouchEventHandler(viewPort.getWidth(), viewPort.getHeight());
+                break;
+
             case GEOMETRY_MESH:
                 if (mMesh != null) {
                     BoundingBox meshBox = mMesh.getBoundingBox();
@@ -104,6 +124,7 @@ public class Geometry extends Node {
                     }
                 }
                 break;
+
         }
     }
 
@@ -139,12 +160,24 @@ public class Geometry extends Node {
         }
     }
 
+    @Override
+    public boolean onTouch(MotionEvent event) {
+        if (!mOnTouchListeners.isEmpty()) {
+            Camera camera = findCamera();
+            if (camera != null) {
+                if (mTouchEventHandler.onTouchEvent(event, camera, mGeometryBox, mOnTouchListeners)) {
+                    return true;
+                }
+            }
+        }
+        return super.onTouch(event);
+    }
+
     /**
-     * Get this geometries transformable bounding box.
+     * Get this geometries transformable bounding box. The box can be empty.
      *
      * @return The geometries bounding box.
      */
-    @Nullable
     public TransformableBoundingBox getTransformableBoundingBox() {
         return mGeometryBox;
     }
@@ -206,6 +239,24 @@ public class Geometry extends Node {
     @Nullable
     public Material getMaterial() {
         return mMaterial;
+    }
+
+    /**
+     * Add on touch listener.
+     *
+     * @param touchListener The listener to add.
+     */
+    public void addOnTouchListener(OnTouchListener touchListener) {
+        mOnTouchListeners.add(touchListener);
+    }
+
+    /**
+     * Remove on touch listener.
+     *
+     * @param touchListener The listener to remove.
+     */
+    public void removeOnTouchListener(OnTouchListener touchListener) {
+        mOnTouchListeners.remove(touchListener);
     }
 
     /**

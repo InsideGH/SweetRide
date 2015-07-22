@@ -1,5 +1,7 @@
 package com.sweetlab.sweetride.intersect;
 
+import android.annotation.SuppressLint;
+
 import com.sweetlab.sweetride.math.Matrix44;
 import com.sweetlab.sweetride.math.Vec3;
 
@@ -262,8 +264,10 @@ public class BoundingBox {
         }
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public String toString() {
-        return "Box min = " + mMin.x + " " + mMin.y + " " + mMin.z + " max = " + mMax.x + " " + mMax.y + " " + mMax.z;
+        return String.format("% #06.2f % #06.2f % #06.2f , % #06.2f % #06.2f % #06.2f",
+                mMin.x, mMin.y, mMin.z, mMax.x, mMax.y, mMax.z);
     }
 }

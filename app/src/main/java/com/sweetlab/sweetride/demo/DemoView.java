@@ -2,7 +2,6 @@ package com.sweetlab.sweetride.demo;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 
 import com.sweetlab.sweetride.EngineView;
 import com.sweetlab.sweetride.UserApplication;
@@ -28,10 +27,5 @@ public class DemoView extends EngineView {
     protected UserApplication createUserApplication() {
         mDemoApplication = new DemoApplication(getContext());
         return mDemoApplication;
-    }
-
-    @Override
-    public boolean onTouchEvent(@SuppressWarnings("NullableProblems") MotionEvent event) {
-        return mDemoApplication.onTouchEvent(event);
     }
 }

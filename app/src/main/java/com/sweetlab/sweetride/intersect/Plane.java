@@ -3,7 +3,7 @@ package com.sweetlab.sweetride.intersect;
 import com.sweetlab.sweetride.math.Vec3;
 
 /**
- * A hyper plane. The equation : Ax + By + Cz = D where D = dot(p, n).
+ * A hyper plane. The equation : Ax + By + Cz + D = 0 where D = -dot(p, n).
  * p - point in the plain.
  * n - normalized normal.
  */
@@ -27,7 +27,7 @@ public class Plane {
     public Plane(Vec3 normal, Vec3 point) {
         mNormal.set(normal);
         mNormal.norm();
-        mD = point.dot(mNormal);
+        mD = -point.dot(mNormal);
     }
 
     /**
@@ -44,7 +44,7 @@ public class Plane {
         Vec3.createVecFromPoints(p1, p3, v2);
         Vec3.cross(v1, v2, mNormal);
         mNormal.norm();
-        mD = p1.dot(mNormal);
+        mD = -p1.dot(mNormal);
     }
 
     /**
@@ -62,7 +62,7 @@ public class Plane {
      * @return The distance.
      */
     public float getSignedDistToOrigo() {
-        return -mD;
+        return mD;
     }
 
     /**
@@ -72,7 +72,7 @@ public class Plane {
      * @return The minimum distance.
      */
     public float getSignedDistToPoint(Vec3 point) {
-        return point.dot(mNormal) - mD;
+        return point.dot(mNormal) + mD;
     }
 
     /**

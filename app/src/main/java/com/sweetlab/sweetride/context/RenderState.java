@@ -93,7 +93,11 @@ public class RenderState extends BackendRenderSettings {
         }
         if (mBlend != blend) {
             mBlend = blend;
-            GLES20.glEnable(GLES20.GL_BLEND);
+            if (blend) {
+                GLES20.glEnable(GLES20.GL_BLEND);
+            } else {
+                GLES20.glDisable(GLES20.GL_BLEND);
+            }
         }
     }
 
@@ -107,7 +111,11 @@ public class RenderState extends BackendRenderSettings {
         }
         if (mCullFace != cullFace) {
             mCullFace = cullFace;
-            GLES20.glEnable(GLES20.GL_CULL_FACE);
+            if (cullFace) {
+                GLES20.glEnable(GLES20.GL_CULL_FACE);
+            } else {
+                GLES20.glDisable(GLES20.GL_CULL_FACE);
+            }
         }
     }
 
@@ -121,7 +129,11 @@ public class RenderState extends BackendRenderSettings {
         }
         if (mDepthTest != depthTest) {
             mDepthTest = depthTest;
-            GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+            if (depthTest) {
+                GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+            } else {
+                GLES20.glDisable(GLES20.GL_DEPTH_TEST);
+            }
         }
     }
 
@@ -135,7 +147,11 @@ public class RenderState extends BackendRenderSettings {
         }
         if (mDither != dither) {
             mDither = dither;
-            GLES20.glEnable(GLES20.GL_DITHER);
+            if (dither) {
+                GLES20.glEnable(GLES20.GL_DITHER);
+            } else {
+                GLES20.glDisable(GLES20.GL_DITHER);
+            }
         }
     }
 
@@ -149,7 +165,11 @@ public class RenderState extends BackendRenderSettings {
         }
         if (mPolygonOffsetFill != polygonOffsetFill) {
             mPolygonOffsetFill = polygonOffsetFill;
-            GLES20.glEnable(GLES20.GL_POLYGON_OFFSET_FILL);
+            if (polygonOffsetFill) {
+                GLES20.glEnable(GLES20.GL_POLYGON_OFFSET_FILL);
+            } else {
+                GLES20.glDisable(GLES20.GL_POLYGON_OFFSET_FILL);
+            }
         }
     }
 
@@ -163,7 +183,11 @@ public class RenderState extends BackendRenderSettings {
         }
         if (mSampleAlphaToCoverage != sampleAlphaToCoverage) {
             mSampleAlphaToCoverage = sampleAlphaToCoverage;
-            GLES20.glEnable(GLES20.GL_SAMPLE_ALPHA_TO_COVERAGE);
+            if (sampleAlphaToCoverage) {
+                GLES20.glEnable(GLES20.GL_SAMPLE_ALPHA_TO_COVERAGE);
+            } else {
+                GLES20.glDisable(GLES20.GL_SAMPLE_ALPHA_TO_COVERAGE);
+            }
         }
     }
 
@@ -177,7 +201,11 @@ public class RenderState extends BackendRenderSettings {
         }
         if (mSampleCoverage != sampleCoverage) {
             mSampleCoverage = sampleCoverage;
-            GLES20.glEnable(GLES20.GL_SAMPLE_COVERAGE);
+            if (sampleCoverage) {
+                GLES20.glEnable(GLES20.GL_SAMPLE_COVERAGE);
+            } else {
+                GLES20.glDisable(GLES20.GL_SAMPLE_COVERAGE);
+            }
         }
     }
 
@@ -191,7 +219,11 @@ public class RenderState extends BackendRenderSettings {
         }
         if (mScissorTest != scissorTest) {
             mScissorTest = scissorTest;
-            GLES20.glEnable(GLES20.GL_SCISSOR_TEST);
+            if (scissorTest) {
+                GLES20.glEnable(GLES20.GL_SCISSOR_TEST);
+            } else {
+                GLES20.glDisable(GLES20.GL_SCISSOR_TEST);
+            }
         }
     }
 
@@ -205,7 +237,11 @@ public class RenderState extends BackendRenderSettings {
         }
         if (mStencilTest != stencilTest) {
             mStencilTest = stencilTest;
-            GLES20.glEnable(GLES20.GL_STENCIL_TEST);
+            if (stencilTest) {
+                GLES20.glEnable(GLES20.GL_STENCIL_TEST);
+            } else {
+                GLES20.glDisable(GLES20.GL_STENCIL_TEST);
+            }
         }
     }
 

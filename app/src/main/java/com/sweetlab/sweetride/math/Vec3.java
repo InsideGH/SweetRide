@@ -161,6 +161,15 @@ public class Vec3 implements Reusable {
     }
 
     /**
+     * Add to this vector.
+     */
+    public void add(int x, int y, int z) {
+        this.x += x;
+        this.y += y;
+        this.z += z;
+    }
+
+    /**
      * This vector + v2 vector
      */
     public Vec3 add(final Vec3 v2) {

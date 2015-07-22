@@ -1,5 +1,8 @@
 package com.sweetlab.sweetride.intersect;
 
+import android.util.Log;
+
+import com.sweetlab.sweetride.DebugOptions;
 import com.sweetlab.sweetride.math.FloatUtil;
 import com.sweetlab.sweetride.math.Vec3;
 
@@ -275,46 +278,67 @@ public class Intersect {
         box.getMax(mMax);
 
         /**
-         * 'dcab' plane (front)
+         * 'dcab' plane (front).
+         * If plane is at pos z, plane distance is negative
+         * If plane is at neg z, plane distance is positive.
+         * Thus, invert.
          */
         mNormal.set(0, 0, 1);
-        time = intersect(ray, mNormal, mMax.z);
+        time = intersect(ray, mNormal, -mMax.z);
         if (!Float.isNaN(time)) {
             ray.getPointAtTime(time, mIntersectPoint);
             if (mIntersectPoint.x > mMin.x && mIntersectPoint.x < mMax.x &&
                     mIntersectPoint.y > mMin.y && mIntersectPoint.y < mMax.y) {
+                if (DebugOptions.DEBUG_INTERSECT) {
+                    Log.d("Peter100", "Intersect.intersects FRONT");
+                }
                 return true;
             }
         }
 
         /**
          * 'dbfh' plane (right)
+         * If plane is at pos x, plane distance is negative
+         * If plane is at neg x, plane distance is positive.
+         * Thus, invert.
          */
         mNormal.set(1, 0, 0);
-        time = intersect(ray, mNormal, mMax.x);
+        time = intersect(ray, mNormal, -mMax.x);
         if (!Float.isNaN(time)) {
             ray.getPointAtTime(time, mIntersectPoint);
             if (mIntersectPoint.y > mMin.y && mIntersectPoint.y < mMax.y &&
                     mIntersectPoint.z > mMin.z && mIntersectPoint.z < mMax.z) {
+                if (DebugOptions.DEBUG_INTERSECT) {
+                    Log.d("Peter100", "Intersect.intersects RIGHT");
+                }
                 return true;
             }
         }
 
         /**
          * 'dhgc' plane (top)
+         * If plane is at pos y, plane distance is negative
+         * If plane is at neg y, plane distance is positive.
+         * Thus, invert.
          */
         mNormal.set(0, 1, 0);
-        time = intersect(ray, mNormal, mMax.y);
+        time = intersect(ray, mNormal, -mMax.y);
         if (!Float.isNaN(time)) {
             ray.getPointAtTime(time, mIntersectPoint);
             if (mIntersectPoint.x > mMin.x && mIntersectPoint.x < mMax.x &&
                     mIntersectPoint.z > mMin.z && mIntersectPoint.z < mMax.z) {
+                if (DebugOptions.DEBUG_INTERSECT) {
+                    Log.d("Peter100", "Intersect.intersects TOP");
+                }
                 return true;
             }
         }
 
         /**
          * 'efhg' plane (back)
+         * If plane is at pos z, plane distance is positive
+         * If plane is at neg z, plane distance is negative.
+         * Thus, use value as is.
          */
         mNormal.set(0, 0, -1);
         time = intersect(ray, mNormal, mMin.z);
@@ -322,12 +346,18 @@ public class Intersect {
             ray.getPointAtTime(time, mIntersectPoint);
             if (mIntersectPoint.x > mMin.x && mIntersectPoint.x < mMax.x &&
                     mIntersectPoint.y > mMin.y && mIntersectPoint.y < mMax.y) {
+                if (DebugOptions.DEBUG_INTERSECT) {
+                    Log.d("Peter100", "Intersect.intersects BACK");
+                }
                 return true;
             }
         }
 
         /**
          * 'eacg' plane (left)
+         * If plane is at pos x, plane distance is positive
+         * If plane is at neg x, plane distance is negative.
+         * Thus, use value as is.
          */
         mNormal.set(-1, 0, 0);
         time = intersect(ray, mNormal, mMin.x);
@@ -335,12 +365,18 @@ public class Intersect {
             ray.getPointAtTime(time, mIntersectPoint);
             if (mIntersectPoint.y > mMin.y && mIntersectPoint.y < mMax.y &&
                     mIntersectPoint.z > mMin.z && mIntersectPoint.z < mMax.z) {
+                if (DebugOptions.DEBUG_INTERSECT) {
+                    Log.d("Peter100", "Intersect.intersects LEFT");
+                }
                 return true;
             }
         }
 
         /**
          * 'eabf' plane (bottom)
+         * If plane is at pos y, plane distance is positive
+         * If plane is at neg y, plane distance is negative.
+         * Thus, use value as is.
          */
         mNormal.set(0, -1, 0);
         time = intersect(ray, mNormal, mMin.y);
@@ -348,6 +384,9 @@ public class Intersect {
             ray.getPointAtTime(time, mIntersectPoint);
             if (mIntersectPoint.x > mMin.x && mIntersectPoint.x < mMax.x &&
                     mIntersectPoint.z > mMin.z && mIntersectPoint.z < mMax.z) {
+                if (DebugOptions.DEBUG_INTERSECT) {
+                    Log.d("Peter100", "Intersect.intersects BOTTOM");
+                }
                 return true;
             }
         }
