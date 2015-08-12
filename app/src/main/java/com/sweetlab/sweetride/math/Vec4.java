@@ -217,10 +217,10 @@ public class Vec4 {
      * is OpenGL style.
      */
     public Vec4 transform(Matrix44 mat) {
-        float xNew = x * mat.m[0] + y * mat.m[4] + z * mat.m[8] + mat.m[12];
-        float yNew = x * mat.m[1] + y * mat.m[5] + z * mat.m[9] + mat.m[13];
-        float zNew = x * mat.m[2] + y * mat.m[6] + z * mat.m[10] + mat.m[14];
-        float wNew = x * mat.m[3] + y * mat.m[7] + z * mat.m[11] + mat.m[15];
+        float xNew = x * mat.m[0] + y * mat.m[4] + z * mat.m[8] + w * mat.m[12];
+        float yNew = x * mat.m[1] + y * mat.m[5] + z * mat.m[9] + w * mat.m[13];
+        float zNew = x * mat.m[2] + y * mat.m[6] + z * mat.m[10] + w * mat.m[14];
+        float wNew = x * mat.m[3] + y * mat.m[7] + z * mat.m[11] + w * mat.m[15];
 
         x = xNew;
         y = yNew;
