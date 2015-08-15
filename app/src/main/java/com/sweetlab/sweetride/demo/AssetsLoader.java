@@ -29,7 +29,8 @@ public class AssetsLoader {
     }
 
     /**
-     * Load bitmap asynchronously. Loads in background and notifies subscriber on main thread.
+     * Load bitmap asynchronously. Loads in background and notifies subscriber on main thread. This
+     * is done by using observeOn main thread and subscribeOn IO thread.
      *
      * @param asset   Bitmap asset.
      * @param options Bitmap options.
@@ -45,7 +46,7 @@ public class AssetsLoader {
     }
 
     /**
-     * Load bitmap asynchronously. Loads in background and notifies subscriber on main thread.
+     * Load bitmap. Up to caller to decide which scheduler to observeOn and subscribeOn.
      *
      * @param asset   Bitmap asset.
      * @param options Bitmap options.
@@ -59,5 +60,4 @@ public class AssetsLoader {
             }
         });
     }
-
 }
