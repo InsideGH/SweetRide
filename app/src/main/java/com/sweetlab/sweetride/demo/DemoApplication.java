@@ -170,7 +170,7 @@ public class DemoApplication extends UserApplication {
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inPreferredConfig = Bitmap.Config.ARGB_8888;
 
-        assetsLoader.loadBitmap(R.drawable.compass, opts).subscribe(new Action1<Bitmap>() {
+        assetsLoader.loadBitmapAsync(R.drawable.compass, opts).subscribe(new Action1<Bitmap>() {
             @Override
             public void call(Bitmap bitmap) {
                 Material rotMaterial = mRotatingQuad.getMaterial();

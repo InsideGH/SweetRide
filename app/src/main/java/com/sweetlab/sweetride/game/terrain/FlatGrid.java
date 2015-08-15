@@ -26,6 +26,11 @@ public class FlatGrid {
     private final short[] mIndices;
 
     /**
+     * The texture coordinates.
+     */
+    private final float[] mTextureCoordinates;
+
+    /**
      * Constructor. Creates a flat grid of vertices in the XZ plane with triangle strip indices.
      *
      * @param left         Left boundary in model space.
@@ -38,6 +43,7 @@ public class FlatGrid {
     public FlatGrid(float left, float right, float near, float far, int nbrVerticesX, int nbrVerticesZ) {
         mVertices = generateVertices(left, right, near, far, nbrVerticesX, nbrVerticesZ);
         mIndices = generateIndices(nbrVerticesX, nbrVerticesZ);
+        mTextureCoordinates = generateTextureCoordinates(nbrVerticesX, nbrVerticesZ);
         mNbrVerticesX = nbrVerticesX;
         mNbrVerticesZ = nbrVerticesZ;
     }
@@ -51,6 +57,15 @@ public class FlatGrid {
      */
     public float[] getVertices() {
         return mVertices;
+    }
+
+    /**
+     * Get the texture coordinates.
+     *
+     * @return The texture coordinates.
+     */
+    public float[] getTextureCoordinates() {
+        return mTextureCoordinates;
     }
 
     /**
@@ -109,6 +124,28 @@ public class FlatGrid {
             }
         }
         return vertices;
+    }
+
+    /**
+     * Generate texture coordinates.
+     *
+     * @param nbrVerticesX Number of vertices along x axis.
+     * @param nbrVerticesZ Number of vertices along z axis.
+     * @return Texture coordinates.
+     */
+    private static float[] generateTextureCoordinates(int nbrVerticesX, int nbrVerticesZ) {
+        final float stepX = 1.0f / (nbrVerticesX - 1);
+        final float stepZ = 1.0f / (nbrVerticesZ - 1);
+
+        float[] tex = new float[nbrVerticesX * nbrVerticesZ * 2];
+        int index = 0;
+        for (int y = 0; y < nbrVerticesZ; y++) {
+            for (int x = 0; x < nbrVerticesX; x++) {
+                tex[index++] = 1.0f - x * stepX;
+                tex[index++] = 1.0f - y * stepZ;
+            }
+        }
+        return tex;
     }
 
     /**

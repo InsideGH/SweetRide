@@ -116,7 +116,7 @@ public class ControlGeometry extends Geometry {
             /**
              * Decode and create texture.
              */
-            new AssetsLoader(mContext).loadBitmap(mResource, opts).subscribe(new Action1<Bitmap>() {
+            new AssetsLoader(mContext).loadBitmapAsync(mResource, opts).subscribe(new Action1<Bitmap>() {
                 @Override
                 public void call(Bitmap bitmap) {
                     Material material = getMaterial();

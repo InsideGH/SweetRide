@@ -1,15 +1,21 @@
 package com.sweetlab.sweetride.tryouts.strips;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import com.sweetlab.sweetride.R;
 import com.sweetlab.sweetride.UserApplication;
-import com.sweetlab.sweetride.attributedata.ColorData;
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.attributedata.InterleavedVertexBuffer;
-import com.sweetlab.sweetride.attributedata.VertexData;
+import com.sweetlab.sweetride.attributedata.TextureCoordData;
 import com.sweetlab.sweetride.attributedata.VerticesData;
 import com.sweetlab.sweetride.camera.Camera;
 import com.sweetlab.sweetride.camera.Frustrum;
 import com.sweetlab.sweetride.context.BufferUsage;
+import com.sweetlab.sweetride.context.MagFilter;
 import com.sweetlab.sweetride.context.MeshDrawingMode;
+import com.sweetlab.sweetride.context.MinFilter;
+import com.sweetlab.sweetride.demo.AssetsLoader;
 import com.sweetlab.sweetride.engine.frame.Frame;
 import com.sweetlab.sweetride.game.terrain.FlatGrid;
 import com.sweetlab.sweetride.geometry.Geometry;
@@ -23,8 +29,9 @@ import com.sweetlab.sweetride.shader.ShaderProgram;
 import com.sweetlab.sweetride.shader.VertexShader;
 import com.sweetlab.sweetride.testframework.OpenGLTestCase;
 import com.sweetlab.sweetride.testframework.ResultRunnable;
+import com.sweetlab.sweetride.texture.Texture2D;
 
-import java.util.Random;
+import rx.functions.Action1;
 
 /**
  * Test strip winding.
@@ -35,19 +42,21 @@ public class FlatGridTest extends OpenGLTestCase {
 
     public static final String VERTEX =
             "attribute vec4 a_Pos; \n" +
-                    "attribute vec4 a_Color;\n" +
-                    "varying vec4 v_Color;\n" +
+                    "attribute vec2 a_texCoord;\n" +
+                    "varying vec2 v_texCoord;\n" +
                     "uniform mat4 u_worldViewProjMat; \n" +
                     "void main() { " +
-                    "    v_Color = a_Color;\n" +
+                    "    v_texCoord = a_texCoord;\n" +
                     "    gl_Position = u_worldViewProjMat * a_Pos; " +
                     "} ";
 
     public static final String FRAGMENT =
             "precision mediump float;\n" +
-                    "varying vec4 v_Color; \n" +
+                    "varying vec2 v_texCoord;\n" +
+                    "uniform sampler2D s_texture;\n" +
                     "void main() {\n" +
-                    "\tgl_FragColor = v_Color;\n" +
+                    "vec4 color = texture2D(s_texture, v_texCoord);\n" +
+                    "gl_FragColor = color;\n" +
                     "}";
 
     private Frame mFrame = new Frame();
@@ -59,43 +68,68 @@ public class FlatGridTest extends OpenGLTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        /**
+         * Render settings.
+         */
         mRenderNode.getRenderSettings().setClear(0, ClearBit.COLOR_BUFFER_BIT, ClearBit.DEPTH_BUFFER_BIT);
         mRenderNode.getRenderSettings().setClearColor(new float[]{0.5f, 0.5f, 0.5f, 1.0f});
         mRenderNode.getRenderSettings().setViewPort(0, 0, getSurfaceWidth(), getSurfaceHeight());
         mRenderNode.getRenderSettings().setCullFace(true);
 
+        /**
+         * Camera.
+         */
         mCamera.lookAt(0, 6, 6, 0, 0, 0);
         mCamera.getFrustrum().setPerspectiveProjection(45, Frustrum.FovType.AUTO_FIT, 0.1f, 10, getSurfaceWidth(), getSurfaceHeight());
-        mRenderNode.setCamera(mCamera);
 
+        /**
+         * Graph.
+         */
+        mRenderNode.setCamera(mCamera);
         mRenderNode.addChild(mGeometry);
 
-        Material material = new Material();
-        mGeometry.setMaterial(material);
+        /**
+         * Geometry material.
+         */
+        final Material material = new Material();
         material.setShaderProgram(new ShaderProgram(new VertexShader(VERTEX), new FragmentShader(FRAGMENT)));
+        mGeometry.setMaterial(material);
 
-        Mesh mesh = new Mesh(MeshDrawingMode.TRIANGLE_STRIP);
         InterleavedVertexBuffer.Builder builder = new InterleavedVertexBuffer.Builder(BufferUsage.STATIC);
 
-        // left , top, right, bottom
+        /**
+         * Flat grid, left, right near far.
+         */
         FlatGrid flatGrid = new FlatGrid(-1, 1, 1, -1, SAMPLES_X, SAMPLES_Z);
-        VerticesData verticesData = new VerticesData(flatGrid.getVertices());
-        builder.add("a_Pos", verticesData);
 
-        float[] colors = new float[SAMPLES_X * SAMPLES_Z * 4];
-        int colorIndex = 0;
-        Random random = new Random(444);
-        for (int y = 0; y < SAMPLES_Z; y++) {
-            for (int x = 0; x < SAMPLES_X; x++) {
-                colors[colorIndex++] = random.nextFloat();
-                colors[colorIndex++] = random.nextFloat();
-                colors[colorIndex++] = random.nextFloat();
-                colors[colorIndex++] = 1;
+        /**
+         * Vertices data.
+         */
+        builder.add("a_Pos", new VerticesData(flatGrid.getVertices()));
+
+        /**
+         * Bitmap
+         */
+        AssetsLoader assetsLoader = new AssetsLoader(getActivity().getApplicationContext());
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        assetsLoader.loadBitmap(R.drawable.felix, options).subscribe(new Action1<Bitmap>() {
+            @Override
+            public void call(Bitmap bitmap) {
+                material.addTexture(new Texture2D("s_texture", bitmap, MinFilter.NEAREST, MagFilter.NEAREST));
             }
-        }
-        VertexData colorData = new ColorData(colors);
-        builder.add("a_Color", colorData);
+        });
 
+        /**
+         * Texture coordinates.
+         */
+        TextureCoordData textureCoordData = new TextureCoordData(flatGrid.getTextureCoordinates());
+        builder.add("a_texCoord", textureCoordData);
+
+        /**
+         * Mesh.
+         */
+        Mesh mesh = new Mesh(MeshDrawingMode.TRIANGLE_STRIP);
         mesh.addVertexBuffer(builder.build());
         mesh.setIndicesBuffer(new IndicesBuffer(flatGrid.getIndices(), BufferUsage.STATIC));
         mGeometry.setMesh(mesh);

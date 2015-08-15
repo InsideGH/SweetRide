@@ -29,7 +29,23 @@ public class AssetsLoader {
     }
 
     /**
-     * Load bitmap. Loads in background and notifies subscriber on main thread.
+     * Load bitmap asynchronously. Loads in background and notifies subscriber on main thread.
+     *
+     * @param asset   Bitmap asset.
+     * @param options Bitmap options.
+     * @return Bitmap observable.
+     */
+    public Observable<Bitmap> loadBitmapAsync(final int asset, final BitmapFactory.Options options) {
+        return Observable.create(new Observable.OnSubscribe<Bitmap>() {
+            @Override
+            public void call(Subscriber<? super Bitmap> subscriber) {
+                subscriber.onNext(BitmapFactory.decodeResource(mContext.getResources(), asset, options));
+            }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * Load bitmap asynchronously. Loads in background and notifies subscriber on main thread.
      *
      * @param asset   Bitmap asset.
      * @param options Bitmap options.
@@ -41,6 +57,7 @@ public class AssetsLoader {
             public void call(Subscriber<? super Bitmap> subscriber) {
                 subscriber.onNext(BitmapFactory.decodeResource(mContext.getResources(), asset, options));
             }
-        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io());
+        });
     }
+
 }
