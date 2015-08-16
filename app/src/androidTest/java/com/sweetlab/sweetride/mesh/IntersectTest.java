@@ -1,12 +1,12 @@
 package com.sweetlab.sweetride.mesh;
 
-import com.sweetlab.sweetride.demo.mesh.CubeMesh;
-import com.sweetlab.sweetride.demo.mesh.QuadMesh;
+import com.sweetlab.sweetride.demo.demo.mesh.CubeMesh;
+import com.sweetlab.sweetride.demo.demo.mesh.QuadMesh;
 import com.sweetlab.sweetride.geometry.Geometry;
+import com.sweetlab.sweetride.intersect.BoundingBox;
 import com.sweetlab.sweetride.intersect.Intersect;
 import com.sweetlab.sweetride.intersect.Plane;
 import com.sweetlab.sweetride.intersect.Ray;
-import com.sweetlab.sweetride.intersect.TransformableBoundingBox;
 import com.sweetlab.sweetride.math.FloatUtil;
 import com.sweetlab.sweetride.math.Vec3;
 
@@ -219,7 +219,7 @@ public class IntersectTest extends TestCase {
     public void testRayHitBox1() {
         Geometry geometry = new Geometry();
         geometry.setMesh(new QuadMesh(1, 1, "", ""));
-        TransformableBoundingBox box = geometry.getTransformableBoundingBox();
+        BoundingBox box = geometry.getBoundingBox();
 
         Ray ray;
         ray = new Ray(new Vec3(0, 0, 3), new Vec3(0, 0, -1));
@@ -253,7 +253,7 @@ public class IntersectTest extends TestCase {
     public void testRayHitBox2() {
         Geometry geometry = new Geometry();
         geometry.setMesh(new QuadMesh(1, 1, "", ""));
-        TransformableBoundingBox box = geometry.getTransformableBoundingBox();
+        BoundingBox box = geometry.getBoundingBox();
 
         /**
          * Rotate 90 deg around y and then translate along x (which is world -z)
@@ -298,7 +298,7 @@ public class IntersectTest extends TestCase {
         geometry.setMesh(new CubeMesh("", ""));
         geometry.getModelTransform().translate(cubeCenter.x, cubeCenter.y, cubeCenter.z);
         geometry.getModelTransform().rotate(cubeCenter.x, cubeCenter.x, cubeCenter.y, cubeCenter.z);
-        TransformableBoundingBox box = geometry.getTransformableBoundingBox();
+        BoundingBox box = geometry.getBoundingBox();
 
         Ray ray;
         Vec3 rayOrigin = new Vec3();

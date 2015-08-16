@@ -11,8 +11,8 @@
 
         <include layout="@layout/toolbar" />
 
-        <com.sweetlab.sweetride.demo.DemoView
-            android:id="@+id/demo_gl_view"
+        <com.sweetlab.sweetride.demo.MainContentView
+            android:id="@+id/main_gl_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="?attr/actionBarSize" />

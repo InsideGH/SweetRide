@@ -2,7 +2,6 @@ package com.sweetlab.sweetride.mesh;
 
 import com.sweetlab.sweetride.Util.BufferTestUtil;
 import com.sweetlab.sweetride.intersect.BoundingBox;
-import com.sweetlab.sweetride.intersect.TransformableBoundingBox;
 import com.sweetlab.sweetride.math.FloatUtil;
 import com.sweetlab.sweetride.math.Matrix44;
 import com.sweetlab.sweetride.math.Vec3;
@@ -67,9 +66,10 @@ public class BoundingBoxTest extends TestCase {
      * Test transform around z axis.
      */
     public void testTransformZAxis() {
-        TransformableBoundingBox transformedBox = new TransformableBoundingBox();
+        BoundingBox transformedBox = new BoundingBox();
+        transformedBox.set(mBoundingBox);
         Matrix44 mat = new Matrix44().setRotate(90, 0, 0, 1);
-        mBoundingBox.transform(mat, transformedBox);
+        transformedBox.transform(mat);
         transformedBox.getMin(mMin);
         assertEquals(-1.0f, mMin.x, FloatUtil.EPS);
         assertEquals(-0.5f, mMin.y, FloatUtil.EPS);
@@ -84,9 +84,10 @@ public class BoundingBoxTest extends TestCase {
      * Test transform around x axis.
      */
     public void testTransformXAxis() {
-        TransformableBoundingBox transformedBox = new TransformableBoundingBox();
+        BoundingBox transformedBox = new BoundingBox();
+        transformedBox.set(mBoundingBox);
         Matrix44 mat = new Matrix44().setRotate(90, 1, 0, 0);
-        mBoundingBox.transform(mat, transformedBox);
+        transformedBox.transform(mat);
         transformedBox.getMin(mMin);
         assertEquals(-0.5f, mMin.x, FloatUtil.EPS);
         assertEquals(0f, mMin.y, FloatUtil.EPS);
@@ -101,9 +102,10 @@ public class BoundingBoxTest extends TestCase {
      * Test transform around y axis.
      */
     public void testTransformYAxis() {
-        TransformableBoundingBox transformedBox = new TransformableBoundingBox();
+        BoundingBox transformedBox = new BoundingBox();
+        transformedBox.set(mBoundingBox);
         Matrix44 mat = new Matrix44().setRotate(90, 0, 1, 0);
-        mBoundingBox.transform(mat, transformedBox);
+        transformedBox.transform(mat);
         transformedBox.getMin(mMin);
         assertEquals(0f, mMin.x, FloatUtil.EPS);
         assertEquals(-1f, mMin.y, FloatUtil.EPS);
@@ -118,9 +120,10 @@ public class BoundingBoxTest extends TestCase {
      * Test transform translate.
      */
     public void testTransformTranslate() {
-        TransformableBoundingBox transformedBox = new TransformableBoundingBox();
+        BoundingBox transformedBox = new BoundingBox();
+        transformedBox.set(mBoundingBox);
         Matrix44 mat = new Matrix44().setTranslate(33, 44, 55);
-        mBoundingBox.transform(mat, transformedBox);
+        transformedBox.transform(mat);
         transformedBox.getMin(mMin);
         assertEquals(-0.5f + 33, mMin.x, FloatUtil.EPS);
         assertEquals(-1.0f + 44, mMin.y, FloatUtil.EPS);
@@ -135,11 +138,12 @@ public class BoundingBoxTest extends TestCase {
      * Test transform translate, rotate.
      */
     public void testTransformTranslateRotate() {
-        TransformableBoundingBox transformedBox = new TransformableBoundingBox();
+        BoundingBox transformedBox = new BoundingBox();
+        transformedBox.set(mBoundingBox);
         Matrix44 mat = new Matrix44().setTranslate(33, 44, 55);
         mat.rotate(90, 0, 0, 1);
 
-        mBoundingBox.transform(mat, transformedBox);
+        transformedBox.transform(mat);
 
         transformedBox.getMin(mMin);
         assertEquals(-1.0f + 33, mMin.x, FloatUtil.EPS);
@@ -155,7 +159,8 @@ public class BoundingBoxTest extends TestCase {
      * Test transform rotate, translate.
      */
     public void testTransformRotateTranslate() {
-        TransformableBoundingBox transformedBox = new TransformableBoundingBox();
+        BoundingBox transformedBox = new BoundingBox();
+        transformedBox.set(mBoundingBox);
         /**
          * Rotate first...
          */
@@ -167,7 +172,7 @@ public class BoundingBoxTest extends TestCase {
          */
         mat.translate(1, 30, 100);
 
-        mBoundingBox.transform(mat, transformedBox);
+        transformedBox.transform(mat);
 
         transformedBox.getMin(mMin);
         assertEquals(-1.0f - 30, mMin.x, FloatUtil.EPS);
@@ -183,13 +188,14 @@ public class BoundingBoxTest extends TestCase {
      * Test transform scale.
      */
     public void testTransformScale() {
-        TransformableBoundingBox transformedBox = new TransformableBoundingBox();
+        BoundingBox transformedBox = new BoundingBox();
+        transformedBox.set(mBoundingBox);
         /**
          * Scale y axis.
          */
         Matrix44 mat = new Matrix44().setScale(1, 0.5f, 1);
 
-        mBoundingBox.transform(mat, transformedBox);
+        transformedBox.transform(mat);
 
         transformedBox.getMin(mMin);
         assertEquals(-0.5f, mMin.x, FloatUtil.EPS);
@@ -205,13 +211,14 @@ public class BoundingBoxTest extends TestCase {
      * Test transform scale.
      */
     public void testTransformScaleTranslate() {
-        TransformableBoundingBox transformedBox = new TransformableBoundingBox();
+        BoundingBox transformedBox = new BoundingBox();
+        transformedBox.set(mBoundingBox);
         /**
          * Scale y axis.
          */
         Matrix44 mat = new Matrix44().setScale(1, 0.5f, 1);
         mat.translate(10, 20, 40);
-        mBoundingBox.transform(mat, transformedBox);
+        transformedBox.transform(mat);
 
         transformedBox.getMin(mMin);
         assertEquals(-0.5f + 10, mMin.x, FloatUtil.EPS);

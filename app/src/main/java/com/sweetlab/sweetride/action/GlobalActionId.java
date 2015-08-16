@@ -50,6 +50,11 @@ public enum GlobalActionId {
     MESH_INDICES,
 
     /**
+     * Mesh bounding box changed.
+     */
+    MESH_BOUNDING_BOX,
+
+    /**
      * Material shader program reference changed.
      */
     MATERIAL_PROGRAM,
@@ -143,4 +148,9 @@ public enum GlobalActionId {
      * Render settings updated.
      */
     RENDER_SETTINGS_DIRTY,
+
+    /**
+     * Bounding box updated.
+     */
+    BOUNDING_BOX_UPDATE,
 }

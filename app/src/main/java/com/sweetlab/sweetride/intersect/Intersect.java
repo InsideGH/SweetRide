@@ -3,6 +3,7 @@ package com.sweetlab.sweetride.intersect;
 import android.util.Log;
 
 import com.sweetlab.sweetride.DebugOptions;
+import com.sweetlab.sweetride.camera.Camera;
 import com.sweetlab.sweetride.math.FloatUtil;
 import com.sweetlab.sweetride.math.Vec3;
 
@@ -31,24 +32,24 @@ public class Intersect {
     private final Vec3 mTmp3 = new Vec3();
 
     /**
-     * Ray origin
+     * Origin/Start
      */
-    private final Vec3 mRay1Origin = new Vec3();
+    private final Vec3 mStart1 = new Vec3();
 
     /**
-     * Ray origin
+     * Origin/Start
      */
-    private final Vec3 mRay2Origin = new Vec3();
+    private final Vec3 mStart2 = new Vec3();
 
     /**
-     * Ray direction
+     * Direction
      */
-    private final Vec3 mRay1Direction = new Vec3();
+    private final Vec3 mDirection1 = new Vec3();
 
     /**
-     * Ray direction
+     * Direction.
      */
-    private final Vec3 mRay2Direction = new Vec3();
+    private final Vec3 mDirection2 = new Vec3();
 
     /**
      * Used a intersection point.
@@ -92,20 +93,20 @@ public class Intersect {
         /**
          * Get ray information.
          */
-        ray1.getOrigin(mRay1Origin);
-        ray2.getOrigin(mRay2Origin);
-        ray1.getDirection(mRay1Direction);
-        ray2.getDirection(mRay2Direction);
+        ray1.getOrigin(mStart1);
+        ray2.getOrigin(mStart2);
+        ray1.getDirection(mDirection1);
+        ray2.getDirection(mDirection2);
 
         /**
          * tmp = (o2 - o1)
          */
-        mTmp.set(mRay2Origin).sub(mRay1Origin);
+        mTmp.set(mStart2).sub(mStart1);
 
         /**
          * tmp3 = (d1 x d2)
          */
-        Vec3.cross(mRay1Direction, mRay2Direction, mTmp3);
+        Vec3.cross(mDirection1, mDirection2, mTmp3);
 
         /**
          * denominator = len(d1 x d2)^2
@@ -115,7 +116,7 @@ public class Intersect {
         /**
          * tmp2 = ((o2 - o1) x d2)
          */
-        Vec3.cross(mTmp, mRay2Direction, mTmp2);
+        Vec3.cross(mTmp, mDirection2, mTmp2);
 
         /**
          * numerator1 = ((o2 - o1) x d2) . (d1 x d2)
@@ -125,7 +126,7 @@ public class Intersect {
         /**
          * tmp2 = ((o2 - o1) x d1)
          */
-        Vec3.cross(mTmp, mRay1Direction, mTmp2);
+        Vec3.cross(mTmp, mDirection1, mTmp2);
 
         /**
          * numerator2 = ((o2 - o1) x d1) . (d1 x d2)
@@ -214,13 +215,13 @@ public class Intersect {
      * @return Time or INVALID_INTERSECTION if no intersection is found.
      */
     public float intersect(Ray ray, Vec3 planeNormal, float planeDistance) {
-        ray.getOrigin(mRay1Origin);
-        ray.getDirection(mRay1Direction);
+        ray.getOrigin(mStart1);
+        ray.getDirection(mDirection1);
 
         /**
          * The denominator, (mDirection . planeNormal)
          */
-        final float denominator = mRay1Direction.dot(planeNormal);
+        final float denominator = mDirection1.dot(planeNormal);
 
         /**
          * Return invalid intersection if the ray direction is not facing
@@ -231,7 +232,7 @@ public class Intersect {
             /**
              * The numerator, (-D - (mOrigin . planeNormal))
              */
-            final float numerator = -planeDistance - mRay1Origin.dot(planeNormal);
+            final float numerator = -planeDistance - mStart1.dot(planeNormal);
 
             /**
              * Calculate t, (-D - (mOrigin . planeNormal)) / (mDirection . planeNormal)
@@ -245,6 +246,48 @@ public class Intersect {
             if (((time > 0) || (Math.abs(time) < FloatUtil.EPS))) {
                 return time;
             }
+        }
+        return INVALID_INTERSECTION;
+    }
+
+    /**
+     * Find at what time line segment intersects with plane defined by normal and distance.
+     *
+     * @param planeNormal   The plane normal.
+     * @param planeDistance The plane distance.
+     * @return Time or INVALID_INTERSECTION if no intersection is found.
+     */
+    public float intersect(LineSegment lineSegment, Vec3 planeNormal, float planeDistance) {
+        lineSegment.getStartPoint(mStart1);
+        lineSegment.getDirection(mDirection1);
+
+        /**
+         * The denominator, (mDirection . planeNormal)
+         */
+        final float denominator = mDirection1.dot(planeNormal);
+
+        /**
+         * Return invalid intersection if the ray direction is not facing
+         * plane normal direction in a way that intersection can happen
+         * against plane front face.
+         */
+        /**
+         * The numerator, (-D - (mOrigin . planeNormal))
+         */
+        final float numerator = -planeDistance - mStart1.dot(planeNormal);
+
+        /**
+         * Calculate t, (-D - (mOrigin . planeNormal)) / (mDirection . planeNormal)
+         * Calculate t, numerator / denominator.
+         */
+        float time = numerator / denominator;
+
+        /**
+         * Check that intersection is within line segment boundaries.
+         */
+        if (((time > 0) || (Math.abs(time) < FloatUtil.EPS)) &&
+                ((time < 1) || (Math.abs(time - 1) < FloatUtil.EPS))) {
+            return time;
         }
         return INVALID_INTERSECTION;
     }
@@ -389,6 +432,56 @@ public class Intersect {
                 }
                 return true;
             }
+        }
+        return false;
+    }
+
+    /**
+     * Check if line segment intersecting any view frustrum plane.
+     *
+     * @param line   Line segment to check.
+     * @param camera Camera.
+     * @return True if line segment is inside view frustrum.
+     */
+    @SuppressWarnings("unused")
+    public boolean isVisible(LineSegment line, Camera camera) {
+        Plane plane;
+
+        plane = camera.getNearPlane();
+        plane.getNormal(mNormal);
+        if (!Float.isNaN(intersect(line, mNormal, plane.getSignedDistToOrigo()))) {
+            return true;
+        }
+
+        plane = camera.getFarPlane();
+        plane.getNormal(mNormal);
+        if (!Float.isNaN(intersect(line, mNormal, plane.getSignedDistToOrigo()))) {
+            return true;
+        }
+
+        plane = camera.getLeftPlane();
+        plane.getNormal(mNormal);
+        if (!Float.isNaN(intersect(line, mNormal, plane.getSignedDistToOrigo()))) {
+            return true;
+        }
+
+        plane = camera.getRightPlane();
+        plane.getNormal(mNormal);
+        if (!Float.isNaN(intersect(line, mNormal, plane.getSignedDistToOrigo()))) {
+            return true;
+        }
+
+        plane = camera.getTopPlane();
+        plane.getNormal(mNormal);
+        if (!Float.isNaN(intersect(line, mNormal, plane.getSignedDistToOrigo()))) {
+            return true;
+        }
+
+        plane = camera.getBottomPlane();
+        plane.getNormal(mNormal);
+        //noinspection RedundantIfStatement
+        if (!Float.isNaN(intersect(line, mNormal, plane.getSignedDistToOrigo()))) {
+            return true;
         }
         return false;
     }

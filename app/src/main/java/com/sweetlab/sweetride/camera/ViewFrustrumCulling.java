@@ -2,7 +2,9 @@ package com.sweetlab.sweetride.camera;
 
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.intersect.BoundingBox;
-import com.sweetlab.sweetride.intersect.TransformableBoundingBox;
+import com.sweetlab.sweetride.intersect.Intersect;
+import com.sweetlab.sweetride.intersect.LineSegment;
+import com.sweetlab.sweetride.intersect.Plane;
 import com.sweetlab.sweetride.math.Vec3;
 
 /**
@@ -10,73 +12,46 @@ import com.sweetlab.sweetride.math.Vec3;
  */
 public class ViewFrustrumCulling {
     /**
-     * FLL corner
-     */
-    private static final int A = 0;
-
-    /**
-     * FLR corner
-     */
-    private static final int B = 1;
-
-    /**
-     * FUL corner
-     */
-    private static final int C = 2;
-
-    /**
-     * FUR corner
-     */
-    private static final int D = 3;
-
-    /**
-     * BLL corner
-     */
-    private static final int E = 4;
-
-    /**
-     * BLR corner
-     */
-    private static final int F = 5;
-
-    /**
-     * BUL corner
-     */
-    private static final int G = 6;
-
-    /**
-     * BUR corner
-     */
-    private static final int H = 7;
-
-    /**
-     * Number of corners in a bounding box.
-     */
-    private static final int NBR_BOX_CORNERS = 8;
-
-    /**
      * Bounding box max (x,y,z) values
      */
+    @SuppressWarnings("unused")
     private final Vec3 mMax = new Vec3();
 
     /**
      * Bounding box min (x,y,z) values
      */
+    @SuppressWarnings("unused")
     private final Vec3 mMin = new Vec3();
 
     /**
-     * Corners in bounding box.
+     * Bounding box width vector.
      */
-    private final Vec3[] mPoints = new Vec3[NBR_BOX_CORNERS];
+    private final Vec3 mWidthVec = new Vec3();
 
     /**
-     * Constructor.
+     * Bounding box height vector.
      */
-    public ViewFrustrumCulling() {
-        for (int i = 0; i < mPoints.length; i++) {
-            mPoints[i] = new Vec3();
-        }
-    }
+    private final Vec3 mHeightVec = new Vec3();
+
+    /**
+     * Bounding box depth vector.
+     */
+    private final Vec3 mDepthVec = new Vec3();
+
+    /**
+     * Bounding box middle point.
+     */
+    private final Vec3 mMiddlePoint = new Vec3();
+
+    /**
+     * Intersect.
+     */
+    private final Intersect mIntersect = new Intersect();
+
+    /**
+     * Temporary normal vector using during line segment intersection.
+     */
+    private final Vec3 mNormal = new Vec3();
 
     /**
      * Check if point is within view frustrum.
@@ -116,13 +91,26 @@ public class ViewFrustrumCulling {
      * @return True if inside view frustrum.
      */
     public boolean isVisible(BoundingBox box, Camera camera) {
-        buildPoints(box);
-        for (Vec3 point : mPoints) {
-            if (isVisible(point, camera)) {
-                return true;
-            }
+        if (!isBoxVisible(camera.getNearPlane(), box)) {
+            return false;
         }
-        return false;
+        if (!isBoxVisible(camera.getFarPlane(), box)) {
+            return false;
+        }
+        if (!isBoxVisible(camera.getRightPlane(), box)) {
+            return false;
+        }
+        if (!isBoxVisible(camera.getLeftPlane(), box)) {
+            return false;
+        }
+        if (!isBoxVisible(camera.getTopPlane(), box)) {
+            return false;
+        }
+        //noinspection RedundantIfStatement
+        if (!isBoxVisible(camera.getBottomPlane(), box)) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -132,45 +120,32 @@ public class ViewFrustrumCulling {
      * @param camera   Camera to use.
      * @return True if visible. If no bounding box exists method return true.
      */
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+//    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isVisible(Geometry geometry, Camera camera) {
-        TransformableBoundingBox box = geometry.getTransformableBoundingBox();
-        return box == null || isVisible(box, camera);
+        BoundingBox box = geometry.getBoundingBox();
+        return box.isEmpty() || isVisible(box, camera);
     }
 
     /**
-     * Fill the member array of corner points from bounding box.
-     * <pre>
+     * Check if box is visible from plane point of view.
      *
-     *  Y (+)                      Z (-)
-     *  |                        /
-     *  |                      /
-     *  |        G---------H
-     *  |      / |        /|
-     *  |    /   |      /  |
-     *  |   C----|-----D   |
-     *  |   |    E-----|---F
-     *  |   |  |       |  |
-     *  |   | |        | |
-     *  |   A----------B
-     *  |
-     *  ------------------------------------ X (+)
-     *  </pre>
-     *
-     * @param box The bounding box.
+     * @param plane The plane.
+     * @param box   The box.
+     * @return True if visible, false otherwise.
      */
-    private void buildPoints(BoundingBox box) {
-        box.getMax(mMax);
-        box.getMin(mMin);
+    private boolean isBoxVisible(Plane plane, BoundingBox box) {
+        box.getWidthVec(mWidthVec);
+        box.getHeightVec(mHeightVec);
+        box.getDepthVec(mDepthVec);
+        box.getMiddlePoint(mMiddlePoint);
+        plane.getNormal(mNormal);
 
-        mPoints[A].set(mMin.x, mMin.y, mMax.z);
-        mPoints[B].set(mMax.x, mMin.y, mMax.z);
-        mPoints[C].set(mMin.x, mMax.y, mMax.z);
-        mPoints[D].set(mMax.x, mMax.y, mMax.z);
+        float radius = Math.abs(mWidthVec.dot(mNormal));
+        radius += Math.abs(mHeightVec.dot(mNormal));
+        radius += Math.abs(mDepthVec.dot(mNormal));
+        radius /= 2;
 
-        mPoints[E].set(mMin.x, mMin.y, mMin.z);
-        mPoints[F].set(mMax.x, mMin.y, mMin.z);
-        mPoints[G].set(mMin.x, mMax.y, mMin.z);
-        mPoints[H].set(mMax.x, mMax.y, mMin.z);
+        float signedDistToPoint = plane.getSignedDistToPoint(mMiddlePoint);
+        return signedDistToPoint > -radius;
     }
 }

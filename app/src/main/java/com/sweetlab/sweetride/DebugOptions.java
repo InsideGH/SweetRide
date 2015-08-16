@@ -15,5 +15,5 @@ public class DebugOptions {
     public static final boolean DEBUG_DRAW = true;
     public static final boolean DEBUG_RENDER_SETTINGS = true;
     public static final boolean DEBUG_NODE = true;
-    public static final boolean DEBUG_INTERSECT = true;
+    public static final boolean DEBUG_INTERSECT = false;
 }

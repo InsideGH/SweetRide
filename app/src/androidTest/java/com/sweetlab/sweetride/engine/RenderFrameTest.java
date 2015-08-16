@@ -1,7 +1,7 @@
 package com.sweetlab.sweetride.engine;
 
 import com.sweetlab.sweetride.context.BackendContext;
-import com.sweetlab.sweetride.demo.DemoApplication;
+import com.sweetlab.sweetride.demo.demo.DemoApplication;
 import com.sweetlab.sweetride.engine.frame.RenderTask;
 import com.sweetlab.sweetride.engine.frame.render.RenderFrame;
 import com.sweetlab.sweetride.engine.frame.update.UpdateFrame;

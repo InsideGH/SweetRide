@@ -5,6 +5,8 @@ import android.test.AndroidTestCase;
 import com.sweetlab.sweetride.camera.Camera;
 import com.sweetlab.sweetride.camera.Frustrum;
 import com.sweetlab.sweetride.camera.ViewFrustrumCulling;
+import com.sweetlab.sweetride.intersect.BoundingBox;
+import com.sweetlab.sweetride.math.Matrix44;
 import com.sweetlab.sweetride.math.Vec3;
 
 /**
@@ -23,6 +25,35 @@ public class ViewFrustrumCullingTest extends AndroidTestCase {
         mCamera = new Camera();
         mCuller = new ViewFrustrumCulling();
         mActionHandler = new FrontEndActionHandler();
+    }
+
+    public void testBoxVisibility() {
+        mCamera.lookAt(0, 0, 3, 0, 0, 0);
+        mCamera.getFrustrum().setPerspectiveProjection(90, Frustrum.FovType.AUTO_FIT, 0.1f, 10, 1920, 1080);
+        mActionHandler.handleActions(mCamera);
+
+        float w = mCamera.getFrustrum().calcWidthAtDepth(3);
+        float bw = w/2;
+
+        Vec3 min = new Vec3(-bw/2, -bw/2, -bw/2);
+        Vec3 max = new Vec3(bw/2, bw/2, bw/2);
+        BoundingBox boundingBox = new BoundingBox(min, max);
+        boolean visible = mCuller.isVisible(boundingBox, mCamera);
+        assertTrue(visible);
+
+        Matrix44 matrix44 = new Matrix44();
+
+        matrix44.setTranslate(w/2, 0, 0);
+        boundingBox.transform(matrix44);
+        assertTrue(mCuller.isVisible(boundingBox, mCamera));
+
+        matrix44.setTranslate(w / 2, 0, 0);
+        boundingBox.transform(matrix44);
+        assertFalse(mCuller.isVisible(boundingBox, mCamera));
+
+        matrix44.setTranslate(-w/2, 0, 0);
+        boundingBox.transform(matrix44);
+        assertTrue(mCuller.isVisible(boundingBox, mCamera));
     }
 
     public void testNearFar() {

@@ -1,11 +1,11 @@
 package com.sweetlab.sweetride.math;
 
-import com.sweetlab.sweetride.pool.Reusable;
+import com.sweetlab.sweetride.pool.Poolable;
 
 /**
  * Old vec3 class that I have had around for a while. Should be cleaned up though.
  */
-public class Vec3 implements Reusable {
+public class Vec3 implements Poolable {
     public float x;
     public float y;
     public float z;
@@ -164,6 +164,15 @@ public class Vec3 implements Reusable {
      * Add to this vector.
      */
     public void add(int x, int y, int z) {
+        this.x += x;
+        this.y += y;
+        this.z += z;
+    }
+
+    /**
+     * Add to this vector.
+     */
+    public void add(float x, float y, float z) {
         this.x += x;
         this.y += y;
         this.z += z;

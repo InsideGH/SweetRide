@@ -3,6 +3,7 @@ package com.sweetlab.sweetride.mesh;
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.MeshDrawingMode;
+import com.sweetlab.sweetride.intersect.BoundingBox;
 import com.sweetlab.sweetride.resource.VertexBufferResource;
 
 import java.util.ArrayList;
@@ -18,14 +19,19 @@ public class BackendMesh {
     private final List<VertexBufferResource> mVertexBuffers = new ArrayList<>();
 
     /**
-     * The indices buffer.
+     * The bounding box.
      */
-    private IndicesBuffer mIndicesBuffer;
+    private final BoundingBox mBoundingBox = new BoundingBox();
 
     /**
      * The drawing mode.
      */
     private final MeshDrawingMode mMode;
+
+    /**
+     * The indices buffer.
+     */
+    private IndicesBuffer mIndicesBuffer;
 
     /**
      * The vertex count.
@@ -59,6 +65,15 @@ public class BackendMesh {
      */
     public void setIndicesBuffer(IndicesBuffer indicesBuffer) {
         mIndicesBuffer = indicesBuffer;
+    }
+
+    /**
+     * Set bounding box.
+     *
+     * @param box Bounding box.
+     */
+    public void setBoundingBox(BoundingBox box) {
+        mBoundingBox.set(box);
     }
 
     /**
@@ -126,6 +141,15 @@ public class BackendMesh {
      */
     public IndicesBuffer getIndicesBuffer() {
         return mIndicesBuffer;
+    }
+
+    /**
+     * Get the bounding box.
+     *
+     * @return The bounding box.
+     */
+    public BoundingBox getBoundingBox() {
+        return mBoundingBox;
     }
 
     /**

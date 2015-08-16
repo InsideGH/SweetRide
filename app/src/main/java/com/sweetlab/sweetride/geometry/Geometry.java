@@ -9,12 +9,9 @@ import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.camera.Camera;
 import com.sweetlab.sweetride.camera.LowerLeftBox;
 import com.sweetlab.sweetride.context.BackendContext;
-import com.sweetlab.sweetride.demo.OnTouchListener;
-import com.sweetlab.sweetride.demo.TouchEventHandler;
 import com.sweetlab.sweetride.engine.uniform.EngineUniform;
 import com.sweetlab.sweetride.engine.uniform.EngineUniformCache;
 import com.sweetlab.sweetride.intersect.BoundingBox;
-import com.sweetlab.sweetride.intersect.TransformableBoundingBox;
 import com.sweetlab.sweetride.material.Material;
 import com.sweetlab.sweetride.math.Matrix44;
 import com.sweetlab.sweetride.mesh.Mesh;
@@ -65,7 +62,7 @@ public class Geometry extends Node {
     /**
      * The geometry bounding box.
      */
-    private final TransformableBoundingBox mGeometryBox = new TransformableBoundingBox();
+    private final BoundingBox mBoundingBox = new BoundingBox();
 
     /**
      * The backend geometry.
@@ -92,6 +89,11 @@ public class Geometry extends Node {
      */
     private Material mMaterial;
 
+    /**
+     * For debugging, draw the bounding box.
+     */
+    private BoxLineGeometry mBoxLineGeometry;
+
     @Override
     public void accept(NodeVisitor visitor) {
         visitor.visit(this);
@@ -106,7 +108,11 @@ public class Geometry extends Node {
                 if (mMesh != null) {
                     BoundingBox meshBox = mMesh.getBoundingBox();
                     if (meshBox != null) {
-                        meshBox.transform(getModelTransform().getMatrix(), mGeometryBox);
+                        /**
+                         * Transform has changed, transform the geometry bounding box.
+                         */
+                        mBoundingBox.set(meshBox);
+                        mBoundingBox.transform(getModelTransform().getMatrix());
                     }
                 }
                 break;
@@ -117,14 +123,37 @@ public class Geometry extends Node {
                 break;
 
             case GEOMETRY_MESH:
+                /**
+                 * Geometry has a new mesh.
+                 */
                 if (mMesh != null) {
                     BoundingBox meshBox = mMesh.getBoundingBox();
                     if (meshBox != null) {
-                        meshBox.transform(getModelTransform().getMatrix(), mGeometryBox);
+                        /**
+                         * Take new mesh bounding box and transform the geometry bounding box.
+                         */
+                        mBoundingBox.set(meshBox);
+                        mBoundingBox.transform(getModelTransform().getMatrix());
+
+                        /**
+                         * If bounding box is to be drawn, update with potentially new mesh
+                         * box.
+                         */
+                        if (mBoxLineGeometry != null) {
+                            mBoxLineGeometry.updateBox(meshBox);
+                        }
                     }
                 }
                 break;
 
+            case MESH_BOUNDING_BOX:
+                /**
+                 * Mesh has a new bounding box.
+                 */
+                if (mBoxLineGeometry != null) {
+                    mBoxLineGeometry.updateBox(mMesh.getBoundingBox());
+                }
+                break;
         }
     }
 
@@ -165,7 +194,7 @@ public class Geometry extends Node {
         if (!mOnTouchListeners.isEmpty()) {
             Camera camera = findCamera();
             if (camera != null) {
-                if (mTouchEventHandler.onTouchEvent(event, camera, mGeometryBox, mOnTouchListeners)) {
+                if (mTouchEventHandler.onTouchEvent(event, camera, mBoundingBox, mOnTouchListeners)) {
                     return true;
                 }
             }
@@ -173,13 +202,44 @@ public class Geometry extends Node {
         return super.onTouch(event);
     }
 
+    @Override
+    public void draw(BackendContext context) {
+        super.draw(context);
+        mBackendGeometry.draw(context);
+    }
+
     /**
-     * Get this geometries transformable bounding box. The box can be empty.
+     * Enable drawing of the bounding box.
+     *
+     * @param enable True if bounding box should be drawn.
+     */
+    public void enableDrawBoundingBox(boolean enable) {
+        if (enable) {
+            if (mBoxLineGeometry == null) {
+                mBoxLineGeometry = new BoxLineGeometry();
+                addChild(mBoxLineGeometry);
+            }
+            if (mMesh != null) {
+                BoundingBox meshBox = mMesh.getBoundingBox();
+                if (meshBox != null) {
+                    mBoxLineGeometry.updateBox(meshBox);
+                }
+            }
+        } else {
+            if (mBoxLineGeometry != null) {
+                removeChild(mBoxLineGeometry);
+                mBoxLineGeometry = null;
+            }
+        }
+    }
+
+    /**
+     * Get this geometries bounding box. The box can be empty.
      *
      * @return The geometries bounding box.
      */
-    public TransformableBoundingBox getTransformableBoundingBox() {
-        return mGeometryBox;
+    public BoundingBox getBoundingBox() {
+        return mBoundingBox;
     }
 
     /**
@@ -275,12 +335,6 @@ public class Geometry extends Node {
      */
     public void load(BackendContext context) {
         mBackendGeometry.load(context);
-    }
-
-    @Override
-    public void draw(BackendContext context) {
-        super.draw(context);
-        mBackendGeometry.draw(context);
     }
 
     /**

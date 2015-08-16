@@ -3,7 +3,7 @@ package com.sweetlab.sweetride.intersect;
 import com.sweetlab.sweetride.math.Vec3;
 
 /**
- * A ray has a start point, end point and direction.
+ * A ray has a start point and direction.
  * <p/>
  * p(t) = mOrigin + t * mDirection
  */

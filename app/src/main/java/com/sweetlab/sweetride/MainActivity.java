@@ -12,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.sweetlab.sweetride.demo.DemoView;
+import com.sweetlab.sweetride.demo.MainContentView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Main content frame.
      */
-    private DemoView mDemoView;
+    private MainContentView mMainContentView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        mDemoView = (DemoView) findViewById(R.id.demo_gl_view);
+        mMainContentView = (MainContentView) findViewById(R.id.main_gl_view);
 
         Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
@@ -54,11 +54,11 @@ public class MainActivity extends AppCompatActivity {
                 menuItem.setChecked(true);
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_item_1:
-                        Snackbar.make(mDemoView, "Item One", Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(mMainContentView, "Item One", Snackbar.LENGTH_SHORT).show();
                         mDrawerLayout.closeDrawers();
                         return true;
                     case R.id.navigation_item_2:
-                        Snackbar.make(mDemoView, "Item Two", Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(mMainContentView, "Item Two", Snackbar.LENGTH_SHORT).show();
                         mDrawerLayout.closeDrawers();
                         return true;
                     default:

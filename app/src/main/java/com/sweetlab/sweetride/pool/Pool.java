@@ -5,7 +5,7 @@ package com.sweetlab.sweetride.pool;
  *
  * @param <T> Type of object.
  */
-public interface Pool<T extends Reusable> {
+public interface Pool<T extends Poolable> {
     /**
      * Get from pool.
      *

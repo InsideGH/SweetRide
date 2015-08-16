@@ -1,8 +1,8 @@
 package com.sweetlab.sweetride.material;
 
 import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.ActionThread;
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.resource.TextureResource;
@@ -77,6 +77,18 @@ public class Material extends NoHandleNotifier<GlobalActionId> {
         mTextures.add(texture);
         connectNotifier(texture);
         addAction(mTextureChange);
+    }
+
+    /**
+     * Remove texture.
+     *
+     * @param texture Texture.
+     */
+    public void removeTexture(TextureResource texture) {
+        if (mTextures.remove(texture)) {
+            disconnectNotifier(texture);
+            addAction(mTextureChange);
+        }
     }
 
     /**

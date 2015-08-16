@@ -24,7 +24,12 @@ public enum MeshDrawingMode {
     /**
      * Draw using points.
      */
-    POINTS(GLES20.GL_POINTS);
+    POINTS(GLES20.GL_POINTS),
+
+    /**
+     * Draw using lines.
+     */
+    LINES(GLES20.GL_LINES);
 
     /**
      * The GL drawing mode.

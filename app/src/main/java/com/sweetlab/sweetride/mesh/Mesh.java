@@ -3,10 +3,11 @@ package com.sweetlab.sweetride.mesh;
 import android.support.annotation.Nullable;
 
 import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.ActionThread;
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.NoHandleNotifier;
 import com.sweetlab.sweetride.attributedata.IndicesBuffer;
+import com.sweetlab.sweetride.attributedata.VertexBuffer;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.context.MeshDrawingMode;
 import com.sweetlab.sweetride.intersect.BoundingBox;
@@ -29,6 +30,11 @@ public class Mesh extends NoHandleNotifier<GlobalActionId> {
      * Vertex buffers collection has changed.
      */
     private final Action<GlobalActionId> mVertexBuffersChanged = new Action<>(this, GlobalActionId.MESH_BUFFER, ActionThread.MAIN);
+
+    /**
+     * Bounding box has changed.
+     */
+    private final Action<GlobalActionId> mBoundingBoxChanged = new Action<>(this, GlobalActionId.MESH_BOUNDING_BOX, ActionThread.MAIN);
 
     /**
      * List of vertex buffers.
@@ -79,6 +85,9 @@ public class Mesh extends NoHandleNotifier<GlobalActionId> {
             case MESH_INDICES:
                 mBackendMesh.setIndicesBuffer(mIndicesBuffer);
                 return true;
+            case MESH_BOUNDING_BOX:
+                mBackendMesh.setBoundingBox(mBoundingBox);
+                return true;
             default:
                 return false;
         }
@@ -94,7 +103,9 @@ public class Mesh extends NoHandleNotifier<GlobalActionId> {
             disconnectNotifier(mIndicesBuffer);
         }
         mIndicesBuffer = indicesBuffer;
-        connectNotifier(mIndicesBuffer);
+        if (mIndicesBuffer != null) {
+            connectNotifier(mIndicesBuffer);
+        }
         addAction(mIndicesChanged);
     }
 
@@ -120,12 +131,33 @@ public class Mesh extends NoHandleNotifier<GlobalActionId> {
     }
 
     /**
+     * Remove vertex buffer.
+     *
+     * @param vertexBuffer The vertex buffer.
+     */
+    public void removeVertexBuffer(VertexBuffer vertexBuffer) {
+        if (mVertexBuffers.remove(vertexBuffer)) {
+            disconnectNotifier(vertexBuffer);
+            addAction(mVertexBuffersChanged);
+        } else {
+            throw new RuntimeException("Can't remove vertex buffer from mesh since it doesn't have it " + vertexBuffer);
+        }
+    }
+
+    /**
      * Set the bounding box.
      *
      * @param box The bounding box or null.
      */
     public void setBoundingBox(@Nullable BoundingBox box) {
+        if (mBoundingBox != null) {
+            disconnectNotifier(mBoundingBox);
+        }
         mBoundingBox = box;
+        if (mBoundingBox != null) {
+            connectNotifier(mBoundingBox);
+        }
+        addAction(mBoundingBoxChanged);
     }
 
 

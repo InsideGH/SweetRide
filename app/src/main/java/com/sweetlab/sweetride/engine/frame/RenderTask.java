@@ -3,7 +3,7 @@ package com.sweetlab.sweetride.engine.frame;
 import com.sweetlab.sweetride.context.BackendActionHandler;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.node.Node;
-import com.sweetlab.sweetride.pool.Reusable;
+import com.sweetlab.sweetride.pool.Poolable;
 import com.sweetlab.sweetride.renderer.NodeRenderer;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * A task container used for rendering. Has nodes and a renderer.
  */
-public class RenderTask implements Reusable {
+public class RenderTask implements Poolable {
     /**
      * List of nodes to render.
      */

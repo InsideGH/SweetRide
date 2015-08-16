@@ -6,7 +6,7 @@ import com.sweetlab.sweetride.engine.TraverseHelper;
 import com.sweetlab.sweetride.geometry.Geometry;
 import com.sweetlab.sweetride.node.Node;
 import com.sweetlab.sweetride.node.NodeVisitor;
-import com.sweetlab.sweetride.pool.Reusable;
+import com.sweetlab.sweetride.pool.Poolable;
 import com.sweetlab.sweetride.rendernode.RenderNode;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.List;
  * contains other render nodes. If view frustrum culling is enabled in the render node
  * geometries will be culled and not collected if they are outside view frustrum.
  */
-public class RenderNodeContentCollector implements Reusable {
+public class RenderNodeContentCollector implements Poolable {
     /**
      * View frustrum culling.
      */
@@ -36,7 +36,7 @@ public class RenderNodeContentCollector implements Reusable {
     /**
      * Internal node visitor.
      */
-    private NodeVisitor mVisitor = new InternalVisitor();
+    private InternalVisitor mVisitor = new InternalVisitor();
 
     @Override
     public void reset() {

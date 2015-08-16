@@ -1,8 +1,8 @@
 package com.sweetlab.sweetride.uniform;
 
 import com.sweetlab.sweetride.action.Action;
-import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.action.ActionThread;
+import com.sweetlab.sweetride.action.GlobalActionId;
 import com.sweetlab.sweetride.context.BackendContext;
 import com.sweetlab.sweetride.shader.ShaderProgram;
 
@@ -36,7 +36,8 @@ public class FloatUniform extends CustomUniform {
     private final String mName;
 
     /**
-     * Length of data is held to avoid creating new array on each update.
+     * Length of data is held to avoid creating new array on each update. Now the
+     * array is MAX length.
      */
     private int mLength;
 

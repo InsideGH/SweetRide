@@ -1,16 +1,16 @@
 package com.sweetlab.sweetride.engine.frame.update;
 
 import com.sweetlab.sweetride.node.Node;
-import com.sweetlab.sweetride.pool.Reusable;
+import com.sweetlab.sweetride.pool.Poolable;
 import com.sweetlab.sweetride.rendernode.RenderNode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Reusable graph content.
+ * Poolable graph content.
  */
-public class GraphContent implements Reusable {
+public class GraphContent implements Poolable {
     /**
      * List of nodes.
      */
