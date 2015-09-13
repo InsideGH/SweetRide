@@ -16,6 +16,7 @@ import com.sweetlab.sweetride.demo.game.player.PlayerControl;
 import com.sweetlab.sweetride.demo.game.player.PlayerControlListener;
 import com.sweetlab.sweetride.demo.game.terrain.newtake.Grid;
 import com.sweetlab.sweetride.demo.game.terrain.newtake.UnlimitedTerrain;
+import com.sweetlab.sweetride.logger.Logger;
 import com.sweetlab.sweetride.math.Vec3;
 import com.sweetlab.sweetride.node.Node;
 import com.sweetlab.sweetride.node.rendersettings.BlendDstFact;
@@ -84,6 +85,8 @@ public class GameApplication extends UserApplication {
      * Constructor.
      */
     public GameApplication(Context context) {
+        Logger.addCategory(GameLogs.class);
+
         mContext = context;
         mGameRenderNode.enableViewFrustrumCulling(true);
         mGameRenderNode.getRenderSettings().setClearColor(new float[]{0.0f, 0.0f, 0.0f, 1});
@@ -142,6 +145,7 @@ public class GameApplication extends UserApplication {
 
     @Override
     public void onUpdate(float dt) {
+        Logger.log(GameLogs.TERRAIN, "Update" + dt);
     }
 
     /**

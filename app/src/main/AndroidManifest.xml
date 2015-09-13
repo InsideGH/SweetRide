@@ -3,6 +3,7 @@
     package="com.sweetlab.sweetride">
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -19,6 +20,7 @@
 
         <activity android:name=".testframework.TestActivity"></activity>
 
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>

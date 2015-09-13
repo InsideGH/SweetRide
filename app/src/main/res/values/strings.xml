@@ -3,4 +3,20 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="log_tag">Peter100</string>
+    <string name="log_prefix">log_</string>
+    <string name="category_prefix">cat_</string>
+    <string name="screen_prefix">screen_</string>
+    <string name="list_prefix">list_</string>
+    <string name="mode_sample_prefix">mode_sample_</string>
+    <string name="mode_no_sample_prefix">mode_no_sample_</string>
+    <string name="picker_prefix">pick_</string>
+
+    <string name="checkbox_title">Enabled</string>
+    <string name="log_mode">Mode</string>
+    <string name="log_mode_summary">Select from sampled or unfiltered</string>
+    <string name="sample_mode">Sample</string>
+    <string name="no_sample_mode">Continuous</string>
+    <string name="picker_title">Period</string>
+    <string name="picker_dialog_title">Period time [ms]</string>
 </resources>

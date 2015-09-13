@@ -1,71 +1,19 @@
 package com.sweetlab.sweetride;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-
-import com.sweetlab.sweetride.demo.MainContentView;
-
 
 public class MainActivity extends AppCompatActivity {
-    /**
-     * Drawer layout.
-     */
-    private DrawerLayout mDrawerLayout;
-
-    /**
-     * Main content frame.
-     */
-    private MainContentView mMainContentView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        mMainContentView = (MainContentView) findViewById(R.id.main_gl_view);
-
-        Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null) {
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
-        }
-        toolBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDrawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
-
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                menuItem.setChecked(true);
-                switch (menuItem.getItemId()) {
-                    case R.id.navigation_item_1:
-                        Snackbar.make(mMainContentView, "Item One", Snackbar.LENGTH_SHORT).show();
-                        mDrawerLayout.closeDrawers();
-                        return true;
-                    case R.id.navigation_item_2:
-                        Snackbar.make(mMainContentView, "Item Two", Snackbar.LENGTH_SHORT).show();
-                        mDrawerLayout.closeDrawers();
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
     }
 
     @Override
@@ -84,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 
