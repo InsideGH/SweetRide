@@ -9,6 +9,11 @@ So, a 5 minute description as follows:
 Don't mess around in gl thread. Instead, do all you stuff in main UI thread and let the engine handle all the 
 opengl-es 2.0 stuff.
 
+First, you need a RenderNode parent to draw anything. The RenderNode must be equiped with a NodeRenderer. 
+There is a DefaultRenderNode that does this for typical onscreen rendering. Want to render to a Texture instead,
+then just add a texture renderer instead that implements the NodeRenderer (and modify the frame buffer target). Want to render for a virtual helmet, just create a renderer that renders left, right offseted and distortion
+compensated (not implemented though).
+
 Attach Nodes or Geometries in a graph. Want to draw something, create a Geometry (a node) and attach it
 to the graph.
 
